@@ -85,6 +85,14 @@ documents under `docs/project/`.
 - Constitution: `docs/methodology/constitution/gendev.md`
 - Operating workflow: `docs/methodology/guides/agentic-development-workflow.md`
 - Gate model: `docs/methodology/guides/gates.md`
+- Collaboration modes: `docs/methodology/guides/collaboration-modes.md`
+- Human-agent loop: `docs/methodology/guides/human-agent-collaboration-loop.md`
+- Start/next-step protocol: `docs/methodology/guides/start-and-next-step-protocol.md`
+- Gate transition protocol: `docs/methodology/guides/gate-transition-protocol.md`
+- Human approval protocol: `docs/methodology/guides/human-approval-protocol.md`
+- Sub-agent coordination protocol: `docs/methodology/guides/subagent-coordination-protocol.md`
+- Artifact collaboration protocol: `docs/methodology/guides/artifact-collaboration-protocol.md`
+- Production operations protocol: `docs/methodology/guides/production-operations-protocol.md`
 - Templates: `docs/methodology/templates/`
 - Dev-skill guidance: `docs/methodology/dev-skills/`
 - Agent role playbooks: `docs/methodology/Agents/roles/`
@@ -103,6 +111,28 @@ Before implementation, phase close-out, or handoff, run:
 On an uninitialized baseline, the checker reports that `docs/project/` does not exist yet. After
 initialization, it checks the active project structure, manifest paths, accepted-doc placeholders,
 phase planning sections, and traceability evidence signals.
+
+## Orchestration Layer
+
+The orchestration layer is procedural documentation. It tells a human team member, lead agent, and
+sub-agents how to collaborate from `Let's begin` through production operation.
+
+The core behaviors are:
+
+```text
+set collaboration mode
+orient to project.yaml and current gate
+ask material questions
+draft the next artifact
+review and revise with the human
+record lightweight approvals
+coordinate bounded sub-agent work
+advance gates only with required evidence
+prepare deployment, rollback, monitoring, and runbook procedures
+```
+
+Tool-specific addenda for Codex, Claude Code, Cursor, or other systems may be added later. The core
+methodology remains tool-agnostic.
 
 ## Current Status
 

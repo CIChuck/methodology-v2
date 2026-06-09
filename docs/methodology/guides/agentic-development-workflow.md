@@ -27,6 +27,22 @@ initialize
 The goal is not to slow development. The goal is to make agent-assisted work explicit enough that
 agents do not invent scope, lose traceability, or treat chat history as build authority.
 
+## Related Orchestration Guides
+
+Use this guide with:
+
+- `docs/methodology/guides/collaboration-modes.md`;
+- `docs/methodology/guides/human-agent-collaboration-loop.md`;
+- `docs/methodology/guides/start-and-next-step-protocol.md`;
+- `docs/methodology/guides/gate-transition-protocol.md`;
+- `docs/methodology/guides/human-approval-protocol.md`;
+- `docs/methodology/guides/subagent-coordination-protocol.md`;
+- `docs/methodology/guides/artifact-collaboration-protocol.md`;
+- `docs/methodology/guides/production-operations-protocol.md`.
+
+The workflow defines the lifecycle. The orchestration guides define how humans, lead agents, and
+sub-agents collaborate inside that lifecycle.
+
 ## Repository Layers
 
 The baseline separates reusable methodology from active project authority.
@@ -67,6 +83,17 @@ Initialization creates:
 
 After initialization, the human owner and agent should inspect `docs/project/project.yaml` and update
 owner, approver, status, and current gate fields.
+
+The human should also set or confirm collaboration mode:
+
+```text
+proactive
+approval-gated
+advisory
+execution-focused
+```
+
+If no mode is selected, use `approval-gated`.
 
 Stop if:
 
@@ -248,14 +275,17 @@ Agents must not mark planned behavior as implemented without evidence.
 
 Deployment readiness happens only after acceptance-ready status.
 
-Before deployment, confirm:
+Production includes deployment and post-deployment operation. Before deployment, confirm:
 
 - architecture and governance still match implementation;
 - environment and secret requirements are documented;
 - migration and rollback behavior is approved;
 - operational checks exist;
 - security-sensitive behavior has positive and negative tests;
-- human deployment approval is recorded.
+- human deployment approval is recorded;
+- post-deployment validation is defined;
+- monitoring and alert checks are defined;
+- incident and rollback decision procedures are documented.
 
 Production release must remain a human control point unless the active project explicitly authorizes
 automated release behavior.

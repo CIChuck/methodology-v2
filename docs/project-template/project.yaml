@@ -15,11 +15,39 @@ authority:
   constitution: docs/methodology/constitution/gendev.md
   workflow: docs/methodology/guides/agentic-development-workflow.md
   gates: docs/methodology/guides/gates.md
+  collaboration_modes: docs/methodology/guides/collaboration-modes.md
+  collaboration_loop: docs/methodology/guides/human-agent-collaboration-loop.md
+  next_step_protocol: docs/methodology/guides/start-and-next-step-protocol.md
+  gate_transition_protocol: docs/methodology/guides/gate-transition-protocol.md
+  approval_protocol: docs/methodology/guides/human-approval-protocol.md
+  subagent_protocol: docs/methodology/guides/subagent-coordination-protocol.md
+  artifact_protocol: docs/methodology/guides/artifact-collaboration-protocol.md
+  production_protocol: docs/methodology/guides/production-operations-protocol.md
   vision: docs/project/vision/[project-slug]-vision.md
   prd: docs/project/prd/[project-slug]-prd.md
   architecture: docs/project/architecture/[project-slug]-architecture.md
   governance_security: docs/project/security-governance/governance-security-spec.md
   traceability: docs/project/traceability/[project-slug]-traceability-matrix.md
+
+collaboration:
+  mode: approval-gated
+  lead_agent: TBD
+  active_role: product-vision-agent
+  subagents_enabled: true
+  mode_set_by: TBD
+  mode_set_on: TBD
+
+approvals:
+  current_gate:
+    gate: G1
+    status: pending
+    approved_by: TBD
+    approved_on: TBD
+    evidence: TBD
+  latest_decision:
+    decision: TBD
+    approved_by: TBD
+    approved_on: TBD
 
 phase:
   current: 1

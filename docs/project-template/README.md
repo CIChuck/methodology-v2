@@ -21,11 +21,29 @@ authority documents define the stack and implementation plan.
 
 - project identity and current gate;
 - human owner and approval fields;
+- collaboration mode and lead-agent fields;
 - authority document paths;
 - current phase paths;
+- current approval summary;
 - example/non-authority notes.
 
 The manifest is a map, not a replacement for the documents it references.
+
+## Orchestration
+
+The active project uses the orchestration guides under `docs/methodology/guides/` to coordinate the
+human team member, lead agent, and any sub-agents.
+
+Key guides:
+
+- `collaboration-modes.md`
+- `human-agent-collaboration-loop.md`
+- `start-and-next-step-protocol.md`
+- `gate-transition-protocol.md`
+- `human-approval-protocol.md`
+- `subagent-coordination-protocol.md`
+- `artifact-collaboration-protocol.md`
+- `production-operations-protocol.md`
 
 ## Validation
 

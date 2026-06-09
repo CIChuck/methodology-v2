@@ -8,6 +8,9 @@ Authority: `docs/methodology/constitution/gendev.md`
 Gates define when agents may proceed and when they must stop. They convert the methodology into
 objective lifecycle checkpoints.
 
+Use this guide with `docs/methodology/guides/gate-transition-protocol.md` for the procedural steps
+needed to move from one gate to another.
+
 Gate status values:
 
 ```text
@@ -267,7 +270,11 @@ Required:
 - migration and rollback plan;
 - operational checks;
 - security sign-off for production-sensitive behavior;
-- release notes or deployment checklist.
+- release notes or deployment checklist;
+- production runbook;
+- post-deployment validation plan;
+- monitoring and alert review;
+- incident and rollback decision procedure.
 
 Human approval: required.
 
@@ -277,7 +284,8 @@ Exit criteria:
 - deployment commands and rollback commands are documented;
 - sensitive environment variables and secrets are accounted for;
 - production-impacting migrations are approved;
-- known limitations are visible.
+- known limitations are visible;
+- post-deployment owner is identified.
 
 Agents must stop if:
 

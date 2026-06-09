@@ -33,9 +33,37 @@ Use operating guides from `docs/methodology/guides/`:
 
 - `agentic-development-workflow.md`
 - `gates.md`
+- `collaboration-modes.md`
+- `human-agent-collaboration-loop.md`
+- `start-and-next-step-protocol.md`
+- `gate-transition-protocol.md`
+- `human-approval-protocol.md`
+- `subagent-coordination-protocol.md`
+- `artifact-collaboration-protocol.md`
+- `production-operations-protocol.md`
 
 Use role playbooks from `docs/methodology/Agents/roles/` when a task maps to a specific lifecycle
 role.
+
+## Orchestration Behavior
+
+The human may set the collaboration mode in plain language, such as:
+
+```text
+Lead proactively.
+Use approval-gated mode.
+Stay advisory.
+Proceed execution-focused.
+```
+
+The lead agent must follow the selected mode while preserving required human approvals. Proactive
+mode does not bypass gate approvals, security approvals, or production approval.
+
+For short prompts such as `Let's begin`, `What's next?`, `Continue`, `Proceed`, `Pause`, and
+`Resume`, follow `docs/methodology/guides/start-and-next-step-protocol.md`.
+
+When coordinating sub-agents, follow `docs/methodology/guides/subagent-coordination-protocol.md`.
+Sub-agent output is advisory until accepted into active project documents or approval records.
 
 ## Active Project Paths
 

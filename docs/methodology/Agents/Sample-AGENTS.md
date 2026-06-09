@@ -32,8 +32,20 @@ When creating or revising project documents, use the relevant guidance in
 
 Use reusable templates from `docs/methodology/templates/`.
 
-Use lifecycle guides from `docs/methodology/guides/` and role playbooks from
-`docs/methodology/Agents/roles/`.
+Use lifecycle and orchestration guides from `docs/methodology/guides/`:
+
+- `agentic-development-workflow.md`
+- `gates.md`
+- `collaboration-modes.md`
+- `human-agent-collaboration-loop.md`
+- `start-and-next-step-protocol.md`
+- `gate-transition-protocol.md`
+- `human-approval-protocol.md`
+- `subagent-coordination-protocol.md`
+- `artifact-collaboration-protocol.md`
+- `production-operations-protocol.md`
+
+Use role playbooks from `docs/methodology/Agents/roles/`.
 
 ## Active Project Authority
 
@@ -65,6 +77,20 @@ If `docs/project/` does not exist, initialize it before product implementation:
 ```bash
 ./scripts/init-project.sh "[Project Name]"
 ```
+
+## Collaboration Mode
+
+The human team member may set the operating mode in plain language:
+
+```text
+Lead proactively.
+Use approval-gated mode.
+Stay advisory.
+Proceed execution-focused.
+```
+
+The selected mode should be reflected in `docs/project/project.yaml` when it should persist beyond
+the current interaction. Required approvals still apply in every mode.
 
 ## Authority Precedence
 
