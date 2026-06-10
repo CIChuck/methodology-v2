@@ -69,6 +69,8 @@ Gate started on:
 Ready for approval on:
 Approval requested on:
 Enforcement class:
+Blast-radius class:
+Combined gate justification, if applicable:
 Attestation or enforcement evidence:
 Open questions:
 Known risks:
@@ -135,6 +137,9 @@ ready_for_approval_on: 2026-06-09
 approval_requested_on: 2026-06-09
 decided_on: 2026-06-09
 enforcement_class: attested
+blast_radius_class: C2
+combined_gates: N/A
+combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
   - path: docs/project/vision/vendor-contract-tracker-vision.md
@@ -170,10 +175,38 @@ binding, such as a hook or CI policy, blocks nonconforming changes). At baseline
 usually start as `attested`. A gate approval should still identify what was attested or what
 mechanical evidence was reviewed.
 
+`blast_radius_class` records whether the project is `C1`, `C2`, or `C3`. A gate approval should
+also record `combined_gates` and `combined_gate_justification` when the project compresses gates.
+For ordinary C2 work, `combined_gates` is usually `N/A`.
+
 The timing fields support process telemetry. `gate_started_on` marks when meaningful work began for
 the gate. `ready_for_approval_on` marks when the artifact had enough evidence for approval.
 `approval_requested_on` marks when the human was asked to decide. `decided_on` marks when the human
 decision happened.
+
+## Overrides
+
+An override is a deliberate, recorded decision to bypass or defer a methodology control for a
+specific reason. An override is not an amendment because it does not change project authority. It
+is also not a quiet exception. It must leave a durable record.
+
+Use an override only when the human accepts the risk of bypassing a control and the team knows how
+normal discipline will resume.
+
+Minimum override record:
+
+```text
+control bypassed
+reason
+approver
+date
+risk accepted
+compensating action
+when normal control resumes
+record location
+```
+
+For C3 critical work, overrides should be rare, explicit, and reviewed with stricter scrutiny.
 
 ## Weak Approval Language
 
@@ -273,7 +306,9 @@ Before approving a gate, confirm:
 [ ] I confirmed required evidence is not stale or superseded.
 [ ] I know the enforcement class for this gate.
 [ ] I know what attestation or enforcement evidence supports this gate.
+[ ] I know the blast-radius class and any combined-gate justification.
 [ ] I know whether active amendments affect this gate.
+[ ] I know whether any override is being used.
 [ ] I know which gate is advancing.
 [ ] I understand unresolved questions.
 [ ] I understand known risks.

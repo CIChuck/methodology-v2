@@ -257,6 +257,51 @@ Return the sub-agent synthesis (the reconciled summary of sub-agent findings) wi
 authority cited by each side, impact, recommended resolution, and required human decisions.
 ```
 
+## Sub-Agent Work Runs Past Its Budget
+
+Symptom:
+
+```text
+The lead agent launches broad sub-agent work without effort limits, and the outputs become too large
+or expensive for the human to use.
+```
+
+Risk:
+
+- review cost grows without improving decisions;
+- the lead agent hides uncertainty inside a large synthesis;
+- the human cannot see when the project needs a different reviewer or higher blast-radius class.
+
+Correction:
+
+```text
+Stop sub-agent work. Restate each assignment with source authority, scope, non-goals, budget, budget
+escalation, and output format. Resume only the review work that improves the current gate decision.
+```
+
+## Gate Combination Becomes A Shortcut
+
+Symptom:
+
+```text
+The agent combines G1-G4 because the project feels small, but no blast-radius class or
+combined-gate justification is recorded.
+```
+
+Risk:
+
+- requirements, architecture, and security assumptions disappear into chat;
+- future agents cannot tell which required content was preserved;
+- C2 or C3 work may be treated as C1 without approval.
+
+Correction:
+
+```text
+Stop. Classify blast radius as C1, C2, or C3. If gates are combined, record the affected gates,
+justification, preserved content, approver, date, and evidence path in project.yaml and the approval
+record. Do not combine gates for C3 work.
+```
+
 ## Deployment Treated As Implementation Detail
 
 Symptom:
@@ -276,6 +321,51 @@ Correction:
 ```text
 Stop. Deployment is G8. Prepare deployment readiness with release scope, deployment target,
 configuration, migration, rollback, monitoring, validation, known risks, and post-deployment owner.
+```
+
+## Override Is Used Quietly
+
+Symptom:
+
+```text
+The team bypasses a checker, hook, approval, evidence requirement, or deployment control without a
+durable override record.
+```
+
+Risk:
+
+- future agents cannot distinguish an accepted exception from a methodology violation;
+- normal enforcement may never resume;
+- production or compliance risk is hidden.
+
+Correction:
+
+```text
+Stop and record the override. Name the control bypassed, approver, reason, risk accepted,
+compensating action, and when normal control resumes. If the bypass changed authority, also use the
+amendment process.
+```
+
+## Metrics Become The Goal
+
+Symptom:
+
+```text
+The team optimizes for fast gate cycle time, low finding count, or clean metrics instead of product
+outcomes and evidence quality.
+```
+
+Risk:
+
+- agents learn to produce superficial approvals and shallow reviews;
+- missed criteria and escaped defects are hidden by attractive process numbers.
+
+Correction:
+
+```text
+Apply the Goodhart warning. Treat metrics as signals, not goals. Review value-review outcomes,
+missed criteria, traceability samples, escaped defects, and actual user evidence before changing
+process behavior.
 ```
 
 ## As-Built Close-Out Is Skipped

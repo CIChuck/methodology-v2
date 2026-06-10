@@ -124,7 +124,9 @@ Monitoring/validation plan:
 Value review trigger:
 Value review owner:
 Enforcement class:
+Blast-radius class:
 Attestation or enforcement evidence:
+Override status:
 Known risks:
 Post-deployment owner:
 Approval requested:

@@ -104,6 +104,8 @@ Before approval (the human decision to move the gate forward), the agent should 
 Gate: G1 -> G2
 Artifact status: Ready for Approval
 Evidence reviewed: docs/project/vision/vendor-contract-tracker-vision.md
+Enforcement class: attested
+Blast-radius class: C2
 Known risks: integrations may be needed earlier than assumed
 Open questions: exact customer segment, attachment scope, role model
 Next gate: G2
@@ -122,6 +124,36 @@ Expected records:
 - vision status becomes `Accepted`;
 - gate log receives a G1 -> G2 record (a durable approval history entry);
 - manifest current gate advances to G2 (the requirements gate).
+
+Representative structured approval event:
+
+```yaml
+event_type: gate_transition
+from_gate: G1
+to_gate: G2
+decision: approved
+decided_by: Chuck
+gate_started_on: 2026-06-10
+ready_for_approval_on: 2026-06-10
+approval_requested_on: 2026-06-10
+decided_on: 2026-06-10
+enforcement_class: attested
+blast_radius_class: C2
+combined_gates: N/A
+combined_gate_justification: N/A
+artifact_status: Accepted
+evidence:
+  - path: docs/project/vision/vendor-contract-tracker-vision.md
+    revision: TBD
+    status: Accepted
+checked: Confirmed integrations remain deferred and success criteria are measurable.
+known_risks_accepted:
+  - risk: Integrations may be requested earlier than planned.
+    rationale: Acceptable because integrations remain deferred unless explicitly approved.
+next_role: prd-agent
+next_artifact: docs/project/prd/vendor-contract-tracker-prd.md
+manifest_updated: true
+```
 
 ## G2: PRD
 
@@ -164,6 +196,18 @@ the system shows only matching active contracts.
 G2 approval should not occur until acceptance criteria are measurable and open questions
 (unresolved decisions or unknowns) are either resolved or explicitly carried forward (allowed to
 move into a later gate or phase).
+
+Representative provenance header:
+
+```text
+Produced by: Lead agent with human review
+Produced on: 2026-06-10
+Produced with: human-agent collaboration
+Agent identity: Codex lead agent, session TBD
+Derived from:
+  - path: docs/project/vision/vendor-contract-tracker-vision.md
+    revision: TBD
+```
 
 ## G3: Architecture
 
@@ -272,6 +316,18 @@ Expected construction directive (the controlling build instruction):
 
 G5 approval authorizes implementation (building the approved scope).
 
+Amendment example during G5:
+
+```text
+Discovery: The PRD forgot to require a contract owner email field needed for renewal escalation.
+Likely classification: additive-within-scope amendment if it only clarifies owner contact data
+already implied by the owner workflow.
+Required action: record amendment approval, update PRD, mark affected architecture, tests, and
+traceability rows stale until reconciled, then continue at G5 if build-ready conditions still hold.
+Regression: not required unless the new field changes authorization, data model assumptions, or
+phase scope beyond what G3/G4 approved.
+```
+
 ## G6: Implementation Ready For Review
 
 Implementation prompt:
@@ -319,8 +375,20 @@ Expected review outputs:
 - findings by severity;
 - file references;
 - missing test coverage;
+- context provenance (what the reviewer received and what was excluded);
 - documentation drift;
 - remediation recommendation (what should be fixed, deferred, or explicitly accepted as risk).
+
+Representative review context provenance:
+
+```text
+Reviewing agent: Independent code review agent
+Inputs provided: PRD, architecture, governance/security spec, construction directive, diff, test output
+Authority document revisions used: TBD until committed
+Implementation diff or commit reviewed: Phase 1 branch diff
+Implementer session shared with reviewer: No
+Exceptions: None
+```
 
 If remediation is needed:
 
@@ -351,6 +419,8 @@ Expected deployment readiness content (evidence that the release can safely ente
 - rollback steps (how to return to a previous known-good state);
 - monitoring/logging checks (how health, errors, and important signals are observed);
 - smoke test (small validation of the most important workflow);
+- value review trigger and owner;
+- enforcement class, blast-radius class, and override status;
 - post-deployment owner;
 - known limitations.
 
@@ -358,7 +428,7 @@ Deployment approval:
 
 ```text
 I approve deployment of Phase 1 to the internal production environment. I accept manual rollback for
-this release. Post-deployment owner is Chuck.
+this release. Post-deployment owner is Chuck. Value review is due after 30 days of internal use.
 ```
 
 ## G9: As-Built Closed
@@ -387,6 +457,18 @@ Value review example:
 ```text
 After 30 days of internal use, compare the G1 success criteria against actual usage, renewal
 tracking accuracy, and owner feedback. Mark each due criterion as met, missed, or unmeasurable.
+```
+
+Representative value review row:
+
+```text
+Criterion: Reduce missed renewal follow-up
+Measure: Internal sample of active contracts with owner and notice date recorded
+Target: 95% of active contracts have owner and notice date by day 30
+Actual: 92%
+Result: missed
+Evidence Source: Day-30 production export and owner review
+Follow-up: Add import cleanup and owner reminder workflow to next-phase candidates.
 ```
 
 Representative next-phase backlog (future work intentionally postponed or newly discovered):

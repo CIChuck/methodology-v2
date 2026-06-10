@@ -153,6 +153,30 @@ condition. Do not edit files. Return a reconciled findings list, conflicts, and 
 decisions.
 ```
 
+## Enforcement Attestation
+
+```text
+Prepare the enforcement attestation for this gate. Identify the enforcement class, checks reviewed,
+checker or guard output, implementation-path status, exceptions, attester, and gate-log record to
+update.
+```
+
+## Override Record
+
+```text
+Prepare an override record. Name the control being bypassed, why the override is needed, who must
+approve it, what risk is accepted, what compensating action applies, when normal control resumes,
+and where the record will live.
+```
+
+## Value Review
+
+```text
+Prepare the value review for the current phase. Compare each due G1 success criterion against
+actual evidence. Mark each criterion met, missed, or unmeasurable. Do not reframe missed criteria
+as success without a decision record.
+```
+
 ## Pause
 
 ```text

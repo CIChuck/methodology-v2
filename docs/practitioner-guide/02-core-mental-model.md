@@ -78,6 +78,25 @@ The practical rule is:
 If it affects scope, architecture, risk, approval, implementation, tests, or production, record it.
 ```
 
+## The Project Control Plane
+
+`docs/project/project.yaml` is the project control plane (the compact state summary that tells a
+future human or agent how to proceed). It does not replace the artifacts, but it names the current
+state and points to the records that matter.
+
+The control plane should make these controls visible:
+
+- current gate and approval state;
+- collaboration mode;
+- blast-radius class, meaning `C1`, `C2`, or `C3` risk/exposure level;
+- enforcement class, meaning `attested` human-verified controls or `enforced` mechanical controls;
+- active artifact and evidence paths;
+- active amendments or regressions;
+- measurement and value-review records.
+
+The lead agent should report these fields during orientation. If any field is missing or
+contradictory, the next step is to repair state before implementation.
+
 ## Authority Versus Conversation
 
 Conversation is useful for discovery (exploring options, asking questions, and making corrections).
@@ -121,6 +140,11 @@ G9 as-built closed
 The practitioner should expect the agent to say "stop" at certain moments. A stop is not failure.
 It is the methodology protecting the project from ambiguity.
 
+Gate discipline can scale by blast radius. `C1` contained work may use GenDev Lite, a lightweight
+path where some artifacts are combined while required content remains explicit. `C2` standard work
+usually uses the full default chain. `C3` critical work should add review, evidence, and
+enforcement discipline rather than compressing gates.
+
 ## Collaboration Modes
 
 The human may choose a collaboration mode (the operating style that tells the agent how much to
@@ -152,11 +176,15 @@ Expected agent behavior:
 At any point in a GenDev project, the practitioner should be able to answer:
 
 - What gate are we in?
+- What blast-radius class applies?
+- What enforcement class applies?
 - What artifact is active?
 - What document is current authority?
 - What questions are blocking?
 - What risks require human acceptance?
+- Are there active amendments, stale artifacts, or overrides?
 - What approval is needed next?
+- What evidence or value review is due?
 - What role should the agent assume next?
 - What file will be updated next?
 
