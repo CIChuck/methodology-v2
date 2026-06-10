@@ -184,10 +184,65 @@ gate_log_has_legacy_approval() {
     grep -Eq '^## .+ Approval|Decision:[[:space:]]*(Approved|Accepted|approved|accepted)'
 }
 
+gate_log_has_stale_gate_transition_evidence() {
+  log="$1"
+
+  [ -f "$log" ] || return 1
+
+  gate_log_records_section "$log" |
+    awk '
+      /^[[:space:]]*event_type:/ {
+        if (in_gate_transition && stale_evidence) {
+          found = 1
+        }
+        in_gate_transition = ($0 ~ /^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$/)
+        stale_evidence = 0
+        next
+      }
+      in_gate_transition && /^[[:space:]]*status:[[:space:]]*(Stale|Superseded)[[:space:]]*$/ {
+        stale_evidence = 1
+      }
+      END {
+        if (in_gate_transition && stale_evidence) {
+          found = 1
+        }
+        exit !found
+      }
+    '
+}
+
 artifact_status() {
   file="$1"
 
   sed -n 's/^Status:[[:space:]]*//p' "$file" | head -n 1
+}
+
+artifact_derived_revisions() {
+  file="$1"
+
+  awk '
+    /^Derived from:/ {
+      in_block = 1
+      path = ""
+      next
+    }
+    in_block && /^[^[:space:]][^:]*:/ {
+      exit
+    }
+    in_block && /^[[:space:]]*- path:[[:space:]]*.+/ {
+      sub("^[[:space:]]*- path:[[:space:]]*", "")
+      path = $0
+      gsub(/`/, "", path)
+      next
+    }
+    in_block && /^[[:space:]]+revision:[[:space:]]*.+/ {
+      sub("^[[:space:]]+revision:[[:space:]]*", "")
+      revision = $0
+      if (path != "") {
+        print path "|" revision
+      }
+    }
+  ' "$file"
 }
 
 artifact_has_derived_revision() {
@@ -247,6 +302,7 @@ check_baseline_files() {
   require_file "docs/methodology/constitution/gendev.md"
   require_file "docs/methodology/guides/agentic-development-workflow.md"
   require_file "docs/methodology/guides/gates.md"
+  require_file "docs/methodology/guides/amendment-and-regression-protocol.md"
   require_file "docs/methodology/guides/orchestration-validation.md"
   require_dir "docs/methodology/templates"
   require_dir "docs/methodology/dev-skills"
@@ -377,9 +433,69 @@ check_stale_evidence() {
   fi
 
   if [ -f "$log" ]; then
-    if gate_log_records_section "$log" |
+    if gate_log_has_stale_gate_transition_evidence "$log"; then
+      fail "Gate transition cites stale or superseded evidence in gate-log.md."
+    elif gate_log_records_section "$log" |
       grep -Eq '^[[:space:]]*status:[[:space:]]*(Stale|Superseded)[[:space:]]*$'; then
-      warn "Gate-log records cite stale or superseded evidence; review reconciliation before advancing."
+      warn "Gate-log records cite stale or superseded evidence outside a gate transition; review reconciliation state."
+    fi
+  fi
+}
+
+check_computed_staleness() {
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    return
+  fi
+
+  while IFS= read -r file; do
+    while IFS='|' read -r source_path pinned_revision; do
+      case "$pinned_revision" in
+        "" | "TBD" | "\"TBD\"" | "N/A" | "\"N/A\"")
+          continue
+          ;;
+      esac
+
+      if ! printf '%s\n' "$pinned_revision" | grep -Eq '^[0-9a-fA-F]{7,40}$'; then
+        continue
+      fi
+
+      [ -f "$source_path" ] || continue
+
+      current_revision="$(git log -n 1 --format=%H -- "$source_path" 2>/dev/null)"
+      [ -n "$current_revision" ] || continue
+
+      case "$current_revision" in
+        "$pinned_revision"*)
+          ;;
+        *)
+          warn "$file may be stale: $source_path is at $current_revision but Derived from pins $pinned_revision."
+          ;;
+      esac
+    done < <(artifact_derived_revisions "$file")
+  done < <(project_provenance_artifacts)
+}
+
+check_manifest_amendment_state() {
+  manifest="docs/project/project.yaml"
+  log="docs/project/approvals/gate-log.md"
+
+  [ -f "$manifest" ] || return
+
+  active_count="$(manifest_section_value "$manifest" "amendments" "active_count")"
+
+  if [ -z "$active_count" ]; then
+    warn "Manifest is missing amendments.active_count."
+    return
+  fi
+
+  if ! printf '%s\n' "$active_count" | grep -Eq '^[0-9]+$'; then
+    warn "Manifest amendments.active_count is not numeric: $active_count"
+    return
+  fi
+
+  if [ "$active_count" -gt 0 ]; then
+    if [ -f "$log" ] && ! gate_log_has_structured_event "$log" "amendment"; then
+      warn "Manifest has active amendments but no amendment event is visible in gate-log.md."
     fi
   fi
 }
@@ -604,7 +720,9 @@ else
   check_accepted_doc_placeholders
   check_accepted_artifact_approval_records
   check_artifact_provenance
+  check_computed_staleness
   check_stale_evidence
+  check_manifest_amendment_state
   check_current_gate_artifact_status
   check_phase_plans
   check_traceability_evidence

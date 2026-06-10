@@ -40,6 +40,7 @@ Use lifecycle and orchestration guides from `docs/methodology/guides/`:
 - `human-agent-collaboration-loop.md`
 - `start-and-next-step-protocol.md`
 - `gate-transition-protocol.md`
+- `amendment-and-regression-protocol.md`
 - `human-approval-protocol.md`
 - `subagent-coordination-protocol.md`
 - `artifact-collaboration-protocol.md`

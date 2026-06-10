@@ -123,6 +123,8 @@ Revision rules:
 - do not silently discard prior human decisions;
 - keep a short update summary for material changes;
 - update related docs if a change affects scope, architecture, governance, or tests;
+- follow `docs/methodology/guides/amendment-and-regression-protocol.md` when accepted authority
+  changes;
 - ask before broadening scope.
 
 ## Step 6: Approve
@@ -154,6 +156,7 @@ Record updates may include:
 
 - artifact status;
 - `docs/project/project.yaml` gate and approval summary;
+- amendment or regression summary, when accepted authority changed;
 - `docs/project/approvals/gate-log.md` approval record;
 - traceability matrix;
 - decision record;
@@ -205,6 +208,7 @@ The lead agent must stop when:
 - human approval is required;
 - requested work conflicts with non-goals;
 - requested work changes architecture or governance without approval;
+- requested work changes accepted authority without amendment classification;
 - sub-agent findings materially conflict;
 - production action, destructive migration, or rollback decision is needed.
 

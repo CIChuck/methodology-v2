@@ -27,6 +27,11 @@ Build-ready usually means:
 This may look like a lot of ceremony. The point is to prevent implementation from becoming the
 place where requirements, architecture, security, and acceptance criteria are invented.
 
+If accepted authority changes during implementation, do not keep building as if the old authority
+still governs. Stop and use the amendment process. The current gate may hold while the PRD,
+architecture, tests, construction directive, or traceability are reconciled. If the change
+invalidates build-ready conditions, regress to the affected gate.
+
 ## Phase Build Plan
 
 The phase build plan defines what a phase (a bounded increment of implementation work) is supposed
@@ -133,6 +138,8 @@ The implementation agent must stop when:
 
 - the directive is missing or not accepted;
 - requirements are ambiguous;
+- accepted authority changes without amendment classification;
+- an active structural amendment affects the construction directive or source authority;
 - implementation requires unapproved architecture;
 - implementation requires unapproved external services;
 - implementation changes security behavior;

@@ -20,6 +20,7 @@ authority:
   collaboration_loop: docs/methodology/guides/human-agent-collaboration-loop.md
   next_step_protocol: docs/methodology/guides/start-and-next-step-protocol.md
   gate_transition_protocol: docs/methodology/guides/gate-transition-protocol.md
+  amendment_protocol: docs/methodology/guides/amendment-and-regression-protocol.md
   approval_protocol: docs/methodology/guides/human-approval-protocol.md
   subagent_protocol: docs/methodology/guides/subagent-coordination-protocol.md
   artifact_protocol: docs/methodology/guides/artifact-collaboration-protocol.md
@@ -73,6 +74,12 @@ artifacts:
     - Produced with
     - Agent identity
     - Derived from
+
+amendments:
+  active_count: 0
+  record: docs/project/approvals/gate-log.md
+  protocol: docs/methodology/guides/amendment-and-regression-protocol.md
+  active: []
 
 phase:
   current: 1

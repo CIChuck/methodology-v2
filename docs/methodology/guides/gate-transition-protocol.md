@@ -2,7 +2,8 @@
 
 Status: Reusable Standard  
 Authority: `docs/methodology/constitution/gendev.md`,
-`docs/methodology/guides/gates.md`
+`docs/methodology/guides/gates.md`,
+`docs/methodology/guides/amendment-and-regression-protocol.md`
 
 ## Purpose
 
@@ -25,6 +26,8 @@ An artifact can be `Ready for Approval` before the gate is approved. A gate beco
 after the human approval record is durable and `project.yaml` summarizes the decision.
 `Stale` means an upstream authority changed after the artifact pinned that authority. Stale or
 superseded artifacts should not be used as gate evidence until reconciled.
+Active structural amendments should be reconciled before forward gate movement unless the human
+explicitly records why the amendment does not affect the transition.
 
 ## Universal Transition Checklist
 
@@ -37,6 +40,7 @@ Before any gate transition, confirm:
 [ ] required artifact provenance fields are present
 [ ] evidence revisions are pinned or explicitly marked TBD for draft work
 [ ] no required evidence is Stale or Superseded
+[ ] active amendments are reconciled or explicitly non-blocking
 [ ] required approver is known
 [ ] blocking questions are resolved or assigned
 [ ] required tests or test plans are present for the gate
@@ -106,6 +110,31 @@ Proposed next gate:
 Proposed next role:
 Manifest updates to record:
 ```
+
+If the gate transition depends on authority that changed after approval, follow
+`docs/methodology/guides/amendment-and-regression-protocol.md` before requesting the transition.
+Do not use stale evidence to move a gate forward.
+
+## Amendment And Regression Checks
+
+Before gate movement, the lead agent should inspect:
+
+```text
+docs/project/project.yaml amendments section
+docs/project/approvals/gate-log.md amendment events
+artifact Status fields for Stale or Superseded
+Derived from revisions for affected authority
+```
+
+If an accepted artifact was amended:
+
+- editorial amendments do not block transition unless they reveal a semantic issue;
+- additive-within-scope amendments require lightweight approval and downstream review;
+- structural amendments require explicit approval and downstream reconciliation;
+- amendments that invalidate gate entry conditions require regression.
+
+Regression should be recorded as a gate regression event, not as an ordinary forward gate
+transition.
 
 ## G0 -> G1: Project Initialized To Vision Ready Work
 

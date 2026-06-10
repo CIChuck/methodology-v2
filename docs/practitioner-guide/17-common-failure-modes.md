@@ -92,6 +92,50 @@ authority, and either reconcile the artifact, supersede it, or record explicit h
 acceptance before proceeding.
 ```
 
+## Amendment Treated As Ordinary Editing
+
+Symptom:
+
+```text
+The agent edits an accepted PRD, architecture, governance, or phase plan without classifying the
+change or recording an amendment.
+```
+
+Risk:
+
+- downstream plans, tests, implementation evidence, and reviews may still rely on the old
+  authority.
+
+Correction:
+
+```text
+Stop. Classify the change as editorial, additive-within-scope, or structural. Record an amendment
+event if the change is semantic. Identify the dirty subtree and mark affected downstream artifacts
+Stale until reconciled.
+```
+
+## Regression Used Too Casually
+
+Symptom:
+
+```text
+The agent moves the project back to an earlier gate for a small wording correction or a clarification
+inside accepted scope.
+```
+
+Risk:
+
+- the process becomes heavier than the risk justifies, and the team loses confidence in the
+  methodology.
+
+Correction:
+
+```text
+Use amendment first. Reserve regression for changes that invalidate gate entry conditions, such as a
+PRD change that requires new architecture or a governance change that invalidates build
+authorization.
+```
+
 ## Missing Provenance
 
 Symptom:

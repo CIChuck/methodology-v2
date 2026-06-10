@@ -30,6 +30,11 @@ The review should also record source revisions when practical. A finding tied to
 useful when the reviewer can identify the PRD revision, architecture revision, construction
 directive revision, and implementation diff that were actually reviewed.
 
+If review discovers that accepted authority is wrong or incomplete, the reviewer should not fix the
+implementation by inventing hidden authority. The finding should recommend amendment or regression.
+The lead agent should then classify the amendment, record the decision, and reconcile downstream
+artifacts before acceptance.
+
 ## Code Review Report
 
 The code review report should include:
@@ -71,6 +76,7 @@ For each finding:
 - remediate;
 - defer with human approval (move the issue to later work intentionally);
 - accept risk with human approval (carry the known risk forward);
+- open an amendment if the finding exposes incorrect accepted authority;
 - reopen planning if the finding exposes an authority gap (missing or conflicting project
   authority).
 
@@ -104,6 +110,7 @@ Before acceptance, confirm:
 [ ] required tests passed or exceptions are recorded
 [ ] UAT evidence exists where required
 [ ] traceability matrix reflects actual evidence
+[ ] active amendments are resolved or explicitly non-blocking
 [ ] known limitations are documented
 [ ] deferred items are tracked
 ```

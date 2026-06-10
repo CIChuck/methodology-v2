@@ -307,6 +307,33 @@ If an upstream authority changes after an artifact pins that authority, the down
 `Stale` until reviewed and reconciled. Stale artifacts may remain useful context, but they should
 not be used as gate evidence without explicit reconciliation.
 
+## Authority Amendment And Regression
+
+Accepted authority may be amended when the project learns something material. The methodology does
+not require teams to pretend that accepted artifacts are immutable. It requires teams to make the
+cost of change visible.
+
+Amendment cost scales with blast radius:
+
+```text
+editorial change
+  -> record if useful; no re-approval
+additive-within-scope change
+  -> lightweight approval and downstream review
+structural change
+  -> explicit approval and downstream reconciliation
+gate-invalidating change
+  -> formal regression to the affected gate
+```
+
+An amendment must identify affected downstream artifacts, traceability rows, plans, tests, reviews,
+implementation evidence, deployment evidence, or close-out records. Downstream artifacts that may no
+longer match amended authority must be marked `Stale` until reconciled or `Superseded` if replaced.
+
+Unamended stale authority is a methodology violation. It is not permission for agents to infer new
+scope, reinterpret architecture, bypass security/governance rules, or continue a gate transition
+using evidence known to be stale.
+
 ## Required Artifact Definitions
 
 ### Vision / Problem Framing

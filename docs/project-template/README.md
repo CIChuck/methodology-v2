@@ -26,6 +26,7 @@ authority documents define the stack and implementation plan.
 - current phase paths;
 - current approval summary, including gate status, approver, evidence, risk acceptance, and next
   handoff;
+- active amendment count and amendment protocol path;
 - example/non-authority notes.
 
 The manifest is a map and state summary, not a replacement for the documents it references.
@@ -47,6 +48,7 @@ Key guides:
 - `human-agent-collaboration-loop.md`
 - `start-and-next-step-protocol.md`
 - `gate-transition-protocol.md`
+- `amendment-and-regression-protocol.md`
 - `human-approval-protocol.md`
 - `subagent-coordination-protocol.md`
 - `artifact-collaboration-protocol.md`

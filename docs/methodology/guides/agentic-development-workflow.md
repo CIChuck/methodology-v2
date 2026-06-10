@@ -35,6 +35,7 @@ Use this guide with:
 - `docs/methodology/guides/human-agent-collaboration-loop.md`;
 - `docs/methodology/guides/start-and-next-step-protocol.md`;
 - `docs/methodology/guides/gate-transition-protocol.md`;
+- `docs/methodology/guides/amendment-and-regression-protocol.md`;
 - `docs/methodology/guides/human-approval-protocol.md`;
 - `docs/methodology/guides/subagent-coordination-protocol.md`;
 - `docs/methodology/guides/artifact-collaboration-protocol.md`;

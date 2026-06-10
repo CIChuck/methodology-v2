@@ -11,6 +11,9 @@ objective lifecycle checkpoints.
 Use this guide with `docs/methodology/guides/gate-transition-protocol.md` for the procedural steps
 needed to move from one gate to another.
 
+Use `docs/methodology/guides/amendment-and-regression-protocol.md` when accepted authority changes
+after later gate work has begun.
+
 Gate status values:
 
 ```text
@@ -39,6 +42,10 @@ Complete
 artifact should not support a gate transition until it is reconciled. `Superseded` means the
 artifact has been replaced and should not govern current work.
 
+Gate regression is not the same as amendment. Amendment changes accepted authority while the current
+gate holds. Regression formally moves the current gate backward when the amendment invalidates gate
+entry conditions.
+
 ## G0: Project Initialized
 
 Purpose: Confirm a cloned baseline has an active project workspace.
@@ -65,6 +72,7 @@ Agents must stop if:
 - manifest authority paths do not exist;
 - project name or owner is unclear.
 - required authority or evidence artifacts are marked `Stale` or `Superseded`.
+- an active structural amendment has not been reconciled.
 
 ## G1: Vision Ready
 
@@ -94,6 +102,7 @@ Agents must stop if:
 - success criteria are not measurable;
 - product scope depends on unresolved human decisions.
 - the vision evidence is marked `Stale` or `Superseded`.
+- a vision amendment invalidates the proposed PRD direction.
 
 ## G2: Requirements Ready
 
@@ -124,6 +133,7 @@ Agents must stop if:
 - acceptance criteria are untestable;
 - baseline scope is too broad for coherent architecture.
 - the PRD or source vision evidence is marked `Stale` or `Superseded`.
+- a PRD amendment changes baseline requirements without downstream reconciliation.
 
 ## G3: Architecture Ready
 
@@ -159,6 +169,8 @@ Agents must stop if:
 - required external services are not approved.
 - the architecture, stack decision, or source requirement evidence is marked `Stale` or
   `Superseded`.
+- an architecture amendment changes ownership, runtime, data, or stack behavior without downstream
+  reconciliation.
 
 ## G4: Governance Ready
 
@@ -196,6 +208,8 @@ Agents must stop if:
 - security tests are missing for security requirements.
 - the governance/security artifact or source architecture evidence is marked `Stale` or
   `Superseded`.
+- a governance/security amendment changes authorization, audit, data, tool, or approval behavior
+  without downstream reconciliation.
 
 ## G5: Build Ready
 
@@ -228,6 +242,7 @@ Agents must stop if:
 - phase success depends on deferred behavior.
 - the phase plan, tactical plan, construction directive, or source authority evidence is marked
   `Stale` or `Superseded`.
+- an active amendment affects build scope, tests, migration, rollback, or directive authority.
 
 ## G6: Implementation Ready For Review
 
@@ -258,6 +273,7 @@ Agents must stop if:
 - destructive migration or production action is pending.
 - the construction directive cannot be produced or is not tied to the resulting implementation
   reference.
+- implementation reveals a structural authority gap that requires amendment or regression.
 
 ## G7: Acceptance Ready
 
@@ -288,6 +304,7 @@ Agents must stop if:
 - documentation still describes planned behavior as implemented.
 - the review evidence, test/UAT evidence, or traceability evidence is marked `Stale` or
   `Superseded`.
+- review findings require an unresolved amendment to accepted authority.
 
 ## G8: Deployment Ready
 
@@ -325,6 +342,8 @@ Agents must stop if:
 - release would bypass human approval.
 - deployment readiness, runbook, monitoring, rollback, or release evidence is marked `Stale` or
   `Superseded`.
+- an active amendment affects release scope, operational risk, monitoring, rollback, or runbook
+  procedure.
 
 ## G9: As-Built Closed
 
@@ -354,6 +373,7 @@ Agents must stop if:
 - traceability is stale;
 - planned but unbuilt behavior is described as done.
 - close-out evidence is marked `Stale` or `Superseded`.
+- active amendments or regressions remain unresolved.
 
 ## Gate Progression
 

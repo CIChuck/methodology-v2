@@ -76,6 +76,94 @@ discrepancy_disposition: N/A
 ```
 ````
 
+## Amendment Event Template
+
+Use this shape when accepted authority changes while the current project gate stays in place.
+
+````markdown
+## Amendment Event: AMD-YYYYMMDD-001
+
+```yaml
+event_type: amendment
+amendment_id: AMD-YYYYMMDD-001
+class: editorial | additive_within_scope | structural
+current_gate: G6
+artifact:
+  path: docs/project/prd/[project-slug]-prd.md
+  previous_revision: TBD
+  new_revision: TBD
+decision: approved
+decided_by: TBD
+decided_on: YYYY-MM-DD
+reason: TBD
+semantic_change: true
+downstream_reconciliation:
+  - path: docs/project/architecture/[project-slug]-architecture.md
+    action: mark_stale | reviewed_no_change | update_required | supersede
+    owner: TBD
+    due_gate: G6
+regression_required: false
+target_gate_if_regressed: N/A
+risks_accepted:
+  - risk: TBD
+    rationale: TBD
+manifest_updated: true
+```
+````
+
+## Regression Event Template
+
+Use this shape when an amendment invalidates gate entry conditions and the project formally moves
+back to an earlier gate.
+
+````markdown
+## Regression Event: G6 -> G3
+
+```yaml
+event_type: gate_regression
+from_gate: G6
+to_gate: G3
+reason: TBD
+triggering_amendment: AMD-YYYYMMDD-001
+decided_by: TBD
+decided_on: YYYY-MM-DD
+invalidated_gate_entry_conditions:
+  - TBD
+stale_artifacts:
+  - path: docs/project/architecture/[project-slug]-architecture.md
+    reason: TBD
+required_reconciliation:
+  - path: docs/project/architecture/[project-slug]-architecture.md
+    owner: TBD
+    due_gate: G3
+manifest_updated: true
+```
+````
+
+## Reconciliation Event Template
+
+Use this shape when stale downstream artifacts are reviewed and resolved.
+
+````markdown
+## Reconciliation Event: AMD-YYYYMMDD-001
+
+```yaml
+event_type: reconciliation
+amendment_id: AMD-YYYYMMDD-001
+reconciled_by: TBD
+reconciled_on: YYYY-MM-DD
+artifacts:
+  - path: docs/project/architecture/[project-slug]-architecture.md
+    previous_status: Stale
+    outcome: updated | reviewed_no_change | superseded
+    new_revision: TBD
+remaining_stale_artifacts:
+  - N/A
+gate_movement_unblocked: true
+manifest_updated: true
+```
+````
+
 ## Enforcement Attestation Template
 
 Use this shape when a project runs one or more enforcement requirements in attested mode.

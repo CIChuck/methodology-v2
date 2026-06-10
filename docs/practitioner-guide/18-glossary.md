@@ -64,6 +64,21 @@ status filter within the UAT scenario.
 The GenDev mindset is that acceptance criteria are not decorative. They are the bridge from
 requirements to tests and review evidence.
 
+## Additive-Within-Scope Amendment
+
+An additive-within-scope amendment is a semantic change to accepted authority that adds detail
+without changing accepted boundaries. It clarifies what is already in scope.
+
+Examples:
+
+- adding an example that fits an accepted requirement;
+- naming a test case already implied by acceptance criteria;
+- adding detail to a workflow without adding a new workflow;
+- clarifying a non-blocking open question.
+
+Because it changes accepted authority, it should receive lightweight human approval and downstream
+review. It should not require gate regression unless the added detail invalidates a passed gate.
+
 ## Active Artifact
 
 The active artifact is the document currently being drafted, reviewed, approved, or used as the
@@ -80,6 +95,35 @@ the reusable methodology under `docs/methodology/` and the initialization skelet
 `docs/project-template/`.
 
 The active project contains the documents that govern the actual product being built.
+
+## Amendment
+
+An amendment is a controlled change to accepted authority while the current project gate stays in
+place. Amendments let the team adapt without pretending the project has fully moved backward.
+
+Examples:
+
+- correcting an accepted PRD requirement;
+- adding an acceptance criterion during implementation;
+- clarifying an architecture rule after code review exposes ambiguity;
+- changing a phase plan after a dependency changes.
+
+Amendments are classified by impact:
+
+- editorial;
+- additive-within-scope;
+- structural.
+
+The higher the impact, the more approval and downstream reconciliation is required.
+
+## Amendment Event
+
+An amendment event is the structured gate-log record that captures a change to accepted authority.
+It should record the amendment ID, class, current gate, artifact path, prior revision, new revision,
+decision, approver, downstream reconciliation, whether regression is required, accepted risks, and
+manifest update state.
+
+Amendment events live in `docs/project/approvals/gate-log.md`.
 
 ## Advisory
 
@@ -609,6 +653,23 @@ internal staging, internal production, customer production, or a managed cloud e
 The deployment target matters because secrets, monitoring, rollback, privacy, and operational risk
 depend on where the product runs.
 
+## Dirty Subtree
+
+The dirty subtree is the set of downstream artifacts and evidence potentially affected by an
+amendment.
+
+Conceptually:
+
+```text
+amended artifact
+  -> artifacts derived from it
+     -> traceability rows citing it
+        -> plans, tests, reviews, implementation evidence, deployment evidence, or close-out
+```
+
+The dirty subtree helps the lead agent decide what must be marked `Stale`, reviewed, updated, or
+superseded.
+
 ## Derived From
 
 `Derived from` is the provenance field that lists the upstream sources used to create an artifact.
@@ -642,6 +703,14 @@ Example:
 ```text
 What happens when a contract has a renewal date but no notice deadline?
 ```
+
+## Editorial Amendment
+
+An editorial amendment changes wording, formatting, spelling, organization, or examples without
+changing meaning.
+
+Editorial amendments usually do not require gate re-approval. They may still be recorded when the
+artifact is accepted and the change could confuse future readers.
 
 ## Evidence
 
@@ -947,6 +1016,35 @@ Reconciliation is the lead agent's process of combining feedback, sub-agent outp
 findings, and human corrections into one coherent update. Reconciliation should surface conflicts
 instead of hiding them.
 
+In the amendment context, reconciliation means reviewing downstream artifacts after accepted
+authority changes. Reconciliation may update an artifact, confirm no change is required, mark an
+artifact `Superseded`, or leave it `Stale` until later work.
+
+## Regression
+
+Regression is a formal move back to an earlier GenDev gate because an amendment invalidated gate
+entry conditions.
+
+Regression is not punishment and it is not a synonym for editing. It is a state correction. Use it
+when the project can no longer honestly claim that a previously passed gate remains satisfied.
+
+Examples:
+
+- a PRD amendment requires a new architecture model, so the project regresses to G3;
+- a governance/security amendment changes authorization behavior, so build authorization at G5 is
+  no longer valid;
+- a phase scope amendment invalidates the construction directive, so the project regresses to G5.
+
+Do not regress for editorial amendments or clarifications that can be reconciled while the current
+gate holds.
+
+## Regression Event
+
+A regression event is the structured gate-log record that captures a formal move from a later gate
+to an earlier gate. It should record the source gate, target gate, reason, triggering amendment,
+invalidated gate entry conditions, stale artifacts, required reconciliation, approver, date, and
+manifest update state.
+
 ## Remediation
 
 Remediation is the work of fixing review findings, adding missing tests, correcting scope drift, or
@@ -1037,6 +1135,15 @@ Scope creep is the expansion of work beyond what was approved. It often appears 
 "nice to have" behavior during implementation. Non-goals, deferred items, and construction
 directives protect against scope creep.
 
+## Semantic Change
+
+A semantic change alters the meaning of accepted authority. It may affect scope, requirements,
+acceptance criteria, architecture, governance/security behavior, phase boundaries, tests,
+deployment risk, or operational procedures.
+
+Semantic changes require amendment classification. They should not be handled as ordinary editing
+after an artifact is accepted.
+
 ## Security
 
 Security covers the protection of users, data, systems, secrets, tools, deployment environments, and
@@ -1075,6 +1182,21 @@ Derived from:
 Stale is different from superseded. A stale artifact may become current again after review confirms
 that no changes are needed, or after the artifact is updated. A superseded artifact has been
 replaced by newer accepted authority.
+
+## Structural Amendment
+
+A structural amendment changes accepted boundaries, behavior, risk, or approval criteria.
+
+Examples:
+
+- adding a new baseline requirement;
+- changing acceptance criteria;
+- changing architecture ownership or data model;
+- changing authorization, audit, data sensitivity, or tool access;
+- changing phase scope, migration behavior, rollback, or deployment risk.
+
+Structural amendments require explicit human approval and downstream reconciliation. If they
+invalidate gate entry conditions, they require regression.
 
 ## Stop Condition
 

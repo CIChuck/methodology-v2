@@ -126,6 +126,8 @@ Agent response:
 ```
 
 "Proceed" does not bypass gate approvals, security approvals, or production approvals.
+It also does not approve semantic amendments to accepted authority unless the amendment, class,
+downstream reconciliation, and regression decision are clear enough to record.
 
 If `Proceed` could mean gate approval, the agent should restate the approval record before acting:
 
@@ -140,6 +142,22 @@ Record locations:
 ```
 
 If any field is unknown, ask for the missing field instead of advancing.
+
+If `Proceed` could mean approval for an amendment, the agent should restate the amendment record
+before acting:
+
+```text
+I understand this as approval for:
+Amendment:
+Current gate:
+Artifact:
+Class:
+Downstream reconciliation:
+Regression required:
+Record locations:
+```
+
+If any field is unknown, ask for the missing field instead of editing accepted authority.
 
 ## "Pause"
 

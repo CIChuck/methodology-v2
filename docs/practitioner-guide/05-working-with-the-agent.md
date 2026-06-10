@@ -74,6 +74,36 @@ Record locations:
 
 If any field is missing, the agent should ask for the missing field instead of advancing.
 
+## Changing Accepted Authority
+
+Use amendment language when you need to change an artifact that has already been accepted.
+Amendment means a controlled change to accepted authority while the current gate holds. Regression
+means formally moving the current gate backward because the change invalidates gate entry
+conditions.
+
+Good human prompt:
+
+```text
+Amend the accepted PRD to add this missing acceptance criterion. Classify the amendment, identify
+downstream artifacts that may become stale, and tell me whether regression is required.
+```
+
+Expected agent response:
+
+```text
+Current gate:
+Artifact to amend:
+Amendment class:
+Why:
+Downstream reconciliation:
+Regression required:
+Approval needed:
+Record updates:
+```
+
+If the agent simply edits an accepted artifact without classification, ask it to stop and follow
+`docs/methodology/guides/amendment-and-regression-protocol.md`.
+
 ## "Pause" And "Resume"
 
 Use `Pause` when you want the agent to stop active work and record a resume point (the exact state
@@ -158,6 +188,7 @@ For planning, evidence may include:
 
 - accepted artifacts;
 - recorded approvals;
+- amendment or reconciliation records;
 - resolved open questions;
 - documented risk acceptance.
 

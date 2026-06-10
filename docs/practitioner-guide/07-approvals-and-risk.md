@@ -37,6 +37,8 @@ Human approval is required for:
 
 - vision acceptance;
 - PRD acceptance;
+- semantic amendments to accepted authority;
+- gate regression decisions;
 - technology stack acceptance (approval of the main languages, frameworks, services, and storage
   choices);
 - architecture acceptance;
@@ -79,6 +81,28 @@ Do you approve?
 ```
 
 without context.
+
+## Amendment Approval
+
+Before asking for amendment approval, the agent should present:
+
+```text
+Amendment:
+Current gate:
+Artifact to amend:
+Current artifact revision:
+Proposed amendment class:
+Reason:
+Semantic impact:
+Downstream artifacts requiring reconciliation:
+Regression required:
+Risks accepted:
+Manifest updates to record:
+```
+
+Editorial amendments do not normally require approval. Additive-within-scope amendments require
+lightweight approval when the artifact is already accepted. Structural amendments require explicit
+approval and downstream reconciliation before stale artifacts can support a gate transition.
 
 ## Good Approval Language
 
@@ -227,6 +251,7 @@ Before approving a gate, confirm:
 [ ] I know what artifact I am approving.
 [ ] I know which artifact revision I reviewed.
 [ ] I confirmed required evidence is not stale or superseded.
+[ ] I know whether active amendments affect this gate.
 [ ] I know which gate is advancing.
 [ ] I understand unresolved questions.
 [ ] I understand known risks.

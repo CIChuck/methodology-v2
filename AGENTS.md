@@ -37,6 +37,7 @@ Use operating guides from `docs/methodology/guides/`:
 - `human-agent-collaboration-loop.md`
 - `start-and-next-step-protocol.md`
 - `gate-transition-protocol.md`
+- `amendment-and-regression-protocol.md`
 - `human-approval-protocol.md`
 - `subagent-coordination-protocol.md`
 - `artifact-collaboration-protocol.md`
@@ -65,6 +66,10 @@ For short prompts such as `Let's begin`, `What's next?`, `Continue`, `Proceed`, 
 
 When coordinating sub-agents, follow `docs/methodology/guides/subagent-coordination-protocol.md`.
 Sub-agent output is advisory until accepted into active project documents or approval records.
+
+When accepted authority must change, follow
+`docs/methodology/guides/amendment-and-regression-protocol.md`. Do not keep moving forward with
+stale authority, and do not regress gates unless the amendment invalidates gate entry conditions.
 
 Use `docs/project/project.yaml` as the active project control-plane summary and
 `docs/project/approvals/gate-log.md` as the durable approval history. Do not treat a gate as

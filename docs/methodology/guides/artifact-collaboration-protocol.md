@@ -83,6 +83,33 @@ If a derived-from source changes after an artifact pins it, the downstream artif
 `Stale` until reviewed. Reconciliation may confirm that no change is required, update the artifact,
 or supersede it with a new artifact.
 
+## Amending Accepted Artifacts
+
+Accepted artifacts can change, but accepted authority should not be overwritten as if no prior
+approval existed. Use `docs/methodology/guides/amendment-and-regression-protocol.md` when changing
+accepted authority.
+
+Classify amendments before editing:
+
+```text
+editorial                 no semantic change
+additive-within-scope     clarification inside accepted boundaries
+structural                scope, security, architecture, acceptance, phase, deployment, or risk change
+```
+
+When an accepted artifact changes semantically, the lead agent should:
+
+- identify the current gate;
+- identify the artifact revision being amended;
+- ask for the required approval;
+- update provenance and derived-from revisions;
+- identify affected downstream artifacts;
+- mark downstream artifacts `Stale` when reconciliation is needed;
+- mark replaced artifacts `Superseded` when they no longer govern;
+- record the amendment in `docs/project/approvals/gate-log.md`.
+
+Do not use stale downstream artifacts as evidence for a gate transition.
+
 ## Vision
 
 Responsible role: Product Vision Agent.

@@ -77,6 +77,40 @@ When an upstream artifact changes, downstream artifacts that cite the old revisi
 `Stale`. The agent should stop, explain what changed, and ask whether to reconcile the downstream
 artifact before using it as evidence.
 
+## Amendment Versus Regression
+
+Amendment is a controlled change to accepted authority while the current gate holds. Regression is a
+formal move back to an earlier gate because the change invalidates gate entry conditions.
+
+Use amendment when the project can stay oriented at the current gate while affected artifacts are
+reviewed or updated. Use regression when the project no longer satisfies a gate it has already
+passed.
+
+Example:
+
+```text
+Current gate: G6
+Change: Add a missing PRD acceptance criterion that fits existing architecture and phase scope.
+Likely action: structural amendment to the PRD, mark tests and traceability stale, reconcile them,
+then continue at G6.
+```
+
+Regression example:
+
+```text
+Current gate: G6
+Change: Add a new requirement that requires a different data model and authorization behavior.
+Likely action: regress to G3 or G4 because architecture and governance entry conditions are no
+longer satisfied.
+```
+
+The practical question is:
+
+```text
+Can we reconcile the dirty subtree while the current gate holds, or did the change invalidate an
+earlier gate decision?
+```
+
 ## Gate Overview
 
 ## G0: Project Initialized
@@ -307,6 +341,7 @@ At each gate, ask:
 What artifact proves readiness?
 What revision of that artifact am I relying on?
 Is any required evidence stale or superseded?
+Is there an active amendment or regression that affects this evidence?
 What human approval is required?
 What did the approver actually check?
 What risk is being accepted?
