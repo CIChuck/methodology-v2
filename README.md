@@ -8,6 +8,20 @@ human team member and one or more AI agents. The method emphasizes documented au
 traceability, explicit phase boundaries, planned tests, code review, remediation, and as-built
 documentation close-out.
 
+## If You Read Three Files
+
+For first orientation, read these files in order:
+
+```text
+AGENTS.md
+docs/methodology/constitution/gendev.md
+docs/practitioner-guide/README.md
+```
+
+`AGENTS.md` tells AI coding agents how to enter the repository. The constitution defines the
+controlling method. The practitioner guide explains how humans and agents use the method in
+practice.
+
 ## Repository Model
 
 ```text
@@ -145,3 +159,17 @@ methodology remains tool-agnostic.
 This repository is a methodology baseline, not an implemented product. Product-specific source code,
 tests, configuration, CI, deployment, and runtime commands should be added by the initialized project
 as its architecture and phase plans mature.
+
+Current methodology version: `0.1.0-baseline`
+
+This is a pre-1.0 baseline. The hardening plan in `docs/assessment/gendev-hardening-plan.md`
+identifies the work needed before a `1.0.0` methodology release.
+
+## License
+
+This repository uses a split license:
+
+- Documentation is licensed under Creative Commons Attribution 4.0 International (`CC-BY-4.0`).
+- Scripts and source code are licensed under the MIT License (`MIT`).
+
+See `LICENSE`, `LICENSE-CC-BY-4.0`, and `LICENSE-MIT`.

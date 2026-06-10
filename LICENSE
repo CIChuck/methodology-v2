@@ -1,0 +1,39 @@
+GenDev Methodology Baseline License
+
+Copyright (c) 2026 Collective Intelligence Inc.
+
+This repository uses a split license by content type.
+
+Documentation License
+
+The documentation corpus is licensed under the Creative Commons Attribution 4.0 International
+license, identified by SPDX as CC-BY-4.0.
+
+Documentation includes, unless another file states otherwise:
+
+- README.md
+- AGENTS.md
+- docs/
+- methodology guides, templates, assessment materials, examples, and practitioner-guide content
+
+See LICENSE-CC-BY-4.0 for the repository notice and official license reference.
+
+Script And Source License
+
+Executable scripts, source code, and automation files are licensed under the MIT License, identified
+by SPDX as MIT.
+
+Script and source content includes, unless another file states otherwise:
+
+- scripts/
+- future repository automation files
+- future source files added to support methodology tooling
+
+See LICENSE-MIT for the full MIT License text.
+
+Initialized Projects
+
+When this baseline is cloned and initialized for a product project, the project team may choose a
+separate license for product-specific source code and product-specific deliverables. Copied GenDev
+methodology material retains the license terms above unless the project owner replaces it with
+separately authored content under another license.

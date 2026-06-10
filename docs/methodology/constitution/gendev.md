@@ -1,6 +1,8 @@
 # AI-Assisted Software Engineering Documentation Constitution
 
 Status: Reusable Standard  
+Version: 0.1.0-baseline
+License: CC BY 4.0 for documentation; see repository `LICENSE`.
 Audience: Product owners, architects, engineering leads, AI-assisted coding operators, reviewers, and implementation agents  
 Scope: Documentation, traceability, build governance, testability, and AI-assisted implementation process for software projects
 
