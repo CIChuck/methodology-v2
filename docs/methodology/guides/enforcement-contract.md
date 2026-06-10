@@ -139,7 +139,13 @@ For each requirement run in attested mode:
 
 ## Reference Binding Expectations
 
-A reference binding should provide:
+This repository provides a reference binding through:
+
+- `scripts/methodology-guard.sh`;
+- `scripts/install-hooks.sh`;
+- `.github/workflows/methodology.yml`.
+
+The reference binding provides:
 
 - a local hook or equivalent developer-side check for EC-1, EC-3, and EC-4;
 - a CI or protected-branch check for EC-1 through EC-6;
@@ -147,8 +153,9 @@ A reference binding should provide:
 - clear installation or activation instructions;
 - version-controlled configuration.
 
-This repository does not claim that binding until those files exist. Until then, attested mode is
-the baseline conformance class.
+The local hook is optional because developer-side hooks can be bypassed. The CI workflow enforces
+independently when GitHub Actions is enabled. A project should still declare `class: attested`
+until the project team has installed or enabled the binding it intends to rely on.
 
 ## Project Manifest Block
 
@@ -165,8 +172,8 @@ enforcement:
     - docs/
     - scripts/
   binding_paths:
-    pre_commit_hook: TBD
-    ci_workflow: TBD
+    pre_commit_hook: scripts/install-hooks.sh
+    ci_workflow: .github/workflows/methodology.yml
   attestation:
     cadence: every_gate_transition
     required_attester: TBD

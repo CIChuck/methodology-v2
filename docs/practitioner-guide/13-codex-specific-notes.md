@@ -155,6 +155,21 @@ For review subagents, tell Codex to give each reviewer only the needed authority
 and questions. Do not share the implementation session transcript unless the review report records
 the exception.
 
+## Methodology Guard With Codex
+
+Codex may run local validation commands when the human permits tool execution. For GenDev, the most
+useful guard commands are:
+
+```bash
+./scripts/check-methodology.sh
+./scripts/methodology-guard.sh --staged
+```
+
+If the optional pre-commit hook is installed with `./scripts/install-hooks.sh`, Codex should treat a
+hook failure as a methodology signal, not as an obstacle to work around. It should read the error,
+re-orient from `docs/project/project.yaml`, and either fix the state or ask for the human decision
+needed to proceed.
+
 ## Codex-Specific Failure Modes
 
 Watch for:
@@ -164,6 +179,7 @@ Watch for:
 - Codex using subagents for write-heavy work without reconciliation;
 - Codex asking the implementation session to self-attest rather than using fresh-context review;
 - Codex relying on chat memory instead of `project.yaml`;
+- Codex bypassing hook or CI failures instead of reconciling the methodology state;
 - Codex changing `AGENTS.md` when the project state belongs in `docs/project/`.
 
 Correction prompt:

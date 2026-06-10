@@ -60,8 +60,8 @@ Confirm the manifest (the compact `project.yaml` tracking record for current pro
   already installed active mechanical enforcement;
 - `enforcement.protected_branch` names the branch the team treats as production project authority;
 - `enforcement.attestation.cadence` records when humans must attest that required checks happened;
-- `enforcement.binding_paths` may be `TBD` at baseline because the initial project uses attested
-  enforcement, not a pre-commit hook or CI workflow;
+- `enforcement.binding_paths` points to the reference binding files, even if the project is still
+  operating in attested mode;
 - approval state is `pending`;
 - the G1 evidence path points to the vision document.
 
@@ -83,9 +83,27 @@ resolve that state before treating a gate as ready or approved.
 
 If it warns about enforcement state, inspect the `enforcement` block. A newly initialized project
 should declare `class: attested`, an attestation cadence, an attester field, implementation paths,
-excluded paths, and an override record path. The attester and implementation paths may initially be
-`TBD`, but the fields should exist so the team and agent know the project is operating under an
-explicit enforcement contract.
+excluded paths, binding paths, and an override record path. The attester and implementation paths
+may initially be `TBD`, but the fields should exist so the team and agent know the project is
+operating under an explicit enforcement contract.
+
+## Optional Local Hook
+
+The repository includes an optional local Git hook binding. Install it after initialization if the
+team wants local staged-change checks before commits:
+
+```bash
+./scripts/install-hooks.sh
+```
+
+The hook runs:
+
+```bash
+./scripts/methodology-guard.sh --staged
+```
+
+This is a convenience guard. It does not replace human gate approval, and it does not replace CI or
+repository branch protection.
 
 ## Start The Agent
 

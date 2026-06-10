@@ -67,3 +67,14 @@ After initialization, run:
 
 The checker validates the active project structure, manifest paths, approval-state invariants,
 enforcement block presence, phase-plan sections, and basic traceability evidence signals.
+
+## Optional Local Hook
+
+The template also includes an optional Git pre-commit hook installer:
+
+```bash
+./scripts/install-hooks.sh
+```
+
+The hook runs the methodology guard against staged changes. It is a convenience binding, not a
+substitute for CI or human gate approval.

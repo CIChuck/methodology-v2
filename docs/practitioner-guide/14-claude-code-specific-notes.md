@@ -149,6 +149,21 @@ Examples:
 - architecture constraint: update architecture or ADR (architecture decision record);
 - security rule: update governance/security spec.
 
+## Methodology Guard With Claude Code
+
+Claude Code may run local validation commands when the human permits tool execution. For GenDev,
+the most useful guard commands are:
+
+```bash
+./scripts/check-methodology.sh
+./scripts/methodology-guard.sh --staged
+```
+
+If the optional pre-commit hook is installed with `./scripts/install-hooks.sh`, Claude should treat
+a hook failure as a methodology signal. It should not bypass the hook or silently force a commit.
+It should explain the failed control, re-orient from `docs/project/project.yaml`, and ask for the
+human decision needed to fix or override the condition.
+
 ## Claude-Specific Failure Modes
 
 Watch for:
@@ -160,6 +175,7 @@ Watch for:
 - Claude continuing the implementation conversation for conformance review instead of using fresh
   context;
 - Claude advancing gates from chat approval without updating `gate-log.md` and `project.yaml`.
+- Claude bypassing hook or CI failures instead of reconciling the methodology state.
 
 Correction prompt:
 

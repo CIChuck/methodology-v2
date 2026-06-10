@@ -32,7 +32,9 @@ changes.
 [ ] enforcement block present in docs/project/project.yaml
 [ ] enforcement.class confirmed as attested or enforced
 [ ] enforcement attestation cadence and override record path visible
+[ ] enforcement binding paths point to existing reference binding files
 [ ] ./scripts/check-methodology.sh passes
+[ ] optional local hook installed, if the team wants pre-commit checks
 [ ] AI agent started from repository root
 [ ] owner identified
 [ ] gate approver identified

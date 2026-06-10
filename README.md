@@ -120,6 +120,8 @@ documents under `docs/project/`.
 - Sample agent instructions: `docs/methodology/agents/sample-agents.md`
 - Examples: `docs/examples/`
 - Methodology checker: `scripts/check-methodology.sh`
+- Methodology guard: `scripts/methodology-guard.sh`
+- Optional hook installer: `scripts/install-hooks.sh`
 
 ## Validate The Methodology State
 
@@ -132,6 +134,21 @@ Before implementation, phase close-out, or handoff, run:
 On an uninitialized baseline, the checker reports that `docs/project/` does not exist yet. After
 initialization, it checks the active project structure, manifest paths, approval-state invariants,
 ready/accepted artifact placeholders, phase planning sections, and traceability evidence signals.
+
+For diff-aware enforcement, use the guard wrapper:
+
+```bash
+./scripts/methodology-guard.sh --staged
+```
+
+To install the optional local pre-commit hook:
+
+```bash
+./scripts/install-hooks.sh
+```
+
+The repository also includes a GitHub Actions reference binding at
+`.github/workflows/methodology.yml`.
 
 ## Orchestration Layer
 

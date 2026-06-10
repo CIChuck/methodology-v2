@@ -1,0 +1,45 @@
+name: methodology
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  methodology:
+    name: methodology
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate shell scripts
+        shell: bash
+        run: |
+          bash -n scripts/check-methodology.sh
+          bash -n scripts/init-project.sh
+          bash -n scripts/methodology-guard.sh
+          bash -n scripts/install-hooks.sh
+
+      - name: Run methodology guard
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base_ref="${{ github.event.pull_request.base.sha }}"
+            head_ref="${{ github.sha }}"
+          else
+            base_ref="${{ github.event.before }}"
+            head_ref="${{ github.sha }}"
+            if printf '%s\n' "$base_ref" | grep -Eq '^0+$'; then
+              base_ref="$(git rev-list --max-parents=0 "$head_ref" | tail -n 1)"
+            fi
+          fi
+
+          scripts/methodology-guard.sh --range "$base_ref" "$head_ref"
