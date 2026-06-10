@@ -366,10 +366,19 @@ Expected close-out:
 
 - as-built document complete;
 - traceability updated (requirements mapped to implementation, tests, and evidence);
+- methodology metrics snapshot generated or explicitly deferred;
+- value review status recorded;
 - deployment result recorded;
 - rollback status recorded;
 - known limitations documented;
 - next phase identified.
+
+Value review example:
+
+```text
+After 30 days of internal use, compare the G1 success criteria against actual usage, renewal
+tracking accuracy, and owner feedback. Mark each due criterion as met, missed, or unmeasurable.
+```
 
 Representative next-phase backlog (future work intentionally postponed or newly discovered):
 
@@ -394,4 +403,5 @@ acceptance -> deployment -> operation -> as-built close
 
 The documents can be lightweight at first. The gate discipline should not be lightweight. Every gate
 needs enough evidence (proof supporting readiness) and human approval to let future agents
-understand why the project moved forward.
+understand why the project moved forward. The value review keeps the project honest about whether
+the delivered product achieved the success criteria declared at the start.

@@ -26,6 +26,7 @@ Deployment readiness requires:
 - operational runbook (operator instructions for deployment, validation, failure response, and
   rollback);
 - enforcement or attestation evidence required by the project enforcement block;
+- value review trigger and owner;
 - human deployment approval.
 
 ## Deployment Readiness
@@ -41,6 +42,7 @@ confirm:
 - what can fail;
 - how rollback works;
 - how success will be measured;
+- which G1 success criteria are due for value review;
 - who owns post-deployment response.
 
 If rollback is impossible or partial, the risk must be explicitly accepted.
@@ -78,6 +80,22 @@ Post-deployment validation (checks performed after release) should answer:
 For an early internal product, monitoring may be lightweight (for example logs plus a manual health
 check). It still needs to be explicit.
 
+## Value Review
+
+Value review compares the G1 success criteria (the measurable outcomes declared at the vision gate)
+against actual post-deployment evidence. Each due criterion is reported as `met`, `missed`, or
+`unmeasurable`.
+
+Before deployment, the team should know:
+
+- the value read trigger or date;
+- the owner of the value review;
+- the evidence sources that will be used;
+- which success criteria are due for this release.
+
+Unmeasurable criteria are not success. They mean the project lacks the evidence needed to know
+whether the intended outcome happened.
+
 ## Rollback
 
 Rollback planning should define:
@@ -103,6 +121,8 @@ Deployment target:
 Deployment procedure:
 Rollback plan:
 Monitoring/validation plan:
+Value review trigger:
+Value review owner:
 Enforcement class:
 Attestation or enforcement evidence:
 Known risks:
@@ -122,6 +142,7 @@ After deployment, the agent should help record:
 - incidents or anomalies;
 - rollback status;
 - monitoring status;
+- value review status;
 - enforcement override status, if any methodology control was bypassed;
 - known limitations;
 - follow-up backlog;
@@ -139,6 +160,7 @@ context and risk level) may mean:
 - documented manual rollback;
 - basic logs;
 - a smoke test;
+- a named value review owner when measurable value is expected;
 - attested enforcement evidence when no mechanical binding exists;
 - a named human owner.
 

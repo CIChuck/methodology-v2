@@ -121,6 +121,7 @@ documents under `docs/project/`.
 - Examples: `docs/examples/`
 - Methodology checker: `scripts/check-methodology.sh`
 - Methodology guard: `scripts/methodology-guard.sh`
+- Methodology metrics: `scripts/methodology-metrics.sh`
 - Optional hook installer: `scripts/install-hooks.sh`
 
 ## Validate The Methodology State
@@ -149,6 +150,12 @@ To install the optional local pre-commit hook:
 
 The repository also includes a GitHub Actions reference binding at
 `.github/workflows/methodology.yml`.
+
+To generate an on-demand process and value metrics report for an initialized project:
+
+```bash
+./scripts/methodology-metrics.sh docs/project
+```
 
 ## Orchestration Layer
 

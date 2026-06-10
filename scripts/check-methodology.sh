@@ -518,7 +518,9 @@ check_baseline_files() {
   require_file "scripts/check-methodology.sh"
   require_file "scripts/methodology-guard.sh"
   require_file "scripts/install-hooks.sh"
+  require_file "scripts/methodology-metrics.sh"
   require_file ".github/workflows/methodology.yml"
+  require_file "docs/methodology/templates/value-review-template.md"
 }
 
 check_manifest_paths() {
@@ -1058,6 +1060,69 @@ check_current_gate_artifact_status() {
   fi
 }
 
+check_vision_success_criteria() {
+  for file in docs/project/vision/*.md; do
+    [ -e "$file" ] || continue
+
+    status="$(artifact_status "$file")"
+    case "$status" in
+      "Ready for Approval" | "Accepted")
+        ;;
+      *)
+        continue
+        ;;
+    esac
+
+    criteria_block="$(
+      awk '
+        /^## Success Criteria/ {
+          in_section = 1
+          next
+        }
+        in_section && /^## / {
+          exit
+        }
+        in_section {
+          print
+        }
+      ' "$file"
+    )"
+
+    if ! printf '%s\n' "$criteria_block" |
+      grep -Eq '\|[[:space:]]*Criterion[[:space:]]*\|[[:space:]]*Measure[[:space:]]*\|[[:space:]]*Target[[:space:]]*\|[[:space:]]*Read Timing[[:space:]]*\|[[:space:]]*Owner[[:space:]]*\|[[:space:]]*Evidence Source[[:space:]]*\|'; then
+      fail "$file has ready/accepted status but success criteria do not include measurement fields."
+      continue
+    fi
+
+    if ! printf '%s\n' "$criteria_block" |
+      awk -F'|' '
+        function trim(value) {
+          gsub(/^[[:space:]]+/, "", value)
+          gsub(/[[:space:]]+$/, "", value)
+          return value
+        }
+        function complete(value) {
+          value = trim(value)
+          return value != "" && value != "TBD" && value !~ /^-+$/
+        }
+        /^\|/ {
+          criterion = trim($2)
+          if (criterion == "" || criterion == "Criterion" || criterion ~ /^---$/) {
+            next
+          }
+          if (complete($2) && complete($3) && complete($4) && complete($5) && complete($6) && complete($7)) {
+            found = 1
+          }
+        }
+        END {
+          exit !found
+        }
+      '; then
+      fail "$file has ready/accepted status but no complete measurable success criterion."
+    fi
+  done
+}
+
 check_phase_plans() {
   for file in docs/project/build-plan/phases/*build-plan*.md; do
     [ -e "$file" ] || continue
@@ -1151,6 +1216,7 @@ else
   check_diff_gate_movement
   check_changed_path_enforcement
   check_current_gate_artifact_status
+  check_vision_success_criteria
   check_phase_plans
   check_traceability_evidence
   check_code_review_context_provenance

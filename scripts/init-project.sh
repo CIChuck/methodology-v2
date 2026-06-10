@@ -101,6 +101,7 @@ render_template "$template_root/tactical-implementation-template.md" "$target/bu
 render_template "$template_root/test-uat-plan-template.md" "$target/testing/phase-1-test-uat-plan.md"
 render_template "$template_root/code-review-report-template.md" "$target/build-plan/phases/phase-1-code-review.md"
 render_template "$template_root/as-built-closeout-template.md" "$target/as-built/phase-1-as-built-closeout.md"
+render_template "$template_root/value-review-template.md" "$target/as-built/phase-1-value-review.md"
 
 cat > "$target/build-plan/phase-roadmap.md" <<EOF
 # Phase Roadmap: $project_name

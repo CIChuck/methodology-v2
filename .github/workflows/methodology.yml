@@ -27,6 +27,7 @@ jobs:
           bash -n scripts/init-project.sh
           bash -n scripts/methodology-guard.sh
           bash -n scripts/install-hooks.sh
+          bash -n scripts/methodology-metrics.sh
 
       - name: Run methodology guard
         shell: bash
@@ -43,3 +44,7 @@ jobs:
           fi
 
           scripts/methodology-guard.sh --range "$base_ref" "$head_ref"
+
+      - name: Run methodology metrics
+        shell: bash
+        run: scripts/methodology-metrics.sh docs/project

@@ -58,6 +58,11 @@ GenDev reduces those risks by putting a documented gate between each major lifec
 (a major stage such as vision, requirements, architecture, implementation, review, deployment, or
 close-out).
 
+GenDev also makes the project measurable. The methodology records gate movement, approval timing,
+traceability samples, enforcement overrides, and post-deployment value review (a later comparison of
+declared success criteria against actual evidence) so the team can learn whether the process is
+reducing drift and rework.
+
 ## What GenDev Does Not Do
 
 GenDev does not replace human judgment. The human still owns intent (what the product is meant to
@@ -104,4 +109,5 @@ The orientation phase is successful when the human and agent both know:
 - which collaboration mode is active;
 - which gate is current;
 - which artifact is active;
+- how success will eventually be measured;
 - what the next human decision will be.

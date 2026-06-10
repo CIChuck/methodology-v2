@@ -70,6 +70,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: TBD
+gate_started_on: YYYY-MM-DD
+ready_for_approval_on: YYYY-MM-DD
+approval_requested_on: YYYY-MM-DD
 decided_on: YYYY-MM-DD
 enforcement_class: attested
 artifact_status: Accepted
@@ -185,7 +188,7 @@ Review questions:
 
 - Does the vision explain the problem rather than only a solution?
 - Are target users clear?
-- Are success criteria observable?
+- Are success criteria measurable, with target, read timing, owner, and evidence source?
 - Are non-goals acceptable?
 - Are open questions non-blocking for PRD drafting?
 

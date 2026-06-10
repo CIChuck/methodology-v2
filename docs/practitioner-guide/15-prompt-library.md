@@ -57,8 +57,8 @@ next recommendation.
 
 ```text
 Draft the G1 vision/problem framing document. Focus on the problem, target users, desired outcomes,
-success criteria, non-goals, assumptions, risks, and open questions. Do not propose implementation
-details beyond constraints.
+success criteria with measure, target, read timing, owner, and evidence source, non-goals,
+assumptions, risks, and open questions. Do not propose implementation details beyond constraints.
 ```
 
 ## Draft PRD

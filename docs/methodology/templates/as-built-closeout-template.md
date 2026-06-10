@@ -171,6 +171,48 @@ Paste or link to verification command output.
 
 ---
 
+## Metrics Snapshot
+
+```text
+Run the methodology metrics command at phase close-out and paste or link the resulting report.
+This is a snapshot, not a separate reporting database.
+```
+
+Command:
+
+```bash
+./scripts/methodology-metrics.sh docs/project
+```
+
+Snapshot:
+
+```text
+TBD
+```
+
+---
+
+## Value Review Status
+
+```text
+If the phase reached production or produced measurable user value, summarize the value review.
+If value review is not yet due, state the read trigger and owner.
+```
+
+Value review artifact:
+
+```text
+docs/project/as-built/phase-[N]-value-review.md
+```
+
+Status:
+
+```text
+not_due | ready | complete | blocked
+```
+
+---
+
 ## As-Built Deviations
 
 ```text
@@ -196,6 +238,8 @@ Check for:
 [ ] changed assumptions that were not propagated to architecture or PRD
 [ ] documentation sections marked updated but not actually reconciled
 [ ] test evidence that references a run that did not pass
+[ ] metrics snapshot missing when phase close-out is requested
+[ ] value review status missing when deployment or measurable user value occurred
 [ ] as-built deviations that lack a documented reason
 [ ] known limitations that affect future phases but are not noted
 ```
@@ -213,6 +257,8 @@ Before closing this phase:
 [ ] all documentation sections above are complete
 [ ] examples updated to reflect as-built behavior
 [ ] traceability matrix updated
+[ ] methodology metrics snapshot recorded or explicitly deferred
+[ ] value review status recorded or explicitly not due
 [ ] deferred items tracked
 [ ] known limitations documented
 [ ] as-built deviations documented

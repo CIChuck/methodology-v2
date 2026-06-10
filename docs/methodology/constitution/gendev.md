@@ -378,6 +378,23 @@ Attested mode is valid at baseline. It must not become invisible. Exceptions, ca
 attester, override policy, and binding paths belong in the project enforcement block. The active
 contract is `docs/methodology/guides/enforcement-contract.md`.
 
+## Measurement Principle
+
+GenDev projects should emit enough evidence to test whether the methodology is reducing drift,
+rework, approval delay, and escaped defects. Measurement must be derived from artifacts this
+constitution already requires: gate-log events, approvals, traceability, review results, as-built
+records, enforcement overrides, and value reviews.
+
+Measurement must not become a separate bureaucracy. At baseline, metrics are computed on demand
+from project records, and phase close-out may snapshot the generated report. Outcome metrics outrank
+activity metrics. A high finding count is not automatically good, a low finding count is not
+automatically good, and success criteria cannot be redefined after delivery to make the project look
+successful.
+
+Every G1 vision must define success criteria with a measure, target, read timing, owner, and
+evidence source. Production or value-bearing releases must eventually report those criteria as
+`met`, `missed`, or `unmeasurable`.
+
 ## Required Artifact Definitions
 
 ### Vision / Problem Framing
