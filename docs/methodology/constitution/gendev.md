@@ -160,7 +160,7 @@ If a deferred feature appears necessary, stop and update the plan before impleme
 
 Prompts used to drive implementation are build artifacts.
 
-They should be:
+They must be:
 
 ```text
 precise
@@ -174,7 +174,10 @@ clear about what files or subsystems may change
 clear about what must not change
 ```
 
-Large implementation prompts should be saved or reproducible from the phase documents.
+Construction directives and large implementation prompts must be preserved with the directive text,
+implementing agent identity when known, source authority revisions, and the resulting commit, diff,
+or implementation reference. Implementation whose controlling directive cannot be produced is
+treated as unreviewed until a human reviewer reconstructs and accepts the authority record.
 
 ### Rule 7: Code Review Verifies Conformance
 
@@ -279,6 +282,30 @@ The standard documentation chain is:
 ```
 
 Not every project needs every document as a separate file. For small projects, multiple artifacts may be combined. The required content must still exist.
+
+## Artifact Provenance
+
+Authority and evidence artifacts must identify their origin. A future human or agent should be able
+to determine who produced the artifact, when it was produced, whether an agent participated, and
+which upstream documents or prompts it was derived from.
+
+Minimum provenance fields:
+
+```text
+Produced by
+Produced on
+Produced with
+Agent identity
+Derived from path and revision
+```
+
+Revision values should be immutable identifiers where practical, such as a commit SHA, tag, pull
+request revision, signed release, or other durable artifact identifier. Draft artifacts may use
+`TBD` until the upstream source is committed or otherwise pinned.
+
+If an upstream authority changes after an artifact pins that authority, the downstream artifact is
+`Stale` until reviewed and reconciled. Stale artifacts may remain useful context, but they should
+not be used as gate evidence without explicit reconciliation.
 
 ## Required Artifact Definitions
 
@@ -498,6 +525,7 @@ Must include:
 ```text
 role of the AI builder
 source authority documents
+source authority revisions
 implementation objective
 allowed scope
 explicit non-goals
@@ -513,7 +541,8 @@ reporting expectations
 Completion standard:
 
 ```text
-the prompt is precise enough to reduce drift and broad enough to complete the phase
+the directive is preserved, pinned to authority, and precise enough to reduce drift while remaining
+broad enough to complete the phase
 ```
 
 ### Test and UAT Plan

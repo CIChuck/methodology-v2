@@ -120,6 +120,22 @@ actions, and review agent output.
 GenDev does not depend on a specific CLI. It depends on the agent reading the repository authority
 and preserving gate discipline.
 
+## Agent Identity
+
+Agent identity is the bounded record of which AI tool, model, role, or session helped produce an
+artifact or implementation. It does not need to be a long transcript. It should be enough for a
+future reviewer to understand whether the work was produced by a human, an agent, or human-agent
+collaboration.
+
+Examples:
+
+- `Codex, lead agent, session 2026-06-10`;
+- `Claude Code, architecture review sub-agent`;
+- `N/A, human-authored`.
+
+Agent identity is part of artifact provenance. It helps future reviewers evaluate context, but it
+does not replace human approval.
+
 ## Agent Role
 
 An agent role is the lifecycle stance the lead agent should take. Role playbooks live under
@@ -298,12 +314,40 @@ Draft
 Ready for Review
 Ready for Approval
 Accepted
+Stale
 Superseded
 Complete
 ```
 
 `Complete` is used for evidence/reporting artifacts such as close-out or review records. `Accepted`
-is used for planning authority artifacts.
+is used for planning authority artifacts. `Stale` means the artifact depends on upstream authority
+that has changed since the pinned revision. `Superseded` means the artifact has been replaced by
+newer accepted authority.
+
+## Artifact Provenance
+
+Artifact provenance is the record of where an artifact came from. It answers:
+
+- who produced it;
+- when it was produced;
+- whether an agent participated;
+- which upstream artifacts or prompts it depends on;
+- which revisions of those upstream sources were used.
+
+The baseline provenance header is:
+
+```text
+Produced by:
+Produced on:
+Produced with:
+Agent identity:
+Derived from:
+  - path:
+    revision:
+```
+
+Provenance does not make an artifact correct by itself. It makes the artifact inspectable. A future
+human or agent can ask whether the artifact still matches the authority it was derived from.
 
 ## As-Built Close-Out
 
@@ -564,6 +608,23 @@ internal staging, internal production, customer production, or a managed cloud e
 
 The deployment target matters because secrets, monitoring, rollback, privacy, and operational risk
 depend on where the product runs.
+
+## Derived From
+
+`Derived from` is the provenance field that lists the upstream sources used to create an artifact.
+Each entry should include a path and a revision.
+
+Example:
+
+```text
+Derived from:
+  - path: docs/project/prd/vendor-contract-tracker-prd.md
+    revision: 4f3a2c1
+```
+
+The field is important because downstream artifacts can become stale when an upstream source
+changes. If the PRD changes after architecture has pinned an older PRD revision, the architecture
+may need reconciliation before it can continue to govern implementation.
 
 ## Durable Record
 
@@ -909,6 +970,20 @@ Review may happen before approval, after implementation, before deployment, or d
 
 In GenDev, review should be evidence-based and tied to source authority.
 
+## Revision Pinning
+
+Revision pinning is the practice of recording the specific version of an upstream source used to
+create or approve an artifact. In Git, the pinned revision is often a commit SHA, tag, branch
+snapshot, pull request revision, or release identifier.
+
+Revision pinning matters because GenDev artifacts depend on each other. If a PRD changes after an
+architecture document was derived from an older PRD revision, the architecture may be stale. Without
+the pinned revision, future agents cannot tell whether the architecture reflects the current PRD or
+an earlier one.
+
+Draft artifacts may use `TBD` until there is a durable revision to pin. Accepted gate evidence
+should use a real revision when practical.
+
 ## Risk
 
 Risk is a condition that may cause harm, rework, delay, security exposure, operational failure, or
@@ -982,6 +1057,25 @@ spec. When drafting a PRD, the source authority is the accepted vision.
 
 Asking "what is the source authority?" is one of the fastest ways to re-orient an agent.
 
+## Stale
+
+`Stale` is an artifact status meaning an upstream authority changed after the artifact pinned that
+authority. The artifact may still contain useful information, but it should not support a gate
+transition until it is reconciled.
+
+Example:
+
+```text
+Architecture status: Stale
+Derived from:
+  - path: docs/project/prd/vendor-contract-tracker-prd.md
+    revision: old-prd-commit
+```
+
+Stale is different from superseded. A stale artifact may become current again after review confirms
+that no changes are needed, or after the artifact is updated. A superseded artifact has been
+replaced by newer accepted authority.
+
 ## Stop Condition
 
 A stop condition is a situation where the agent must pause and ask for human input or planning
@@ -1000,7 +1094,8 @@ Examples:
 
 A structured gate-log event is a Markdown section in `docs/project/approvals/gate-log.md` that
 contains a small YAML block. The YAML block records the event type, gate transition, decision,
-approver, evidence, checked statement, accepted risks, and next role or artifact.
+approver, evidence path, evidence revision, evidence status, checked statement, accepted risks, and
+next role or artifact.
 
 Structured events are still human-readable, but they are also easier for future tools to validate.
 They are the bridge between lightweight Markdown records and mechanical enforcement or metrics.

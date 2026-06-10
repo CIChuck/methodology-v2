@@ -19,6 +19,9 @@ source check -> draft -> review -> revise -> approval -> record
 For every artifact:
 
 - cite source authority;
+- record who produced the artifact, when it was produced, whether an agent participated, and which
+  upstream sources it derives from;
+- pin upstream source revisions when the source has a durable revision identifier;
 - identify assumptions;
 - mark non-goals;
 - include testability or verification expectations where applicable;
@@ -35,6 +38,7 @@ Draft
 Ready for Review
 Ready for Approval
 Accepted
+Stale
 Superseded
 ```
 
@@ -43,8 +47,41 @@ candidate quality. Use `Ready for Approval` only when the artifact has completed
 open questions are non-blocking or explicitly carried forward, and known risks are listed for human
 disposition.
 
+Use `Stale` when an upstream authority changed after the artifact pinned that authority. A stale
+artifact requires reconciliation review before it can support a gate transition. `Stale` is not the
+same as `Superseded`; stale artifacts may become current again after reconciliation, while
+superseded artifacts have been replaced by newer accepted authority.
+
 Reports and close-out artifacts may use `Complete` instead of `Accepted` when they record review or
 evidence rather than define future build authority.
+
+## Provenance And Revision Pinning
+
+Authority and evidence artifacts should carry this header block near the top of the document:
+
+```text
+Produced by: TBD
+Produced on: YYYY-MM-DD
+Produced with: human | agent | human-agent collaboration
+Agent identity: TBD model/version/session, or N/A
+Derived from:
+  - path: docs/project/vision/[project-slug]-vision.md
+    revision: TBD
+```
+
+`Produced by` is the accountable human or role that created or accepted the artifact text.
+`Produced with` records whether the artifact was created by a human, by an agent, or through
+human-agent collaboration. `Agent identity` should be bounded: record the tool, model, agent role,
+or session identifier if known; do not paste long chat transcripts into the header.
+
+`Derived from` lists the upstream artifacts, prompts, or external records the artifact depends on.
+Each entry should include a path and a revision. Use a commit SHA, tag, pull request revision,
+release identifier, or other immutable reference when one exists. Draft artifacts may use `TBD`
+until the upstream source is committed or otherwise pinned.
+
+If a derived-from source changes after an artifact pins it, the downstream artifact should be marked
+`Stale` until reviewed. Reconciliation may confirm that no change is required, update the artifact,
+or supersede it with a new artifact.
 
 ## Vision
 
@@ -222,9 +259,11 @@ Approval criteria:
 
 - allowed scope is clear;
 - non-goals are clear;
+- source authority revisions are listed;
 - required tests are named;
 - stop conditions are explicit;
-- reporting expectations are clear.
+- reporting expectations are clear;
+- the directive can be preserved with the resulting implementation reference.
 
 ## Test And UAT Plan
 

@@ -1,6 +1,6 @@
 # Code Review Report: [Project Name] — Phase [N]: [Phase Name]
 
-Status: Draft | Ready for Review | Complete | Superseded
+Status: Draft | Ready for Review | Complete | Stale | Superseded
 Date:
 Reviewer:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 7: Code Review Verifies Conformance
@@ -11,6 +11,23 @@ Source:
   Governance/Security: `docs/project/security-governance/[governance-document].md`
   PRD: `docs/project/prd/[prd-document].md`
   Traceability Matrix: `docs/project/traceability/[traceability-matrix].md`
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/build-plan/phases/[directive].md
+    revision: TBD
+  - path: docs/project/build-plan/phases/[tactical-plan].md
+    revision: TBD
+  - path: docs/project/architecture/[architecture-document].md
+    revision: TBD
+  - path: docs/project/security-governance/[governance-document].md
+    revision: TBD
+  - path: docs/project/prd/[prd-document].md
+    revision: TBD
+  - path: docs/project/traceability/[traceability-matrix].md
+    revision: TBD
 
 ---
 

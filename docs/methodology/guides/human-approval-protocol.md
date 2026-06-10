@@ -21,6 +21,7 @@ under what scope.
 - `docs/project/approvals/gate-log.md` should preserve gate approval history.
 - Chat approval should be copied into durable project docs when it affects scope, risk, or gate
   movement.
+- Gate evidence should identify artifact path, revision, and status.
 - Approval of one artifact does not approve unrelated future work.
 - Accepted risk must be visible.
 - Approval is meaningful only when the approver can explain the artifact, identify its principal
@@ -47,8 +48,12 @@ Draft
 Ready for Review
 Ready for Approval
 Accepted
+Stale
 Superseded
 ```
+
+`Stale` means an upstream authority changed after the artifact pinned that authority. A stale
+artifact requires reconciliation review before it can be used as gate evidence.
 
 Reports and close-out artifacts may use `Complete` instead of `Accepted` when they record evidence
 rather than define planning authority.
@@ -151,6 +156,7 @@ artifact_status: Accepted
 evidence:
   - path: docs/project/vision/[project-slug]-vision.md
     revision: TBD
+    status: Accepted
 checked: "TBD: one substantive statement from the approver."
 known_risks_accepted:
   - risk: TBD
@@ -185,7 +191,8 @@ Manifest updates to record:
 ```
 
 The agent should not interpret a casual `proceed` as gate approval unless the gate, approver,
-evidence, and risk disposition are unambiguous and can be recorded.
+evidence path, evidence revision, evidence status, and risk disposition are unambiguous and can be
+recorded.
 
 Legacy prose approval records are acceptable during migration, but new gate approvals should use the
 structured event shape. Structured records make gate movement, approval sampling, enforcement

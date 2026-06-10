@@ -1,9 +1,16 @@
 # Vision / Problem Framing: [Project Name]
 
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Superseded
+Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Vision / Problem Framing
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: initial human prompt or project brief
+    revision: N/A
 
 ---
 

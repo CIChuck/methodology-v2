@@ -1,11 +1,20 @@
 # ADR-0001: Technology Stack
 
-Status: Proposed | Ready for Approval | Accepted | Rejected | Superseded
+Status: Proposed | Ready for Approval | Accepted | Stale | Rejected | Superseded
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 10: Decisions Must Be Durable
 Supersedes: —
 Superseded by: —
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/prd/[prd-document].md
+    revision: TBD
+  - path: docs/project/architecture/[architecture-document].md
+    revision: TBD
 
 ---
 

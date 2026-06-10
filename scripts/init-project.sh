@@ -105,10 +105,21 @@ render_template "$template_root/as-built-closeout-template.md" "$target/as-built
 cat > "$target/build-plan/phase-roadmap.md" <<EOF
 # Phase Roadmap: $project_name
 
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Superseded
+Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
 Date: $today
 Owner: TBD
 Authority: docs/methodology/constitution/gendev.md
+Produced by: TBD
+Produced on: $today
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/prd/$slug-prd.md
+    revision: TBD
+  - path: docs/project/architecture/$slug-architecture.md
+    revision: TBD
+  - path: docs/project/security-governance/governance-security-spec.md
+    revision: TBD
 
 ## Purpose
 
@@ -140,7 +151,7 @@ EOF
 cat > "$target/build-plan/phases/phase-1-construction-directive.md" <<EOF
 # Phase 1 Construction Directive: $project_name
 
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Superseded
+Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
 Date: $today
 Owner: TBD
 Authority: docs/methodology/constitution/gendev.md
@@ -150,6 +161,21 @@ Source:
   PRD: docs/project/prd/$slug-prd.md
   Architecture: docs/project/architecture/$slug-architecture.md
   Governance/Security: docs/project/security-governance/governance-security-spec.md
+Produced by: TBD
+Produced on: $today
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/build-plan/phases/phase-1-build-plan.md
+    revision: TBD
+  - path: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
+    revision: TBD
+  - path: docs/project/prd/$slug-prd.md
+    revision: TBD
+  - path: docs/project/architecture/$slug-architecture.md
+    revision: TBD
+  - path: docs/project/security-governance/governance-security-spec.md
+    revision: TBD
 
 ## Completion Standard
 

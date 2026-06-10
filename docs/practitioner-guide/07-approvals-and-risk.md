@@ -62,6 +62,7 @@ should present:
 Gate:
 Artifact status:
 Evidence reviewed:
+Evidence revisions:
 Open questions:
 Known risks:
 Risks requiring acceptance:
@@ -106,6 +107,7 @@ artifact_status: Accepted
 evidence:
   - path: docs/project/vision/vendor-contract-tracker-vision.md
     revision: TBD
+    status: Accepted
 checked: "Confirmed that the vision keeps integrations deferred and names integration scope as a PRD question."
 known_risks_accepted:
   - risk: Integration needs may emerge during PRD discovery.
@@ -124,6 +126,11 @@ manifest_updated: true
 
 `Checked` is the key difference between a ceremonial approval and a useful approval. It forces one
 plain statement of what the approver actually verified.
+
+`revision` records the specific version of the artifact that was reviewed. Use `TBD` only while the
+artifact is still draft or has not yet been committed. `status` records whether the evidence was
+`Ready for Approval`, `Accepted`, `Complete`, `Stale`, or `Superseded` at the time of approval.
+Stale or superseded evidence should trigger reconciliation before the gate advances.
 
 ## Weak Approval Language
 
@@ -206,6 +213,7 @@ Do not set it to `approved` unless:
 - `approved_by` is set;
 - `approved_on` is set;
 - evidence is listed;
+- evidence revisions and statuses are recorded where practical;
 - risk disposition is recorded;
 - the next gate, role, and artifact are known.
 
@@ -217,6 +225,8 @@ Before approving a gate, confirm:
 
 ```text
 [ ] I know what artifact I am approving.
+[ ] I know which artifact revision I reviewed.
+[ ] I confirmed required evidence is not stale or superseded.
 [ ] I know which gate is advancing.
 [ ] I understand unresolved questions.
 [ ] I understand known risks.

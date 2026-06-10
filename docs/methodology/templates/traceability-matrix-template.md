@@ -1,9 +1,22 @@
 # Traceability Matrix: [Project Name]
 
-Status: Active
+Status: Active | Stale | Superseded
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Traceability Matrix
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/prd/[prd-document].md
+    revision: TBD
+  - path: docs/project/architecture/[architecture-document].md
+    revision: TBD
+  - path: docs/project/build-plan/phases/[phase-build-plan].md
+    revision: TBD
+  - path: docs/project/testing/[test-uat-plan].md
+    revision: TBD
 
 ---
 

@@ -184,6 +184,54 @@ gate_log_has_legacy_approval() {
     grep -Eq '^## .+ Approval|Decision:[[:space:]]*(Approved|Accepted|approved|accepted)'
 }
 
+artifact_status() {
+  file="$1"
+
+  sed -n 's/^Status:[[:space:]]*//p' "$file" | head -n 1
+}
+
+artifact_has_derived_revision() {
+  file="$1"
+
+  awk '
+    /^Derived from:/ {
+      in_block = 1
+      next
+    }
+    in_block && /^[^[:space:]][^:]*:/ {
+      exit
+    }
+    in_block && /^[[:space:]]*- path:[[:space:]]*.+/ {
+      path_found = 1
+    }
+    in_block && /^[[:space:]]+revision:[[:space:]]*.+/ {
+      revision_found = 1
+    }
+    END {
+      exit !(path_found && revision_found)
+    }
+  ' "$file"
+}
+
+project_provenance_artifacts() {
+  for dir in \
+    docs/project/vision \
+    docs/project/prd \
+    docs/project/architecture \
+    docs/project/security-governance \
+    docs/project/decisions \
+    docs/project/testing \
+    docs/project/traceability \
+    docs/project/as-built; do
+    [ -d "$dir" ] || continue
+    find "$dir" -type f -name '*.md' -print
+  done
+
+  if [ -d "docs/project/build-plan" ]; then
+    find docs/project/build-plan -type f -name '*.md' ! -name 'README.md' -print
+  fi
+}
+
 check_heading() {
   file="$1"
   heading="$2"
@@ -289,6 +337,50 @@ check_gate_log_record_format() {
 
   if gate_log_has_legacy_approval "$log" && ! gate_log_has_structured_event "$log" "gate_transition"; then
     warn "Legacy prose approval record found; new gate approvals should use structured gate events."
+  fi
+}
+
+check_artifact_provenance() {
+  while IFS= read -r file; do
+    missing=""
+
+    for field in "Produced by" "Produced on" "Produced with" "Agent identity"; do
+      if ! grep -Eq "^${field}:[[:space:]]*.+" "$file"; then
+        missing="${missing} ${field}"
+      fi
+    done
+
+    if ! grep -Eq '^Derived from:' "$file" || ! artifact_has_derived_revision "$file"; then
+      missing="${missing} Derived from path/revision"
+    fi
+
+    if [ -n "$missing" ]; then
+      warn "$file is missing provenance field(s):$missing"
+    fi
+  done < <(project_provenance_artifacts)
+}
+
+check_stale_evidence() {
+  manifest="docs/project/project.yaml"
+  log="docs/project/approvals/gate-log.md"
+
+  if [ -f "$manifest" ]; then
+    while IFS= read -r evidence_path; do
+      [ -f "$evidence_path" ] || continue
+      status="$(artifact_status "$evidence_path")"
+      case "$status" in
+        Stale | Superseded)
+          warn "Manifest gate evidence is $status and needs reconciliation: $evidence_path"
+          ;;
+      esac
+    done < <(manifest_current_gate_list_values "$manifest" "evidence")
+  fi
+
+  if [ -f "$log" ]; then
+    if gate_log_records_section "$log" |
+      grep -Eq '^[[:space:]]*status:[[:space:]]*(Stale|Superseded)[[:space:]]*$'; then
+      warn "Gate-log records cite stale or superseded evidence; review reconciliation before advancing."
+    fi
   fi
 }
 
@@ -423,7 +515,13 @@ check_current_gate_artifact_status() {
 
   [ -n "$artifact" ] || return
 
-  artifact_status="$(sed -n 's/^Status:[[:space:]]*//p' "$artifact" | head -n 1)"
+  artifact_status="$(artifact_status "$artifact")"
+
+  case "$artifact_status" in
+    Stale | Superseded)
+      warn "$project_gate current artifact is $artifact_status and needs reconciliation: $artifact"
+      ;;
+  esac
 
   if [ "$gate_status" = "ready_for_approval" ]; then
     case "$artifact_status" in
@@ -505,6 +603,8 @@ else
   check_manifest_approval_state
   check_accepted_doc_placeholders
   check_accepted_artifact_approval_records
+  check_artifact_provenance
+  check_stale_evidence
   check_current_gate_artifact_status
   check_phase_plans
   check_traceability_evidence

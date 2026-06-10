@@ -63,6 +63,17 @@ approvals:
     decided_on: TBD
     record: docs/project/approvals/gate-log.md
 
+artifacts:
+  provenance_required: true
+  provenance_status: warning
+  stale_blocks_gate_evidence: true
+  required_provenance_fields:
+    - Produced by
+    - Produced on
+    - Produced with
+    - Agent identity
+    - Derived from
+
 phase:
   current: 1
   status: planning

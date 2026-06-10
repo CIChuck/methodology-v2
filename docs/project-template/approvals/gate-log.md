@@ -38,6 +38,7 @@ artifact_status: Accepted
 evidence:
   - path: docs/project/vision/[project-slug]-vision.md
     revision: TBD
+    status: Accepted
 checked: "TBD: one substantive statement from the approver."
 known_risks_accepted:
   - risk: TBD

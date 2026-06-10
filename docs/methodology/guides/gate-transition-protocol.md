@@ -17,11 +17,14 @@ Artifact status and gate status are related but separate:
 
 ```text
 Artifact status: Draft -> Ready for Review -> Ready for Approval -> Accepted
+                 Stale | Superseded | Complete
 Gate status:     pending -> drafting -> ready_for_review -> ready_for_approval -> approved
 ```
 
 An artifact can be `Ready for Approval` before the gate is approved. A gate becomes `approved` only
 after the human approval record is durable and `project.yaml` summarizes the decision.
+`Stale` means an upstream authority changed after the artifact pinned that authority. Stale or
+superseded artifacts should not be used as gate evidence until reconciled.
 
 ## Universal Transition Checklist
 
@@ -31,6 +34,9 @@ Before any gate transition, confirm:
 [ ] current gate is known
 [ ] required source docs exist
 [ ] required artifact status is Ready for Approval or Accepted
+[ ] required artifact provenance fields are present
+[ ] evidence revisions are pinned or explicitly marked TBD for draft work
+[ ] no required evidence is Stale or Superseded
 [ ] required approver is known
 [ ] blocking questions are resolved or assigned
 [ ] required tests or test plans are present for the gate
@@ -62,6 +68,7 @@ artifact_status: Accepted
 evidence:
   - path: docs/project/vision/[project-slug]-vision.md
     revision: TBD
+    status: Accepted
 checked: "TBD: one substantive statement from the approver."
 known_risks_accepted:
   - risk: TBD
@@ -91,6 +98,7 @@ Before requesting approval, the lead agent should show the human:
 Gate:
 Artifact status:
 Evidence reviewed:
+Evidence revisions:
 Open questions:
 Known risks:
 Risks requiring acceptance:

@@ -48,9 +48,11 @@ Treat documentation reconciliation as part of the phase definition of done.
 
 Create a bounded construction directive for `[phase name]`.
 
-The directive must cite the approved authority documents, summarize the implementation objective,
-state non-goals, list files or modules that may change, list required tests, and require an
-as-built documentation close-out. It must not authorize deferred features.
+The directive must cite the approved authority documents, pin the source authority revisions,
+summarize the implementation objective, state non-goals, list files or modules that may change,
+list required tests, and require an as-built documentation close-out. It must not authorize
+deferred features. The directive must be preserved with the resulting commit, diff, pull request, or
+implementation reference.
 
 ## Verification-Only Prompt
 

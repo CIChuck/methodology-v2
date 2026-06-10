@@ -26,13 +26,18 @@ The review should compare implementation against:
 
 Review findings should be ordered by severity (how seriously a finding affects acceptance or
 deployment) and tied to source authority (the governing document or record that the finding cites).
+The review should also record source revisions when practical. A finding tied to `REQ-003` is more
+useful when the reviewer can identify the PRD revision, architecture revision, construction
+directive revision, and implementation diff that were actually reviewed.
 
 ## Code Review Report
 
 The code review report should include:
 
 - files reviewed;
-- authority reviewed;
+- authority reviewed, including pinned revisions where practical;
+- construction directive or implementation prompt that produced the change;
+- implementation reference, such as commit, diff, or pull request;
 - findings by severity;
 - missing tests;
 - scope drift (implementation moving beyond or away from approved scope);
@@ -115,6 +120,7 @@ It should update or reference:
 - known limitations;
 - test/UAT evidence;
 - traceability status;
+- provenance updates, including changed source revisions and any stale downstream artifacts;
 - architecture or PRD changes discovered during implementation;
 - operational notes;
 - next phase or backlog items (future work intentionally postponed or newly discovered).
@@ -136,5 +142,6 @@ Expected agent behavior:
 - identify planned-versus-actual differences;
 - update close-out docs;
 - update traceability;
+- update artifact provenance or mark downstream artifacts stale when authority changed;
 - report any missing evidence;
 - recommend phase acceptance or next remediation.

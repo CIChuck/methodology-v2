@@ -20,7 +20,9 @@ Draft
 Ready for Review
 Ready for Approval
 Accepted
+Stale
 Superseded
+Complete
 ```
 
 Gate status (the readiness state of a lifecycle checkpoint) describes project movement:
@@ -39,10 +41,41 @@ An artifact may be `Ready for Approval` before the gate is approved. The gate be
 only after human approval is recorded in durable project authority (accepted repository state that
 future humans and agents should trust).
 
+`Stale` means an upstream authority changed after the artifact recorded the revision it was derived
+from. A stale artifact may still be useful context, but it should not support gate approval until it
+has been reconciled. `Superseded` means the artifact has been replaced by newer accepted authority.
+`Complete` is used for evidence artifacts such as review reports and close-out records.
+
 Gate approvals should be recorded as structured gate-log events in
 `docs/project/approvals/gate-log.md`. A structured event is a Markdown section containing a small
 YAML block with the gate transition, decision, approver, evidence, accepted risks, and a `checked`
 statement naming what the approver actually verified.
+
+## Artifact Provenance
+
+Provenance (the record of where an artifact came from) makes authority falsifiable. A future human
+or agent should be able to tell who produced an artifact, when it was produced, whether an agent was
+involved, and what upstream artifacts or prompts it depends on.
+
+GenDev project artifacts use a lightweight header:
+
+```text
+Produced by: TBD
+Produced on: YYYY-MM-DD
+Produced with: human | agent | human-agent collaboration
+Agent identity: TBD model/version/session, or N/A
+Derived from:
+  - path: docs/project/vision/[project-slug]-vision.md
+    revision: TBD
+```
+
+Revision pinning means recording the specific version of an upstream artifact used as input. In a
+Git repository, this is usually a commit SHA, tag, or pull request revision. Draft work can use
+`TBD`, but accepted gate evidence should be pinned when a durable revision exists.
+
+When an upstream artifact changes, downstream artifacts that cite the old revision may become
+`Stale`. The agent should stop, explain what changed, and ask whether to reconcile the downstream
+artifact before using it as evidence.
 
 ## Gate Overview
 
@@ -272,6 +305,8 @@ At each gate, ask:
 
 ```text
 What artifact proves readiness?
+What revision of that artifact am I relying on?
+Is any required evidence stale or superseded?
 What human approval is required?
 What did the approver actually check?
 What risk is being accepted?

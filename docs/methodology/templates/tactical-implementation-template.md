@@ -1,6 +1,6 @@
 # Tactical Implementation Plan: [Project Name] — Phase [N]: [Phase Name]
 
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Superseded
+Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Tactical Implementation Plan
@@ -9,6 +9,19 @@ Source:
   Architecture: `docs/project/architecture/[architecture-document].md`
   PRD: `docs/project/prd/[prd-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/build-plan/phases/[phase-build-plan].md
+    revision: TBD
+  - path: docs/project/architecture/[architecture-document].md
+    revision: TBD
+  - path: docs/project/prd/[prd-document].md
+    revision: TBD
+  - path: docs/project/security-governance/[governance-document].md
+    revision: TBD
 
 ---
 

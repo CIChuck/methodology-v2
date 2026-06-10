@@ -71,6 +71,48 @@ Reconcile artifact status (the document's readiness state) and manifest gate sta
 or ready_for_review. If it is ready, update the artifact status and approval summary.
 ```
 
+## Stale Evidence Used For Approval
+
+Symptom:
+
+```text
+The gate evidence cites an artifact whose upstream PRD, architecture, governance, or phase plan has
+changed since the evidence revision was pinned.
+```
+
+Risk:
+
+- the team approves a gate using authority that no longer matches the current project record.
+
+Correction:
+
+```text
+Stop gate movement. Mark the downstream artifact Stale, compare it against the changed upstream
+authority, and either reconcile the artifact, supersede it, or record explicit human risk
+acceptance before proceeding.
+```
+
+## Missing Provenance
+
+Symptom:
+
+```text
+An authority or evidence artifact does not say who produced it, when it was produced, whether an
+agent participated, or which upstream revisions it derives from.
+```
+
+Risk:
+
+- future reviewers cannot tell whether the artifact is current, what authority it used, or whether
+  a later upstream change invalidated it.
+
+Correction:
+
+```text
+Add the provenance header. Fill Produced by, Produced on, Produced with, Agent identity, and
+Derived from path/revision. Use revision TBD only for draft work that has not yet been pinned.
+```
+
 ## PRD Is Too Vague
 
 Symptom:

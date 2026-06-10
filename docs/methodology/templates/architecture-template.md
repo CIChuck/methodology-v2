@@ -1,12 +1,21 @@
 # Architecture Specification: [Project Name]
 
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Superseded
+Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Architecture Specification
 Source:
   Vision: `docs/project/vision/[vision-document].md`
   PRD: `docs/project/prd/[prd-document].md`
+Produced by: TBD
+Produced on: [YYYY-MM-DD]
+Produced with: human-agent collaboration
+Agent identity: TBD
+Derived from:
+  - path: docs/project/vision/[vision-document].md
+    revision: TBD
+  - path: docs/project/prd/[prd-document].md
+    revision: TBD
 
 ---
 
