@@ -27,6 +27,7 @@ authority documents define the stack and implementation plan.
 - current approval summary, including gate status, approver, evidence, risk acceptance, and next
   handoff;
 - active amendment count and amendment protocol path;
+- enforcement class, attestation cadence, binding paths, and override policy;
 - example/non-authority notes.
 
 The manifest is a map and state summary, not a replacement for the documents it references.
@@ -49,6 +50,7 @@ Key guides:
 - `start-and-next-step-protocol.md`
 - `gate-transition-protocol.md`
 - `amendment-and-regression-protocol.md`
+- `enforcement-contract.md`
 - `human-approval-protocol.md`
 - `subagent-coordination-protocol.md`
 - `artifact-collaboration-protocol.md`
@@ -64,4 +66,4 @@ After initialization, run:
 ```
 
 The checker validates the active project structure, manifest paths, approval-state invariants,
-phase-plan sections, and basic traceability evidence signals.
+enforcement block presence, phase-plan sections, and basic traceability evidence signals.

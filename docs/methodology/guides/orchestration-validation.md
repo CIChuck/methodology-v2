@@ -57,6 +57,7 @@ Before a gate is ready for approval, `docs/project/project.yaml` should identify
 [ ] active role
 [ ] required approver
 [ ] evidence path
+[ ] enforcement class
 [ ] known risks requiring acceptance or explicit N/A
 [ ] blocking open questions or explicit N/A
 [ ] next gate
@@ -72,6 +73,8 @@ Before asking for gate approval, the lead agent should present:
 Gate:
 Artifact status:
 Evidence reviewed:
+Enforcement class:
+Attestation or enforcement evidence:
 Open questions:
 Known risks:
 Risks requiring acceptance:
@@ -114,6 +117,7 @@ A dry run passes when:
 [ ] the active artifact status matches the manifest gate status
 [ ] future-stage templates remain templates until their gate is active
 [ ] approval history is durable in docs/project/approvals/gate-log.md
+[ ] enforcement class is visible in docs/project/project.yaml
 [ ] next-step recommendations are concrete and gate-aware
 ```
 
@@ -126,6 +130,7 @@ Investigate the orchestration layer if a dry run:
 - starts implementation from a vision, PRD, or architecture prompt;
 - fills PRD, architecture, build, or deployment artifacts as if accepted before their gate;
 - treats sub-agent output as authority without lead-agent reconciliation and human approval;
+- advances a gate without visible enforcement class or required attestation context;
 - treats `proceed` as production, security, or gate approval without an explicit record.
 
 ## Completion Standard

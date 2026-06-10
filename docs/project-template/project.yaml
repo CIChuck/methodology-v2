@@ -21,6 +21,7 @@ authority:
   next_step_protocol: docs/methodology/guides/start-and-next-step-protocol.md
   gate_transition_protocol: docs/methodology/guides/gate-transition-protocol.md
   amendment_protocol: docs/methodology/guides/amendment-and-regression-protocol.md
+  enforcement_contract: docs/methodology/guides/enforcement-contract.md
   approval_protocol: docs/methodology/guides/human-approval-protocol.md
   subagent_protocol: docs/methodology/guides/subagent-coordination-protocol.md
   artifact_protocol: docs/methodology/guides/artifact-collaboration-protocol.md
@@ -80,6 +81,29 @@ amendments:
   record: docs/project/approvals/gate-log.md
   protocol: docs/methodology/guides/amendment-and-regression-protocol.md
   active: []
+
+enforcement:
+  contract_version: draft
+  class: attested
+  protected_branch: master
+  implementation_paths:
+    - TBD
+  excluded_paths:
+    - docs/
+    - scripts/
+  binding_paths:
+    pre_commit_hook: TBD
+    ci_workflow: TBD
+  attestation:
+    cadence: every_gate_transition
+    required_attester: TBD
+  exceptions:
+    - requirement: EC-5
+      mode: attested
+      reason: provenance headers not yet adopted
+  override_policy:
+    required_approvers: 1
+    record_path: docs/project/approvals/gate-log.md
 
 phase:
   current: 1

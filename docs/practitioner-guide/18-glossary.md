@@ -426,6 +426,34 @@ Assume the first customer manages 25 to 500 vendor contracts.
 If an assumption could materially affect scope, architecture, security, or production, it should be
 validated or carried forward as an open question.
 
+## Attestation
+
+Attestation is a named human statement that a required methodology control was checked. It is used
+when the project relies on attested enforcement rather than a mechanical binding.
+
+An attestation should record:
+
+- what requirement or gate was checked;
+- who checked it;
+- when it was checked;
+- what evidence was reviewed;
+- whether the check passed, warned, or failed;
+- what exception or override applies, if any.
+
+Attestation is not weaker because it is human. It is weaker only when it is vague. A useful
+attestation is specific enough that a future agent can reconstruct which methodology obligation was
+met.
+
+## Attested Enforcement
+
+Attested enforcement is an enforcement class where named humans perform methodology checks on a
+declared cadence and record the result. The project is still bound by the methodology. The
+difference is that a human confirmation, rather than a hook or CI workflow, provides the control.
+
+Attested enforcement is the normal baseline state for a newly initialized GenDev project because it
+does not require platform-specific tooling. It should declare cadence, required attester, exception
+rules, and override policy in `docs/project/project.yaml`.
+
 ## Authority
 
 Authority is the set of documents and records that govern project work. GenDev distinguishes
@@ -461,6 +489,15 @@ that deferred or future work must not be confused with current authorized scope.
 
 Baseline means required for initial delivery or current phase delivery. A baseline requirement is
 not optional. It must have acceptance criteria and a verification path.
+
+## Binding
+
+A binding is a concrete implementation of a methodology rule on a specific platform or toolchain.
+For example, a pre-commit hook, CI workflow, protected-branch rule, or repository policy can bind a
+GenDev enforcement requirement to actual repository behavior.
+
+A binding should not be claimed until it exists and is active. A project may say `class: enforced`
+only when the binding can actually block, warn, or report against the declared requirement.
 
 ## Blocking Question
 
@@ -733,6 +770,52 @@ changing meaning.
 Editorial amendments usually do not require gate re-approval. They may still be recorded when the
 artifact is accepted and the change could confuse future readers.
 
+## Enforced
+
+Enforced means a mechanical binding blocks or reports nonconforming changes according to the
+project enforcement contract. Enforced controls are useful for objective checks such as required
+files, allowed gate values, stale evidence, provenance headers, or protected implementation paths.
+
+Enforced does not mean no human judgment is needed. Humans still approve gates, accept risk, and
+decide whether an override is justified.
+
+## Enforcement
+
+Enforcement is the set of controls that make methodology rules visible, checkable, and difficult to
+skip by accident. In GenDev, enforcement is declared in the project manifest and governed by
+`docs/methodology/guides/enforcement-contract.md`.
+
+Enforcement answers practical questions:
+
+- which branch is treated as protected project authority;
+- which paths count as implementation paths;
+- whether checks are mechanical or human-attested;
+- which exceptions are allowed;
+- how overrides are approved and recorded.
+
+The goal is not bureaucracy. The goal is to prevent an agent or human from moving past a gate,
+changing protected implementation paths, or bypassing provenance and approval records without a
+durable trace.
+
+## Enforcement Class
+
+Enforcement class is the manifest field that states whether a project is operating in `attested` or
+`enforced` mode.
+
+`attested` means named humans confirm the checks and record attestation evidence. `enforced` means
+a mechanical binding performs the check. A project can run mostly enforced while keeping specific
+requirements attested if the exception is documented.
+
+## Enforcement Contract
+
+The enforcement contract is `docs/methodology/guides/enforcement-contract.md`. It defines the
+requirements that make GenDev controls enforceable or attestable, including gate transition
+authority, protected implementation paths, checker execution, provenance, branch isolation, and
+override records.
+
+The contract is tool-agnostic. It defines what must be true. Tool-specific addenda or local
+bindings can define how a particular repository enforces those requirements.
+
 ## Evidence
 
 Evidence is the material that supports a readiness, acceptance, verification, or deployment claim.
@@ -920,6 +1003,10 @@ The manifest is `docs/project/project.yaml`. It summarizes active project state:
 - next gate, role, and artifact;
 - phase paths.
 
+It also records enforcement state: contract version, enforcement class, protected branch,
+implementation paths, excluded paths, binding paths, attestation cadence, exceptions, and override
+policy.
+
 The manifest is not a replacement for artifacts. It is the map and state summary that lets a future
 agent resume correctly.
 
@@ -969,6 +1056,18 @@ Open questions are healthy when visible. They are dangerous when hidden.
 The owner is the human accountable for the project or artifact. The owner may also be the approver
 in a small project. Ownership means responsibility for direction and follow-through, not necessarily
 that the owner writes every document.
+
+## Override
+
+An override is a deliberate, approved bypass of a methodology control. It exists for emergencies or
+exceptional cases where blocking work would be more harmful than proceeding.
+
+An override is not a silent skip. It should record who approved the override, why it was necessary,
+which requirement was bypassed, what risk was accepted, how long the override applies, and how the
+project will reconcile afterward.
+
+Override records belong in `docs/project/approvals/gate-log.md` unless the project manifest names a
+different durable record path.
 
 ## Phase
 
@@ -1035,6 +1134,16 @@ includes accepted artifacts, approvals, traceability, decision records, and as-b
 
 `docs/project-template/` is the initialization skeleton used by `scripts/init-project.sh`. It is not
 the active project. It defines what a new `docs/project/` should look like.
+
+## Protected Branch
+
+The protected branch is the branch the project treats as authoritative project state. In many Git
+repositories this is `master` or `main`.
+
+GenDev does not require Git specifically, but it assumes the team has some version-control system
+with immutable revisions, diffable changes, and branch or review boundaries. In the default Git
+case, the protected branch should not receive agent-generated implementation changes that bypass
+the configured enforcement or attestation process.
 
 ## Ready For Approval
 

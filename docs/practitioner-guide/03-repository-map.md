@@ -119,6 +119,7 @@ It records:
 - methodology authority paths;
 - collaboration mode;
 - active role;
+- enforcement class (whether methodology controls are mechanically enforced or human-attested);
 - current approval status;
 - evidence paths;
 - risk disposition;

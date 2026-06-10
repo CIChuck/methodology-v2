@@ -3,7 +3,8 @@
 Status: Reusable Standard  
 Authority: `docs/methodology/constitution/gendev.md`,
 `docs/methodology/guides/gates.md`,
-`docs/methodology/guides/amendment-and-regression-protocol.md`
+`docs/methodology/guides/amendment-and-regression-protocol.md`,
+`docs/methodology/guides/enforcement-contract.md`
 
 ## Purpose
 
@@ -28,6 +29,7 @@ after the human approval record is durable and `project.yaml` summarizes the dec
 superseded artifacts should not be used as gate evidence until reconciled.
 Active structural amendments should be reconciled before forward gate movement unless the human
 explicitly records why the amendment does not affect the transition.
+Every gate transition should be readable in its enforcement context: `attested` or `enforced`.
 
 ## Universal Transition Checklist
 
@@ -41,6 +43,8 @@ Before any gate transition, confirm:
 [ ] evidence revisions are pinned or explicitly marked TBD for draft work
 [ ] no required evidence is Stale or Superseded
 [ ] active amendments are reconciled or explicitly non-blocking
+[ ] enforcement class is declared in project.yaml
+[ ] attestation or enforcement evidence is recorded according to project policy
 [ ] required approver is known
 [ ] blocking questions are resolved or assigned
 [ ] required tests or test plans are present for the gate
@@ -103,6 +107,8 @@ Gate:
 Artifact status:
 Evidence reviewed:
 Evidence revisions:
+Enforcement class:
+Attestation or enforcement evidence:
 Open questions:
 Known risks:
 Risks requiring acceptance:

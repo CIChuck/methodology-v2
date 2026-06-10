@@ -65,6 +65,8 @@ Gate:
 Artifact status:
 Evidence reviewed:
 Evidence revisions:
+Enforcement class:
+Attestation or enforcement evidence:
 Open questions:
 Known risks:
 Risks requiring acceptance:
@@ -156,6 +158,12 @@ artifact is still draft or has not yet been committed. `status` records whether 
 `Ready for Approval`, `Accepted`, `Complete`, `Stale`, or `Superseded` at the time of approval.
 Stale or superseded evidence should trigger reconciliation before the gate advances.
 
+`enforcement_class` records whether the project relied on `attested` controls (named humans confirm
+the required methodology checks on the configured cadence) or `enforced` controls (a mechanical
+binding, such as a hook or CI policy, blocks nonconforming changes). At baseline, GenDev projects
+usually start as `attested`. A gate approval should still identify what was attested or what
+mechanical evidence was reviewed.
+
 ## Weak Approval Language
 
 Weak approval:
@@ -238,6 +246,7 @@ Do not set it to `approved` unless:
 - `approved_on` is set;
 - evidence is listed;
 - evidence revisions and statuses are recorded where practical;
+- enforcement class and required attestation or enforcement evidence are visible;
 - risk disposition is recorded;
 - the next gate, role, and artifact are known.
 
@@ -251,6 +260,8 @@ Before approving a gate, confirm:
 [ ] I know what artifact I am approving.
 [ ] I know which artifact revision I reviewed.
 [ ] I confirmed required evidence is not stale or superseded.
+[ ] I know the enforcement class for this gate.
+[ ] I know what attestation or enforcement evidence supports this gate.
 [ ] I know whether active amendments affect this gate.
 [ ] I know which gate is advancing.
 [ ] I understand unresolved questions.

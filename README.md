@@ -107,6 +107,7 @@ documents under `docs/project/`.
 - Start/next-step protocol: `docs/methodology/guides/start-and-next-step-protocol.md`
 - Gate transition protocol: `docs/methodology/guides/gate-transition-protocol.md`
 - Amendment/regression protocol: `docs/methodology/guides/amendment-and-regression-protocol.md`
+- Enforcement contract: `docs/methodology/guides/enforcement-contract.md`
 - Human approval protocol: `docs/methodology/guides/human-approval-protocol.md`
 - Sub-agent coordination protocol: `docs/methodology/guides/subagent-coordination-protocol.md`
 - Artifact collaboration protocol: `docs/methodology/guides/artifact-collaboration-protocol.md`

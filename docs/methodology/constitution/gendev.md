@@ -57,6 +57,16 @@ projects where traceability and testability matter
 
 This standard may be scaled down for small work, but the traceability chain should not be abandoned.
 
+## Version-Control Assumption
+
+This methodology assumes a version control system with immutable revision identifiers, diffable
+history, and branch isolation. Git is the default implementation, but any system with equivalent
+properties can support the methodology.
+
+Revision control is not incidental. Provenance, amendment, review independence, enforcement, and
+as-built close-out all depend on being able to identify what changed, when it changed, and what
+authority governed the change.
+
 ## Constitutional Rules
 
 ### Rule 1: Documentation Is Build Authority
@@ -347,6 +357,26 @@ longer match amended authority must be marked `Stale` until reconciled or `Super
 Unamended stale authority is a methodology violation. It is not permission for agents to infer new
 scope, reinterpret architecture, bypass security/governance rules, or continue a gate transition
 using evidence known to be stale.
+
+## Enforcement Principle
+
+Methodology rules should be enforced where practical, attested where enforcement is unavailable,
+and declared in the active project control plane.
+
+Projects must state their enforcement class in `docs/project/project.yaml`:
+
+```text
+enforced
+attested
+```
+
+`enforced` means a mechanical binding exists, such as hooks, protected-branch checks, policy
+automation, or equivalent controls. `attested` means a named human performs or reviews the required
+checks on a declared cadence and records attestation in the gate log.
+
+Attested mode is valid at baseline. It must not become invisible. Exceptions, cadence, required
+attester, override policy, and binding paths belong in the project enforcement block. The active
+contract is `docs/methodology/guides/enforcement-contract.md`.
 
 ## Required Artifact Definitions
 

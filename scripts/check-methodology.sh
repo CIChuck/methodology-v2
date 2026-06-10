@@ -151,6 +151,31 @@ manifest_current_gate_list_values() {
   ' "$manifest"
 }
 
+manifest_section_block() {
+  manifest="$1"
+  section="$2"
+
+  awk -v section="$section" '
+    /^[^[:space:]][^:]*:/ {
+      current = $1
+      sub(":", "", current)
+      in_section = (current == section)
+      if (in_section) {
+        next
+      }
+    }
+    /^[^[:space:]][^:]*:/ && !in_section {
+      next
+    }
+    in_section && /^[^[:space:]][^:]*:/ {
+      exit
+    }
+    in_section {
+      print
+    }
+  ' "$manifest"
+}
+
 gate_log_records_section() {
   log="$1"
 
@@ -303,6 +328,7 @@ check_baseline_files() {
   require_file "docs/methodology/guides/agentic-development-workflow.md"
   require_file "docs/methodology/guides/gates.md"
   require_file "docs/methodology/guides/amendment-and-regression-protocol.md"
+  require_file "docs/methodology/guides/enforcement-contract.md"
   require_file "docs/methodology/guides/orchestration-validation.md"
   require_dir "docs/methodology/templates"
   require_dir "docs/methodology/dev-skills"
@@ -497,6 +523,83 @@ check_manifest_amendment_state() {
     if [ -f "$log" ] && ! gate_log_has_structured_event "$log" "amendment"; then
       warn "Manifest has active amendments but no amendment event is visible in gate-log.md."
     fi
+  fi
+}
+
+check_manifest_enforcement_state() {
+  manifest="docs/project/project.yaml"
+
+  require_file "$manifest"
+  if [ ! -f "$manifest" ]; then
+    return
+  fi
+
+  if ! grep -Eq '^enforcement:' "$manifest"; then
+    warn "Manifest is missing enforcement block."
+    return
+  fi
+
+  contract_version="$(manifest_section_value "$manifest" "enforcement" "contract_version")"
+  enforcement_class="$(manifest_section_value "$manifest" "enforcement" "class")"
+  protected_branch="$(manifest_section_value "$manifest" "enforcement" "protected_branch")"
+  cadence="$(manifest_nested_value "$manifest" "enforcement" "attestation" "cadence")"
+  required_attester="$(manifest_nested_value "$manifest" "enforcement" "attestation" "required_attester")"
+  pre_commit_hook="$(manifest_nested_value "$manifest" "enforcement" "binding_paths" "pre_commit_hook")"
+  ci_workflow="$(manifest_nested_value "$manifest" "enforcement" "binding_paths" "ci_workflow")"
+  override_approvers="$(manifest_nested_value "$manifest" "enforcement" "override_policy" "required_approvers")"
+  override_record="$(manifest_nested_value "$manifest" "enforcement" "override_policy" "record_path")"
+  block="$(manifest_section_block "$manifest" "enforcement")"
+
+  if is_unknown "$contract_version"; then
+    warn "Manifest enforcement.contract_version is missing."
+  fi
+
+  case "$enforcement_class" in
+    attested | enforced)
+      ;;
+    "")
+      warn "Manifest enforcement.class is missing."
+      ;;
+    *)
+      warn "Manifest enforcement.class is not recognized: $enforcement_class"
+      ;;
+  esac
+
+  if is_unknown "$protected_branch"; then
+    warn "Manifest enforcement.protected_branch is missing."
+  fi
+
+  if ! printf '%s\n' "$block" | grep -Eq '^[[:space:]]{2}implementation_paths:'; then
+    warn "Manifest enforcement.implementation_paths is missing."
+  fi
+
+  if ! printf '%s\n' "$block" | grep -Eq '^[[:space:]]{2}excluded_paths:'; then
+    warn "Manifest enforcement.excluded_paths is missing."
+  fi
+
+  if [ "$enforcement_class" = "attested" ]; then
+    if is_unknown "$cadence"; then
+      warn "Manifest attested enforcement is missing attestation cadence."
+    fi
+    if [ -z "$required_attester" ]; then
+      warn "Manifest attested enforcement is missing required_attester field."
+    fi
+  fi
+
+  if [ "$enforcement_class" = "enforced" ]; then
+    if is_unknown "$pre_commit_hook" && is_unknown "$ci_workflow"; then
+      warn "Manifest enforced class should declare at least one binding path."
+    fi
+  fi
+
+  if is_unknown "$override_approvers"; then
+    warn "Manifest enforcement override_policy.required_approvers is missing."
+  fi
+
+  if is_unknown "$override_record"; then
+    warn "Manifest enforcement override_policy.record_path is missing."
+  elif [ ! -e "$override_record" ]; then
+    warn "Manifest enforcement override record path does not exist: $override_record"
   fi
 }
 
@@ -748,6 +851,7 @@ else
   check_computed_staleness
   check_stale_evidence
   check_manifest_amendment_state
+  check_manifest_enforcement_state
   check_current_gate_artifact_status
   check_phase_plans
   check_traceability_evidence

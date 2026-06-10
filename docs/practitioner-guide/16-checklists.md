@@ -16,7 +16,10 @@ Several checklist terms are compact by design. PRD means product requirements do
 user acceptance testing. ADR means architecture decision record. Traceability means mapping
 requirements to implementation, tests, and evidence. As-built means the record of what actually
 exists after implementation. Rollback means returning to a previous known-good state. N/A means a
-check is not applicable, but the reason should still be clear when risk is involved.
+check is not applicable, but the reason should still be clear when risk is involved. Enforcement
+means the methodology controls declared in `docs/project/project.yaml`; attested enforcement means
+named humans confirm the checks, while enforced means a mechanical binding blocks nonconforming
+changes.
 
 ## New Project Checklist
 
@@ -26,6 +29,9 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] ./scripts/init-project.sh "Project Name" run
 [ ] docs/project/project.yaml created
 [ ] docs/project/approvals/gate-log.md created
+[ ] enforcement block present in docs/project/project.yaml
+[ ] enforcement.class confirmed as attested or enforced
+[ ] enforcement attestation cadence and override record path visible
 [ ] ./scripts/check-methodology.sh passes
 [ ] AI agent started from repository root
 [ ] owner identified
@@ -146,6 +152,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] UAT evidence exists where required
 [ ] traceability matrix updated
 [ ] residual risk documented
+[ ] enforcement or attestation evidence recorded
 [ ] phase acceptance approval recorded
 [ ] traceability row sampled before close-out, if this is the phase close-out approval
 ```
@@ -160,6 +167,8 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] migration procedure documented or N/A
 [ ] rollback procedure documented
 [ ] monitoring/validation plan documented
+[ ] enforcement or attestation evidence reviewed
+[ ] override policy reviewed if any control was bypassed
 [ ] post-deployment owner named
 [ ] deployment approval recorded
 [ ] deployment approval includes a checked statement

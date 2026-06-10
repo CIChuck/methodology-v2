@@ -25,6 +25,7 @@ Deployment readiness requires:
 - monitoring or validation plan;
 - operational runbook (operator instructions for deployment, validation, failure response, and
   rollback);
+- enforcement or attestation evidence required by the project enforcement block;
 - human deployment approval.
 
 ## Deployment Readiness
@@ -102,6 +103,8 @@ Deployment target:
 Deployment procedure:
 Rollback plan:
 Monitoring/validation plan:
+Enforcement class:
+Attestation or enforcement evidence:
 Known risks:
 Post-deployment owner:
 Approval requested:
@@ -119,6 +122,7 @@ After deployment, the agent should help record:
 - incidents or anomalies;
 - rollback status;
 - monitoring status;
+- enforcement override status, if any methodology control was bypassed;
 - known limitations;
 - follow-up backlog;
 - operational owner.
@@ -135,6 +139,7 @@ context and risk level) may mean:
 - documented manual rollback;
 - basic logs;
 - a smoke test;
+- attested enforcement evidence when no mechanical binding exists;
 - a named human owner.
 
 That is acceptable when risk is low and explicitly accepted. It is not acceptable to have no

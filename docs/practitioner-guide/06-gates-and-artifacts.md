@@ -49,7 +49,9 @@ has been reconciled. `Superseded` means the artifact has been replaced by newer 
 Gate approvals should be recorded as structured gate-log events in
 `docs/project/approvals/gate-log.md`. A structured event is a Markdown section containing a small
 YAML block with the gate transition, decision, approver, evidence, accepted risks, and a `checked`
-statement naming what the approver actually verified.
+statement naming what the approver actually verified. Gate events should also name the enforcement
+class (whether checks are mechanically enforced or human-attested) so future agents can understand
+how the methodology controls were applied when the gate moved.
 
 ## Artifact Provenance
 
@@ -123,6 +125,7 @@ Primary evidence:
 - `docs/project/project.yaml`;
 - starter project folders;
 - rendered artifact templates;
+- declared enforcement class and attestation cadence;
 - current gate set to G1.
 
 Human approval is not required unless initialization overwrote existing project state (existing
@@ -277,6 +280,7 @@ Evidence should include:
 - changed files;
 - tests added or updated;
 - verification commands run or skipped with reasons;
+- enforcement or attestation evidence required by the project enforcement block;
 - known deviations (places where the implementation differs from the accepted plan).
 
 G6 does not mean the work is accepted. It means the work is ready to be reviewed against authority.
@@ -291,6 +295,7 @@ Required evidence:
 - code review report;
 - remediation summary, if findings existed;
 - passing verification evidence or accepted exceptions;
+- enforcement or attestation evidence for required methodology checks;
 - test/UAT evidence;
 - updated traceability matrix;
 - residual risk statement (the risk that remains after remediation).
@@ -344,6 +349,7 @@ Is any required evidence stale or superseded?
 Is there an active amendment or regression that affects this evidence?
 What human approval is required?
 What did the approver actually check?
+What enforcement class applies, and what attestation or enforcement evidence exists?
 What risk is being accepted?
 What happens next?
 ```

@@ -56,6 +56,12 @@ Confirm the manifest (the compact `project.yaml` tracking record for current pro
 - `project.slug` is acceptable;
 - `project.current_gate` is `G1` (the vision gate, where the team defines why the product exists);
 - authority paths exist (paths to the documents and records that govern the project);
+- `enforcement.class` is `attested` (human-confirmed methodology control) unless the project has
+  already installed active mechanical enforcement;
+- `enforcement.protected_branch` names the branch the team treats as production project authority;
+- `enforcement.attestation.cadence` records when humans must attest that required checks happened;
+- `enforcement.binding_paths` may be `TBD` at baseline because the initial project uses attested
+  enforcement, not a pre-commit hook or CI workflow;
 - approval state is `pending`;
 - the G1 evidence path points to the vision document.
 
@@ -74,6 +80,12 @@ Run:
 For a clean initialized project, the checker should pass. If it warns about approval state (the
 manifest's record of whether a gate is pending, drafting, ready, approved, blocked, or superseded),
 resolve that state before treating a gate as ready or approved.
+
+If it warns about enforcement state, inspect the `enforcement` block. A newly initialized project
+should declare `class: attested`, an attestation cadence, an attester field, implementation paths,
+excluded paths, and an override record path. The attester and implementation paths may initially be
+`TBD`, but the fields should exist so the team and agent know the project is operating under an
+explicit enforcement contract.
 
 ## Start The Agent
 
@@ -151,6 +163,7 @@ The startup phase ends when:
 - `docs/project/` exists;
 - `project.yaml` is readable and coherent;
 - the current gate is G1;
+- enforcement class and attestation cadence are visible in `project.yaml`;
 - collaboration mode is known;
 - the human has supplied enough context to draft the vision document;
 - the agent knows not to proceed beyond G1 without approval.

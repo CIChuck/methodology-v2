@@ -38,6 +38,7 @@ Use operating guides from `docs/methodology/guides/`:
 - `start-and-next-step-protocol.md`
 - `gate-transition-protocol.md`
 - `amendment-and-regression-protocol.md`
+- `enforcement-contract.md`
 - `human-approval-protocol.md`
 - `subagent-coordination-protocol.md`
 - `artifact-collaboration-protocol.md`
@@ -70,6 +71,10 @@ Sub-agent output is advisory until accepted into active project documents or app
 When accepted authority must change, follow
 `docs/methodology/guides/amendment-and-regression-protocol.md`. Do not keep moving forward with
 stale authority, and do not regress gates unless the amendment invalidates gate entry conditions.
+
+When enforcement class, gate protection, or implementation-path controls matter, follow
+`docs/methodology/guides/enforcement-contract.md`. Attested enforcement is valid at baseline, but
+the active project must declare its class in `docs/project/project.yaml`.
 
 Use `docs/project/project.yaml` as the active project control-plane summary and
 `docs/project/approvals/gate-log.md` as the durable approval history. Do not treat a gate as
