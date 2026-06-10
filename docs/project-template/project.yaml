@@ -92,8 +92,8 @@ enforcement:
     - docs/
     - scripts/
   binding_paths:
-    pre_commit_hook: TBD
-    ci_workflow: TBD
+    pre_commit_hook: scripts/install-hooks.sh
+    ci_workflow: .github/workflows/methodology.yml
   attestation:
     cadence: every_gate_transition
     required_attester: TBD

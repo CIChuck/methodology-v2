@@ -4,6 +4,7 @@ set -u
 
 errors=0
 warnings=0
+seen_failures=""
 
 info() {
   printf 'INFO: %s\n' "$1"
@@ -19,21 +20,59 @@ fail() {
   printf 'ERROR: %s\n' "$1"
 }
 
+fail_once() {
+  message="$1"
+
+  if printf '%s\n' "$seen_failures" | grep -Fxq "$message"; then
+    return
+  fi
+
+  seen_failures="${seen_failures}${message}
+"
+  fail "$message"
+}
+
 require_file() {
   if [ ! -f "$1" ]; then
-    fail "Missing required file: $1"
+    fail_once "Missing required file: $1"
   fi
 }
 
 require_dir() {
   if [ ! -d "$1" ]; then
-    fail "Missing required directory: $1"
+    fail_once "Missing required directory: $1"
   fi
 }
 
 is_unknown() {
   case "$1" in
     "" | "TBD" | "\"TBD\"" | "[]" | "[TBD]" | "[Project Name]" | "[project-slug]")
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+valid_gate_value() {
+  case "$1" in
+    G0 | G1 | G2 | G3 | G4 | G5 | G6 | G7 | G8 | G9)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+gate_number() {
+  printf '%s\n' "$1" | sed 's/^G//'
+}
+
+valid_gate_status() {
+  case "$1" in
+    pending | drafting | ready_for_review | ready_for_approval | approved | blocked | superseded)
       return 0
       ;;
     *)
@@ -89,6 +128,34 @@ manifest_nested_value() {
       gsub(/^"|"$/, "")
       print
       exit
+    }
+  ' "$manifest"
+}
+
+manifest_section_list_values() {
+  manifest="$1"
+  section="$2"
+  list_key="$3"
+
+  awk -v section="$section" -v list_key="$list_key" '
+    /^[^[:space:]][^:]*:/ {
+      current = $1
+      sub(":", "", current)
+      in_section = (current == section)
+      in_list = 0
+      next
+    }
+    in_section && $0 ~ "^[[:space:]]{2}" list_key ":" {
+      in_list = 1
+      next
+    }
+    in_section && in_list && /^[[:space:]]{2}[A-Za-z0-9_]+:/ {
+      exit
+    }
+    in_section && in_list && /^[[:space:]]{4}- / {
+      sub("^[[:space:]]*-[[:space:]]*", "")
+      gsub(/^"|"$/, "")
+      print
     }
   ' "$manifest"
 }
@@ -209,6 +276,37 @@ gate_log_has_legacy_approval() {
     grep -Eq '^## .+ Approval|Decision:[[:space:]]*(Approved|Accepted|approved|accepted)'
 }
 
+gate_log_missing_executable_evidence_for_g6_plus() {
+  log="$1"
+
+  [ -f "$log" ] || return 0
+
+  gate_log_records_section "$log" |
+    awk '
+      /^[[:space:]]*event_type:/ {
+        if (in_gate_transition && gate_is_g6_plus && !has_executable_evidence) {
+          missing = 1
+        }
+        in_gate_transition = ($0 ~ /^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$/)
+        gate_is_g6_plus = 0
+        has_executable_evidence = 0
+        next
+      }
+      in_gate_transition && /^[[:space:]]*(to_gate|gate):[[:space:]]*G[6-9][[:space:]]*$/ {
+        gate_is_g6_plus = 1
+      }
+      in_gate_transition && /^[[:space:]]*(executable_evidence|verification_evidence|verification):/ {
+        has_executable_evidence = 1
+      }
+      END {
+        if (in_gate_transition && gate_is_g6_plus && !has_executable_evidence) {
+          missing = 1
+        }
+        exit !missing
+      }
+    '
+}
+
 gate_log_has_stale_gate_transition_evidence() {
   log="$1"
 
@@ -234,6 +332,89 @@ gate_log_has_stale_gate_transition_evidence() {
         exit !found
       }
     '
+}
+
+changed_paths() {
+  if [ -n "${GENDEV_CHANGED_PATHS_FILE:-}" ] && [ -f "$GENDEV_CHANGED_PATHS_FILE" ]; then
+    sed '/^[[:space:]]*$/d' "$GENDEV_CHANGED_PATHS_FILE"
+  fi
+}
+
+path_matches_prefix() {
+  path="$1"
+  prefix="$2"
+
+  prefix="${prefix%/}"
+  case "$path" in
+    "$prefix" | "$prefix"/*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+list_has_known_value() {
+  values="$1"
+
+  while IFS= read -r value; do
+    [ -n "$value" ] || continue
+    if ! is_unknown "$value"; then
+      return 0
+    fi
+  done <<EOF
+$values
+EOF
+
+  return 1
+}
+
+path_is_excluded() {
+  path="$1"
+  excluded_paths="$2"
+
+  while IFS= read -r excluded_path; do
+    [ -n "$excluded_path" ] || continue
+    is_unknown "$excluded_path" && continue
+    if path_matches_prefix "$path" "$excluded_path"; then
+      return 0
+    fi
+  done <<EOF
+$excluded_paths
+EOF
+
+  return 1
+}
+
+path_is_implementation_path() {
+  path="$1"
+  implementation_paths="$2"
+  excluded_paths="$3"
+
+  if path_is_excluded "$path" "$excluded_paths"; then
+    return 1
+  fi
+
+  while IFS= read -r implementation_path; do
+    [ -n "$implementation_path" ] || continue
+    is_unknown "$implementation_path" && continue
+    if path_matches_prefix "$path" "$implementation_path"; then
+      return 0
+    fi
+  done <<EOF
+$implementation_paths
+EOF
+
+  return 1
+}
+
+trace_context_has_task_id() {
+  [ -n "${GENDEV_TRACE_CONTEXT_FILE:-}" ] || return 1
+  [ -f "$GENDEV_TRACE_CONTEXT_FILE" ] || return 1
+
+  grep -Eiq '(^|[^A-Za-z0-9_])(TASK|WS|WORKSTREAM|REQ|AC|PHASE)[-_:# ]+[A-Za-z0-9][A-Za-z0-9._-]*([^A-Za-z0-9_]|$)' \
+    "$GENDEV_TRACE_CONTEXT_FILE"
 }
 
 artifact_status() {
@@ -334,6 +515,10 @@ check_baseline_files() {
   require_dir "docs/methodology/dev-skills"
   require_dir "docs/methodology/agents/roles"
   require_file "scripts/init-project.sh"
+  require_file "scripts/check-methodology.sh"
+  require_file "scripts/methodology-guard.sh"
+  require_file "scripts/install-hooks.sh"
+  require_file ".github/workflows/methodology.yml"
 }
 
 check_manifest_paths() {
@@ -353,7 +538,7 @@ check_manifest_paths() {
     )"
 
     if [ -n "$path" ] && [ ! -e "$path" ]; then
-      fail "Manifest path does not exist: $path"
+      fail_once "Manifest path does not exist: $path"
     fi
   done < "$manifest"
 }
@@ -419,6 +604,10 @@ check_gate_log_record_format() {
 
   if gate_log_has_legacy_approval "$log" && ! gate_log_has_structured_event "$log" "gate_transition"; then
     warn "Legacy prose approval record found; new gate approvals should use structured gate events."
+  fi
+
+  if gate_log_missing_executable_evidence_for_g6_plus "$log"; then
+    fail "G6+ structured gate transition is missing executable or verification evidence."
   fi
 }
 
@@ -592,6 +781,14 @@ check_manifest_enforcement_state() {
     fi
   fi
 
+  if ! is_unknown "$pre_commit_hook" && [ ! -e "$pre_commit_hook" ]; then
+    warn "Manifest enforcement binding path does not exist: $pre_commit_hook"
+  fi
+
+  if ! is_unknown "$ci_workflow" && [ ! -e "$ci_workflow" ]; then
+    warn "Manifest enforcement binding path does not exist: $ci_workflow"
+  fi
+
   if is_unknown "$override_approvers"; then
     warn "Manifest enforcement override_policy.required_approvers is missing."
   fi
@@ -600,6 +797,104 @@ check_manifest_enforcement_state() {
     warn "Manifest enforcement override_policy.record_path is missing."
   elif [ ! -e "$override_record" ]; then
     warn "Manifest enforcement override record path does not exist: $override_record"
+  fi
+}
+
+check_manifest_gate_values() {
+  manifest="docs/project/project.yaml"
+
+  require_file "$manifest"
+  if [ ! -f "$manifest" ]; then
+    return
+  fi
+
+  project_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+  approval_gate="$(manifest_nested_value "$manifest" "approvals" "current_gate" "gate")"
+  next_gate="$(manifest_nested_value "$manifest" "approvals" "current_gate" "next_gate")"
+
+  if ! valid_gate_value "$project_gate"; then
+    fail "Manifest project.current_gate is not a valid gate: $project_gate"
+  fi
+
+  if ! valid_gate_value "$approval_gate"; then
+    fail "Manifest approvals.current_gate.gate is not a valid gate: $approval_gate"
+  fi
+
+  if ! is_unknown "$next_gate" && ! valid_gate_value "$next_gate"; then
+    fail "Manifest approvals.current_gate.next_gate is not a valid gate: $next_gate"
+  fi
+}
+
+check_diff_gate_movement() {
+  manifest="docs/project/project.yaml"
+  log="docs/project/approvals/gate-log.md"
+
+  [ -f "$manifest" ] || return
+  [ -n "${GENDEV_BASE_REF:-}" ] || return
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
+
+  tmp_manifest="$(mktemp)"
+  if ! git show "${GENDEV_BASE_REF}:$manifest" > "$tmp_manifest" 2>/dev/null; then
+    rm -f "$tmp_manifest"
+    return
+  fi
+
+  base_gate="$(manifest_section_value "$tmp_manifest" "project" "current_gate")"
+  current_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+  rm -f "$tmp_manifest"
+
+  if [ -n "$base_gate" ] && [ -n "$current_gate" ] && [ "$base_gate" != "$current_gate" ]; then
+    if ! changed_paths | grep -Fxq "$log"; then
+      fail "project.current_gate changed from $base_gate to $current_gate without a gate-log update in the same diff."
+    elif ! gate_log_has_structured_event "$log" "gate_transition"; then
+      fail "project.current_gate changed from $base_gate to $current_gate without a structured gate transition."
+    fi
+  fi
+}
+
+check_changed_path_enforcement() {
+  manifest="docs/project/project.yaml"
+
+  [ -f "$manifest" ] || return
+
+  paths="$(changed_paths)"
+  [ -n "$paths" ] || return
+
+  current_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+  valid_gate_value "$current_gate" || return
+  gate_index="$(gate_number "$current_gate")"
+
+  implementation_paths="$(manifest_section_list_values "$manifest" "enforcement" "implementation_paths")"
+  excluded_paths="$(manifest_section_list_values "$manifest" "enforcement" "excluded_paths")"
+
+  if ! list_has_known_value "$implementation_paths"; then
+    if [ "$gate_index" -ge 5 ]; then
+      fail "Manifest enforcement.implementation_paths must be set at G5 or later."
+    else
+      warn "Implementation path enforcement skipped because enforcement.implementation_paths is not set."
+    fi
+    return
+  fi
+
+  implementation_change_found=0
+
+  while IFS= read -r path; do
+    [ -n "$path" ] || continue
+    if path_is_implementation_path "$path" "$implementation_paths" "$excluded_paths"; then
+      implementation_change_found=1
+      if [ "$gate_index" -lt 5 ]; then
+        fail "Implementation path changed before G5: $path"
+      fi
+    fi
+  done <<EOF
+$paths
+EOF
+
+  if [ "$implementation_change_found" -eq 1 ] &&
+    [ "$gate_index" -ge 5 ] &&
+    [ "${GENDEV_REQUIRE_TASK_ID:-}" = "1" ] &&
+    ! trace_context_has_task_id; then
+    fail "Implementation changes at G5+ require a tactical task, workstream, or requirement ID in the review context."
   fi
 }
 
@@ -627,16 +922,9 @@ check_manifest_approval_state() {
   blockers="$(manifest_current_gate_list_values "$manifest" "blocking_open_questions")"
   evidence="$(manifest_current_gate_list_values "$manifest" "evidence")"
 
-  case "$gate_status" in
-    pending | drafting | ready_for_review | ready_for_approval | approved | blocked | superseded)
-      ;;
-    "")
-      warn "Manifest approval status is missing."
-      ;;
-    *)
-      warn "Manifest approval status is not recognized: $gate_status"
-      ;;
-  esac
+  if ! valid_gate_status "$gate_status"; then
+    fail "Manifest approval status is not recognized: $gate_status"
+  fi
 
   if [ -n "$project_gate" ] && [ -n "$gate" ] && [ "$project_gate" != "$gate" ]; then
     warn "Project current_gate ($project_gate) differs from approvals.current_gate.gate ($gate)."
@@ -676,15 +964,22 @@ check_manifest_approval_state() {
     if [ -z "$risks" ] || printf '%s\n' "$risks" | grep -Eq '^TBD$|^$'; then
       fail "Gate is approved but risk disposition is still TBD."
     fi
-    if [ -f "$log" ] &&
-      ! gate_log_has_structured_event "$log" "gate_transition" &&
-      ! gate_log_has_legacy_approval "$log"; then
-      warn "Gate is approved in manifest but no approval record is visible in gate-log.md."
-    fi
-    if [ -f "$log" ] &&
-      gate_log_has_legacy_approval "$log" &&
-      ! gate_log_has_structured_event "$log" "gate_transition"; then
-      warn "Gate is approved using a legacy prose record; structured gate event is recommended."
+    record_format="$(manifest_section_value "$manifest" "approvals" "record_format")"
+    if [ "$record_format" = "structured_markdown_yaml" ]; then
+      if [ -f "$log" ] && ! gate_log_has_structured_event "$log" "gate_transition"; then
+        fail "Gate is approved in structured mode but no structured gate transition exists in gate-log.md."
+      fi
+    else
+      if [ -f "$log" ] &&
+        ! gate_log_has_structured_event "$log" "gate_transition" &&
+        ! gate_log_has_legacy_approval "$log"; then
+        warn "Gate is approved in manifest but no approval record is visible in gate-log.md."
+      fi
+      if [ -f "$log" ] &&
+        gate_log_has_legacy_approval "$log" &&
+        ! gate_log_has_structured_event "$log" "gate_transition"; then
+        warn "Gate is approved using a legacy prose record; structured gate event is recommended."
+      fi
     fi
   fi
 }
@@ -844,6 +1139,7 @@ else
   check_project_structure
   check_manifest_paths
   check_gate_log_record_format
+  check_manifest_gate_values
   check_manifest_approval_state
   check_accepted_doc_placeholders
   check_accepted_artifact_approval_records
@@ -852,6 +1148,8 @@ else
   check_stale_evidence
   check_manifest_amendment_state
   check_manifest_enforcement_state
+  check_diff_gate_movement
+  check_changed_path_enforcement
   check_current_gate_artifact_status
   check_phase_plans
   check_traceability_evidence
