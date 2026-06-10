@@ -143,8 +143,9 @@ Example prompt:
 
 ```text
 Use bounded subagents for this review. Spawn one subagent for security/governance risk, one for
-test/UAT coverage, and one for architecture boundaries. Do not edit files. Wait for all results,
-then reconcile findings and identify required human decisions.
+test/UAT coverage, and one for architecture boundaries. Give each subagent one concise pass and
+stop if any reviewer finds C3-level risk or needs broader authority. Do not edit files. Wait for
+all results, then reconcile findings and identify required human decisions.
 ```
 
 Do not use subagents to approve gates or independently update authority (accepted project state).
@@ -187,7 +188,8 @@ Correction prompt:
 ```text
 Stop and re-orient. Codex tool approval is not GenDev gate approval. Read AGENTS.md,
 docs/project/project.yaml, and docs/project/approvals/gate-log.md. Report the current gate and next
-required human decision before making more changes.
+required human decision before making more changes. Include blast-radius class and enforcement
+class in the report.
 ```
 
 ## What Belongs In Codex-Specific Docs

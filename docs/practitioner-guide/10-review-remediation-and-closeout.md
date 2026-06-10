@@ -61,6 +61,19 @@ Exceptions:
 implementer chat history or reasoning, the report should explain why that exception was necessary
 and how it may affect independence.
 
+Example:
+
+```text
+Reviewing agent: Codex review session
+Model/version: TBD
+Review context created on: 2026-06-10
+Inputs provided: AGENTS.md, project.yaml, PRD, architecture, governance spec, construction directive, diff, test output
+Authority document revisions used: PRD abc1234, architecture def5678, governance 901abcd
+Implementation diff or commit reviewed: pull request #42
+Implementer session shared with reviewer: No
+Exceptions: None
+```
+
 ## Code Review Report
 
 The code review report should include:

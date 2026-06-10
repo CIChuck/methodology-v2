@@ -25,6 +25,10 @@ reference.
 The chapters define GenDev-specific terms inline at first use where a new practitioner may need
 immediate context. Chapter 18 provides the deeper glossary for review and reference.
 
+The guide now assumes the hardened GenDev baseline: explicit approvals, structured gate records,
+artifact provenance, amendment/regression discipline, independent review context provenance,
+enforcement class, blast-radius scaling, process metrics, value review, and production operations.
+
 1. [Orientation](01-orientation.md)
 2. [Core Mental Model](02-core-mental-model.md)
 3. [Repository Map](03-repository-map.md)
@@ -69,6 +73,7 @@ Primary authority references:
 
 ## Version Status
 
-This is a first practitioner-guide version. It is intentionally complete across the lifecycle but
-thin in the worked example. As the methodology matures, the walkthrough should be embellished with
-richer artifact excerpts, stronger production evidence, and more tool-specific addenda.
+This guide is aligned with the hardened pre-1.0 GenDev baseline. It is intentionally complete
+across the lifecycle while keeping the walkthrough thin enough to read end to end. As the
+methodology matures, the walkthrough should be embellished with richer artifact excerpts, stronger
+production evidence, and more tool-specific addenda.

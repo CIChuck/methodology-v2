@@ -125,8 +125,9 @@ Example prompt:
 
 ```text
 Use Claude Code subagents for bounded review. Create one security/governance reviewer, one
-testability reviewer, and one architecture-boundary reviewer. Do not edit files. Return a reconciled
-findings list with conflicts and required human decisions.
+testability reviewer, and one architecture-boundary reviewer. Give each reviewer one concise pass
+and stop if any reviewer finds C3-level risk or needs broader authority. Do not edit files. Return
+a reconciled findings list with conflicts and required human decisions.
 ```
 
 For conformance review, configure or prompt review subagents to start from fresh context: authority
@@ -182,7 +183,7 @@ Correction prompt:
 ```text
 Stop and re-orient. Read CLAUDE.md, AGENTS.md, docs/project/project.yaml, and
 docs/project/approvals/gate-log.md. Report the current GenDev gate, active artifact, approval state,
-and next human decision before making changes.
+blast-radius class, enforcement class, and next human decision before making changes.
 ```
 
 ## What Belongs In Claude-Specific Docs

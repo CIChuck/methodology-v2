@@ -514,6 +514,15 @@ Attested enforcement is the normal baseline state for a newly initialized GenDev
 does not require platform-specific tooling. It should declare cadence, required attester, exception
 rules, and override policy in `docs/project/project.yaml`.
 
+## Attested Conformance
+
+Attested conformance means the project conforms to a methodology requirement because a named human
+checked the requirement and recorded the result. It is the human-recorded counterpart to mechanical
+enforcement.
+
+Attested conformance should name the requirement checked, evidence reviewed, attester, date, result,
+and any exception or override. It is valid at baseline, but it should not be vague.
+
 ## Authority
 
 Authority is the set of documents and records that govern project work. GenDev distinguishes
@@ -874,6 +883,15 @@ files, allowed gate values, stale evidence, provenance headers, or protected imp
 
 Enforced does not mean no human judgment is needed. Humans still approve gates, accept risk, and
 decide whether an override is justified.
+
+## Enforced Conformance
+
+Enforced conformance means the project conforms to a methodology requirement because a mechanical
+binding checks or blocks the condition. Examples include a local hook, CI workflow, protected-branch
+rule, policy check, or equivalent platform binding.
+
+Enforced conformance is strongest for objective checks. Human approval still controls intent, risk,
+gate movement, production decisions, and override judgment.
 
 ## Enforcement
 

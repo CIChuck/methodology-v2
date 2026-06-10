@@ -38,9 +38,12 @@ Expected response shape:
 ```text
 Current gate:
 Current mode:
+Blast-radius class:
+Enforcement class:
 Current artifact:
 Readiness:
 Approval state:
+Active amendments or stale evidence:
 Recommended next step:
 Human decision needed:
 ```
@@ -66,6 +69,8 @@ agent should restate the approval record:
 I understand this as approval for:
 Gate:
 Evidence:
+Blast-radius class:
+Enforcement class:
 Known risks accepted:
 Next gate:
 Next role:
