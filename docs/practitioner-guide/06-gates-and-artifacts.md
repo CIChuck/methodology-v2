@@ -39,6 +39,11 @@ An artifact may be `Ready for Approval` before the gate is approved. The gate be
 only after human approval is recorded in durable project authority (accepted repository state that
 future humans and agents should trust).
 
+Gate approvals should be recorded as structured gate-log events in
+`docs/project/approvals/gate-log.md`. A structured event is a Markdown section containing a small
+YAML block with the gate transition, decision, approver, evidence, accepted risks, and a `checked`
+statement naming what the approver actually verified.
+
 ## Gate Overview
 
 ## G0: Project Initialized
@@ -268,6 +273,7 @@ At each gate, ask:
 ```text
 What artifact proves readiness?
 What human approval is required?
+What did the approver actually check?
 What risk is being accepted?
 What happens next?
 ```

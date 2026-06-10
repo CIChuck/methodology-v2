@@ -16,12 +16,15 @@ under what scope.
 
 - Approval is a human control point.
 - Approval should be recorded in Markdown.
+- Standard gate approvals should include a structured event block that can be checked by tooling.
 - `project.yaml` should summarize current approval state.
 - `docs/project/approvals/gate-log.md` should preserve gate approval history.
 - Chat approval should be copied into durable project docs when it affects scope, risk, or gate
   movement.
 - Approval of one artifact does not approve unrelated future work.
 - Accepted risk must be visible.
+- Approval is meaningful only when the approver can explain the artifact, identify its principal
+  risks, and could credibly stop the work.
 
 ## Approval State Values
 
@@ -59,10 +62,15 @@ Decision:
 Approved by:
 Date:
 Scope approved:
+Evidence reviewed:
+Checked:
 Known risks accepted:
 Conditions:
 Next gate:
 ```
+
+`Checked` is one substantive statement, in the approver's own words, naming something they actually
+verified. It is not a restatement of "looks good."
 
 If a section is not applicable, write `N/A` with a short reason.
 
@@ -123,21 +131,41 @@ Approval should be near the top or bottom of the artifact, depending on local do
 
 Gate approval means the project may move from one gate to the next.
 
+Standard gate approval records should use a structured YAML block inside
+`docs/project/approvals/gate-log.md`. Human-readable notes may follow the block.
+
 Recommended record:
 
-```markdown
-## Gate Approval
+````markdown
+## Gate Event: G1 -> G2
 
-Gate transition:
-Decision:
-Approved by:
-Date:
-Evidence reviewed:
-Known risks accepted:
-Next role:
-Next artifact:
-Manifest updated:
+```yaml
+event_type: gate_transition
+from_gate: G1
+to_gate: G2
+decision: approved
+decided_by: TBD
+decided_on: YYYY-MM-DD
+enforcement_class: attested
+artifact_status: Accepted
+evidence:
+  - path: docs/project/vision/[project-slug]-vision.md
+    revision: TBD
+checked: "TBD: one substantive statement from the approver."
+known_risks_accepted:
+  - risk: TBD
+    rationale: TBD
+open_questions_carried_forward:
+  - question: TBD
+    owner: TBD
+    target_gate: G2
+conditions:
+  - TBD
+next_role: prd-agent
+next_artifact: docs/project/prd/[project-slug]-prd.md
+manifest_updated: true
 ```
+````
 
 Gate approval should be recorded in `docs/project/approvals/gate-log.md`. It may also be recorded
 in the approved artifact. `project.yaml` must summarize the latest gate state.
@@ -158,6 +186,35 @@ Manifest updates to record:
 
 The agent should not interpret a casual `proceed` as gate approval unless the gate, approver,
 evidence, and risk disposition are unambiguous and can be recorded.
+
+Legacy prose approval records are acceptable during migration, but new gate approvals should use the
+structured event shape. Structured records make gate movement, approval sampling, enforcement
+attestation, and future metrics computable from the project record.
+
+## Evidence Sampling
+
+At least once per implementation phase, before phase close-out approval, the approver should sample
+one traceability row and verify it end to end.
+
+The sampled row should be recorded in the gate log:
+
+```text
+requirement -> architecture rule or decision -> build item -> implementation reference -> test/UAT evidence -> review confirmation
+```
+
+Record:
+
+```text
+Sampled traceability row:
+Sampled by:
+Sampled on:
+Result:
+Discrepancy:
+Disposition:
+```
+
+A discrepancy in a sampled row blocks phase close-out until it is explained, remediated, or
+explicitly accepted as risk by the human approver.
 
 ## Review Finding Acceptance
 

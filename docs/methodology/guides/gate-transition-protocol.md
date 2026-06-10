@@ -37,6 +37,7 @@ Before any gate transition, confirm:
 [ ] security/governance implications are addressed
 [ ] known risks are listed or explicitly N/A
 [ ] human approval is recorded when required
+[ ] approval includes a substantive checked statement when the standard record is required
 [ ] project.yaml is updated or update is queued
 [ ] gate-log.md is updated or update is queued
 [ ] next role and artifact are identified
@@ -44,25 +45,45 @@ Before any gate transition, confirm:
 
 ## Transition Record
 
-Recommended lightweight record:
+Recommended structured record:
 
-```text
-Gate transition:
-From:
-To:
-Decision:
-Approved by:
-Date:
-Evidence:
-Known risks accepted:
-Open questions allowed to carry forward:
-Next role:
-Next artifact:
-Manifest updated:
+````markdown
+## Gate Event: G1 -> G2
+
+```yaml
+event_type: gate_transition
+from_gate: G1
+to_gate: G2
+decision: approved
+decided_by: TBD
+decided_on: YYYY-MM-DD
+enforcement_class: attested
+artifact_status: Accepted
+evidence:
+  - path: docs/project/vision/[project-slug]-vision.md
+    revision: TBD
+checked: "TBD: one substantive statement from the approver."
+known_risks_accepted:
+  - risk: TBD
+    rationale: TBD
+open_questions_carried_forward:
+  - question: TBD
+    owner: TBD
+    target_gate: G2
+conditions:
+  - TBD
+next_role: prd-agent
+next_artifact: docs/project/prd/[project-slug]-prd.md
+manifest_updated: true
 ```
+````
 
 This record should live in `docs/project/approvals/gate-log.md` and may also live in the approved
 artifact. `project.yaml` should summarize the current gate and approval state.
+
+Legacy prose transition records may remain in existing projects during migration. New gate
+transitions should use the structured form so tooling can identify the transition, approver,
+evidence, risk disposition, and checked statement.
 
 Before requesting approval, the lead agent should show the human:
 

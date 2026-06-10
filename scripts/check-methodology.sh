@@ -151,6 +151,39 @@ manifest_current_gate_list_values() {
   ' "$manifest"
 }
 
+gate_log_records_section() {
+  log="$1"
+
+  awk '
+    /^## Gate Records/ {
+      in_records = 1
+      next
+    }
+    in_records {
+      print
+    }
+  ' "$log"
+}
+
+gate_log_has_structured_event() {
+  log="$1"
+  event_type="$2"
+
+  [ -f "$log" ] || return 1
+
+  gate_log_records_section "$log" |
+    grep -Eq "^[[:space:]]*event_type:[[:space:]]*${event_type}[[:space:]]*$"
+}
+
+gate_log_has_legacy_approval() {
+  log="$1"
+
+  [ -f "$log" ] || return 1
+
+  gate_log_records_section "$log" |
+    grep -Eq '^## .+ Approval|Decision:[[:space:]]*(Approved|Accepted|approved|accepted)'
+}
+
 check_heading() {
   file="$1"
   heading="$2"
@@ -238,6 +271,27 @@ check_accepted_doc_placeholders() {
   done < <(find docs/project -type f \( -name '*.md' -o -name '*.yaml' \) -print)
 }
 
+check_gate_log_record_format() {
+  log="docs/project/approvals/gate-log.md"
+
+  [ -f "$log" ] || return
+
+  records="$(gate_log_records_section "$log")"
+
+  if printf '%s\n' "$records" | grep -Eq '^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$'; then
+    if ! printf '%s\n' "$records" | grep -Eq '^[[:space:]]*checked:[[:space:]]*.+'; then
+      warn "Structured gate transition exists but no checked statement was found in gate-log.md."
+    fi
+    if ! printf '%s\n' "$records" | grep -Eq '^[[:space:]]*evidence:'; then
+      warn "Structured gate transition exists but no evidence block was found in gate-log.md."
+    fi
+  fi
+
+  if gate_log_has_legacy_approval "$log" && ! gate_log_has_structured_event "$log" "gate_transition"; then
+    warn "Legacy prose approval record found; new gate approvals should use structured gate events."
+  fi
+}
+
 check_manifest_approval_state() {
   manifest="docs/project/project.yaml"
   log="docs/project/approvals/gate-log.md"
@@ -311,8 +365,15 @@ check_manifest_approval_state() {
     if [ -z "$risks" ] || printf '%s\n' "$risks" | grep -Eq '^TBD$|^$'; then
       fail "Gate is approved but risk disposition is still TBD."
     fi
-    if [ -f "$log" ] && ! grep -Eq '^## .+ Approval|Decision:[[:space:]]*(Approved|Accepted)' "$log"; then
+    if [ -f "$log" ] &&
+      ! gate_log_has_structured_event "$log" "gate_transition" &&
+      ! gate_log_has_legacy_approval "$log"; then
       warn "Gate is approved in manifest but no approval record is visible in gate-log.md."
+    fi
+    if [ -f "$log" ] &&
+      gate_log_has_legacy_approval "$log" &&
+      ! gate_log_has_structured_event "$log" "gate_transition"; then
+      warn "Gate is approved using a legacy prose record; structured gate event is recommended."
     fi
   fi
 }
@@ -440,6 +501,7 @@ if [ ! -d "docs/project" ]; then
 else
   check_project_structure
   check_manifest_paths
+  check_gate_log_record_format
   check_manifest_approval_state
   check_accepted_doc_placeholders
   check_accepted_artifact_approval_records

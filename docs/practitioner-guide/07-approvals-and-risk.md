@@ -65,6 +65,7 @@ Evidence reviewed:
 Open questions:
 Known risks:
 Risks requiring acceptance:
+Checked:
 Proposed next gate:
 Proposed next role:
 Manifest updates to record:
@@ -90,21 +91,39 @@ next.
 
 Good agent record:
 
-```markdown
-## G1 -> G2 Approval
+````markdown
+## Gate Event: G1 -> G2
 
-Date: 2026-06-09
-Approver: Chuck
-Decision: Approved
-Evidence reviewed: docs/project/vision/vendor-contract-tracker-vision.md
-Known risks accepted: Integration needs may emerge during PRD discovery.
-Open questions allowed to carry forward: Exact integration scope.
-Conditions: PRD must keep integrations deferred unless explicitly approved.
-Next gate: G2
-Next role: prd-agent
-Next artifact: docs/project/prd/vendor-contract-tracker-prd.md
-Manifest updated: yes
+```yaml
+event_type: gate_transition
+from_gate: G1
+to_gate: G2
+decision: approved
+decided_by: Chuck
+decided_on: 2026-06-09
+enforcement_class: attested
+artifact_status: Accepted
+evidence:
+  - path: docs/project/vision/vendor-contract-tracker-vision.md
+    revision: TBD
+checked: "Confirmed that the vision keeps integrations deferred and names integration scope as a PRD question."
+known_risks_accepted:
+  - risk: Integration needs may emerge during PRD discovery.
+    rationale: Acceptable for G1 because integrations remain deferred unless explicitly approved.
+open_questions_carried_forward:
+  - question: Exact integration scope.
+    owner: Chuck
+    target_gate: G2
+conditions:
+  - PRD must keep integrations deferred unless explicitly approved.
+next_role: prd-agent
+next_artifact: docs/project/prd/vendor-contract-tracker-prd.md
+manifest_updated: true
 ```
+````
+
+`Checked` is the key difference between a ceremonial approval and a useful approval. It forces one
+plain statement of what the approver actually verified.
 
 ## Weak Approval Language
 
@@ -118,7 +137,7 @@ The agent should ask:
 
 ```text
 Should I record this as approval for G1 -> G2? If yes, please confirm the approver and any known
-risks accepted or state N/A.
+risks accepted or state N/A. Also provide one checked statement naming something you verified.
 ```
 
 Weak approval:
@@ -161,6 +180,21 @@ should distinguish:
 Before approval, the agent should list carried-forward questions (questions intentionally moved into
 a later gate or phase) explicitly.
 
+## Evidence Sampling
+
+At least once per implementation phase, before phase close-out, the approver should sample one
+traceability row (one requirement-to-evidence mapping) and verify it end to end.
+
+The sampling question is:
+
+```text
+Can I follow this requirement from the PRD, through architecture and planning, into implementation,
+test/UAT evidence, review confirmation, and close-out?
+```
+
+If the sampled row does not hold together, the phase should not close until the discrepancy is
+explained, remediated, or explicitly accepted as risk.
+
 ## Manifest Rules
 
 Do not set `approvals.current_gate.status` to `ready_for_approval` while required approver,
@@ -186,6 +220,7 @@ Before approving a gate, confirm:
 [ ] I know which gate is advancing.
 [ ] I understand unresolved questions.
 [ ] I understand known risks.
+[ ] I can state one specific thing I checked.
 [ ] I know what role and artifact come next.
 [ ] I expect the agent to record this in gate-log.md and project.yaml.
 ```

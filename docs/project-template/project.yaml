@@ -41,6 +41,7 @@ collaboration:
   mode_set_on: TBD
 
 approvals:
+  record_format: structured_markdown_yaml
   current_gate:
     gate: G1
     status: pending

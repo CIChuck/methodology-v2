@@ -160,6 +160,7 @@ Approval should record:
 - who approved it;
 - when it was approved;
 - what evidence was reviewed;
+- what the approver checked;
 - what risks were accepted;
 - what conditions apply;
 - what happens next.
@@ -210,6 +211,26 @@ superseded
 ```
 
 The agent should report approval state when responding to `What's next?`.
+
+## Checked
+
+`Checked` is the approval-record field where the approver states one specific thing they actually
+verified. It is intentionally small but important.
+
+Weak checked statement:
+
+```text
+Looks good.
+```
+
+Useful checked statement:
+
+```text
+Confirmed that the PRD acceptance criteria are measurable for REQ-001 through REQ-006.
+```
+
+The point is not to turn approval into a long review essay. The point is to make approval
+meaningful enough that a future human or agent can tell the approver engaged with the evidence.
 
 ## Approver
 
@@ -632,6 +653,7 @@ Gate approval should include:
 - approver;
 - date;
 - evidence reviewed;
+- checked statement;
 - known risks accepted;
 - open questions carried forward;
 - next role;
@@ -641,6 +663,9 @@ Gate approval should include:
 
 The gate log is `docs/project/approvals/gate-log.md`. It records durable gate decisions and material
 risk acceptance. It is the historical counterpart to `project.yaml`.
+
+New gate-log entries should use structured gate-log events so future agents and checker scripts can
+read the decision consistently.
 
 ## Gate Status
 
@@ -971,6 +996,15 @@ Examples:
 - implementation requires new scope;
 - deployment lacks rollback.
 
+## Structured Gate-Log Event
+
+A structured gate-log event is a Markdown section in `docs/project/approvals/gate-log.md` that
+contains a small YAML block. The YAML block records the event type, gate transition, decision,
+approver, evidence, checked statement, accepted risks, and next role or artifact.
+
+Structured events are still human-readable, but they are also easier for future tools to validate.
+They are the bridge between lightweight Markdown records and mechanical enforcement or metrics.
+
 ## Sub-Agent
 
 A sub-agent is a bounded secondary agent used for specialized analysis or work. In GenDev,
@@ -1019,6 +1053,15 @@ review confirmation, and status. It prevents the project from claiming requireme
 without evidence.
 
 Traceability is one of the main tools for future-agent continuity.
+
+## Traceability Sample
+
+A traceability sample is an approver's spot check of one traceability row. The approver follows one
+requirement from source requirement through architecture, build plan, implementation, test/UAT
+evidence, review confirmation, and close-out.
+
+Sampling does not prove every row is correct. It changes the incentive structure: agents and humans
+know that traceability claims may be opened and checked, not merely summarized.
 
 ## UAT
 

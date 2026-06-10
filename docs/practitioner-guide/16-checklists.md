@@ -8,6 +8,9 @@ active project means the initialized product under `docs/project/`. A gate means
 checkpoint. An artifact means a durable project document or record. Approval means the human
 decision that a gate, artifact, risk, phase, or release may move forward. Evidence means proof that
 supports a readiness claim.
+Checked means the approver records one specific thing they actually verified. A structured gate-log
+event means a Markdown approval entry containing a small YAML block that future agents and tools can
+read consistently.
 
 Several checklist terms are compact by design. PRD means product requirements document. UAT means
 user acceptance testing. ADR means architecture decision record. Traceability means mapping
@@ -56,6 +59,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] risks are listed
 [ ] open questions have owners or timing
 [ ] approval summary is prepared
+[ ] approver can provide a checked statement
 ```
 
 ## G2 PRD Checklist
@@ -70,6 +74,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] dependencies are listed
 [ ] security/governance requirements are visible
 [ ] architecture-blocking questions are resolved or assigned
+[ ] approver can provide a checked statement
 ```
 
 ## G3 Architecture Checklist
@@ -85,6 +90,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] failure behavior is addressed
 [ ] stack ADR is accepted or ready for approval
 [ ] implementation will not need to invent core structure
+[ ] approver can provide a checked statement
 ```
 
 ## G4 Governance Checklist
@@ -100,6 +106,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] secrets handling is defined
 [ ] external tool access rules are defined
 [ ] agent stop conditions are defined
+[ ] approver can provide a checked statement
 ```
 
 ## G5 Build-Ready Checklist
@@ -115,6 +122,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] migration behavior is documented or N/A
 [ ] rollback behavior is documented where applicable
 [ ] construction directive is ready for implementation
+[ ] approver can provide a checked statement
 ```
 
 ## G6 Review-Ready Checklist
@@ -139,6 +147,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] traceability matrix updated
 [ ] residual risk documented
 [ ] phase acceptance approval recorded
+[ ] traceability row sampled before close-out, if this is the phase close-out approval
 ```
 
 ## G8 Deployment Checklist
@@ -153,6 +162,7 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] monitoring/validation plan documented
 [ ] post-deployment owner named
 [ ] deployment approval recorded
+[ ] deployment approval includes a checked statement
 ```
 
 ## G9 As-Built Checklist
@@ -166,5 +176,6 @@ check is not applicable, but the reason should still be clear when risk is invol
 [ ] test/UAT evidence recorded
 [ ] production status recorded, if deployed
 [ ] traceability updated
+[ ] traceability sample result recorded
 [ ] next phase or backlog state clear
 ```
