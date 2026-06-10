@@ -21,6 +21,9 @@ docs/project/
 docs/project-template/
   Clone-time skeleton used by the initialization script.
 
+docs/practitioner-guide/
+  Field manual for technical practitioners using the methodology with AI coding agents.
+
 docs/examples/
   Non-authoritative examples and future worked examples.
 ```
@@ -94,6 +97,7 @@ documents under `docs/project/`.
 - Artifact collaboration protocol: `docs/methodology/guides/artifact-collaboration-protocol.md`
 - Production operations protocol: `docs/methodology/guides/production-operations-protocol.md`
 - Orchestration validation: `docs/methodology/guides/orchestration-validation.md`
+- Practitioner guide: `docs/practitioner-guide/`
 - Templates: `docs/methodology/templates/`
 - Dev-skill guidance: `docs/methodology/dev-skills/`
 - Agent role playbooks: `docs/methodology/agents/roles/`

@@ -1,0 +1,156 @@
+# 04. Starting A New Project
+
+## Purpose
+
+This chapter explains the normal startup path for turning the baseline repository (the reusable
+GenDev repository before product-specific initialization) into an active product project (the
+initialized project under `docs/project/`).
+
+## Starting Assumptions
+
+This guide assumes:
+
+- you have cloned the baseline repository;
+- you are on the branch you intend to use;
+- your working tree is in a state you understand;
+- you can run shell commands from the repository root;
+- you have an AI coding agent (an AI tool that can inspect files, draft artifacts, write code, and
+  run commands) available, such as Codex or Claude Code.
+
+## Initialize The Project
+
+From the repository root, run:
+
+```bash
+./scripts/init-project.sh "My Product Name"
+```
+
+Example:
+
+```bash
+./scripts/init-project.sh "Vendor Contract Tracker"
+```
+
+The script creates `docs/project/` and renders project-specific paths from the methodology
+templates (starter documents that become project artifacts).
+
+Expected output shape:
+
+```text
+Initialized docs/project for Vendor Contract Tracker
+Project slug: vendor-contract-tracker
+Next document: docs/project/vision/vendor-contract-tracker-vision.md
+```
+
+## Inspect The Manifest
+
+After initialization, inspect:
+
+```bash
+sed -n '1,140p' docs/project/project.yaml
+```
+
+Confirm the manifest (the compact `project.yaml` tracking record for current project state):
+
+- `project.name` is correct;
+- `project.slug` is acceptable;
+- `project.current_gate` is `G1` (the vision gate, where the team defines why the product exists);
+- authority paths exist (paths to the documents and records that govern the project);
+- approval state is `pending`;
+- the G1 evidence path points to the vision document.
+
+The owner and approver fields may initially be `TBD`. The agent can draft early G1 material before
+those fields are resolved, but it should not mark the gate `ready_for_approval` (ready for a human
+approval decision) until required human authority is known.
+
+## Run The Checker
+
+Run:
+
+```bash
+./scripts/check-methodology.sh
+```
+
+For a clean initialized project, the checker should pass. If it warns about approval state (the
+manifest's record of whether a gate is pending, drafting, ready, approved, blocked, or superseded),
+resolve that state before treating a gate as ready or approved.
+
+## Start The Agent
+
+Start the chosen AI coding agent from the repository root. The exact command depends on the tool.
+For example, a Codex user starts a Codex session from the repository root. A Claude Code user starts
+Claude Code from the repository root.
+
+The important point is not the tool name. The important point is the working directory (the
+directory where the agent starts and resolves repository-relative paths). The agent must be able to
+read:
+
+```text
+AGENTS.md
+docs/methodology/
+docs/project/project.yaml
+docs/project/
+```
+
+## First Prompt
+
+Use a short prompt:
+
+```text
+Let's begin.
+```
+
+Expected agent behavior:
+
+```text
+Current gate: G1
+Current mode: approval-gated, unless changed by the human
+Active artifact: docs/project/vision/[slug]-vision.md
+Recommended next step: confirm owner, approver, collaboration mode, and draft the G1 vision
+Human input needed: product objective, target users, constraints, and any known non-goals
+```
+
+The agent should not begin implementation. If it starts proposing code, stop it and re-orient:
+
+```text
+Stop. Re-read AGENTS.md and docs/project/project.yaml. We are at G1. Draft the vision artifact only.
+Do not implement code.
+```
+
+## First-Run Preflight
+
+The lead agent should capture or confirm:
+
+```text
+Project owner:
+Gate approver:
+Deployment approver, if known:
+Collaboration mode (how proactively the agent should act and when it must pause):
+Sub-agents allowed (specialized AI workers for bounded review or analysis):
+Initial product objective:
+```
+
+Example human response:
+
+```text
+Owner: Chuck
+Gate approver: Chuck
+Deployment approver: TBD until we define production
+Mode: proactive, but keep gate approvals explicit
+Sub-agents: allowed for reviews and risk analysis
+Objective: build a lightweight system for tracking vendor contracts, owners, renewals, and status
+```
+
+The agent should record persistent state (state that must survive beyond the current chat or CLI
+session) in `project.yaml` when the human intends it to survive the current session.
+
+## Stop Point
+
+The startup phase ends when:
+
+- `docs/project/` exists;
+- `project.yaml` is readable and coherent;
+- the current gate is G1;
+- collaboration mode is known;
+- the human has supplied enough context to draft the vision document;
+- the agent knows not to proceed beyond G1 without approval.
