@@ -20,6 +20,7 @@ This document is complete when:
 
 ```text
 the team can explain why the work matters and what success looks like
+with measurable success criteria that can be read after deployment
 ```
 
 Do not proceed to PRD until this standard is met.
@@ -71,12 +72,13 @@ State outcomes, not features.
 
 ```text
 How will success be measured?
-Each criterion must be observable and testable.
+Each criterion must be observable and testable. Each row must name the measure, target, timing, owner,
+and evidence source needed for a later value review.
 ```
 
-| Criterion | Measurement | Threshold |
-| --- | --- | --- |
-|  |  |  |
+| Criterion | Measure | Target | Read Timing | Owner | Evidence Source |
+| --- | --- | --- | --- | --- | --- |
+|  |  |  |  |  |  |
 
 ---
 
@@ -161,7 +163,7 @@ Check for:
 
 ```text
 [ ] problem statement that describes a solution instead of a problem
-[ ] success criteria that cannot be measured
+[ ] success criteria with no measure, target, read timing, owner, or evidence source
 [ ] non-goals that are actually in scope
 [ ] assumptions that are stated as facts
 [ ] risks with no mitigation
@@ -177,7 +179,7 @@ Before proceeding to PRD:
 ```text
 [ ] problem is clear
 [ ] target users are clear
-[ ] success criteria are observable
+[ ] success criteria are measurable and have read timing
 [ ] non-goals are documented
 [ ] open questions have owners
 ```

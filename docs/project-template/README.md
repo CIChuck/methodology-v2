@@ -28,6 +28,7 @@ authority documents define the stack and implementation plan.
   handoff;
 - active amendment count and amendment protocol path;
 - enforcement class, attestation cadence, binding paths, and override policy;
+- measurement command, metrics snapshot cadence, and value review path;
 - example/non-authority notes.
 
 The manifest is a map and state summary, not a replacement for the documents it references.
@@ -67,6 +68,15 @@ After initialization, run:
 
 The checker validates the active project structure, manifest paths, approval-state invariants,
 enforcement block presence, phase-plan sections, and basic traceability evidence signals.
+
+Project metrics can be generated on demand:
+
+```bash
+./scripts/methodology-metrics.sh docs/project
+```
+
+Use the report as a phase close-out snapshot when the phase reaches G9 or production value is
+reviewed.
 
 ## Optional Local Hook
 

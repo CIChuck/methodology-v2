@@ -92,7 +92,7 @@ Exit criteria:
 
 - problem statement is clear;
 - target users are clear;
-- success criteria are observable;
+- success criteria are measurable and include read timing;
 - non-goals are explicit;
 - blocking open questions are assigned.
 

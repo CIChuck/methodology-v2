@@ -20,6 +20,8 @@ check is not applicable, but the reason should still be clear when risk is invol
 means the methodology controls declared in `docs/project/project.yaml`; attested enforcement means
 named humans confirm the checks, while enforced means a mechanical binding blocks nonconforming
 changes.
+Metrics means on-demand measurement derived from required project records, not a separate reporting
+system.
 
 ## New Project Checklist
 
@@ -61,7 +63,7 @@ changes.
 [ ] problem statement is clear
 [ ] target users are clear
 [ ] desired outcomes are stated
-[ ] success criteria are observable
+[ ] success criteria have measure, target, read timing, owner, and evidence source
 [ ] non-goals are explicit
 [ ] assumptions are separate from facts
 [ ] risks are listed
@@ -172,6 +174,7 @@ changes.
 [ ] enforcement or attestation evidence reviewed
 [ ] override policy reviewed if any control was bypassed
 [ ] post-deployment owner named
+[ ] value review trigger and owner named
 [ ] deployment approval recorded
 [ ] deployment approval includes a checked statement
 ```
@@ -188,5 +191,7 @@ changes.
 [ ] production status recorded, if deployed
 [ ] traceability updated
 [ ] traceability sample result recorded
+[ ] methodology metrics snapshot recorded or explicitly deferred
+[ ] value review status recorded, if production or measurable value occurred
 [ ] next phase or backlog state clear
 ```

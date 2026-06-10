@@ -24,6 +24,7 @@ Production includes:
 - incident and rollback decision process;
 - operating runbook;
 - known limitations and follow-up backlog.
+- post-deployment value review.
 
 ## Required Authority
 
@@ -52,6 +53,7 @@ Required:
 [ ] operational checks defined
 [ ] monitoring/alert checks defined
 [ ] post-deployment validation defined
+[ ] value review trigger and owner defined
 [ ] known limitations documented
 [ ] human deployment approval recorded
 ```
@@ -143,6 +145,33 @@ Issues found:
 Follow-up:
 ```
 
+## Value Review
+
+Value review compares actual post-deployment evidence to the measurable success criteria declared
+in the G1 vision. It is not a satisfaction ritual and it is not a feature checklist. It answers
+whether the release produced the intended outcome.
+
+Before or during deployment readiness, define:
+
+```text
+Value read trigger:
+Value read date, if known:
+Value review owner:
+Evidence sources:
+Success criteria due for review:
+```
+
+After the read trigger occurs, update the value review artifact and report each due criterion as:
+
+```text
+met
+missed
+unmeasurable
+```
+
+Unmeasurable criteria are not treated as success. They require a follow-up decision about
+instrumentation, criterion wording, or project direction.
+
 ## Monitoring Review
 
 Monitoring review should answer:
@@ -191,6 +220,7 @@ A release is operationally closed when:
 - post-deployment validation is recorded;
 - rollback was not needed or was completed;
 - monitoring status is documented;
+- value review is complete or explicitly not yet due;
 - incidents and follow-ups are tracked;
 - as-built docs and known limitations are updated.
 
@@ -203,9 +233,11 @@ Agents must stop before deployment or rollback if:
 - secrets are requested in chat;
 - rollback is undefined for risky changes;
 - monitoring/validation is absent and risk is not accepted;
+- value review trigger or owner is missing for a value-bearing release;
 - governance/security requirements are unmet.
 
 ## Completion Standard
 
 This protocol is working when production release decisions are explicit, reversible where possible,
-observable after deployment, and understandable to future humans and agents.
+observable after deployment, measured against declared success criteria, and understandable to
+future humans and agents.

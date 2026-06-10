@@ -65,6 +65,9 @@ Gate:
 Artifact status:
 Evidence reviewed:
 Evidence revisions:
+Gate started on:
+Ready for approval on:
+Approval requested on:
 Enforcement class:
 Attestation or enforcement evidence:
 Open questions:
@@ -127,6 +130,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: Chuck
+gate_started_on: 2026-06-09
+ready_for_approval_on: 2026-06-09
+approval_requested_on: 2026-06-09
 decided_on: 2026-06-09
 enforcement_class: attested
 artifact_status: Accepted
@@ -163,6 +169,11 @@ the required methodology checks on the configured cadence) or `enforced` control
 binding, such as a hook or CI policy, blocks nonconforming changes). At baseline, GenDev projects
 usually start as `attested`. A gate approval should still identify what was attested or what
 mechanical evidence was reviewed.
+
+The timing fields support process telemetry. `gate_started_on` marks when meaningful work began for
+the gate. `ready_for_approval_on` marks when the artifact had enough evidence for approval.
+`approval_requested_on` marks when the human was asked to decide. `decided_on` marks when the human
+decision happened.
 
 ## Weak Approval Language
 

@@ -147,7 +147,7 @@ The vision should define:
 - target users;
 - user pain or opportunity;
 - desired outcomes;
-- success criteria;
+- success criteria with a measure, target, read timing, owner, and evidence source;
 - non-goals (things the team is explicitly choosing not to build now);
 - assumptions (beliefs being used for planning before they are proven);
 - risks;
@@ -332,6 +332,8 @@ Required evidence:
 - known limitations;
 - deferred backlog (items intentionally postponed for later work);
 - final traceability update;
+- metrics snapshot or explicit deferral;
+- value review status, if production or measurable value occurred;
 - production status, if deployed;
 - next phase or operational follow-up.
 
@@ -350,6 +352,7 @@ Is there an active amendment or regression that affects this evidence?
 What human approval is required?
 What did the approver actually check?
 What enforcement class applies, and what attestation or enforcement evidence exists?
+What measurement or value-review evidence is now due?
 What risk is being accepted?
 What happens next?
 ```

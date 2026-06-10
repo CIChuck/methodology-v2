@@ -33,6 +33,7 @@ authority:
   governance_security: docs/project/security-governance/governance-security-spec.md
   traceability: docs/project/traceability/[project-slug]-traceability-matrix.md
   approval_log: docs/project/approvals/gate-log.md
+  value_review: docs/project/as-built/phase-1-value-review.md
 
 collaboration:
   mode: approval-gated
@@ -105,6 +106,12 @@ enforcement:
     required_approvers: 1
     record_path: docs/project/approvals/gate-log.md
 
+measurement:
+  metrics_command: scripts/methodology-metrics.sh docs/project
+  metrics_snapshot_cadence: phase_closeout
+  value_review: docs/project/as-built/phase-1-value-review.md
+  value_review_required_after: first_production_or_value_event
+
 phase:
   current: 1
   status: planning
@@ -115,6 +122,7 @@ phase:
   test_uat_plan: docs/project/testing/phase-1-test-uat-plan.md
   code_review: docs/project/build-plan/phases/phase-1-code-review.md
   as_built_closeout: docs/project/as-built/phase-1-as-built-closeout.md
+  value_review: docs/project/as-built/phase-1-value-review.md
 
 notes:
   examples_are_non_authoritative: true

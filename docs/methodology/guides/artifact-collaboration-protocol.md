@@ -132,7 +132,7 @@ Approval criteria:
 
 - problem is clear;
 - users are clear;
-- success criteria are observable;
+- success criteria are measurable and have read timing;
 - non-goals are explicit.
 
 ## PRD

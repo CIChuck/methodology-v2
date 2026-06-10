@@ -150,6 +150,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: TBD
+gate_started_on: YYYY-MM-DD
+ready_for_approval_on: YYYY-MM-DD
+approval_requested_on: YYYY-MM-DD
 decided_on: YYYY-MM-DD
 enforcement_class: attested
 artifact_status: Accepted
@@ -182,6 +185,9 @@ Before asking for gate approval, the lead agent should present:
 Gate:
 Artifact status:
 Evidence reviewed:
+Gate started on:
+Ready for approval on:
+Approval requested on:
 Open questions:
 Known risks:
 Risks requiring acceptance:
@@ -197,6 +203,11 @@ recorded.
 Legacy prose approval records are acceptable during migration, but new gate approvals should use the
 structured event shape. Structured records make gate movement, approval sampling, enforcement
 attestation, and future metrics computable from the project record.
+
+The timing fields support basic process telemetry. `gate_started_on` is when meaningful work began
+for the gate, `ready_for_approval_on` is when the agent or team believed the gate had enough
+evidence for approval, `approval_requested_on` is when the human was actually asked to decide, and
+`decided_on` is when the approval or rejection occurred.
 
 ## Evidence Sampling
 
