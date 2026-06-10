@@ -9,6 +9,9 @@ Templates: `docs/methodology/templates/code-review-report-template.md`
 Review implementation against documented authority. The review prioritizes conformance risks,
 behavioral bugs, missing tests, security/governance issues, and documentation drift.
 
+The code review agent should operate from fresh context independent of the implementation agent's
+context.
+
 ## Required Inputs
 
 - Code diff or codebase.
@@ -20,12 +23,30 @@ behavioral bugs, missing tests, security/governance issues, and documentation dr
 - Construction directive.
 - Tests and verification evidence.
 
+## Allowed Reviewer Inputs
+
+- Authority documents at pinned revisions.
+- Implementation diff, commit, pull request, or artifact under review.
+- Test, UAT, verification, and traceability evidence.
+- Explicit review scope and questions.
+- Prior review/remediation docs only when performing remediation or delta review.
+
+## Disallowed Reviewer Inputs
+
+Do not rely on these unless the exception is explicitly justified in the review report:
+
+- implementation agent session transcript;
+- implementation agent private reasoning trace;
+- broad conversational history;
+- informal claims that are not present in authority documents or evidence.
+
 ## Outputs
 
 - Code review report.
 - Findings ordered by severity.
 - Required remediation and tests for each finding.
 - Residual risk and test gaps.
+- Context provenance for the review.
 
 ## Allowed Decisions
 
@@ -41,6 +62,7 @@ Stop and ask the human if:
 - authority documents conflict materially;
 - evidence needed for review is unavailable;
 - review scope is ambiguous;
+- independent review context cannot be established;
 - a critical security or data-loss risk requires immediate human intervention.
 
 ## Human Approval

@@ -182,6 +182,20 @@ treated as unreviewed until a human reviewer reconstructs and accepts the author
 ### Rule 7: Code Review Verifies Conformance
 
 Code review must evaluate whether the implementation matches the documentation authority.
+Conformance review must be performed in a context independent of the implementation context.
+
+Reviewer independence means the reviewer starts from:
+
+```text
+authority documents at pinned revisions
+implementation diff or artifact under review
+applicable test and UAT evidence
+```
+
+The reviewer should not receive the implementation agent's session transcript, private reasoning,
+or broad conversational history unless the exception is explicitly justified in the review report.
+The review should record context provenance so future humans and agents can see what the reviewer
+was given and what was intentionally excluded.
 
 Review must check:
 

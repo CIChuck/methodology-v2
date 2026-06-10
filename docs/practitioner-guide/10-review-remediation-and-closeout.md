@@ -12,6 +12,10 @@ what actually exists after implementation).
 The code review stage checks whether implementation conforms to documented authority (the accepted
 artifacts and records governing the work).
 
+Conformance review should be independent from the implementation context. Independent review means
+the reviewer starts from accepted authority, the implementation diff or artifact, and verification
+evidence, rather than continuing from the implementation agent's chat session.
+
 The review should compare implementation against:
 
 - construction directive (the controlling build instruction);
@@ -35,12 +39,35 @@ implementation by inventing hidden authority. The finding should recommend amend
 The lead agent should then classify the amendment, record the decision, and reconcile downstream
 artifacts before acceptance.
 
+## Context Provenance
+
+Every code review report should include context provenance, the record of what the reviewer was
+given.
+
+Minimum fields:
+
+```text
+Reviewing agent:
+Model/version:
+Review context created on:
+Inputs provided:
+Authority document revisions used:
+Implementation diff or commit reviewed:
+Implementer session shared with reviewer: No
+Exceptions:
+```
+
+`Implementer session shared with reviewer` should normally be `No`. If the reviewer receives
+implementer chat history or reasoning, the report should explain why that exception was necessary
+and how it may affect independence.
+
 ## Code Review Report
 
 The code review report should include:
 
 - files reviewed;
 - authority reviewed, including pinned revisions where practical;
+- context provenance;
 - construction directive or implementation prompt that produced the change;
 - implementation reference, such as commit, diff, or pull request;
 - findings by severity;
@@ -111,6 +138,7 @@ Before acceptance, confirm:
 [ ] UAT evidence exists where required
 [ ] traceability matrix reflects actual evidence
 [ ] active amendments are resolved or explicitly non-blocking
+[ ] code review report includes context provenance
 [ ] known limitations are documented
 [ ] deferred items are tracked
 ```

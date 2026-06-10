@@ -44,6 +44,35 @@ changes only when accepted into:
 The lead agent owns reconciliation (turning multiple inputs into one coherent recommendation). The
 human owns approval.
 
+## Fresh-Context Review
+
+For review, evaluation, and governance tasks, use fresh context. Fresh context means the sub-agent
+receives the authority documents, implementation diff, test evidence, and review questions, but not
+the implementation agent's full session transcript or private reasoning.
+
+Fresh context matters because a reviewer who inherits the implementer's conversation may also
+inherit the implementer's assumptions. Independent review is strongest when the reviewer compares
+the artifact or diff directly against accepted authority.
+
+Allowed reviewer inputs:
+
+- authority documents at pinned revisions;
+- implementation diff, commit, pull request, or artifact under review;
+- test/UAT evidence and verification output;
+- traceability evidence;
+- explicit review scope and questions.
+
+Avoid reviewer inputs unless justified:
+
+- implementation session transcript;
+- implementation reasoning trace;
+- broad chat history;
+- informal claims that were never recorded in project authority.
+
+Review sub-agents are automated governance agents in a bounded sense. They can enforce the
+methodology by identifying drift and missing evidence, but their output remains advisory until the
+lead agent reconciles it and the human accepts any authority change.
+
 ## When To Use Sub-Agents
 
 Use sub-agents when:
@@ -69,6 +98,7 @@ A good sub-agent assignment includes:
 Role:
 Objective:
 Source authority:
+Context boundary:
 Scope:
 Non-goals:
 Questions to answer:
@@ -92,6 +122,8 @@ Question: Identify missing positive, negative, security, and UAT coverage.
 Architecture reviewer:
 Source: PRD, architecture draft, stack ADR.
 Question: Identify boundary, lifecycle, data-model, and deferred-architecture gaps.
+Context boundary: Use only the listed documents and explicit questions. Do not use implementer
+session history.
 
 Wait for all outputs, then reconcile conflicts and return findings by severity.
 ```
@@ -103,6 +135,7 @@ The lead agent should return:
 ```text
 Sub-agents used:
 Source authority reviewed:
+Context boundaries:
 High-confidence findings:
 Conflicting findings:
 Advisory improvements:

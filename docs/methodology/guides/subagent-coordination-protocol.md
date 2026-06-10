@@ -50,6 +50,7 @@ Sub-agents must:
 
 - stay within assigned scope;
 - cite source authority;
+- use fresh context for review, evaluation, or governance tasks;
 - identify assumptions;
 - distinguish findings from suggestions;
 - report uncertainty;
@@ -63,6 +64,33 @@ Sub-agents cannot:
 - override architecture or governance;
 - treat their own output as build authority;
 - authorize production deployment.
+
+## Fresh-Context Review Rule
+
+Review, evaluation, and governance sub-agents should start from a fresh context. Fresh context means
+the sub-agent receives the documents and evidence needed for review, but does not inherit the
+implementation agent's session transcript, private reasoning, or broad conversational history.
+
+Allowed reviewer inputs:
+
+- authority documents at pinned revisions;
+- implementation diff, commit, pull request, or artifact under review;
+- applicable test, UAT, verification, and traceability evidence;
+- explicit review scope and questions;
+- known constraints from accepted project authority.
+
+Disallowed reviewer inputs unless explicitly justified:
+
+- implementation agent session transcript;
+- implementation agent reasoning trace;
+- broad chat history unrelated to accepted authority;
+- informal claims that are not present in project artifacts or evidence.
+
+If an exception is necessary, record it in the review output under context provenance.
+
+Review sub-agents are automated governance agents in the lightweight GenDev sense: they help enforce
+documented authority, identify drift, and surface risk. They remain advisory. They do not approve
+gates, accept risk, or change authority.
 
 ## When To Use Sub-Agents
 

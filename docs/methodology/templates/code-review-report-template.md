@@ -54,6 +54,30 @@ What was explicitly not reviewed?
 
 ---
 
+## Context Provenance
+
+```text
+Reviewing agent:
+Model/version:
+Review context created on:
+Inputs provided:
+Authority document revisions used:
+Implementation diff or commit reviewed:
+Implementer session shared with reviewer: No
+Exceptions:
+```
+
+Rules:
+
+```text
+Review should start from fresh context.
+Do not include implementer session transcript, private reasoning trace, or broad chat history unless
+an exception is justified here.
+If implementer context was shared, explain why it was necessary and how it may affect independence.
+```
+
+---
+
 ## Review Questions Evaluated
 
 ```text
@@ -141,6 +165,7 @@ Check for:
 [ ] testing gaps that require a finding but were not raised
 [ ] deferred feature leakage that was not flagged
 [ ] documentation drift that was not noted
+[ ] context provenance is complete
 ```
 
 ---

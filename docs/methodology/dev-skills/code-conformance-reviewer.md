@@ -29,6 +29,23 @@ Use:
 - tests;
 - prior review/remediation docs, if applicable.
 
+Use fresh context for conformance review. Do not rely on the implementation agent's session
+transcript, private reasoning trace, or broad conversational history unless the exception is
+explicitly justified in the review report.
+
+## Context Provenance
+
+Record:
+
+- reviewing agent;
+- model/version;
+- review context created on;
+- inputs provided;
+- authority document revisions used;
+- implementation diff or commit reviewed;
+- whether the implementer session was shared with reviewer;
+- exceptions.
+
 ## Review Questions
 
 Evaluate:
@@ -79,6 +96,7 @@ Delta review:
 - Do not overstate risk.
 - Identify residual risk if no findings remain.
 - Do not change code unless explicitly requested.
+- Preserve reviewer independence and record context provenance.
 
 ## Completion Standard
 

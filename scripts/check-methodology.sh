@@ -707,6 +707,31 @@ check_traceability_evidence() {
   done
 }
 
+check_code_review_context_provenance() {
+  for file in docs/project/build-plan/phases/*code-review*.md; do
+    [ -e "$file" ] || continue
+
+    if ! grep -Eq '^## Context Provenance([[:space:]]|$)' "$file"; then
+      warn "$file is missing context provenance section."
+      continue
+    fi
+
+    for field in \
+      "Reviewing agent:" \
+      "Model/version:" \
+      "Review context created on:" \
+      "Inputs provided:" \
+      "Authority document revisions used:" \
+      "Implementation diff or commit reviewed:" \
+      "Implementer session shared with reviewer:" \
+      "Exceptions:"; do
+      if ! grep -Fq "$field" "$file"; then
+        warn "$file context provenance is missing field: $field"
+      fi
+    done
+  done
+}
+
 check_baseline_files
 check_sample_reference_drift
 
@@ -726,6 +751,7 @@ else
   check_current_gate_artifact_status
   check_phase_plans
   check_traceability_evidence
+  check_code_review_context_provenance
 fi
 
 if [ "$errors" -gt 0 ]; then

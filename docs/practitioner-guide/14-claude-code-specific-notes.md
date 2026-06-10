@@ -82,6 +82,33 @@ layers that affect Claude Code behavior. For GenDev:
 
 Product authority still belongs in `docs/project/`.
 
+## Fresh-Context Review With Claude Code
+
+For GenDev code conformance review, prefer a fresh Claude Code session or a dedicated review
+subagent that receives only the review inputs. Do not ask the implementation conversation to
+self-attest to conformance.
+
+Practical pattern:
+
+```bash
+cd /path/to/project
+claude
+```
+
+Then prompt:
+
+```text
+Perform an independent GenDev code conformance review. Use CLAUDE.md, AGENTS.md,
+docs/project/project.yaml, accepted authority documents at their pinned revisions, the construction
+directive, the implementation diff or commit, and test/UAT evidence. Do not use the implementation
+session transcript or reasoning trace. Complete the Context Provenance section in the review
+report.
+```
+
+If Claude Code memory contains implementation-session details, treat that memory as context, not
+authority. The review report should still state whether implementer session context was shared with
+the reviewer and record any exception.
+
 ## Claude Code Subagents
 
 Claude Code supports custom subagents and parallel agent work. In GenDev, use them the same way the
@@ -101,6 +128,10 @@ Use Claude Code subagents for bounded review. Create one security/governance rev
 testability reviewer, and one architecture-boundary reviewer. Do not edit files. Return a reconciled
 findings list with conflicts and required human decisions.
 ```
+
+For conformance review, configure or prompt review subagents to start from fresh context: authority
+documents, implementation diff, verification evidence, and explicit questions only. Avoid sharing
+the implementer transcript unless the review report records the exception.
 
 ## Claude Memory And GenDev Authority
 
@@ -126,6 +157,8 @@ Watch for:
 - Claude treating memory as authority instead of updating project docs;
 - Claude rules duplicating or contradicting GenDev methodology;
 - Claude subagents producing unreviewed authority changes;
+- Claude continuing the implementation conversation for conformance review instead of using fresh
+  context;
 - Claude advancing gates from chat approval without updating `gate-log.md` and `project.yaml`.
 
 Correction prompt:

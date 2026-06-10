@@ -546,6 +546,9 @@ In GenDev, review is not primarily a style preference exercise. It prioritizes:
 - documentation drift;
 - unaccepted residual risk.
 
+In GenDev, code review should be independent of the implementation context. The reviewer should
+start from authority, diff, and evidence, not from the implementation agent's chat session.
+
 ## Codex
 
 Codex is OpenAI's AI coding agent. In this guide, Codex-specific notes describe how to point Codex
@@ -606,6 +609,24 @@ The construction directive is what turns planning into authorized implementation
 Context is the information available to the agent in the current session. Context may include chat,
 files, tool output, instructions, and memory. Context is not automatically authority. The agent must
 distinguish what it knows from what the project has accepted.
+
+## Context Provenance
+
+Context provenance is the review-report record of what information was provided to a reviewer.
+
+Minimum fields include:
+
+- reviewing agent;
+- model or version;
+- review context creation date;
+- inputs provided;
+- authority document revisions used;
+- implementation diff or commit reviewed;
+- whether the implementer session was shared;
+- exceptions.
+
+Context provenance helps future humans and agents decide whether a review was independent enough to
+support acceptance.
 
 ## Deferred
 
@@ -745,6 +766,17 @@ without rollback.
 
 Chapter 17 describes common failure modes and correction prompts.
 
+## Fresh Context
+
+Fresh context is a review setup where the reviewer starts without inheriting the implementation
+agent's session transcript, private reasoning, or broad chat history. The reviewer receives the
+accepted authority documents, pinned revisions, implementation diff or artifact, test/UAT evidence,
+traceability evidence, and explicit review questions.
+
+Fresh context reduces the risk that the reviewer simply repeats the implementer's assumptions.
+
+Fresh context does not mean no context. It means controlled context.
+
 ## Gate
 
 A gate is a lifecycle checkpoint that defines whether the project is ready to move from one kind of
@@ -852,6 +884,18 @@ architecture, governance, or test strategy are invented.
 
 Implementation Ready For Review is G6. It means implementation work is complete enough for code
 review and conformance review. It does not mean the phase is accepted.
+
+## Independent Review
+
+Independent review is conformance review performed in a context separate from the implementation
+context. The reviewer compares the implementation against accepted authority and evidence without
+relying on the implementer session transcript or reasoning trace.
+
+Independent review may still be performed by an AI agent. Independence comes from the review
+context boundary, not from whether the reviewer is human or automated.
+
+If implementation-session context is shared with the reviewer, the review report should record the
+exception under context provenance.
 
 ## Lead Agent
 

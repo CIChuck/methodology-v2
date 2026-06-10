@@ -95,6 +95,38 @@ Use interactive Codex for artifact collaboration (drafting and revising project 
 human) and gate movement. Use non-interactive execution only when the task is tightly bounded and
 the required authority is already present.
 
+## Fresh-Context Review With Codex
+
+For GenDev code conformance review, prefer a fresh Codex context instead of asking the same
+implementation conversation to self-review.
+
+Practical pattern:
+
+```bash
+codex --cd /path/to/project
+```
+
+Then prompt:
+
+```text
+Use fresh-context review mode. Do not rely on the implementation session transcript. Read AGENTS.md,
+docs/project/project.yaml, the accepted authority documents at their pinned revisions, the
+construction directive, the implementation diff or commit, and the test/UAT evidence. Produce the
+code review report with Context Provenance completed.
+```
+
+If using `codex exec`, keep the task bounded:
+
+```bash
+codex exec "Perform an independent GenDev code conformance review. Use only repository authority,
+the implementation diff, and verification evidence. Do not use implementer chat history. Complete
+the Context Provenance section."
+```
+
+Codex `resume` is useful for continuing the same collaboration, but it is usually the wrong tool
+for independent conformance review because it intentionally restores prior conversation context.
+Use a new session when review independence matters.
+
 ## Codex Subagents
 
 Codex supports subagent workflows where specialized agents perform bounded work and return
@@ -119,6 +151,10 @@ Do not use subagents to approve gates or independently update authority (accepte
 Subagent output remains advisory (useful input, not controlling authority) until the lead agent
 reconciles it and the human accepts any authority changes.
 
+For review subagents, tell Codex to give each reviewer only the needed authority, diff, evidence,
+and questions. Do not share the implementation session transcript unless the review report records
+the exception.
+
 ## Codex-Specific Failure Modes
 
 Watch for:
@@ -126,6 +162,7 @@ Watch for:
 - Codex treating command approval as methodology approval;
 - Codex editing future-gate artifacts before the current gate is accepted;
 - Codex using subagents for write-heavy work without reconciliation;
+- Codex asking the implementation session to self-attest rather than using fresh-context review;
 - Codex relying on chat memory instead of `project.yaml`;
 - Codex changing `AGENTS.md` when the project state belongs in `docs/project/`.
 
