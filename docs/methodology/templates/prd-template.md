@@ -207,7 +207,7 @@ Check for:
 
 ---
 
-## Gate 2 Exit Checklist
+## G2 Exit Checklist (Requirements Ready)
 
 Before proceeding to architecture:
 

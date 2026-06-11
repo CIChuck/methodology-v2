@@ -246,7 +246,7 @@ Check for:
 
 ---
 
-## Gate 6 Exit Checklist
+## G9 Exit Checklist (As-Built Closed)
 
 Before closing this phase:
 
