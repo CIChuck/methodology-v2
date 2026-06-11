@@ -49,6 +49,21 @@ Gate regression is not the same as amendment. Amendment changes accepted authori
 gate holds. Regression formally moves the current gate backward when the amendment invalidates gate
 entry conditions.
 
+## Gate Summary
+
+| Gate | Name | Objective |
+| --- | --- | --- |
+| G0 | Project Initialized | Confirm the cloned baseline has an active project workspace. |
+| G1 | Vision Ready | Establish why the product exists and what success means. |
+| G2 | Requirements Ready | Convert the vision into testable product requirements. |
+| G3 | Architecture Ready | Define system structure, boundaries, lifecycle, and technology decisions. |
+| G4 | Governance Ready | Make security, policy, identity, audit, and agent/tool behavior explicit. |
+| G5 | Build Ready | Authorize a bounded implementation phase. |
+| G6 | Implementation Ready For Review | Confirm implementation is ready for conformance review. |
+| G7 | Acceptance Ready | Decide whether implementation can be accepted after review and remediation. |
+| G8 | Deployment Ready | Confirm the accepted product state can be deployed or released. |
+| G9 | As-Built Closed | Preserve the implemented state for future work. |
+
 ## G0: Project Initialized
 
 Purpose: Confirm a cloned baseline has an active project workspace.
