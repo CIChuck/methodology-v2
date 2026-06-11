@@ -811,75 +811,125 @@ major requirements have visible implementation and verification evidence
 
 ## Process Gates
 
-### Gate 1: Vision Ready
+The canonical gate enumeration and detailed entry/exit criteria live in
+docs/methodology/guides/gates.md. The enumeration below must remain synchronized
+with that document. In any conflict, gates.md controls.
+
+### G0: Project Initialized
 
 Exit criteria:
 
 ```text
-problem is clear
+manifest paths are syntactically valid
+starter docs exist
+current gate is recorded as G1
+```
+
+### G1: Vision Ready
+
+Exit criteria:
+
+```text
+problem statement is clear
 target users are clear
-success criteria are clear
-non-goals are documented
+success criteria are measurable and include read timing
+non-goals are explicit
+blocking open questions are assigned
 ```
 
-### Gate 2: Requirements Ready
+### G2: Requirements Ready
 
 Exit criteria:
 
 ```text
-requirements are specific
-acceptance criteria exist
-edge cases are captured
-requirements can be tested
+every baseline requirement has acceptance criteria
+requirements are specific enough for architecture and tests
+deferred items have reasons
+open questions that block architecture are resolved or assigned
 ```
 
-### Gate 3: Architecture Ready
+### G3: Architecture Ready
 
 Exit criteria:
 
 ```text
-core terminology is stable
-system boundaries are clear
-ownership is clear
-security/governance rules are explicit
+architecture rules trace to requirements
+ownership boundaries are clear
 state and lifecycle are defined
-deferred architecture is marked
+stack decision is accepted
+implementation does not need to invent core structure
 ```
 
-### Gate 4: Build Ready
+### G4: Governance Ready
+
+Exit criteria:
+
+```text
+every actor has permitted and forbidden actions
+authorization rules include positive and negative tests
+audit requirements are explicit
+secrets and sensitive data handling are defined
+agent/tool stop conditions are documented or marked N/A
+```
+
+### G5: Build Ready
 
 Exit criteria:
 
 ```text
 phase scope is bounded
-tactical plan exists
-tests are planned
-migration is planned
-AI construction directive is ready
-documentation close-out is defined
+out-of-scope and deferred items are explicit
+workstreams have file/module ownership expectations
+tests and UAT checks are defined
+migration and rollback behavior are documented where applicable
+construction directive is ready for an implementation agent
 ```
 
-### Gate 5: Implementation Ready For Review
+### G6: Implementation Ready For Review
 
 Exit criteria:
 
 ```text
-implementation is complete
-tests were added or updated
-verification was run or skipped with justification
-known deviations are documented
+authorized scope is implemented
+required tests were run or skipped with reason
+no known deferred-feature leakage is unreported
+documentation changes needed for review are present or identified
 ```
 
-### Gate 6: Acceptance Ready
+### G7: Acceptance Ready
 
 Exit criteria:
 
 ```text
-code review completed
-findings remediated or explicitly accepted
+critical findings are remediated
+major findings are remediated or explicitly accepted with rationale
 tests and UAT evidence exist
-documentation close-out completed
-traceability matrix updated
+residual risk is documented
+traceability matrix reflects actual status
+```
+
+### G8: Deployment Ready
+
+Exit criteria:
+
+```text
+release scope is accepted
+deployment commands and rollback commands are documented
+sensitive environment variables and secrets are accounted for
+production-impacting migrations are approved
+known limitations are visible
+post-deployment owner is identified
+```
+
+### G9: As-Built Closed
+
+Exit criteria:
+
+```text
+future agents can understand the actual system without chat history
+implemented behavior, deferred behavior, and deviations are explicit
+test evidence is recorded
+next phase or backlog state is clear
 ```
 
 ## AI-Assisted Build Prompt Standard

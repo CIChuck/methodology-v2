@@ -8,6 +8,9 @@ Authority: `docs/methodology/constitution/gendev.md`
 Gates define when agents may proceed and when they must stop. They convert the methodology into
 objective lifecycle checkpoints.
 
+The Process Gates section of `docs/methodology/constitution/gendev.md` mirrors this enumeration;
+this document is canonical for gate numbers, names, and detailed entry/exit criteria.
+
 Use this guide with `docs/methodology/guides/gate-transition-protocol.md` for the procedural steps
 needed to move from one gate to another.
 

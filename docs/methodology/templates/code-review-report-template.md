@@ -41,7 +41,7 @@ and what must be remediated
 ```
 
 Do not mark Complete until all findings are categorized, residual risks are documented,
-and the Gate 5 checklist is satisfied.
+and the G6 checklist (Implementation Ready For Review) is satisfied.
 
 ---
 
@@ -170,7 +170,7 @@ Check for:
 
 ---
 
-## Gate 5 Status
+## G6 Status (Implementation Ready For Review)
 
 ```text
 [ ] critical findings: none remaining

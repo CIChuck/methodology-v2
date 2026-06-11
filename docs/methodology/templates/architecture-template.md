@@ -336,7 +336,7 @@ Check for:
 
 ---
 
-## Gate 3 Exit Checklist
+## G3 Exit Checklist (Architecture Ready)
 
 Before proceeding to build planning:
 

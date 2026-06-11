@@ -221,7 +221,7 @@ Check for:
 
 ---
 
-## Gate 4 Exit Checklist
+## G5 Exit Checklist (Build Ready)
 
 Before proceeding to construction directive:
 

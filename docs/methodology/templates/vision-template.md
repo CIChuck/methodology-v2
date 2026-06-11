@@ -172,7 +172,7 @@ Check for:
 
 ---
 
-## Gate 1 Exit Checklist
+## G1 Exit Checklist (Vision Ready)
 
 Before proceeding to PRD:
 
