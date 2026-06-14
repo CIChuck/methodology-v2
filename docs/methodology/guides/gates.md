@@ -231,40 +231,147 @@ Agents must stop if:
 
 ## G5: Build Ready
 
-Purpose: Authorize a bounded implementation phase.
+Purpose: Authorize the build by ratifying the phase partition. The
+implementation itself is carried out through the phase loop interior to the
+G5 to G6 span (see "G5 Interior: The Phase Loop" below). G5 certifies the
+plan that governs that loop; it does not certify any single phase's
+construction artifacts, which are produced and accepted at interior
+checkpoints.
 
 Required:
 
-- phase build plan;
-- tactical implementation plan;
-- test/UAT plan or phase-embedded equivalent;
-- construction directive;
-- updated traceability matrix entries for planned work.
+- phase plan (the ordered partition of the build into phases);
+- requirement coverage map (each requirement mapped to an owning phase);
+- integration criteria (how independently built phases will be proven to
+  compose, and who declares the integration tests);
+- partitioning rationale (why the phases are sized and ordered as they are).
 
 Human approval: required.
 
 Exit criteria:
 
-- phase scope is bounded;
-- out-of-scope and deferred items are explicit;
-- workstreams have file/module ownership expectations;
-- tests and UAT checks are defined;
-- migration and rollback behavior are documented where applicable;
-- construction directive is ready for an implementation agent.
+- the build is partitioned into ordered, independently testable phases;
+- every phase carries a stable phase id, and ordering is defined by the phase
+  plan (never computed from the id);
+- the requirement coverage map accounts for all in-scope requirements;
+- integration criteria are declared;
+- the partitioning rationale records the sizing criterion (features testable
+  together, bounded to what a focused implementation session can hold with its
+  authority).
+
+Closing G5 is the checkpoint addressed as `G5.0`: the phase plan is accepted
+and the phase loop may begin.
 
 Agents must stop if:
 
-- workstreams are too broad;
-- required tests are missing;
-- implementation would require undocumented architecture;
-- phase success depends on deferred behavior.
-- the phase plan, tactical plan, construction directive, or source authority evidence is marked
-  `Stale` or `Superseded`.
-- an active amendment affects build scope, tests, migration, rollback, or directive authority.
+- the partition leaves requirements unassigned to any phase;
+- a phase is too broad to build without losing the thread (drift risk);
+- integration criteria are undefined;
+- the phase plan or its source authority evidence is marked `Stale` or
+  `Superseded`;
+- an active amendment affects the partition, coverage, or integration criteria.
+
+## G5 Interior: The Phase Loop
+
+Checkpoints are not gates. The gate enumeration is and remains G0 through G9;
+the positions described here are checkpoints interior to the G5 to G6 span,
+written `G5.x`. A checkpoint is a progress address, not a gate: it carries no
+separate gate-approval ceremony and never appears in the gate enumeration. The
+`G5.x` form is deliberately a sub-address of the G5 to G6 span so it cannot be
+mistaken for a gate.
+
+After G5 closes (`G5.0`), the project holds an accepted phase plan. The build
+then proceeds one phase at a time. For each phase, identified by a stable phase
+id, the loop produces four planning artifacts and one execution result, marked
+by these checkpoints:
+
+```
+G5.0          G5 closed: phase plan accepted               (gate_transition)
+G5.<id>.1     phase build plan ready                       (phase_checkpoint)
+G5.<id>.2     tactical implementation plan ready           (phase_checkpoint)
+G5.<id>.3     construction directive ready and build
+              prompt issued at a pinned revision           (phase_checkpoint)
+G5.<id>.4     phase exit: built, tested, learnings written (phase_transition)
+```
+
+### Checkpoint to template binding
+
+| Position | Closes when | Owning template (`docs/methodology/templates/`) | Authoring prompt |
+| --- | --- | --- | --- |
+| G5.0 | phase plan `Accepted` at a pinned revision; `gate_transition` recorded | `phase-plan-template.md` | Phase Plan Prompt |
+| G5.\<id\>.1 | phase build plan `Accepted`; `phase_checkpoint` recorded | `phase-build-plan-template.md` | Phase Build Plan Prompt |
+| G5.\<id\>.2 | tactical plan `Accepted`; `phase_checkpoint` recorded | `tactical-implementation-template.md` | Tactical Implementation Plan Prompt |
+| G5.\<id\>.3 | construction directive `Accepted` and build prompt issued at a pinned revision; `phase_checkpoint` recorded | `phase-construction-directive-template.md` + `phase-build-prompt-template.md` | Construction Directive Prompt + Build Prompt Prompt |
+| G5.\<id\>.4 | execution complete (below); `phase_transition` recorded | `phase-learnings-template.md` (output) | — |
+
+### Checkpoint entry, exit, and closure discipline
+
+A checkpoint's entry requires the prior checkpoint's event to exist and its
+upstream artifact to be `Accepted` at a pinned revision. A checkpoint's exit is
+the owning template's checkpoint checklist. Closure discipline (attested): the
+artifact status change to `Accepted`, the manifest `phase_position` advance, and
+the corresponding gate-log event land in the same commit.
+
+### Phase id is a label
+
+The position grammar is `G5.<phase-id>.<checkpoint>`, where the phase id is an
+identifier such as `1`, `2`, `10-5`, or `15a`. Phases are inserted and split in
+practice, so ids are not necessarily sequential integers. Phase order is defined
+exclusively by the phase plan and the manifest `phases` list, and is never
+computed from the id.
+
+### Phase execution (the interior of G5.\<id\>.3 to G5.\<id\>.4)
+
+1. Implementation proceeds from the pinned build prompt; the construction
+   directive and tactical plan at their pinned revisions are the controlling
+   authority, and scope conflicts resolve by the directive's precedence rules.
+2. Generated work is reviewed against the phase artifacts; findings are
+   remediated in a bounded loop until no blocking findings remain, with any
+   remaining findings accepted as enumerated residuals.
+3. The phase exit test, specified in the phase build plan, passes at the phase
+   exit candidate revision.
+4. The regression suite (the accumulated exit tests of all previously exited
+   phases) is green at that revision. A prior phase's exit test failing is a
+   regression, handled by the amendment and regression protocol.
+5. Coverage standard: at least 90% meaningful coverage for new or materially
+   changed code. A shortfall requires a written justification and a named
+   residual risk, never silent acceptance.
+6. A named approver (a human by default; a delegated reviewer context only where
+   the project manifest explicitly authorizes it) records the phase exit
+   decision with `decided_by` and a substantive `checked` statement in the
+   `phase_transition` event.
+7. The phase learnings document is authored as the final act of the phase and is
+   the closing precondition of `G5.<id>.4`. It is required input to the next
+   phase's tactical plan.
+
+### Mid-phase amendments
+
+An upstream defect discovered mid-phase is handled only through a recorded
+amendment: an amendment event, a decision rationale, and reconciliation of the
+upstream document, with the phase's `phase_transition` event referencing the
+amendment. Silent edits to upstream documents to match what the code did are
+defects. Phase insertions and splits are recorded in the phase plan's amendments
+section with reasons, and the manifest `phases` list is updated in the same
+commit.
+
+### Blast-radius scaling
+
+A single-phase project collapses the loop to `G5.0` plus one `G5.<id>.1`
+through `G5.<id>.4` ladder. A GenDev Lite project may combine checkpoints
+`G5.<id>.1` through `G5.<id>.3` into a single planning pass, provided the
+scaling decision is recorded. The phase exit (`G5.<id>.4`) and its exit test are
+not waivable: a phase that cannot be tested has not been bounded correctly.
 
 ## G6: Implementation Ready For Review
 
 Purpose: Confirm implementation is ready for conformance review.
+
+Entry criteria:
+
+- every phase declared in the phase plan has a closed `G5.<id>.4` event;
+- the accumulated regression suite is green at the G6 candidate revision;
+- the integration criteria declared in the phase plan are satisfied, or carried
+  as enumerated residuals.
 
 Required:
 
