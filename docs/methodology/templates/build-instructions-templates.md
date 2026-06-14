@@ -58,7 +58,8 @@ Perform an accuracy pass and identify ambiguity, missing tests, security gaps, a
 
 ## Tactical Implementation Plan Prompt
 
-Build the tactical implementation plan for `[phase name]` from the approved phase build plan.
+Build the tactical implementation plan for `[phase name]` from the approved phase build plan and
+the prior phase's learnings (N/A for the first phase).
 
 The plan must be executable by an implementation agent and include:
 

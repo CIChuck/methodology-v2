@@ -7,7 +7,7 @@ Position: G5.[id].2
 Authority: `docs/methodology/constitution/gendev.md` — Tactical Implementation Plan
 Source:
   Phase Build Plan: `docs/project/build-plan/phases/[phase-build-plan].md`
-  Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md`
+  Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md` (N/A for the first phase)
   Architecture: `docs/project/architecture/[architecture-document].md`
   PRD: `docs/project/prd/[prd-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
@@ -253,7 +253,7 @@ judge). Each item is pass/fail against this plan and its upstream authority.
 [ ] negative tests and negative boundary tests are present
 [ ] verification commands are runnable with expected results
 [ ] deferred items name a target phase
-[ ] prior phase learnings were consulted and reflected
+[ ] prior phase learnings were consulted and reflected (or N/A for the first phase)
 ```
 
 ---
@@ -288,7 +288,7 @@ Before proceeding to construction directive:
 [ ] security requirements are workstream-assigned
 [ ] negative boundary tests are defined
 [ ] documentation close-out is defined per workstream
-[ ] prior phase learnings consulted
+[ ] prior phase learnings consulted (or N/A for the first phase)
 [ ] plan is executable without architecture invention
 ```
 

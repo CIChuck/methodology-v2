@@ -553,6 +553,39 @@ Completion standard:
 security-sensitive behavior is explicit, testable, and not left to implementation inference
 ```
 
+### Phase Plan
+
+Purpose:
+
+```text
+partition the build into ordered, independently testable phases; this is the
+artifact that gate G5 certifies
+```
+
+Must include:
+
+```text
+the ordered phase sequence, each phase identified by a stable label
+a requirement coverage map assigning every in-scope requirement to an owning phase
+cross-phase rules and invariants
+the partitioning rationale, including the sizing criterion
+integration criteria and who declares the integration tests
+an amendments section for later phase insertions and splits
+```
+
+Completion standard:
+
+```text
+the build is partitioned into ordered, independently testable phases, every
+in-scope requirement is assigned to a phase, and integration criteria are
+declared
+```
+
+Note: phase order is defined by this plan, never computed from the phase label.
+The per-phase build plan, tactical plan, construction directive, build prompt,
+and learnings are produced inside the phase loop at the interior G5.x
+checkpoints. See docs/methodology/guides/phase-loop.md.
+
 ### Build Definition
 
 Purpose:
