@@ -254,7 +254,7 @@ Regression note:
 
 ```text
 On exit, this test joins the accumulated regression suite and is re-run as a
-gate on every subsequent phase.
+required regression check on every subsequent phase.
 ```
 
 ---
