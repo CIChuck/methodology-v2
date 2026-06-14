@@ -58,7 +58,7 @@ entry conditions.
 | G2 | Requirements Ready | Convert the vision into testable product requirements. |
 | G3 | Architecture Ready | Define system structure, boundaries, lifecycle, and technology decisions. |
 | G4 | Governance Ready | Make security, policy, identity, audit, and agent/tool behavior explicit. |
-| G5 | Build Ready | Authorize a bounded implementation phase. |
+| G5 | Build Ready | Certify the phase plan that partitions the build into ordered, testable phases. |
 | G6 | Implementation Ready For Review | Confirm implementation is ready for conformance review. |
 | G7 | Acceptance Ready | Decide whether implementation can be accepted after review and remediation. |
 | G8 | Deployment Ready | Confirm the accepted product state can be deployed or released. |

@@ -263,6 +263,7 @@ coverage_status:
   target: 90
   actual: TBD
   shortfall_justification: N/A
+  shortfall_residual_risk: N/A   # named residual risk; required when actual < target
 checked: "TBD: one substantive statement from the approver."
 residuals:
   - finding: TBD

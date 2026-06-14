@@ -327,17 +327,23 @@ The standard documentation chain is:
 2. Product Requirements Document
 3. Architecture Specification
 4. Governance and Security Specification
-5. Build Definition
+5. Phase Plan (the build partition; certified at G5)
+   The following are produced per phase inside the phase loop (G5.x checkpoints):
 6. Phase Build Plan
 7. Tactical Implementation Plan
-8. Construction Directive / AI Build Prompt
-9. Test and UAT Plan
+8. Construction Directive / Build Prompt
+9. Test and UAT Plan (the phase exit test is specified in the phase build plan)
 10. Implementation Evidence
 11. Code Review Report
 12. Remediation Plan / Remediation Prompt
-13. As-Built Documentation Close-Out
-14. Traceability Matrix
+13. Phase Learnings
+14. As-Built Documentation Close-Out
+15. Traceability Matrix
 ```
+
+The phase plan partitions the build into ordered, independently testable phases
+and is what G5 certifies. Artifacts 6 through 13 are produced for each phase in
+the loop interior to the G5 to G6 span. See docs/methodology/guides/phase-loop.md.
 
 Not every project needs every document as a separate file. For small projects, multiple artifacts may be combined. The required content must still exist.
 
@@ -1966,6 +1972,7 @@ Use this guide to choose the right prompt.
 | Defining system boundaries | Architecture Specification |
 | Defining permissions, identity, audit, or policy | Governance and Security Specification |
 | Deciding what a build may include | Build Definition |
+| Partitioning the build into ordered, testable phases | Phase Plan |
 | Splitting work into phases | Phase Build Plan |
 | Preparing executable implementation instructions | Tactical Implementation Plan |
 | Creating the AI builder's authority document | Construction Directive |

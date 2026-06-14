@@ -315,20 +315,31 @@ Stop if:
 
 ## G5 -> G6: Build Ready To Implementation Ready For Review
 
+This transition spans the entire phase loop. G5 closes when the phase plan is
+accepted (G5.0); the build then proceeds one phase at a time through the
+interior G5.<id> checkpoints. G6 is entered only after every planned phase has
+exited.
+
 Required:
 
-- accepted phase build plan;
-- accepted tactical implementation plan;
-- accepted test/UAT plan or embedded equivalent;
-- accepted construction directive;
+- every phase declared in the phase plan has a closed G5.<id>.4 (phase exit)
+  event;
+- the accumulated regression suite is green at the G6 candidate revision;
+- the integration criteria declared in the phase plan are satisfied or carried
+  as enumerated residuals;
 - gate approval log entry or queued approval record;
-- implementation completed within scope;
+- implementation completed within the scope of every exited phase;
 - verification run or skipped with reason.
+
+The per-phase build plan, tactical plan, construction directive, and build
+prompt are produced and accepted inside the loop at the interior checkpoints;
+they are not G5->G6 entry artifacts. See docs/methodology/guides/phase-loop.md.
 
 Review questions:
 
-- Did implementation stay within the directive?
-- Were required tests added or updated?
+- Did every phase stay within its directive?
+- Were required tests added or updated, and did each phase's exit test pass?
+- Is the accumulated regression suite green?
 - Were verification commands run?
 - Were skipped checks reported?
 - Did implementation affect docs, examples, or traceability?
