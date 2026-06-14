@@ -11,3 +11,5 @@ wheels/
 
 # Operating system metadata
 .DS_Store
+.judge/
+*.patch

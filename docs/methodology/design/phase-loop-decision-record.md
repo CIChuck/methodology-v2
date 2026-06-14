@@ -1,7 +1,7 @@
 # Decision Record: G5 Phase Loop
 
 Date: 2026-06-12
-Status: Proposed
+Status: Accepted
 Owner: GenDev maintainers
 
 ## Context

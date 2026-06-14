@@ -3,7 +3,7 @@ project:
   slug: "[project-slug]"
   status: initialized
   current_gate: G1
-  methodology_version: 0.1.0-baseline
+  methodology_version: 0.2.0-phase-loop
   methodology_release_stage: pre-1.0
   initialized_on: "[YYYY-MM-DD]"
 
