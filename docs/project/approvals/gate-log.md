@@ -1,7 +1,7 @@
 # Gate Approval Log: Eval Test Product
 
 Status: Active
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
 Authority: `docs/methodology/guides/human-approval-protocol.md`
 
@@ -210,6 +210,69 @@ reason: TBD
 incident_or_emergency: TBD
 normal_enforcement_resumed_on: TBD
 reconciliation_required: true
+```
+````
+
+## Phase Checkpoint Template
+
+Use this shape when an interior phase-loop planning artifact reaches `Accepted`
+(checkpoints `G5.<id>.1` through `G5.<id>.3`). Checkpoints are interior to the
+G5 to G6 span and are not gate transitions.
+
+````markdown
+## Phase Checkpoint: G5.1.2
+
+```yaml
+event_type: phase_checkpoint
+position: G5.1.2
+phase_id: "1"
+artifact:
+  path: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
+  revision: TBD
+  status: Accepted
+accepted_by: TBD
+accepted_on: YYYY-MM-DD
+manifest_updated: true
+```
+````
+
+## Phase Transition Template
+
+Use this shape at a phase exit (`G5.<id>.4`): the phase is built, the exit test
+passed, the regression suite is green, and the learnings document is written.
+
+````markdown
+## Phase Transition: G5.1.4
+
+```yaml
+event_type: phase_transition
+position: G5.1.4
+phase_id: "1"
+decision: exited
+decided_by: TBD
+decided_on: YYYY-MM-DD
+exit_test:
+  path: docs/project/testing/phase-1-test-uat-plan.md
+  revision: TBD
+  result: passed
+regression_suite:
+  result: green
+  phases_covered:
+    - "1"
+coverage_status:
+  target: 90
+  actual: TBD
+  shortfall_justification: N/A
+checked: "TBD: one substantive statement from the approver."
+residuals:
+  - finding: TBD
+    severity: minor
+    disposition: carried_forward
+    target: TBD
+amendments_referenced:
+  - N/A
+learnings: docs/project/build-plan/phases/phase-1-learnings.md
+manifest_updated: true
 ```
 ````
 

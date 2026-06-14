@@ -1,14 +1,14 @@
 # As-Built Documentation Close-Out: Eval Test Product — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
 Authority: `docs/methodology/constitution/gendev.md` — Rule 9: As-Built Documentation Is Definition of Done
 Source:
   Tactical Plan: `docs/project/build-plan/phases/[tactical-plan].md`
   Code Review Report: `docs/project/build-plan/phases/[review-report].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -246,7 +246,7 @@ Check for:
 
 ---
 
-## Gate 6 Exit Checklist
+## G9 Exit Checklist (As-Built Closed)
 
 Before closing this phase:
 

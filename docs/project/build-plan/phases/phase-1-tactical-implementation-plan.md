@@ -1,20 +1,24 @@
-# Tactical Implementation Plan: Eval Test Product — Phase [N]: [Phase Name]
+# Tactical Implementation Plan: Eval Test Product — Phase [id]: [Phase Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
+Position: G5.[id].2
 Authority: `docs/methodology/constitution/gendev.md` — Tactical Implementation Plan
 Source:
   Phase Build Plan: `docs/project/build-plan/phases/[phase-build-plan].md`
+  Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md`
   Architecture: `docs/project/architecture/[architecture-document].md`
   PRD: `docs/project/prd/[prd-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
   - path: docs/project/build-plan/phases/[phase-build-plan].md
+    revision: TBD
+  - path: docs/project/build-plan/phases/[prior-phase-learnings].md
     revision: TBD
   - path: docs/project/architecture/[architecture-document].md
     revision: TBD
@@ -72,9 +76,24 @@ If an assumption proves false, stop and revise the plan.
 ## Non-Goals
 
 ```text
-What is explicitly out of scope for this implementation?
-Agents must not implement these items.
+What is explicitly out of scope for this implementation, including deferred
+features and adjacent work that may be tempting? Agents must not implement
+these items. Anything that will be built in a later phase belongs in Deferred
+Items below; anything this project will never build belongs here.
 ```
+
+---
+
+## Deferred Items
+
+```text
+What does this tactical plan intentionally leave to a later phase?
+This is visibility, not authorization — it names what a future phase owns.
+```
+
+| Item | Reason Deferred | Target Phase |
+| --- | --- | --- |
+|  |  |  |
 
 ---
 
@@ -202,26 +221,62 @@ What could cause this plan to fail?
 
 ---
 
-## Accuracy Pass
-
-Before marking this document Accepted, perform an accuracy pass.
-
-Check for:
+## Negative Boundary Tests
 
 ```text
-[ ] workstreams that are too broad for a single implementation session
-[ ] missing file or module ownership for any workstream
-[ ] workstreams with no test requirements
-[ ] negative tests that are absent for failure paths
-[ ] verification commands that are missing or untestable
-[ ] security requirements not covered by any workstream
-[ ] schema changes without migration steps
-[ ] documentation close-out items that are unassigned
+Tests that assert this phase does NOT do what it must not do. Distinct from the
+per-workstream negative tests (which test failure paths within scope): these
+assert the phase respects its boundaries — that out-of-scope behavior is absent,
+deferred features are not present, and adjacent subsystems are untouched.
+```
+
+| Boundary | Assertion (what must be absent) | Test |
+| --- | --- | --- |
+|  |  |  |
+
+---
+
+## Independent Review Checklist
+
+```text
+Binary checks for an independent reviewer (human or a cold-context conformance
+judge). Each item is pass/fail against this plan and its upstream authority.
+```
+
+```text
+[ ] every workstream traces to a phase build plan workstream
+[ ] every implementation requirement references an architecture rule or PRD id
+[ ] no workstream invents scope absent from the build plan
+[ ] file/module ownership is explicit and non-overlapping
+[ ] schema and migration changes are complete and ordered
+[ ] security requirements are assigned to a workstream
+[ ] negative tests and negative boundary tests are present
+[ ] verification commands are runnable with expected results
+[ ] deferred items name a target phase
+[ ] prior phase learnings were consulted and reflected
 ```
 
 ---
 
-## Gate 4 Exit Checklist
+## Accuracy Pass
+
+Before marking this document Accepted, perform an accuracy pass. Identify:
+
+```text
+errors:
+omissions:
+contradictions:
+scope drift:
+missing tests:
+missing security/governance requirements:
+missing documentation close-out:
+unresolved blockers:
+opportunities for improvement:
+```
+
+---
+
+## G5.[id].2 Checkpoint — Tactical Ready
 
 Before proceeding to construction directive:
 
@@ -231,6 +286,12 @@ Before proceeding to construction directive:
 [ ] every workstream has verification commands
 [ ] schema and migration changes are fully specified
 [ ] security requirements are workstream-assigned
+[ ] negative boundary tests are defined
 [ ] documentation close-out is defined per workstream
+[ ] prior phase learnings consulted
 [ ] plan is executable without architecture invention
 ```
+
+Closure discipline: the artifact status change to `Accepted`, the manifest
+`phase_position` advance to `G5.[id].2`, and the `phase_checkpoint` event in the
+gate log land in the same commit.

@@ -1,25 +1,26 @@
-# Phase Build Plan: Eval Test Product — Phase [N]: [Phase Name]
+# Phase Build Plan: Eval Test Product — Phase [id]: [Phase Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
+Position: G5.[id].1
 Authority: `docs/methodology/constitution/gendev.md` — Phase Build Plan
 Source:
   PRD: `docs/project/prd/[prd-document].md`
   Architecture: `docs/project/architecture/[architecture-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
+  - path: docs/project/build-plan/phase-plan.md
+    revision: TBD
   - path: docs/project/prd/[prd-document].md
     revision: TBD
   - path: docs/project/architecture/[architecture-document].md
     revision: TBD
   - path: docs/project/security-governance/[governance-document].md
-    revision: TBD
-  - path: docs/project/build-plan/phase-roadmap.md
     revision: TBD
 
 ---
@@ -29,7 +30,8 @@ Derived from:
 This document is complete when:
 
 ```text
-the phase is bounded and can be converted into tactical implementation work
+the phase is bounded, its exit test is defined, and it can be converted into
+tactical implementation work
 ```
 
 ---
@@ -38,7 +40,46 @@ the phase is bounded and can be converted into tactical implementation work
 
 ```text
 What must be true when this phase is complete?
-One paragraph. Outcomes, not tasks.
+One paragraph. Outcomes, not tasks. Specific enough to determine whether the
+phase succeeded.
+```
+
+---
+
+## Why This Phase Now
+
+```text
+What did the prior phase establish that makes this phase possible or necessary?
+For the first phase, state what baseline the phase plan assumes.
+One short paragraph. This anchors the phase in the rolling-wave sequence.
+```
+
+---
+
+## Methodology Baseline
+
+```text
+Which methodology rules govern this phase? Name them so the building agent
+carries them as context, not as links to chase. Examples:
+  documentation-first implementation
+  phase-boundary discipline
+  test-centered planning
+  security/governance as first-class requirements
+  documentation close-out as definition of done
+```
+
+---
+
+## Architecture Baseline
+
+```text
+Which architecture rules or constraints are in force for this phase?
+  core objects or subsystems
+  ownership boundaries
+  state/lifecycle rules
+  interfaces
+  configuration rules
+  data model implications
 ```
 
 ---
@@ -56,11 +97,14 @@ Reference PRD requirement IDs where applicable.
 
 ---
 
-## Out-of-Scope Items
+## Out-of-Scope and Explicit Non-Goals
 
 ```text
-What is explicitly excluded from this phase?
-Every deferred feature must appear here or in the deferred items table.
+What is explicitly excluded from this phase, including deferred features and
+adjacent work that may be tempting but is outside the phase? Name sibling
+phases by id where a capability belongs to them. Anything that will be built
+later belongs in the Deferred Items table below; anything that will never be
+built by this project belongs here.
 ```
 
 ---
@@ -117,6 +161,8 @@ What can proceed in parallel?
 ```text
 What parts of this phase carry the most implementation uncertainty?
 What could cause the phase to fail or require rework?
+Include implementation, architecture, security, test, migration, and
+documentation risks.
 ```
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -128,8 +174,11 @@ What could cause the phase to fail or require rework?
 ## Security and Governance Implications
 
 ```text
-What security or governance requirements are active in this phase?
-What must be verified before the phase can close?
+Governance/security baseline: identify the security, governance, identity,
+permission, audit, approval, policy, data-sensitivity, or secrets-handling
+requirements in force for this phase. If none apply, state why.
+
+Below the baseline, record what must be verified before the phase can close.
 Reference: docs/project/security-governance/[governance-document].md
 ```
 
@@ -140,7 +189,7 @@ Reference: docs/project/security-governance/[governance-document].md
 ```text
 Does this phase change existing behavior, schemas, APIs, or data?
 What must remain compatible?
-What must be migrated?
+What must be migrated? What is replaced, adapted, removed, or rejected?
 What is the rollback plan if the migration fails?
 If not applicable, mark this section N/A with a reason.
 ```
@@ -152,6 +201,8 @@ If not applicable, mark this section N/A with a reason.
 ```text
 What must be tested in this phase?
 Tests are planned here, not after code generation.
+Required categories: unit, integration, security/governance, negative,
+migration, CLI/API/UAT, and manual verification where needed.
 ```
 
 | Workstream | Unit Tests | Integration Tests | Negative Tests | UAT / CLI |
@@ -162,6 +213,48 @@ Required fixtures:
 
 ```text
 List test data, environment conditions, or infrastructure required for testing.
+```
+
+---
+
+## Phase Exit Test
+
+```text
+The phase exit test is the test that must pass for this phase to be considered
+complete (checkpoint G5.[id].4). It tests the code this phase generates. It is
+distinct from integration tests and user-acceptance tests.
+
+Define:
+  what the exit test is (the specific suite or command set);
+  how it is executed (the exact commands);
+  the pass criteria (what green means for this phase).
+```
+
+| Exit test | Execution command | Pass criterion |
+| --- | --- | --- |
+|  |  |  |
+
+Coverage standard:
+
+```text
+At least 90% meaningful coverage for new or materially changed code. A shortfall
+requires a written justification recorded here and a named residual risk. Never
+accept a shortfall silently.
+```
+
+Adequacy approver:
+
+```text
+Name the approver who decides whether this exit test is sufficient (a human by
+default). The approver records the phase exit decision in the phase_transition
+event at G5.[id].4.
+```
+
+Regression note:
+
+```text
+On exit, this test joins the accumulated regression suite and is re-run as a
+gate on every subsequent phase.
 ```
 
 ---
@@ -206,38 +299,61 @@ What documentation must be updated before this phase is closed?
 [ ] deferred feature backlog updated
 [ ] known limitations documented
 [ ] test evidence recorded
+[ ] developer / CLI / API / config docs updated
 ```
+
+---
+
+## Open Questions
+
+```text
+What must be resolved before tactical implementation planning?
+These map to the open-questions-carried-forward field in the gate log.
+```
+
+| Question | Owner | Needed by |
+| --- | --- | --- |
+|  |  |  |
 
 ---
 
 ## Accuracy Pass
 
-Before marking this document Accepted, perform an accuracy pass.
-
-Check for:
+Before marking this document Accepted, perform an accuracy pass. Identify:
 
 ```text
-[ ] scope items that are too broad for a single phase
-[ ] deferred items that are actually blocking this phase
-[ ] workstreams with no test coverage
-[ ] acceptance criteria that cannot be verified
-[ ] missing migration or compatibility requirements
+errors:
+omissions:
+contradictions:
+scope drift:
+missing tests:
+missing security/governance requirements:
+missing documentation close-out:
+unresolved blockers:
+opportunities for improvement:
 ```
 
 ---
 
-## Gate 4 Exit Checklist
+## G5.[id].1 Checkpoint — Build Plan Ready
 
 Before proceeding to tactical planning:
 
 ```text
 [ ] phase scope is bounded
-[ ] out-of-scope items are documented
-[ ] deferred items have reasons
+[ ] out-of-scope and explicit non-goals are documented
+[ ] deferred items have reasons and target phases
 [ ] workstreams are defined
 [ ] tests are planned for each workstream
+[ ] phase exit test is defined with execution commands and pass criteria
+[ ] coverage standard stated; any shortfall justified with a named residual risk
 [ ] CLI/UAT strategy defined or marked N/A
 [ ] migration plan exists if applicable
 [ ] acceptance criteria are verifiable
 [ ] documentation close-out requirements are defined
+[ ] open questions recorded
 ```
+
+Closure discipline: the artifact status change to `Accepted`, the manifest
+`phase_position` advance to `G5.[id].1`, and the `phase_checkpoint` event in the
+gate log land in the same commit.

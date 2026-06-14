@@ -1,7 +1,7 @@
 # Governance and Security Specification: Eval Test Product
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
 Authority: `docs/methodology/constitution/gendev.md` — Governance and Security Specification
 Source:
@@ -9,7 +9,7 @@ Source:
   PRD: `docs/project/prd/[prd-document].md`
   Architecture: `docs/project/architecture/[architecture-document].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:

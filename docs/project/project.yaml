@@ -5,7 +5,7 @@ project:
   current_gate: G1
   methodology_version: 0.1.0-baseline
   methodology_release_stage: pre-1.0
-  initialized_on: "2026-06-11"
+  initialized_on: "2026-06-14"
 
 human_control:
   owner: TBD
@@ -62,9 +62,9 @@ approvals:
     evidence:
       - docs/project/vision/eval-test-product-vision.md
     risks_accepted:
-      - src/
+      - TBD
     blocking_open_questions:
-      - src/
+      - TBD
     next_gate: G2
     next_role: prd-agent
     next_artifact: docs/project/prd/eval-test-product-prd.md
@@ -96,7 +96,7 @@ enforcement:
   class: attested
   protected_branch: master
   implementation_paths:
-    - src/
+    - TBD
   excluded_paths:
     - docs/
     - scripts/
@@ -132,6 +132,10 @@ phase:
   as_built_closeout: docs/project/as-built/phase-1-as-built-closeout.md
   value_review: docs/project/as-built/phase-1-value-review.md
   # Phase-loop fields (populated at G5.0 when the phase plan is accepted).
+  # phase_position is the interior checkpoint address, e.g. G5.1.2. It is
+  # null until the phase loop begins. The phases list is the partition
+  # declared by the phase plan; order in this list is authoritative and is
+  # never computed from the id. status is one of: pending, in_progress, exited.
   phase_position: null
   phase_plan: docs/project/build-plan/phase-plan.md
   phases: []

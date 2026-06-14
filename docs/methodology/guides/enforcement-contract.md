@@ -132,6 +132,19 @@ EC-10 Enforcement is versioned.
       other authority change.
 ```
 
+## Phase Loop Enforcement Disposition
+
+The interior phase loop (the `G5.x` checkpoints defined in `gates.md`) ships in
+the attested conformance class. Checkpoint closure discipline — the artifact
+status change to `Accepted`, the manifest `phase_position` advance, and the
+corresponding `phase_checkpoint` or `phase_transition` event landing in the same
+commit — is attested, not mechanically enforced, in this release.
+
+A candidate enforced rule is recorded for a future release: implementation
+paths for phase N+1 are blocked until phase N's `G5.<id>.4` event exists. It is
+not enforced now; projects attest phase progression as part of the normal
+attested conformance procedure.
+
 ## Failure Semantics
 
 - Errors block when a mechanical binding is present.

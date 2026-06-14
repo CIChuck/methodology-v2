@@ -1,7 +1,7 @@
 # Code Review Report: Eval Test Product — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Reviewer:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 7: Code Review Verifies Conformance
 Source:
@@ -12,7 +12,7 @@ Source:
   PRD: `docs/project/prd/[prd-document].md`
   Traceability Matrix: `docs/project/traceability/[traceability-matrix].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -41,7 +41,7 @@ and what must be remediated
 ```
 
 Do not mark Complete until all findings are categorized, residual risks are documented,
-and the Gate 5 checklist is satisfied.
+and the G6 checklist (Implementation Ready For Review) is satisfied.
 
 ---
 
@@ -170,7 +170,7 @@ Check for:
 
 ---
 
-## Gate 5 Status
+## G6 Status (Implementation Ready For Review)
 
 ```text
 [ ] critical findings: none remaining

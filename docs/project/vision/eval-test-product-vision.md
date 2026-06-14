@@ -1,11 +1,11 @@
 # Vision / Problem Framing: Eval Test Product
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
 Authority: `docs/methodology/constitution/gendev.md` — Vision / Problem Framing
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -172,7 +172,7 @@ Check for:
 
 ---
 
-## Gate 1 Exit Checklist
+## G1 Exit Checklist (Vision Ready)
 
 Before proceeding to PRD:
 

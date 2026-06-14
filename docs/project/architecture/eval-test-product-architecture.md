@@ -1,14 +1,14 @@
 # Architecture Specification: Eval Test Product
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: 2026-06-11
+Date: 2026-06-14
 Owner: TBD
 Authority: `docs/methodology/constitution/gendev.md` — Architecture Specification
 Source:
   Vision: `docs/project/vision/[vision-document].md`
   PRD: `docs/project/prd/[prd-document].md`
 Produced by: TBD
-Produced on: 2026-06-11
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -336,7 +336,7 @@ Check for:
 
 ---
 
-## Gate 3 Exit Checklist
+## G3 Exit Checklist (Architecture Ready)
 
 Before proceeding to build planning:
 
