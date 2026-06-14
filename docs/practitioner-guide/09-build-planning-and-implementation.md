@@ -19,10 +19,14 @@ Build-ready usually means:
   are approved);
 - governance/security accepted (identity, authorization, data, audit, tool, and approval rules are
   approved);
-- phase build plan accepted (the phase objective and scope are approved);
-- tactical implementation plan accepted (the actionable workstreams and tasks are approved);
-- test/UAT plan accepted or embedded (test and user acceptance testing expectations are approved);
-- construction directive accepted (the controlling build instruction is approved).
+- phase plan accepted (the build is partitioned into ordered, independently
+  testable phases, with a requirement coverage map and integration criteria;
+  this is what G5 certifies).
+
+The per-phase build plan, tactical implementation plan, construction directive,
+and build prompt are then produced one phase at a time inside the phase loop
+(the G5.x checkpoints), each accepted before that phase is built. See
+docs/methodology/guides/phase-loop.md.
 
 This may look like a lot of ceremony. The point is to prevent implementation from becoming the
 place where requirements, architecture, security, and acceptance criteria are invented.

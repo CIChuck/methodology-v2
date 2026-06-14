@@ -1,8 +1,8 @@
-# Phase Build Plan: [Project Name] — Phase [id]: [Phase Name]
+# Phase Build Plan: Eval Test Product — Phase [id]: [Phase Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date:
-Owner:
+Date: 2026-06-14
+Owner: TBD
 Position: G5.[id].1
 Authority: `docs/methodology/constitution/gendev.md` — Phase Build Plan
 Source:
@@ -10,7 +10,7 @@ Source:
   Architecture: `docs/project/architecture/[architecture-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
 Produced by: TBD
-Produced on: [YYYY-MM-DD]
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -254,7 +254,7 @@ Regression note:
 
 ```text
 On exit, this test joins the accumulated regression suite and is re-run as a
-required regression check on every subsequent phase.
+gate on every subsequent phase.
 ```
 
 ---

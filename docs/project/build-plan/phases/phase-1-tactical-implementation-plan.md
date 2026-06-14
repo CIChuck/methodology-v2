@@ -1,18 +1,18 @@
-# Tactical Implementation Plan: [Project Name] — Phase [id]: [Phase Name]
+# Tactical Implementation Plan: Eval Test Product — Phase [id]: [Phase Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date:
-Owner:
+Date: 2026-06-14
+Owner: TBD
 Position: G5.[id].2
 Authority: `docs/methodology/constitution/gendev.md` — Tactical Implementation Plan
 Source:
   Phase Build Plan: `docs/project/build-plan/phases/[phase-build-plan].md`
-  Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md` (N/A for the first phase)
+  Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md`
   Architecture: `docs/project/architecture/[architecture-document].md`
   PRD: `docs/project/prd/[prd-document].md`
   Governance/Security: `docs/project/security-governance/[governance-document].md`
 Produced by: TBD
-Produced on: [YYYY-MM-DD]
+Produced on: 2026-06-14
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
@@ -56,8 +56,8 @@ Which documents govern this implementation?
 In case of conflict, which takes precedence?
 ```
 
-1. Governance and Security Specification
-2. Architecture Specification
+1. Architecture Specification
+2. Governance and Security Specification
 3. PRD
 4. Phase Build Plan
 5. This Tactical Plan
@@ -253,7 +253,7 @@ judge). Each item is pass/fail against this plan and its upstream authority.
 [ ] negative tests and negative boundary tests are present
 [ ] verification commands are runnable with expected results
 [ ] deferred items name a target phase
-[ ] prior phase learnings were consulted and reflected (or N/A for the first phase)
+[ ] prior phase learnings were consulted and reflected
 ```
 
 ---
@@ -288,7 +288,7 @@ Before proceeding to construction directive:
 [ ] security requirements are workstream-assigned
 [ ] negative boundary tests are defined
 [ ] documentation close-out is defined per workstream
-[ ] prior phase learnings consulted (or N/A for the first phase)
+[ ] prior phase learnings consulted
 [ ] plan is executable without architecture invention
 ```
 

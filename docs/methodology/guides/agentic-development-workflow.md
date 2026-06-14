@@ -178,9 +178,12 @@ Use:
 - `docs/methodology/dev-skills/phase-build-planner.md`;
 - `docs/methodology/dev-skills/tactical-implementation-planner.md`.
 
-The build loop starts with a phase build plan and then creates a tactical implementation plan. The
-phase plan defines what the phase may and may not build. The tactical plan defines how it will be
-built, tested, verified, and documented.
+The phase plan (certified at G5) partitions the build into ordered, independently
+testable phases. The build loop then runs one phase at a time: a phase build plan
+defines what that phase may and may not build, a tactical implementation plan
+defines how it will be built, tested, verified, and documented, and a
+construction directive and build prompt drive the implementation. See
+docs/methodology/guides/phase-loop.md.
 
 Every phase must state:
 

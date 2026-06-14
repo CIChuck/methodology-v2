@@ -83,8 +83,9 @@ review. It should not require gate regression unless the added detail invalidate
 
 The active artifact is the document currently being drafted, reviewed, approved, or used as the
 controlling source for the current gate. At G1, the active artifact is usually the vision document.
-At G2, it is the PRD. At G5, there may be several active planning artifacts, including phase build
-plan, tactical implementation plan, test/UAT plan, and construction directive.
+At G2, it is the PRD. At G5, it is the phase plan (the build partition). Inside the phase loop
+(the G5.x checkpoints), the active artifact is the phase build plan, tactical plan, construction
+directive, or build prompt for the phase currently being planned.
 
 When an agent resumes work, it should identify the active artifact before making changes.
 
@@ -592,12 +593,40 @@ construction directive.
 
 ## Build Ready
 
-Build Ready is G5. It means the team has enough accepted authority to begin a bounded implementation
-phase. Build-ready work normally requires accepted vision, PRD, architecture, governance/security,
-phase plan, tactical plan, test/UAT plan, and construction directive.
+Build Ready is G5. It means the build has been partitioned into ordered,
+independently testable phases and that partition is accepted. The artifact G5
+certifies is the phase plan (with its requirement coverage map and integration
+criteria). The per-phase build plan, tactical plan, construction directive, and
+build prompt are produced inside the phase loop, at the interior `G5.x`
+checkpoints, not at G5 itself.
 
-The phrase "build ready" should make practitioners ask: ready to build exactly what, under which
-authority, with which tests, and with which stop conditions?
+The phrase "build ready" should make practitioners ask: ready to build which
+phases, in what order, each tested how, and exiting on what?
+
+## Checkpoint
+
+A checkpoint is an interior progress address within the G5 to G6 span, written
+`G5.<phase-id>.<n>`. It marks the acceptance of a phase planning artifact or the
+exit of a phase. A checkpoint is not a gate: the gate enumeration is G0 through
+G9, and checkpoints carry no separate gate-approval ceremony. See the phase loop
+guide and the "G5 Interior" section of gates.md.
+
+## Phase Loop
+
+The phase loop is the process interior to the G5 to G6 span by which a project
+builds one phase at a time: for each phase, author the build plan
+(`G5.<id>.1`), tactical plan (`G5.<id>.2`), and construction directive with
+build prompt (`G5.<id>.3`), then build, test, and exit (`G5.<id>.4`). Build
+plans lead the wave; tactical plans and directives are authored just in time and
+informed by prior-phase learnings.
+
+## Phase Plan
+
+The phase plan is the artifact G5 certifies. It partitions the build into
+ordered, independently testable phases, maps every in-scope requirement to an
+owning phase, states cross-phase rules and the partitioning rationale, and
+declares integration criteria. Phase ids are stable labels; order is defined by
+the plan, never computed from the id.
 
 ## Carry Forward
 
