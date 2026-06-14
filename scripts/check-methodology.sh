@@ -1239,6 +1239,50 @@ check_vision_success_criteria() {
   done
 }
 
+check_phase_position() {
+  manifest="docs/project/project.yaml"
+  [ -f "$manifest" ] || return
+
+  # Phase-loop fields are optional. A manifest without phase_position or a
+  # null/empty value is valid (backward compatibility with pre-phase-loop
+  # projects). Validation only runs when phase_position carries a value.
+  position="$(manifest_section_value "$manifest" "phase" "phase_position")"
+  case "$position" in
+    ""|null|NULL|"~"|TBD) return ;;
+  esac
+
+  # Position grammar: G5.<phase-id>.<checkpoint>, checkpoint in 0-4.
+  # G5.0 is the loop-start address and carries no phase id.
+  if [ "$position" = "G5.0" ]; then
+    return
+  fi
+  if ! printf '%s' "$position" | grep -Eq '^G5\.[A-Za-z0-9-]+\.[1-4]$'; then
+    fail "Manifest phase.phase_position is not a valid checkpoint address: $position"
+    return
+  fi
+
+  # The phase id embedded in the position must be declared in phases[].
+  pos_phase_id="$(printf '%s' "$position" | sed -E 's/^G5\.([A-Za-z0-9-]+)\.[1-4]$/\1/')"
+  declared_ids="$(awk '
+    $0 ~ /^phase:/ { in_phase = 1; next }
+    in_phase && /^[a-z]/ { in_phase = 0 }
+    in_phase && /^[[:space:]]+phases:/ { in_list = 1; next }
+    in_list && /^[[:space:]]+-[[:space:]]+id:/ {
+      line = $0
+      sub(/^.*id:[[:space:]]*/, "", line)
+      gsub(/["'\''[:space:]]/, "", line)
+      print line
+    }
+    in_list && /^[[:space:]]+[a-z_]+:[[:space:]]*$/ && $0 !~ /phases:/ { in_list = 0 }
+  ' "$manifest")"
+
+  if [ -n "$declared_ids" ]; then
+    if ! printf '%s\n' "$declared_ids" | grep -Fxq "$pos_phase_id"; then
+      fail "Manifest phase.phase_position references phase id '$pos_phase_id' not declared in phase.phases."
+    fi
+  fi
+}
+
 check_phase_plans() {
   for file in docs/project/build-plan/phases/*build-plan*.md; do
     [ -e "$file" ] || continue
@@ -1335,6 +1379,7 @@ else
   check_current_gate_artifact_status
   check_vision_success_criteria
   check_phase_plans
+  check_phase_position
   check_traceability_evidence
   check_code_review_context_provenance
 fi

@@ -1,11 +1,11 @@
 project:
-  name: "[Project Name]"
-  slug: "[project-slug]"
+  name: "Eval Test Product"
+  slug: "eval-test-product"
   status: initialized
   current_gate: G1
   methodology_version: 0.1.0-baseline
   methodology_release_stage: pre-1.0
-  initialized_on: "[YYYY-MM-DD]"
+  initialized_on: "2026-06-11"
 
 human_control:
   owner: TBD
@@ -27,11 +27,11 @@ authority:
   artifact_protocol: docs/methodology/guides/artifact-collaboration-protocol.md
   production_protocol: docs/methodology/guides/production-operations-protocol.md
   orchestration_validation: docs/methodology/guides/orchestration-validation.md
-  vision: docs/project/vision/[project-slug]-vision.md
-  prd: docs/project/prd/[project-slug]-prd.md
-  architecture: docs/project/architecture/[project-slug]-architecture.md
+  vision: docs/project/vision/eval-test-product-vision.md
+  prd: docs/project/prd/eval-test-product-prd.md
+  architecture: docs/project/architecture/eval-test-product-architecture.md
   governance_security: docs/project/security-governance/governance-security-spec.md
-  traceability: docs/project/traceability/[project-slug]-traceability-matrix.md
+  traceability: docs/project/traceability/eval-test-product-traceability-matrix.md
   approval_log: docs/project/approvals/gate-log.md
   value_review: docs/project/as-built/phase-1-value-review.md
 
@@ -60,14 +60,14 @@ approvals:
     approved_by: TBD
     approved_on: TBD
     evidence:
-      - docs/project/vision/[project-slug]-vision.md
+      - docs/project/vision/eval-test-product-vision.md
     risks_accepted:
-      - TBD
+      - src/
     blocking_open_questions:
-      - TBD
+      - src/
     next_gate: G2
     next_role: prd-agent
-    next_artifact: docs/project/prd/[project-slug]-prd.md
+    next_artifact: docs/project/prd/eval-test-product-prd.md
   latest_decision:
     decision: TBD
     decided_by: TBD
@@ -96,7 +96,7 @@ enforcement:
   class: attested
   protected_branch: master
   implementation_paths:
-    - TBD
+    - src/
   excluded_paths:
     - docs/
     - scripts/
@@ -132,10 +132,6 @@ phase:
   as_built_closeout: docs/project/as-built/phase-1-as-built-closeout.md
   value_review: docs/project/as-built/phase-1-value-review.md
   # Phase-loop fields (populated at G5.0 when the phase plan is accepted).
-  # phase_position is the interior checkpoint address, e.g. G5.1.2. It is
-  # null until the phase loop begins. The phases list is the partition
-  # declared by the phase plan; order in this list is authoritative and is
-  # never computed from the id. status is one of: pending, in_progress, exited.
   phase_position: null
   phase_plan: docs/project/build-plan/phase-plan.md
   phases: []
