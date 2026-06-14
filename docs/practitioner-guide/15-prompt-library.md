@@ -99,9 +99,12 @@ tool rules, and stop conditions.
 ## Build Planning
 
 ```text
-Create the G5 phase build plan, tactical implementation plan, test/UAT plan, and construction
-directive for Phase 1. Keep scope bounded. Include non-goals, workstreams, verification commands,
-negative tests, documentation close-out, and stop conditions.
+Create the G5 phase plan: partition the build into ordered, independently
+testable phases, with a requirement coverage map and integration criteria. Then,
+for the first phase, create its phase build plan at checkpoint G5.1.1 (objective,
+scope, non-goals, workstreams, exit test, verification commands, negative tests,
+documentation close-out, stop conditions). The tactical plan and construction
+directive follow at G5.1.2 and G5.1.3.
 ```
 
 ## Implementation

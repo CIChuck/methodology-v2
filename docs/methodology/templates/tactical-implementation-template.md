@@ -56,8 +56,8 @@ Which documents govern this implementation?
 In case of conflict, which takes precedence?
 ```
 
-1. Architecture Specification
-2. Governance and Security Specification
+1. Governance and Security Specification
+2. Architecture Specification
 3. PRD
 4. Phase Build Plan
 5. This Tactical Plan

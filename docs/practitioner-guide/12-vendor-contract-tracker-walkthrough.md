@@ -273,17 +273,22 @@ edit, delete, export, or upload attachments. Negative authorization tests are re
 forbidden action.
 ```
 
-G4 approval is required before build planning (creating the phase plan, tactical plan, test plan,
-and construction directive).
+G4 approval is required before build planning. Build planning starts with the
+phase plan (the build partition), which G5 certifies; the per-phase build plan,
+tactical plan, and construction directive are then produced inside the phase
+loop.
 
 ## G5: Build Ready
 
 Human prompt:
 
 ```text
-Create the Phase 1 build plan, tactical implementation plan, test/UAT plan, and construction
-directive. Phase 1 should deliver contract inventory, ownership, status, renewal-window filtering,
-and role-based access tests. Do not include external integrations.
+Create the phase plan: partition this build into ordered, independently testable
+phases with a requirement coverage map and integration criteria. For a small
+tracker this may be a single phase delivering contract inventory, ownership,
+status, renewal-window filtering, and role-based access tests; do not include
+external integrations. Then create the Phase 1 build plan at checkpoint G5.1.1,
+with the phase exit test defined.
 ```
 
 Expected phase scope (what Phase 1 includes and excludes):

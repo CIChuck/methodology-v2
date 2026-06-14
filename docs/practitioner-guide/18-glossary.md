@@ -83,8 +83,9 @@ review. It should not require gate regression unless the added detail invalidate
 
 The active artifact is the document currently being drafted, reviewed, approved, or used as the
 controlling source for the current gate. At G1, the active artifact is usually the vision document.
-At G2, it is the PRD. At G5, there may be several active planning artifacts, including phase build
-plan, tactical implementation plan, test/UAT plan, and construction directive.
+At G2, it is the PRD. At G5, it is the phase plan (the build partition). Inside the phase loop
+(the G5.x checkpoints), the active artifact is the phase build plan, tactical plan, construction
+directive, or build prompt for the phase currently being planned.
 
 When an agent resumes work, it should identify the active artifact before making changes.
 

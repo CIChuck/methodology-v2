@@ -1280,6 +1280,11 @@ check_phase_position() {
     if ! printf '%s\n' "$declared_ids" | grep -Fxq "$pos_phase_id"; then
       fail "Manifest phase.phase_position references phase id '$pos_phase_id' not declared in phase.phases."
     fi
+  else
+    # A populated phase_position requires a declared phases list. An empty or
+    # missing phases[] with an active interior checkpoint is invalid: the phase
+    # id has no authoritative declaration to order against.
+    fail "Manifest phase.phase_position is set ($position) but phase.phases declares no phases."
   fi
 }
 

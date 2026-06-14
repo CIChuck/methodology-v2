@@ -44,8 +44,8 @@ Controlling documents, pinned at the revisions accepted for this phase. In a
 conflict, the higher entry wins.
 
 ```text
-1. Architecture Specification: [path] @ [revision]
-2. Governance/Security Specification: [path] @ [revision]
+1. Governance/Security Specification: [path] @ [revision]
+2. Architecture Specification: [path] @ [revision]
 3. PRD / Requirements: [path] @ [revision]
 4. Phase Build Plan: [path] @ [revision]
 5. Tactical Implementation Plan: [path] @ [revision]
