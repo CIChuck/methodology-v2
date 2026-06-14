@@ -877,13 +877,18 @@ agent/tool stop conditions are documented or marked N/A
 Exit criteria:
 
 ```text
-phase scope is bounded
-out-of-scope and deferred items are explicit
-workstreams have file/module ownership expectations
-tests and UAT checks are defined
-migration and rollback behavior are documented where applicable
-construction directive is ready for an implementation agent
+the build is partitioned into ordered, independently testable phases
+every phase carries a stable id label; order is defined by the phase plan
+the requirement coverage map accounts for all in-scope requirements
+integration criteria are declared
+the partitioning rationale records the sizing criterion
 ```
+
+The G5 to G6 span has an interior phase loop: after G5 closes, the build
+proceeds one phase at a time through interior checkpoints (`G5.x`) that produce
+each phase's planning artifacts and record its exit. Checkpoints are not gates;
+the canonical definition is in docs/methodology/guides/gates.md ("G5 Interior:
+The Phase Loop") and docs/methodology/guides/phase-loop.md.
 
 ### G6: Implementation Ready For Review
 
