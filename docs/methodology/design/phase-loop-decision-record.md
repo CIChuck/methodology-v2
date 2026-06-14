@@ -53,7 +53,15 @@ Introduce the phase loop interior to the G5 to G6 span.
    in one commit) is attested, not mechanically enforced, in this release.
 
 8. The AI-Build-Kit examination folder is harvested into canonical templates,
-   the phase-loop guide, and the authoring prompts, then deleted.
+   the phase-loop guide, and the authoring prompts, then deleted. No references
+   to it survive in the methodology body, with one explicit and bounded
+   exception: the records that document its removal (this decision record and
+   the release note) name it, because a record cannot describe the deletion of
+   a thing it is forbidden to name. This carve-out is intent-preserving — D8's
+   purpose is that the kit does not survive as a usable artifact or a live
+   reference in the methodology, and a deletion record serves that purpose
+   rather than violating it. The carve-out is limited to deletion records and
+   extends to nothing else.
 
 ## Rationale
 
@@ -87,5 +95,7 @@ needed addressing and structure without those costs.
 
 Executed in six phases with per-phase verification. Final state: checker green;
 all ten gate headers intact; no bare ordinal gate numbering outside gates.md; no
-checkpoint-as-gate language; no AI-Build-Kit references; fresh project init and
+checkpoint-as-gate language; the AI-Build-Kit folder is deleted and no
+references survive except in the deletion records permitted by decision 8;
+fresh project init and
 legacy-manifest validation both pass.
