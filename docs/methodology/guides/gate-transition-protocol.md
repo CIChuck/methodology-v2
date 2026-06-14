@@ -300,11 +300,12 @@ Next role: Phase Planning Agent.
 
 Next artifacts:
 
-- phase roadmap or selected phase;
-- phase build plan;
-- tactical implementation plan;
-- test/UAT plan;
-- construction directive.
+- phase plan (the ordered partition with the requirement coverage map and
+  integration criteria).
+
+The per-phase build plan, tactical plan, construction directive, and build
+prompt are produced inside the phase loop at the interior G5.x checkpoints, not
+as G5 exit artifacts. See docs/methodology/guides/phase-loop.md.
 
 Stop if:
 

@@ -281,17 +281,19 @@ production deployment.
 
 ## G5: Build Ready
 
-G5 authorizes a bounded implementation phase (a controlled increment of build work).
+G5 ratifies the phase partition: it certifies the phase plan that governs how the
+build proceeds. The implementation itself happens in the phase loop interior to
+the G5 to G6 span (the G5.x checkpoints).
 
-Primary artifacts:
+Primary artifact:
 
 ```text
-docs/project/build-plan/phase-roadmap.md
-docs/project/build-plan/phases/phase-1-build-plan.md
-docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
-docs/project/testing/phase-1-test-uat-plan.md
-docs/project/build-plan/phases/phase-1-construction-directive.md
+docs/project/build-plan/phase-plan.md
 ```
+
+The per-phase build plan, tactical implementation plan, construction directive,
+and build prompt are produced at the interior checkpoints, not at G5. See
+docs/methodology/guides/phase-loop.md.
 
 The build-ready state should define:
 

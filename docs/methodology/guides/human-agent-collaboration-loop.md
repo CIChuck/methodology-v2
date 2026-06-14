@@ -193,7 +193,7 @@ requires it.
 | G2 Requirements Ready | Accepted PRD with testable requirements. |
 | G3 Architecture Ready | Accepted architecture and stack decision. |
 | G4 Governance Ready | Accepted governance/security specification. |
-| G5 Build Ready | Accepted phase plan, tactical plan, test/UAT plan, and construction directive. |
+| G5 Build Ready | Accepted phase plan: the ordered phase partition, requirement coverage map, and integration criteria. Per-phase artifacts are produced in the phase loop. |
 | G6 Implementation Ready For Review | Implementation summary and verification evidence. |
 | G7 Acceptance Ready | Review/remediation evidence and acceptance decision. |
 | G8 Deployment Ready | Deployment approval, runbook, rollback, and operational checks. |

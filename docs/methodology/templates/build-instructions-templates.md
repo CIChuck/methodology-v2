@@ -35,7 +35,7 @@ drift, phases with no testable exit, and undefined integration criteria.
 ## Phase Build Plan Prompt
 
 Build the `[phase name]` phase build plan using the approved phase plan, PRD, architecture,
-governance/security specification, and the prior phase's learnings.
+and governance/security specification.
 Template: `phase-build-plan-template.md`.
 
 The plan must define:
