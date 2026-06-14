@@ -319,7 +319,7 @@ Expected construction directive (the controlling build instruction):
 - verification commands;
 - stop conditions.
 
-G5 approval authorizes implementation (building the approved scope).
+G5 approval authorizes the phase loop; implementation begins only after the phase's accepted construction directive and build prompt at G5.<id>.3.
 
 Amendment example during G5:
 
