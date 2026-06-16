@@ -371,28 +371,50 @@ specification) through a Supporting Artifacts section. The references form a
 directed acyclic graph rooted at canonical gate artifacts:
 
 ```text
-references point along the authority gradient, from a canonical artifact to its
-  supporters
+the graph is rooted at canonical gate artifacts; a canonical artifact holds the
+  Supporting Artifacts section and names the supporting artifacts it references, so
+  edges run from the canonical (referencing) artifact to the supporting
+  (referenced) artifact
 cycles are forbidden and must be flagged
 references are one level deep by default; supporting artifacts do not themselves
   carry supporting-artifact references, and greater depth is a declared, justified
   exception
 ```
 
-Each reference carries a relationship type from this bounded vocabulary, and the
-type declares the coherence obligation that must hold:
+Edge topology and authority direction are distinct. Topology is fixed: the
+canonical artifact references the supporting artifact. Authority direction depends
+on the relationship type below: for some types the referencing (canonical) artifact
+is the one obligated to conform to the referenced artifact, and for others the
+reverse. Each type states explicitly which artifact holds authority, so the
+coherence obligation is unambiguous regardless of which end holds the reference.
+
+Each reference carries a relationship type from this bounded vocabulary. In every
+case the referencing artifact is the canonical gate artifact, and the referenced
+artifact is the supporting artifact it names. The type declares the coherence
+obligation and which end holds authority:
 
 ```text
-implements    - the source realizes a structure the target defines; named elements
-                in the source resolve to definitions in the target
-satisfies     - the source fulfills requirements the target states; every
-                requirement in the target is covered by the source
-tested-by     - the source's correctness is verified by the target test artifact;
-                the target exists, covers the source's claims, and passes
-constrained-by- the source must not violate limits the target sets; the source
-                contains nothing the target forbids
-refines       - the source adds detail within the target's scope without
-                contradicting or expanding it
+implements     - the referencing artifact realizes a structure the referenced
+                 artifact defines. Authority: the referenced artifact. Obligation:
+                 every named element in the referencing artifact resolves to a
+                 definition in the referenced artifact.
+satisfies      - the referencing artifact fulfills requirements the referenced
+                 artifact states. Authority: the referenced artifact. Obligation:
+                 every requirement in the referenced artifact is covered by the
+                 referencing artifact.
+tested-by      - the referencing artifact's correctness is verified by the
+                 referenced test artifact. Authority: the referencing artifact (the
+                 test serves it). Obligation: the referenced test artifact exists,
+                 covers the referencing artifact's claims, and passes.
+constrained-by - the referencing artifact must not violate limits the referenced
+                 artifact sets. Authority: the referenced artifact. Obligation: the
+                 referencing artifact contains nothing the referenced artifact
+                 forbids.
+refines        - the referencing artifact adds detail within the scope the
+                 referenced artifact sets. Authority: the referenced artifact.
+                 Obligation: the referencing artifact stays within the referenced
+                 artifact's scope, adding detail without contradicting or expanding
+                 it.
 ```
 
 The provenance relationship (which canonical artifact an artifact descends from)
