@@ -87,20 +87,30 @@ approved unless the required approver, approval date, evidence, and risk disposi
 
 ## Active Project Paths
 
-For an initialized product, active authority belongs under `docs/project/`:
+For an initialized product, active authority belongs under `docs/project/`. Because
+artifact names are canonical and project-independent (constitution Rule 14), these
+pointers name the actual authority files, not just their directories:
 
 ```text
-docs/project/vision/
-docs/project/approvals/
-docs/project/prd/
-docs/project/architecture/
-docs/project/security-governance/
-docs/project/decisions/
-docs/project/build-plan/
+docs/project/vision/vision.md
+docs/project/prd/prd.md
+docs/project/architecture/architecture.md
+docs/project/security-governance/governance-security-spec.md
+docs/project/decisions/0001-technology-stack.md
+docs/project/build-plan/phase-plan.md
+docs/project/traceability/traceability-matrix.md
+docs/project/approvals/gate-log.md
+docs/project/project.yaml
+```
+
+Per-phase and multi-artifact authority lives in directories, one set per phase or
+record:
+
+```text
 docs/project/build-plan/phases/
 docs/project/testing/
-docs/project/traceability/
 docs/project/as-built/
+docs/project/decisions/
 ```
 
 If `docs/project/` does not exist, initialize it before product implementation:

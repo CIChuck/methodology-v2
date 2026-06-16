@@ -1,6 +1,7 @@
 # Value Review: [Project Name] — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
+project: [project-slug]
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Measurement Principle

@@ -90,11 +90,11 @@ render_template() {
 
 render_template "$project_template/project.yaml" "$target/project.yaml"
 render_template "$project_template/approvals/gate-log.md" "$target/approvals/gate-log.md"
-render_template "$template_root/vision-template.md" "$target/vision/$slug-vision.md"
-render_template "$template_root/prd-template.md" "$target/prd/$slug-prd.md"
-render_template "$template_root/architecture-template.md" "$target/architecture/$slug-architecture.md"
+render_template "$template_root/vision-template.md" "$target/vision/vision.md"
+render_template "$template_root/prd-template.md" "$target/prd/prd.md"
+render_template "$template_root/architecture-template.md" "$target/architecture/architecture.md"
 render_template "$template_root/governance-security-template.md" "$target/security-governance/governance-security-spec.md"
-render_template "$template_root/traceability-matrix-template.md" "$target/traceability/$slug-traceability-matrix.md"
+render_template "$template_root/traceability-matrix-template.md" "$target/traceability/traceability-matrix.md"
 render_template "$template_root/0001-technology-stack-template.md" "$target/decisions/0001-technology-stack.md"
 render_template "$template_root/phase-build-plan-template.md" "$target/build-plan/phases/phase-1-build-plan.md"
 render_template "$template_root/tactical-implementation-template.md" "$target/build-plan/phases/phase-1-tactical-implementation-plan.md"
@@ -115,9 +115,9 @@ Produced on: $today
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/prd/$slug-prd.md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
   - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
@@ -162,9 +162,9 @@ Produced on: $today
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/prd/$slug-prd.md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
   - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
@@ -231,8 +231,8 @@ Authority: docs/methodology/constitution/gendev.md
 Source:
   Phase Build Plan: docs/project/build-plan/phases/phase-1-build-plan.md
   Tactical Plan: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
-  PRD: docs/project/prd/$slug-prd.md
-  Architecture: docs/project/architecture/$slug-architecture.md
+  PRD: docs/project/prd/prd.md
+  Architecture: docs/project/architecture/architecture.md
   Governance/Security: docs/project/security-governance/governance-security-spec.md
 Produced by: TBD
 Produced on: $today
@@ -243,9 +243,9 @@ Derived from:
     revision: TBD
   - path: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
     revision: TBD
-  - path: docs/project/prd/$slug-prd.md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
   - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
@@ -263,8 +263,8 @@ by this directive and the tactical implementation plan.
 ## Source Authority And Precedence
 
 1. docs/project/security-governance/governance-security-spec.md
-2. docs/project/architecture/$slug-architecture.md
-3. docs/project/prd/$slug-prd.md
+2. docs/project/architecture/architecture.md
+3. docs/project/prd/prd.md
 4. docs/project/build-plan/phases/phase-1-build-plan.md
 5. docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
 6. This construction directive
@@ -360,4 +360,4 @@ EOF
 
 echo "Initialized docs/project for $project_name"
 echo "Project slug: $slug"
-echo "Next document: docs/project/vision/$slug-vision.md"
+echo "Next document: docs/project/vision/vision.md"

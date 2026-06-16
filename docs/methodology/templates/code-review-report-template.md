@@ -1,6 +1,7 @@
 # Code Review Report: [Project Name] — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
+project: [project-slug]
 Date:
 Reviewer:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 7: Code Review Verifies Conformance

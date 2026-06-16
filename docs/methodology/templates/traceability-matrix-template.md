@@ -1,6 +1,7 @@
 # Traceability Matrix: [Project Name]
 
 Status: Active | Stale | Superseded
+project: [project-slug]
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Traceability Matrix

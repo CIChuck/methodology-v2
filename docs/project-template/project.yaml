@@ -27,11 +27,11 @@ authority:
   artifact_protocol: docs/methodology/guides/artifact-collaboration-protocol.md
   production_protocol: docs/methodology/guides/production-operations-protocol.md
   orchestration_validation: docs/methodology/guides/orchestration-validation.md
-  vision: docs/project/vision/[project-slug]-vision.md
-  prd: docs/project/prd/[project-slug]-prd.md
-  architecture: docs/project/architecture/[project-slug]-architecture.md
+  vision: docs/project/vision/vision.md
+  prd: docs/project/prd/prd.md
+  architecture: docs/project/architecture/architecture.md
   governance_security: docs/project/security-governance/governance-security-spec.md
-  traceability: docs/project/traceability/[project-slug]-traceability-matrix.md
+  traceability: docs/project/traceability/traceability-matrix.md
   approval_log: docs/project/approvals/gate-log.md
   value_review: docs/project/as-built/phase-1-value-review.md
 
@@ -60,14 +60,14 @@ approvals:
     approved_by: TBD
     approved_on: TBD
     evidence:
-      - docs/project/vision/[project-slug]-vision.md
+      - docs/project/vision/vision.md
     risks_accepted:
       - TBD
     blocking_open_questions:
       - TBD
     next_gate: G2
     next_role: prd-agent
-    next_artifact: docs/project/prd/[project-slug]-prd.md
+    next_artifact: docs/project/prd/prd.md
   latest_decision:
     decision: TBD
     decided_by: TBD

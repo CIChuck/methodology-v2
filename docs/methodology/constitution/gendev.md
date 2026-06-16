@@ -449,6 +449,36 @@ updated. The authoritative form of a supporting artifact is textual; diagrams ar
 embedded (for example Mermaid) or referenced from authoritative text, so the
 artifact stays diff-able and coherence-checkable.
 
+### Rule 14: Canonical Artifact Naming
+
+Per-project artifacts use fixed, role-based filenames that are identical across all
+projects. A filename identifies an artifact's role (vision.md, prd.md,
+architecture.md, phase-plan.md), never its project. This is a consequence of
+Technique Neutrality: the method fixes the form by which an artifact is named and
+referenced, so that authority pointers resolve identically for every project.
+
+```text
+the project slug and project name must not appear in any artifact filename or in
+  any cross-reference path between artifacts; cross-references use the fixed
+  canonical paths
+the slug must not be baked into filenames or cross-reference paths; it lives as a
+  field in docs/project/project.yaml and is echoed only as the artifact identity
+  field below
+project identity is carried by location (the docs/project/ tree and the
+  repository), by project.yaml, and by a strictly required front-matter field,
+  project: <slug>, on every per-project artifact
+the project front-matter field must be present and must match the slug in
+  project.yaml; it is a checkable provenance claim, not decoration
+authority pointers, including AGENTS.md, reference canonical artifacts by their
+  fixed full path; because names are project-independent, a single pointer is
+  correct for all projects and requires no per-project maintenance
+```
+
+Scaling down a small project may combine or omit content (per the Blast-Radius
+Scaling Principle), but it does not float artifact names: a combined or reduced
+artifact still uses its canonical role-based name. Naming is fixed independently of
+how much content a project's gates carry.
+
 ## Documentation Artifact Chain
 
 The standard documentation chain is:
