@@ -1,6 +1,7 @@
 # Gate Approval Log: [Project Name]
 
 Status: Active
+project: [project-slug]
 Date: [YYYY-MM-DD]
 Owner: TBD
 Authority: `docs/methodology/guides/human-approval-protocol.md`

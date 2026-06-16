@@ -107,6 +107,7 @@ cat > "$target/build-plan/phase-roadmap.md" <<EOF
 # Phase Roadmap: $project_name
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: $slug
 Date: $today
 Owner: TBD
 Authority: docs/methodology/constitution/gendev.md
@@ -153,6 +154,7 @@ cat > "$target/build-plan/phase-plan.md" <<EOF
 # Phase Plan: $project_name
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: $slug
 Date: $today
 Owner: TBD
 Position: G5.0
@@ -225,6 +227,7 @@ cat > "$target/build-plan/phases/phase-1-construction-directive.md" <<EOF
 # Phase 1 Construction Directive: $project_name
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: $slug
 Date: $today
 Owner: TBD
 Authority: docs/methodology/constitution/gendev.md

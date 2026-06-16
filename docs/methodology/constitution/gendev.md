@@ -466,7 +466,9 @@ the slug must not be baked into filenames or cross-reference paths; it lives as 
   field below
 project identity is carried by location (the docs/project/ tree and the
   repository), by project.yaml, and by a strictly required front-matter field,
-  project: <slug>, on every per-project artifact
+  project: <slug>, on every per-project authority artifact (every gate artifact,
+  supporting artifact, and the gate log; navigational index files such as
+  directory README.md files are exempt)
 the project front-matter field must be present and must match the slug in
   project.yaml; it is a checkable provenance claim, not decoration
 authority pointers, including AGENTS.md, reference canonical artifacts by their
