@@ -693,6 +693,11 @@ check_project_identity_field() {
       fi
       if ! grep -Eq '^project:[[:space:]]*.+' "$sfile"; then
         fail "$sfile supporting artifact is missing the required project front-matter field (Rule 13)."
+      else
+        sfield=$(grep -E '^project:[[:space:]]*.+' "$sfile" | head -1 | sed -E 's/^project:[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/')
+        if [ "$sfield" != "$manifest_slug" ]; then
+          fail "$sfile supporting-artifact project field '$sfield' does not match project.yaml slug '$manifest_slug' (Rule 13)."
+        fi
       fi
     done < <(find "$sdir" -type f -name '*.md' ! -name 'README.md' -print)
   done

@@ -880,7 +880,7 @@ Example:
 
 ```text
 Derived from:
-  - path: docs/project/prd/vendor-contract-tracker-prd.md
+  - path: docs/project/prd/prd.md
     revision: 4f3a2c1
 ```
 
@@ -1568,7 +1568,7 @@ Example:
 ```text
 Architecture status: Stale
 Derived from:
-  - path: docs/project/prd/vendor-contract-tracker-prd.md
+  - path: docs/project/prd/prd.md
     revision: old-prd-commit
 ```
 

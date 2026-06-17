@@ -36,9 +36,9 @@ Expected active project paths:
 ```text
 docs/project/project.yaml
 docs/project/approvals/gate-log.md
-docs/project/vision/vendor-contract-tracker-vision.md
-docs/project/prd/vendor-contract-tracker-prd.md
-docs/project/architecture/vendor-contract-tracker-architecture.md
+docs/project/vision/vision.md
+docs/project/prd/prd.md
+docs/project/architecture/architecture.md
 ```
 
 Initial manifest state (the compact `project.yaml` tracking record):
@@ -103,7 +103,7 @@ Before approval (the human decision to move the gate forward), the agent should 
 ```text
 Gate: G1 -> G2
 Artifact status: Ready for Approval
-Evidence reviewed: docs/project/vision/vendor-contract-tracker-vision.md
+Evidence reviewed: docs/project/vision/vision.md
 Enforcement class: attested
 Blast-radius class: C2
 Known risks: integrations may be needed earlier than assumed
@@ -143,7 +143,7 @@ combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
-  - path: docs/project/vision/vendor-contract-tracker-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
     status: Accepted
 checked: Confirmed integrations remain deferred and success criteria are measurable.
@@ -151,7 +151,7 @@ known_risks_accepted:
   - risk: Integrations may be requested earlier than planned.
     rationale: Acceptable because integrations remain deferred unless explicitly approved.
 next_role: prd-agent
-next_artifact: docs/project/prd/vendor-contract-tracker-prd.md
+next_artifact: docs/project/prd/prd.md
 manifest_updated: true
 ```
 
@@ -205,7 +205,7 @@ Produced on: 2026-06-10
 Produced with: human-agent collaboration
 Agent identity: Codex lead agent, session TBD
 Derived from:
-  - path: docs/project/vision/vendor-contract-tracker-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
 ```
 
