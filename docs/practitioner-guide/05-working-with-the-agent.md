@@ -216,3 +216,16 @@ What do you want me to do next?
 
 In GenDev, the methodology usually supplies the next step. The agent should recommend it and ask for
 confirmation when the current mode requires confirmation.
+
+
+
+```text
+refinement:
+
+We should put a subsection here that describes how to brainstorm with the agent in order to create an artifact like a vision artifact or the PRD. 
+
+A number of scenarios where the traceability matrix begins to evolve between vision and PRD, and PRD and architecture, etc. 
+
+It actually might be a separate chapter altogether. 
+```
+

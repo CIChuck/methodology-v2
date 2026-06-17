@@ -10,12 +10,22 @@ initialized project under `docs/project/`).
 
 This guide assumes:
 
+- Git is installed on your platform
 - you have cloned the baseline repository;
 - you are on the branch you intend to use;
+
+```text
+refinement:
+Arguably, a new project should always start in the main branch when starting a new cloned project.
+We don't describe using GenDev within Legacy Projects. However, that might be a very important brainstorming session to have. This may include tasks like documentation and code reverse engineering or other pre-init gates to build the 'gendev-required' gate artifacts.
+
+Also treating updates/upgrades maintenance and break-fix to existing Gendev project repos: feature updates, refactoring, replatforming etc.
+```
+
 - your working tree is in a state you understand;
 - you can run shell commands from the repository root;
 - you have an AI coding agent (an AI tool that can inspect files, draft artifacts, write code, and
-  run commands) available, such as Codex or Claude Code.
+run commands) available, such as Codex or Claude Code.
 
 ## Initialize The Project
 
@@ -65,11 +75,11 @@ Confirm the manifest (the compact `project.yaml` tracking record for current pro
 - `project.current_gate` is `G1` (the vision gate, where the team defines why the product exists);
 - authority paths exist (paths to the documents and records that govern the project);
 - `enforcement.class` is `attested` (human-confirmed methodology control) unless the project has
-  already installed active mechanical enforcement;
+already installed active mechanical enforcement;
 - `enforcement.protected_branch` names the branch the team treats as production project authority;
 - `enforcement.attestation.cadence` records when humans must attest that required checks happened;
 - `enforcement.binding_paths` points to the reference binding files, even if the project is still
-  operating in attested mode;
+operating in attested mode;
 - `scaling.blast_radius_class` is `C1`, `C2`, or `C3`;
 - `scaling.classification_reason` explains why that class is appropriate;
 - `scaling.combined_gates` is empty unless the project intentionally combines gates;
@@ -80,6 +90,13 @@ The owner and approver fields may initially be `TBD`. The agent can draft early 
 those fields are resolved, but it should not mark the gate `ready_for_approval` (ready for a human
 approval decision) until required human authority is known.
 
+```text
+refinement: 
+this section is rather vague regarding the mechanics of sculpting project.yaml. What are the default settings, what attributes must be set to continue and what settings can be deferrred and when/in what Gate they become essential.
+```
+
+
+
 ## Select Blast-Radius Class
 
 Blast-radius class is the declared estimate of how much harm or cost a mistake could plausibly
@@ -88,10 +105,10 @@ cause. Choose it early and revise it when exposure changes.
 Use:
 
 - `C1` for contained work, such as a reversible internal utility with no sensitive data and no
-  external system effects;
+external system effects;
 - `C2` for ordinary product work, which is the default for most useful applications;
 - `C3` for critical work, such as regulated data, irreversible actions, external integrations,
-  production-sensitive automation, agentic runtime behavior, or high operational impact.
+production-sensitive automation, agentic runtime behavior, or high operational impact.
 
 Do not use `C1` simply because the team wants fewer documents. Use `C1` only when the project is
 actually contained. If the work later touches sensitive data, production automation, external
@@ -158,6 +175,10 @@ AGENTS.md
 docs/methodology/
 docs/project/project.yaml
 docs/project/
+```
+
+```text
+refinement - Agents use AGENTS.md as their reference starting point. However, Claude Code uses clod.md. This is an agent-specific change. We need to rethink. For instance, does ClaudeMD get edited to refer to the methodologies in Agents.md? 
 ```
 
 ## First Prompt
@@ -228,3 +249,4 @@ The startup phase ends when:
 - collaboration mode is known;
 - the human has supplied enough context to draft the vision document;
 - the agent knows not to proceed beyond G1 without approval.
+

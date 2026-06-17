@@ -99,8 +99,7 @@ contradictory, the next step is to repair state before implementation.
 
 ## Authority Versus Conversation
 
-Conversation is useful for discovery (exploring options, asking questions, and making corrections).
-It is not enough for durable project state (the repository-backed record of current authority).
+Conversations between human and lead agent are useful for discovery (exploring options, asking questions, and making corrections). However, this is not enough for durable project state (the repository-backed record of current authority).
 
 For example, the human might say:
 
