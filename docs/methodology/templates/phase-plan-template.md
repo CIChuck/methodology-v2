@@ -1,6 +1,7 @@
 # Phase Plan: [Project Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: [project-slug]
 Date:
 Owner:
 Position: G5.0
