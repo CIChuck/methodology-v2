@@ -105,6 +105,28 @@ docs/project/
 
 The agent should treat these files as active authority after initialization.
 
+### Canonical Naming and the Locked Scaffold
+
+This documentation structure is canonical: the directory tree and the artifact
+filenames within it are fixed and identical for every GenDev project, regardless
+of technology stack or engineering approach. A project's vision is always
+`docs/project/vision/vision.md`, its PRD always `docs/project/prd/prd.md`, and so
+on. A filename names the artifact's *role*, never the project. The project name
+and slug never appear in a filename or a cross-reference path; the slug lives only
+as a field in `project.yaml`, and every authority artifact carries a `project:`
+front-matter field that matches it. Because the names are fixed, `AGENTS.md` and
+other authority pointers reference artifacts by their canonical path, and a single
+pointer is correct for every project without per-project editing.
+
+This is a direct application of the methodology-versus-technique distinction from
+Chapter 02. The *documentation* scaffold is the method's to fix, because the
+method governs how work is documented and gated. The *code* scaffold (source
+layout, package structure) is technique- and architecture-determined, so the
+method does not prescribe it; it only records it, through the technology-stack
+decision artifact and the `implementation_paths` field in `project.yaml`. The
+method fixes the form of the documentation; the technique determines the shape of
+the code.
+
 ## `project.yaml`
 
 `docs/project/project.yaml` is the control-plane summary (a small manifest that points to the

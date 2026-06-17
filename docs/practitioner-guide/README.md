@@ -28,6 +28,10 @@ immediate context. Chapter 18 provides the deeper glossary for review and refere
 The guide now assumes the hardened GenDev baseline: explicit approvals, structured gate records,
 artifact provenance, amendment/regression discipline, independent review context provenance,
 enforcement class, blast-radius scaling, process metrics, value review, and production operations.
+It also assumes the documentation-structure baseline: the principle of technique neutrality
+(Chapter 02), canonical artifact naming and the architecture-independent documentation scaffold
+(Chapter 03), and the supporting-artifact mechanism by which a technique's design artifacts attach
+to canonical artifacts as typed references (Chapter 06).
 
 1. [Orientation](01-orientation.md)
 2. [Core Mental Model](02-core-mental-model.md)

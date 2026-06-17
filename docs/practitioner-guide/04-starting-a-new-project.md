@@ -42,6 +42,14 @@ Project slug: vendor-contract-tracker
 Next document: docs/project/vision/vision.md
 ```
 
+Notice the generated filename: `vision.md`, not `vendor-contract-tracker-vision.md`.
+Artifact names are canonical and fixed for every project (Chapter 03); the project
+name appears in the slug recorded in `project.yaml`, not in the filenames. Each
+generated authority artifact also carries a `project:` front-matter field set to
+the slug, so an artifact declares which project it belongs to without that
+identity being baked into its path. You do not name these files; the scaffold
+does, identically for every project.
+
 ## Inspect The Manifest
 
 After initialization, inspect:

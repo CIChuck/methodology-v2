@@ -145,6 +145,58 @@ path where some artifacts are combined while required content remains explicit. 
 usually uses the full default chain. `C3` critical work should add review, evidence, and
 enforcement discipline rather than compressing gates.
 
+## Methodology Versus Technique
+
+This distinction is foundational, and it is the one novices most often miss. People routinely
+confuse a methodology with a technique, and the confusion makes GenDev harder to understand than it
+needs to be.
+
+A **methodology** is the governing process: how work earns authority, and how that authority is
+gated, reviewed, and kept coherent. It is prescriptive about order and trust. You cannot pass G3
+before G2. The architecture must cohere with the PRD. Decisions must be recorded. A methodology
+answers one question: *what must be true for this work to be trusted, and in what order?*
+
+A **technique** is how you actually do the thinking at any given point: object-oriented
+decomposition, data modeling, event storming, domain-driven design, user-story mapping,
+state-machine analysis. A technique answers a different question: *how do I conceive, model, and
+reason about this particular problem?* Techniques produce artifacts (a class diagram, an
+entity-relationship model, a state chart), but which technique you reach for is your choice, driven
+by the problem in front of you and your own training.
+
+The common error is to picture techniques as steps *on* the methodology's path. They are not. They
+are orthogonal to it. A useful picture: the methodology is the road and its tollgates; the
+technique is the vehicle you choose to drive. A data-driven team and an object-oriented team travel
+the same road through the same gates, but they drive entirely different vehicles and arrive with
+entirely different artifacts. GenDev gates both identically, because it checks *that you arrived
+with valid authority*, not *how you drove*.
+
+### Why GenDev Separates Them
+
+This separation is one of GenDev's defining choices, and it is worth understanding as a value
+proposition, not just a definition.
+
+Most methodologies fail by coupling. They bake a technique into the process ("perform
+object-oriented analysis at this step and produce these diagrams"), and then they age badly. The
+technique goes out of fashion, or does not fit the problem, or a better one appears, and the whole
+methodology is now dated because it married a technique that died. The history of software process
+is a graveyard of methodologies that could not outlive the technique they assumed.
+
+GenDev stays silent on technique on purpose. Because it governs only authority and gating, the same
+methodology serves an object-oriented team, a data-driven team, an event-driven team, and a team
+using a technique that has not been invented yet. A technique's artifacts enter through GenDev's
+artifact discipline (canonical naming, the Supporting Artifacts mechanism, typed references covered
+in later chapters) without the method ever needing to know which technique produced them. The
+method outlives any technique because it never depended on one.
+
+This is stated in the constitution as the principle of **Technique Neutrality**, with the maxim:
+the method does not specify the technique, but the technique must blend with the method.
+
+For the practitioner, the distinction is also practical: it tells you what is negotiable. How you
+model a domain is your call and your expertise. Whether the architecture must cohere with the PRD
+before G4 is not your call; that is the method. Knowing which is which keeps you from fighting the
+gates and from mistaking your preferred technique for a law. Bring whatever technique serves the
+problem, and let the method handle authority.
+
 ## Collaboration Modes
 
 The human may choose a collaboration mode (the operating style that tells the agent how much to

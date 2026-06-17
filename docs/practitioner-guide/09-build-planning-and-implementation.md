@@ -31,6 +31,17 @@ docs/methodology/guides/phase-loop.md.
 This may look like a lot of ceremony. The point is to prevent implementation from becoming the
 place where requirements, architecture, security, and acceptance criteria are invented.
 
+The accepted authority above is often not the whole story. A project using a
+particular analysis or design technique will have produced supporting artifacts (a
+data model, an object-interaction model, a state-transition model, a user-story
+set) during its vision, requirements, and architecture work. These attach to the
+canonical artifacts through their Supporting Artifacts sections as typed references
+(Chapter 06), and they are part of the authority the build must honor. When a phase
+build plan or construction directive depends on a data model or state machine, that
+dependency should be an explicit typed reference, not an assumption carried in the
+agent's head. The reference graph an agent walks to assemble its context is only as
+trustworthy as the references in it.
+
 For `C1` contained work, the build-ready authority may be compact. A single combined framing
 artifact can preserve vision, requirements, architecture assumptions, governance assumptions, and
 test expectations, and a short phase plan can define the implementation boundary. The agent still
