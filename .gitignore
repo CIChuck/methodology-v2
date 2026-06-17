@@ -13,3 +13,6 @@ wheels/
 .DS_Store
 .judge/
 *.patch
+
+# Generated project scaffolding — never commit init output to the methodology repo
+docs/project/

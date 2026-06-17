@@ -67,7 +67,7 @@ Produced on: YYYY-MM-DD
 Produced with: human | agent | human-agent collaboration
 Agent identity: TBD model/version/session, or N/A
 Derived from:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
 ```
 
@@ -112,6 +112,52 @@ The practical question is:
 Can we reconcile the dirty subtree while the current gate holds, or did the change invalidate an
 earlier gate decision?
 ```
+
+## Canonical Naming and Supporting Artifacts
+
+Per-project artifacts use fixed, role-based filenames that are the same in every
+project: `vision.md`, `prd.md`, `architecture.md`, `phase-plan.md`, and so on. A
+filename names the artifact's role, never the project. The project slug lives only
+in `project.yaml`; it is never baked into a filename or a cross-reference path.
+Every per-project authority artifact carries a `project:` front-matter field that
+matches the slug in `project.yaml`. Because names are fixed, `AGENTS.md` and other
+authority pointers reference artifacts by their canonical path, and those pointers
+are correct for every project without per-project editing. (Constitution Rule 14.)
+
+This follows from a deeper principle, Technique Neutrality: GenDev governs how work
+earns authority and is gated, but it does not specify how the work is conceived,
+modeled, or built. The method fixes the form of an artifact; the technique
+determines its content. That is why naming is fixed (form) while what you put in a
+data model or a state diagram is yours (content).
+
+Because of that, the method does not enumerate every artifact a project might
+produce. A project using a particular analysis or design technique will create
+artifacts the canonical set does not name — a data model, an object-interaction
+model, a state-transition model, a user-story set, a UX specification. These are
+**supporting artifacts**. They attach to a canonical gate artifact through that
+artifact's **Supporting Artifacts** section, as typed references:
+
+```text
+implements:     docs/project/design/order-model.md       - the entities this architecture builds on
+satisfies:      docs/project/design/user-stories.md       - the stories this design fulfills
+tested-by:      docs/project/testing/phase-1-test-uat-plan.md - what verifies this phase
+constrained-by: docs/project/design/ux-spec.md            - the UX limits this must honor
+refines:        docs/project/build-plan/phase-plan.md     - the slice this build plan details
+```
+
+Each reference carries a relationship type from a fixed vocabulary (`implements`,
+`satisfies`, `tested-by`, `constrained-by`, `refines`). The type declares the
+coherence obligation and which artifact holds authority. References run from the
+canonical artifact to its supporters, form an acyclic graph (no cycles), and are
+one level deep. Supporting artifacts obey the same form discipline as everything
+else: a valid kebab-case filename, a canonical location, the required `project:`
+field, and a typed relationship — but their content and name are whatever the
+technique calls for. (Constitution Rules 12 and 13.)
+
+The point of this structure is to give an AI coding agent coherent, complete
+context: the reference graph is what the agent walks to understand what it is
+building. A dangling reference or a cycle is misleading context, which is why the
+graph is disciplined.
 
 ## Blast-Radius Scaling
 
@@ -176,7 +222,7 @@ G1 establishes why the product exists and what success means.
 Primary artifact:
 
 ```text
-docs/project/vision/[project-slug]-vision.md
+docs/project/vision/vision.md
 ```
 
 The vision should define:
@@ -202,7 +248,7 @@ constraints that can be reviewed and tested).
 Primary artifact:
 
 ```text
-docs/project/prd/[project-slug]-prd.md
+docs/project/prd/prd.md
 ```
 
 The PRD should define:
@@ -231,7 +277,7 @@ G3 defines system structure (how the product is organized technically and where 
 Primary artifacts:
 
 ```text
-docs/project/architecture/[project-slug]-architecture.md
+docs/project/architecture/architecture.md
 docs/project/decisions/0001-technology-stack.md
 ```
 

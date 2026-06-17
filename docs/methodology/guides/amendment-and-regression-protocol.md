@@ -244,7 +244,7 @@ amendment_id: AMD-YYYYMMDD-001
 class: editorial | additive_within_scope | structural
 current_gate: G6
 artifact:
-  path: docs/project/prd/[project-slug]-prd.md
+  path: docs/project/prd/prd.md
   previous_revision: TBD
   new_revision: TBD
 decision: approved
@@ -253,7 +253,7 @@ decided_on: YYYY-MM-DD
 reason: TBD
 semantic_change: true
 downstream_reconciliation:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     action: mark_stale | reviewed_no_change | update_required | supersede
     owner: TBD
     due_gate: G6
@@ -284,10 +284,10 @@ decided_on: YYYY-MM-DD
 invalidated_gate_entry_conditions:
   - TBD
 stale_artifacts:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     reason: TBD
 required_reconciliation:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     owner: TBD
     due_gate: G3
 manifest_updated: true
@@ -307,7 +307,7 @@ amendment_id: AMD-YYYYMMDD-001
 reconciled_by: TBD
 reconciled_on: YYYY-MM-DD
 artifacts:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     previous_status: Stale
     outcome: updated | reviewed_no_change | superseded
     new_revision: TBD
@@ -333,13 +333,13 @@ amendments:
   active:
     - id: TBD
       class: structural
-      artifact: docs/project/prd/[project-slug]-prd.md
+      artifact: docs/project/prd/prd.md
       status: pending_reconciliation
       opened_on: TBD
       owner: TBD
       regression_required: false
       downstream_stale:
-        - docs/project/architecture/[project-slug]-architecture.md
+        - docs/project/architecture/architecture.md
 ```
 
 Use `active_count: 0` and an empty active list when no amendment is open.

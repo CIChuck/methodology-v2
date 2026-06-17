@@ -65,7 +65,7 @@ Produced on: YYYY-MM-DD
 Produced with: human | agent | human-agent collaboration
 Agent identity: TBD model/version/session, or N/A
 Derived from:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
 ```
 
@@ -241,7 +241,7 @@ Responsible role: Phase Planning Agent.
 
 Inputs:
 
-- roadmap;
+- phase plan;
 - PRD;
 - architecture;
 - governance/security specification;
