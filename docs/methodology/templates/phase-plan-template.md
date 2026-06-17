@@ -43,9 +43,31 @@ plan, construction directive, and build prompt inside the phase loop.
 Order in this table is authoritative. Phase ids are labels, not computed from
 position; inserted or split phases keep stable ids (for example 10-5, 15a).
 
-| Phase id | Name | Objective | Status |
+| Phase id | Name | Status | Depends on |
 | --- | --- | --- | --- |
-|  |  |  | pending |
+|  |  | pending |  |
+
+## Phase Detail
+
+One block per phase: the feature/phase breakdown. This is the partition made
+concrete — what each phase delivers — distinct from the phase build plan, which
+gives implementation detail (how, tested how). The breakdown is authoritative but
+revisable: a phase may, during implementation, reveal that its breakdown needs
+adjustment. Such adjustments are recorded in the Amendments section below with a
+reason (consistent with Rule 10 and the amendment discipline), never silently
+overwritten. A block that has been amended notes it and points at the amendment
+entry.
+
+### Phase [id]: [name]
+
+```text
+Features delivered:
+  - [feature or capability this phase delivers]
+Requirements covered: [requirement ids from the coverage map]
+Depends on: [prior phases, or none]
+Exit signal: [what proves this phase is done — its phase exit test, in brief]
+Amended: [no | yes — see Amendments entry AMD-...]
+```
 
 ## Requirement Coverage Map
 
@@ -114,3 +136,29 @@ ordering hazards:
 Closure discipline: accepting this plan is the G5 gate transition, recorded as a
 `gate_transition` event; the manifest `phase_position` is set to `G5.0` and the
 `phases` list is populated in the same commit.
+
+---
+
+## Supporting Artifacts
+
+Project-specific artifacts produced by whatever analysis or design technique this
+project uses (for example a data model, an object-interaction model, a
+state-transition model, a user-story set, or a UX specification) attach here as
+typed references. This section is empty when the project needs none.
+
+Each entry uses a relationship type from the constitution's bounded vocabulary
+(Rule 12), the canonical path to the supporting artifact, and a short note on what
+it supports. The relationship type declares the coherence obligation and which end
+holds authority:
+
+```text
+implements:     docs/project/design/<artifact>.md     - <what it realizes>
+satisfies:      docs/project/design/<artifact>.md      - <what it fulfills>
+tested-by:      docs/project/testing/<artifact>.md     - <what verifies it>
+constrained-by: docs/project/design/<artifact>.md      - <what limits it>
+refines:        docs/project/design/<artifact>.md      - <what detail it adds>
+```
+
+References form a directed acyclic graph and are one level deep (Rule 12);
+supporting artifacts obey the form discipline in Rule 13 (valid kebab identifier,
+canonical location, required project front-matter field, typed relationship).

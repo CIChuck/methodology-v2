@@ -358,3 +358,29 @@ Before proceeding to tactical planning:
 Closure discipline: the artifact status change to `Accepted`, the manifest
 `phase_position` advance to `G5.[id].1`, and the `phase_checkpoint` event in the
 gate log land in the same commit.
+
+---
+
+## Supporting Artifacts
+
+Project-specific artifacts produced by whatever analysis or design technique this
+project uses (for example a data model, an object-interaction model, a
+state-transition model, a user-story set, or a UX specification) attach here as
+typed references. This section is empty when the project needs none.
+
+Each entry uses a relationship type from the constitution's bounded vocabulary
+(Rule 12), the canonical path to the supporting artifact, and a short note on what
+it supports. The relationship type declares the coherence obligation and which end
+holds authority:
+
+```text
+implements:     docs/project/design/<artifact>.md     - <what it realizes>
+satisfies:      docs/project/design/<artifact>.md      - <what it fulfills>
+tested-by:      docs/project/testing/<artifact>.md     - <what verifies it>
+constrained-by: docs/project/design/<artifact>.md      - <what limits it>
+refines:        docs/project/design/<artifact>.md      - <what detail it adds>
+```
+
+References form a directed acyclic graph and are one level deep (Rule 12);
+supporting artifacts obey the form discipline in Rule 13 (valid kebab identifier,
+canonical location, required project front-matter field, typed relationship).

@@ -123,7 +123,6 @@ measurement:
 phase:
   current: 1
   status: planning
-  roadmap: docs/project/build-plan/phase-roadmap.md
   build_plan: docs/project/build-plan/phases/phase-1-build-plan.md
   tactical_plan: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
   construction_directive: docs/project/build-plan/phases/phase-1-construction-directive.md

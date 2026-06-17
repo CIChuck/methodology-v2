@@ -89,7 +89,7 @@ render_template() {
 }
 
 render_template "$project_template/project.yaml" "$target/project.yaml"
-render_template "$project_template/approvals/gate-log.md" "$target/approvals/gate-log.md"
+render_template "$template_root/gate-log-template.md" "$target/approvals/gate-log.md"
 render_template "$template_root/vision-template.md" "$target/vision/vision.md"
 render_template "$template_root/prd-template.md" "$target/prd/prd.md"
 render_template "$template_root/architecture-template.md" "$target/architecture/architecture.md"
@@ -102,53 +102,6 @@ render_template "$template_root/test-uat-plan-template.md" "$target/testing/phas
 render_template "$template_root/code-review-report-template.md" "$target/build-plan/phases/phase-1-code-review.md"
 render_template "$template_root/as-built-closeout-template.md" "$target/as-built/phase-1-as-built-closeout.md"
 render_template "$template_root/value-review-template.md" "$target/as-built/phase-1-value-review.md"
-
-cat > "$target/build-plan/phase-roadmap.md" <<EOF
-# Phase Roadmap: $project_name
-
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-project: $slug
-Date: $today
-Owner: TBD
-Authority: docs/methodology/constitution/gendev.md
-Produced by: TBD
-Produced on: $today
-Produced with: human-agent collaboration
-Agent identity: TBD
-Derived from:
-  - path: docs/project/prd/prd.md
-    revision: TBD
-  - path: docs/project/architecture/architecture.md
-    revision: TBD
-  - path: docs/project/security-governance/governance-security-spec.md
-    revision: TBD
-
-## Purpose
-
-This roadmap records the planned phase sequence for $project_name.
-
-Do not treat this roadmap as tactical implementation authority. Each phase still requires a phase
-build plan, tactical implementation plan, construction directive, tests/UAT evidence, review, and
-as-built close-out.
-
-## Current Phase
-
-| Phase | Name | Status | Notes |
-| --- | --- | --- | --- |
-| 1 | Foundation | planning | Replace with the first accepted product phase. |
-
-## Accuracy Pass
-
-Before accepting this roadmap, check for:
-
-\`\`\`text
-[ ] phases that are too broad
-[ ] missing dependencies
-[ ] deferred items without target phase
-[ ] phases with no acceptance signal
-[ ] security-sensitive work before governance is ready
-\`\`\`
-EOF
 
 cat > "$target/build-plan/phase-plan.md" <<EOF
 # Phase Plan: $project_name
@@ -352,7 +305,7 @@ EOF
 cat > "$target/build-plan/README.md" <<EOF
 # Build Plan
 
-Use this directory for roadmap-level build planning and phase-specific plans.
+Use this directory for build planning: the phase plan and phase-specific plans.
 
 Phase plans live under:
 
