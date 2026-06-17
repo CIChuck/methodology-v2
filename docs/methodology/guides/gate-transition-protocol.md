@@ -80,7 +80,7 @@ combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
     status: Accepted
 checked: "TBD: one substantive statement from the approver."
@@ -94,7 +94,7 @@ open_questions_carried_forward:
 conditions:
   - TBD
 next_role: prd-agent
-next_artifact: docs/project/prd/[project-slug]-prd.md
+next_artifact: docs/project/prd/prd.md
 manifest_updated: true
 ```
 ````

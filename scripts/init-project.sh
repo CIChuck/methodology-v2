@@ -89,12 +89,12 @@ render_template() {
 }
 
 render_template "$project_template/project.yaml" "$target/project.yaml"
-render_template "$project_template/approvals/gate-log.md" "$target/approvals/gate-log.md"
-render_template "$template_root/vision-template.md" "$target/vision/$slug-vision.md"
-render_template "$template_root/prd-template.md" "$target/prd/$slug-prd.md"
-render_template "$template_root/architecture-template.md" "$target/architecture/$slug-architecture.md"
+render_template "$template_root/gate-log-template.md" "$target/approvals/gate-log.md"
+render_template "$template_root/vision-template.md" "$target/vision/vision.md"
+render_template "$template_root/prd-template.md" "$target/prd/prd.md"
+render_template "$template_root/architecture-template.md" "$target/architecture/architecture.md"
 render_template "$template_root/governance-security-template.md" "$target/security-governance/governance-security-spec.md"
-render_template "$template_root/traceability-matrix-template.md" "$target/traceability/$slug-traceability-matrix.md"
+render_template "$template_root/traceability-matrix-template.md" "$target/traceability/traceability-matrix.md"
 render_template "$template_root/0001-technology-stack-template.md" "$target/decisions/0001-technology-stack.md"
 render_template "$template_root/phase-build-plan-template.md" "$target/build-plan/phases/phase-1-build-plan.md"
 render_template "$template_root/tactical-implementation-template.md" "$target/build-plan/phases/phase-1-tactical-implementation-plan.md"
@@ -103,136 +103,21 @@ render_template "$template_root/code-review-report-template.md" "$target/build-p
 render_template "$template_root/as-built-closeout-template.md" "$target/as-built/phase-1-as-built-closeout.md"
 render_template "$template_root/value-review-template.md" "$target/as-built/phase-1-value-review.md"
 
-cat > "$target/build-plan/phase-roadmap.md" <<EOF
-# Phase Roadmap: $project_name
-
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: $today
-Owner: TBD
-Authority: docs/methodology/constitution/gendev.md
-Produced by: TBD
-Produced on: $today
-Produced with: human-agent collaboration
-Agent identity: TBD
-Derived from:
-  - path: docs/project/prd/$slug-prd.md
-    revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
-    revision: TBD
-  - path: docs/project/security-governance/governance-security-spec.md
-    revision: TBD
-
-## Purpose
-
-This roadmap records the planned phase sequence for $project_name.
-
-Do not treat this roadmap as tactical implementation authority. Each phase still requires a phase
-build plan, tactical implementation plan, construction directive, tests/UAT evidence, review, and
-as-built close-out.
-
-## Current Phase
-
-| Phase | Name | Status | Notes |
-| --- | --- | --- | --- |
-| 1 | Foundation | planning | Replace with the first accepted product phase. |
-
-## Accuracy Pass
-
-Before accepting this roadmap, check for:
-
-\`\`\`text
-[ ] phases that are too broad
-[ ] missing dependencies
-[ ] deferred items without target phase
-[ ] phases with no acceptance signal
-[ ] security-sensitive work before governance is ready
-\`\`\`
-EOF
-
-cat > "$target/build-plan/phase-plan.md" <<EOF
-# Phase Plan: $project_name
-
-Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
-Date: $today
-Owner: TBD
-Position: G5.0
-Authority: docs/methodology/constitution/gendev.md
-Produced by: TBD
-Produced on: $today
-Produced with: human-agent collaboration
-Agent identity: TBD
-Derived from:
-  - path: docs/project/prd/$slug-prd.md
-    revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
-    revision: TBD
-  - path: docs/project/security-governance/governance-security-spec.md
-    revision: TBD
-
-## Purpose
-
-The phase plan partitions the build into ordered, independently testable phases.
-It is the artifact that gate G5 certifies. Accepting it closes G5 (checkpoint
-G5.0) and authorizes the phase loop.
-
-## Phase Sequence
-
-Order in this table is authoritative. Phase ids are labels, not computed from
-position; inserted or split phases keep stable ids (for example 10-5, 15a).
-
-| Phase id | Name | Objective | Status |
-| --- | --- | --- | --- |
-| 1 | TBD | TBD | pending |
-
-## Requirement Coverage Map
-
-| Requirement id | Owning phase |
-| --- | --- |
-| TBD | 1 |
-
-## Cross-Phase Rules
-
-State rules that hold across all phases.
-
-## Partitioning Rationale
-
-Record why phases are sized and ordered as they are. Sizing criterion: features
-testable together, bounded to what a focused implementation session can hold
-with its authority.
-
-## Integration Criteria
-
-State how independently built phases will be proven to compose, and who declares
-the integration tests.
-
-## Amendments
-
-| Date | Change | Reason |
-| --- | --- | --- |
-
-## G5.0 Checkpoint — Phase Plan Ready (G5 Exit)
-
-\`\`\`text
-[ ] every in-scope requirement is mapped to an owning phase
-[ ] phase order is defined and ids are stable labels
-[ ] partitioning rationale records the sizing criterion
-[ ] integration criteria are declared
-[ ] cross-phase rules are stated
-\`\`\`
-EOF
+render_template "$template_root/phase-plan-template.md" "$target/build-plan/phase-plan.md"
 
 cat > "$target/build-plan/phases/phase-1-construction-directive.md" <<EOF
 # Phase 1 Construction Directive: $project_name
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: $slug
 Date: $today
 Owner: TBD
 Authority: docs/methodology/constitution/gendev.md
 Source:
   Phase Build Plan: docs/project/build-plan/phases/phase-1-build-plan.md
   Tactical Plan: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
-  PRD: docs/project/prd/$slug-prd.md
-  Architecture: docs/project/architecture/$slug-architecture.md
+  PRD: docs/project/prd/prd.md
+  Architecture: docs/project/architecture/architecture.md
   Governance/Security: docs/project/security-governance/governance-security-spec.md
 Produced by: TBD
 Produced on: $today
@@ -243,9 +128,9 @@ Derived from:
     revision: TBD
   - path: docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
     revision: TBD
-  - path: docs/project/prd/$slug-prd.md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/$slug-architecture.md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
   - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
@@ -263,8 +148,8 @@ by this directive and the tactical implementation plan.
 ## Source Authority And Precedence
 
 1. docs/project/security-governance/governance-security-spec.md
-2. docs/project/architecture/$slug-architecture.md
-3. docs/project/prd/$slug-prd.md
+2. docs/project/architecture/architecture.md
+3. docs/project/prd/prd.md
 4. docs/project/build-plan/phases/phase-1-build-plan.md
 5. docs/project/build-plan/phases/phase-1-tactical-implementation-plan.md
 6. This construction directive
@@ -349,7 +234,7 @@ EOF
 cat > "$target/build-plan/README.md" <<EOF
 # Build Plan
 
-Use this directory for roadmap-level build planning and phase-specific plans.
+Use this directory for build planning: the phase plan and phase-specific plans.
 
 Phase plans live under:
 
@@ -360,4 +245,4 @@ EOF
 
 echo "Initialized docs/project for $project_name"
 echo "Project slug: $slug"
-echo "Next document: docs/project/vision/$slug-vision.md"
+echo "Next document: docs/project/vision/vision.md"

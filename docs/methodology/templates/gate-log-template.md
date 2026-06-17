@@ -1,6 +1,7 @@
 # Gate Approval Log: [Project Name]
 
 Status: Active
+project: [project-slug]
 Date: [YYYY-MM-DD]
 Owner: TBD
 Authority: `docs/methodology/guides/human-approval-protocol.md`
@@ -42,7 +43,7 @@ combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
     status: Accepted
 checked: "TBD: one substantive statement from the approver."
@@ -56,7 +57,7 @@ open_questions_carried_forward:
 conditions:
   - TBD
 next_role: prd-agent
-next_artifact: docs/project/prd/[project-slug]-prd.md
+next_artifact: docs/project/prd/prd.md
 manifest_updated: true
 ```
 ````
@@ -95,7 +96,7 @@ amendment_id: AMD-YYYYMMDD-001
 class: editorial | additive_within_scope | structural
 current_gate: G6
 artifact:
-  path: docs/project/prd/[project-slug]-prd.md
+  path: docs/project/prd/prd.md
   previous_revision: TBD
   new_revision: TBD
 decision: approved
@@ -104,7 +105,7 @@ decided_on: YYYY-MM-DD
 reason: TBD
 semantic_change: true
 downstream_reconciliation:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     action: mark_stale | reviewed_no_change | update_required | supersede
     owner: TBD
     due_gate: G6
@@ -136,10 +137,10 @@ decided_on: YYYY-MM-DD
 invalidated_gate_entry_conditions:
   - TBD
 stale_artifacts:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     reason: TBD
 required_reconciliation:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     owner: TBD
     due_gate: G3
 manifest_updated: true
@@ -159,7 +160,7 @@ amendment_id: AMD-YYYYMMDD-001
 reconciled_by: TBD
 reconciled_on: YYYY-MM-DD
 artifacts:
-  - path: docs/project/architecture/[project-slug]-architecture.md
+  - path: docs/project/architecture/architecture.md
     previous_status: Stale
     outcome: updated | reviewed_no_change | superseded
     new_revision: TBD

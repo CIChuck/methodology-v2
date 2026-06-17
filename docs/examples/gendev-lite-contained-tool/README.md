@@ -54,7 +54,7 @@ scaling:
       justification: Required vision, PRD, architecture, and security assumptions are preserved in one compact framing artifact because the work is contained, reversible, and non-sensitive.
       approved_by: Product owner
       approved_on: 2026-06-10
-      evidence: docs/project/vision/csv-cleanup-helper-vision.md
+      evidence: docs/project/vision/vision.md
 ```
 
 The important part is not the exact words. The important part is that the class, reason, affected
@@ -145,7 +145,7 @@ blast_radius_class: C1
 combined_gates: G1-G4
 checked: Confirmed the combined artifact preserves vision, requirements, architecture assumptions, security assumptions, and test expectations for contained C1 work.
 evidence:
-  - docs/project/vision/csv-cleanup-helper-vision.md
+  - docs/project/vision/vision.md
 risks_accepted:
   - Input data classification is operator-attested for the first phase.
 next_gate: G5

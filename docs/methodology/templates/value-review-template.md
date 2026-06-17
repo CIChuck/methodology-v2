@@ -1,18 +1,19 @@
 # Value Review: [Project Name] — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
+project: [project-slug]
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Measurement Principle
 Source:
-  Vision: `docs/project/vision/[project-slug]-vision.md`
+  Vision: `docs/project/vision/vision.md`
   As-Built Close-Out: `docs/project/as-built/phase-[N]-as-built-closeout.md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
   - path: docs/project/as-built/phase-[N]-as-built-closeout.md
     revision: TBD
@@ -101,3 +102,29 @@ Before marking this review Complete, check:
 [ ] follow-up decisions have owners
 [ ] the as-built close-out points to this value review
 ```
+
+---
+
+## Supporting Artifacts
+
+Project-specific artifacts produced by whatever analysis or design technique this
+project uses (for example a data model, an object-interaction model, a
+state-transition model, a user-story set, or a UX specification) attach here as
+typed references. This section is empty when the project needs none.
+
+Each entry uses a relationship type from the constitution's bounded vocabulary
+(Rule 12), the canonical path to the supporting artifact, and a short note on what
+it supports. The relationship type declares the coherence obligation and which end
+holds authority:
+
+```text
+implements:     docs/project/design/<artifact>.md     - <what it realizes>
+satisfies:      docs/project/design/<artifact>.md      - <what it fulfills>
+tested-by:      docs/project/testing/<artifact>.md     - <what verifies it>
+constrained-by: docs/project/design/<artifact>.md      - <what limits it>
+refines:        docs/project/design/<artifact>.md      - <what detail it adds>
+```
+
+References form a directed acyclic graph and are one level deep (Rule 12);
+supporting artifacts obey the form discipline in Rule 13 (valid kebab identifier,
+canonical location, required project front-matter field, typed relationship).

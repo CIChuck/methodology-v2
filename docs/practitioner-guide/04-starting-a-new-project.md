@@ -39,7 +39,7 @@ Expected output shape:
 ```text
 Initialized docs/project for Vendor Contract Tracker
 Project slug: vendor-contract-tracker
-Next document: docs/project/vision/vendor-contract-tracker-vision.md
+Next document: docs/project/vision/vision.md
 ```
 
 ## Inspect The Manifest
@@ -165,7 +165,7 @@ Expected agent behavior:
 ```text
 Current gate: G1
 Current mode: approval-gated, unless changed by the human
-Active artifact: docs/project/vision/[slug]-vision.md
+Active artifact: docs/project/vision/vision.md
 Recommended next step: confirm owner, approver, collaboration mode, and draft the G1 vision
 Human input needed: product objective, target users, constraints, and any known non-goals
 ```

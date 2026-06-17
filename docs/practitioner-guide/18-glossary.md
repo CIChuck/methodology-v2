@@ -628,6 +628,15 @@ owning phase, states cross-phase rules and the partitioning rationale, and
 declares integration criteria. Phase ids are stable labels; order is defined by
 the plan, never computed from the id.
 
+## Canonical Naming
+
+Per-project artifacts use fixed, role-based filenames that are identical across all projects:
+`vision.md`, `prd.md`, `architecture.md`, `phase-plan.md`, and so on. The filename names the
+artifact's role, never the project. The project slug appears only in `project.yaml`, never baked into
+a filename or cross-reference path. Every per-project authority artifact carries a `project:`
+front-matter field matching the slug. Because names are fixed, authority pointers such as `AGENTS.md`
+reference artifacts by canonical path and are correct for every project. (Constitution Rule 14.)
+
 ## Carry Forward
 
 To carry an open question forward means the team explicitly allows it to remain unresolved while the
@@ -871,7 +880,7 @@ Example:
 
 ```text
 Derived from:
-  - path: docs/project/prd/vendor-contract-tracker-prd.md
+  - path: docs/project/prd/prd.md
     revision: 4f3a2c1
 ```
 
@@ -1386,6 +1395,15 @@ In the amendment context, reconciliation means reviewing downstream artifacts af
 authority changes. Reconciliation may update an artifact, confirm no change is required, mark an
 artifact `Superseded`, or leave it `Stale` until later work.
 
+## Reference Graph
+
+The directed, acyclic, one-level graph formed by supporting-artifact references. A canonical gate
+artifact references its supporting artifacts through its Supporting Artifacts section, using typed
+relationships (`implements`, `satisfies`, `tested-by`, `constrained-by`, `refines`). Each type
+declares a coherence obligation and which artifact holds authority. Cycles are forbidden. The graph
+is the coherent context an AI coding agent walks to understand what it is building. (Constitution
+Rule 12.)
+
 ## Regression
 
 Regression is a formal move back to an earlier GenDev gate because an amendment invalidated gate
@@ -1550,7 +1568,7 @@ Example:
 ```text
 Architecture status: Stale
 Derived from:
-  - path: docs/project/prd/vendor-contract-tracker-prd.md
+  - path: docs/project/prd/prd.md
     revision: old-prd-commit
 ```
 
@@ -1627,6 +1645,16 @@ Examples:
 - the review requires a different specialist;
 - the amount of output would overwhelm the human without improving the decision.
 
+## Supporting Artifact
+
+A project-specific artifact produced by whatever analysis or design technique a project uses — a data
+model, an object-interaction model, a state-transition model, a user-story set, a UX specification.
+Supporting artifacts are not part of the canonical artifact set; they attach to a canonical gate
+artifact through its Supporting Artifacts section as typed references. They are form-disciplined
+(valid kebab-case filename, canonical location, required `project:` field, typed relationship) but
+their content and name are determined by the technique, not the method. (Constitution Rules 12 and
+13.)
+
 ## Superseded
 
 Superseded means an artifact or decision has been replaced by a newer accepted artifact or decision.
@@ -1639,6 +1667,16 @@ file/module ownership expectations, tests, verification commands, migration step
 requirements.
 
 It answers "how will this phase be implemented?"
+
+## Technique Neutrality
+
+A first-order principle of GenDev: the method governs how work earns authority and how that authority
+is gated, reviewed, and kept coherent, but it does not specify how the work is conceived, modeled, or
+built. The method fixes the form of an artifact (naming, location, references); the technique
+determines its content. This is why object-oriented, data-driven, event-driven, and not-yet-invented
+approaches all fit within GenDev: their artifacts enter through the same fixed
+authority-and-reference discipline. Maxim: the method does not specify the technique, but the
+technique must blend with the method.
 
 ## Template
 

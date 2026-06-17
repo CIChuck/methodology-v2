@@ -160,7 +160,7 @@ combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
-  - path: docs/project/vision/[project-slug]-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
     status: Accepted
 checked: "TBD: one substantive statement from the approver."
@@ -174,7 +174,7 @@ open_questions_carried_forward:
 conditions:
   - TBD
 next_role: prd-agent
-next_artifact: docs/project/prd/[project-slug]-prd.md
+next_artifact: docs/project/prd/prd.md
 manifest_updated: true
 ```
 ````
@@ -303,14 +303,14 @@ approvals:
     approved_by: TBD
     approved_on: TBD
     evidence:
-      - docs/project/vision/[project-slug]-vision.md
+      - docs/project/vision/vision.md
     risks_accepted:
       - TBD
     blocking_open_questions:
       - TBD
     next_gate: G2
     next_role: prd-agent
-    next_artifact: docs/project/prd/[project-slug]-prd.md
+    next_artifact: docs/project/prd/prd.md
   latest_decision:
     decision: TBD
     decided_by: TBD

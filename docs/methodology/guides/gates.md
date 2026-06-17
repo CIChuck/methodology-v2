@@ -555,7 +555,7 @@ scaling:
       justification: Small C1 utility; required vision, PRD, architecture, and security assumptions are preserved in one artifact.
       approved_by: TBD
       approved_on: TBD
-      evidence: docs/project/vision/[project-slug]-vision.md
+      evidence: docs/project/vision/vision.md
 ```
 
 The justification must explain why combination is appropriate, what content is preserved, and what

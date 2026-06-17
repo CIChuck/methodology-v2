@@ -644,6 +644,65 @@ check_artifact_provenance() {
   done < <(project_provenance_artifacts)
 }
 
+check_project_identity_field() {
+  manifest="docs/project/project.yaml"
+  [ -f "$manifest" ] || return 0
+
+  # Extract the slug value from project.yaml (slug: "value")
+  manifest_slug=$(grep -E '^[[:space:]]*slug:' "$manifest" | head -1 | sed -E 's/^[[:space:]]*slug:[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/')
+  if [ -z "$manifest_slug" ] || [ "$manifest_slug" = "[project-slug]" ]; then
+    return 0
+  fi
+
+  while IFS= read -r file; do
+    field_line=$(grep -E '^project:[[:space:]]*.+' "$file" | head -1)
+    if [ -z "$field_line" ]; then
+      fail "$file is missing the required project front-matter field (Rule 14)."
+      continue
+    fi
+    field_value=$(printf '%s' "$field_line" | sed -E 's/^project:[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/')
+    if [ "$field_value" != "$manifest_slug" ]; then
+      fail "$file project field '$field_value' does not match project.yaml slug '$manifest_slug' (Rule 14)."
+    fi
+  done < <(project_provenance_artifacts)
+
+  # The gate log is an authority artifact and also requires the field.
+  gate_log="docs/project/approvals/gate-log.md"
+  if [ -f "$gate_log" ]; then
+    gl_line=$(grep -E '^project:[[:space:]]*.+' "$gate_log" | head -1)
+    if [ -z "$gl_line" ]; then
+      fail "$gate_log is missing the required project front-matter field (Rule 14)."
+    else
+      gl_value=$(printf '%s' "$gl_line" | sed -E 's/^project:[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/')
+      if [ "$gl_value" != "$manifest_slug" ]; then
+        fail "$gate_log project field '$gl_value' does not match project.yaml slug '$manifest_slug' (Rule 14)."
+      fi
+    fi
+  fi
+
+  # Supporting-artifact form (Rule 13): when supporting artifacts exist under a
+  # design directory, each must have a valid kebab-case filename and the project
+  # field. Graph properties (cycles, typed coherence) are the linter's job, not
+  # the checker's.
+  for sdir in docs/project/design docs/project/supporting; do
+    [ -d "$sdir" ] || continue
+    while IFS= read -r sfile; do
+      base=$(basename "$sfile" .md)
+      if ! printf '%s' "$base" | grep -Eq '^[a-z0-9]+(-[a-z0-9]+)*$'; then
+        fail "$sfile supporting-artifact filename is not a valid kebab-case identifier (Rule 13)."
+      fi
+      if ! grep -Eq '^project:[[:space:]]*.+' "$sfile"; then
+        fail "$sfile supporting artifact is missing the required project front-matter field (Rule 13)."
+      else
+        sfield=$(grep -E '^project:[[:space:]]*.+' "$sfile" | head -1 | sed -E 's/^project:[[:space:]]*"?([^"]*)"?[[:space:]]*$/\1/')
+        if [ "$sfield" != "$manifest_slug" ]; then
+          fail "$sfile supporting-artifact project field '$sfield' does not match project.yaml slug '$manifest_slug' (Rule 13)."
+        fi
+      fi
+    done < <(find "$sdir" -type f -name '*.md' ! -name 'README.md' -print)
+  done
+}
+
 check_stale_evidence() {
   manifest="docs/project/project.yaml"
   log="docs/project/approvals/gate-log.md"
@@ -1374,6 +1433,7 @@ else
   check_accepted_doc_placeholders
   check_accepted_artifact_approval_records
   check_artifact_provenance
+  check_project_identity_field
   check_computed_staleness
   check_stale_evidence
   check_manifest_amendment_state

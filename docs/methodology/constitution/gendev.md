@@ -39,6 +39,34 @@ what documentation must be reconciled when complete?
 
 If those answers are not documented, the project is not ready for code generation.
 
+## Technique Neutrality
+
+This is a first-order principle of the methodology. The rules that follow —
+canonical naming, the documentation scaffold, the supporting-artifact mechanism,
+and the reference discipline — are its consequences.
+
+GenDev governs how work earns authority and how that authority is gated,
+reviewed, and kept coherent. It does not specify how the work is conceived,
+modeled, or built. The method is the authority-and-gate machinery; the technique
+is everything about how a team designs and constructs — object-oriented,
+data-driven, event-driven, or an approach not yet invented. The method must not
+couple itself to a technology stack or to a software-engineering approach.
+
+The blend point is the artifact. A technique's artifacts enter the methodology
+through a fixed authority-and-reference discipline: they are named, located,
+provenanced, and referenced by the method's rules, and because they obey that
+discipline the method can gate and coherence-check them without knowing which
+technique produced them. The method is opinionated about how an artifact earns
+authority; it is silent about what the artifact contains.
+
+Stated as a maxim: the method does not specify the technique, but the technique
+must blend with the method.
+
+Every other rule in this constitution that concerns artifact structure,
+naming, scaffolding, or references must remain consistent with this principle. A
+future rule that couples the method to a specific technology stack or engineering
+approach violates it.
+
 ## Applicability
 
 Use this standard for:
@@ -317,6 +345,141 @@ deferred implications
 date
 owner or approver, when applicable
 ```
+
+### Rule 11: The Documentation Scaffold Is Canonical and Architecture-Independent
+
+The documentation scaffold — the docs/project/ directory tree and the canonical
+filenames within it — is fixed and identical for every project, regardless of
+technology stack or engineering approach. It is a consequence of Technique
+Neutrality: the method owns how work is documented and gated, so the documentation
+structure is the method's to fix.
+
+The code scaffold — source layout, package structure, module organization — is
+architecture-determined. The method does not prescribe it. The method only records
+it, through the technology-stack decision artifact
+(docs/project/decisions/0001-technology-stack.md) and the implementation_paths
+field in the project manifest. This is the seam between the canonical documentation
+layer and the technique-specific code layer: the method records where code lives so
+tooling can reason about it, without dictating where code goes.
+
+### Rule 12: Supporting Artifacts Attach Through a Typed, Acyclic Reference Graph
+
+Canonical gate artifacts may reference project-specific supporting artifacts
+(produced by whatever analysis or design technique a project uses — a data model,
+an object-interaction model, a state-transition model, a user-story set, a UX
+specification) through a Supporting Artifacts section. The references form a
+directed acyclic graph rooted at canonical gate artifacts:
+
+```text
+the graph is rooted at canonical gate artifacts; a canonical artifact holds the
+  Supporting Artifacts section and names the supporting artifacts it references, so
+  edges run from the canonical (referencing) artifact to the supporting
+  (referenced) artifact
+cycles are forbidden and must be flagged
+references are one level deep by default; supporting artifacts do not themselves
+  carry supporting-artifact references, and greater depth is a declared, justified
+  exception
+```
+
+Edge topology and authority direction are distinct. Topology is fixed: the
+canonical artifact references the supporting artifact. Authority direction depends
+on the relationship type below: for some types the referencing (canonical) artifact
+is the one obligated to conform to the referenced artifact, and for others the
+reverse. Each type states explicitly which artifact holds authority, so the
+coherence obligation is unambiguous regardless of which end holds the reference.
+
+Each reference carries a relationship type from this bounded vocabulary. In every
+case the referencing artifact is the canonical gate artifact, and the referenced
+artifact is the supporting artifact it names. The type declares the coherence
+obligation and which end holds authority:
+
+```text
+implements     - the referencing artifact realizes a structure the referenced
+                 artifact defines. Authority: the referenced artifact. Obligation:
+                 every named element in the referencing artifact resolves to a
+                 definition in the referenced artifact.
+satisfies      - the referencing artifact fulfills requirements the referenced
+                 artifact states. Authority: the referenced artifact. Obligation:
+                 every requirement in the referenced artifact is covered by the
+                 referencing artifact.
+tested-by      - the referencing artifact's correctness is verified by the
+                 referenced test artifact. Authority: the referencing artifact (the
+                 test serves it). Obligation: the referenced test artifact exists,
+                 covers the referencing artifact's claims, and passes.
+constrained-by - the referencing artifact must not violate limits the referenced
+                 artifact sets. Authority: the referenced artifact. Obligation: the
+                 referencing artifact contains nothing the referenced artifact
+                 forbids.
+refines        - the referencing artifact adds detail within the scope the
+                 referenced artifact sets. Authority: the referenced artifact.
+                 Obligation: the referencing artifact stays within the referenced
+                 artifact's scope, adding detail without contradicting or expanding
+                 it.
+```
+
+The provenance relationship (which canonical artifact an artifact descends from)
+is handled separately by the Derived from provenance header and is not part of this
+vocabulary.
+
+The purpose of this structure is to present coherent context to an AI coding
+assistant: the reference graph is the context an agent walks to understand what it
+is building, and a cycle or a drifted reference is misleading context.
+
+### Rule 13: Supporting Artifacts Are Form-Disciplined and Content-Free
+
+The method constrains the form of a supporting artifact, not its content or name —
+a direct consequence of Technique Neutrality.
+
+```text
+form (method-governed):
+  filename is a valid lowercase-kebab identifier (no spaces, quotes, or slashes;
+    .md extension)
+  the artifact lives at the canonical supporting-artifact location in the locked
+    scaffold
+  it carries the required project front-matter field and its typed relationship to
+    what it supports
+content and name (technique-governed):
+  the artifact is whatever the technique requires, named whatever the technique
+    calls it, within the form constraint
+```
+
+Identity is the typed reference edge plus front matter, not the filename; a
+supporting artifact may be renamed freely as long as the reference pointing at it is
+updated. The authoritative form of a supporting artifact is textual; diagrams are
+embedded (for example Mermaid) or referenced from authoritative text, so the
+artifact stays diff-able and coherence-checkable.
+
+### Rule 14: Canonical Artifact Naming
+
+Per-project artifacts use fixed, role-based filenames that are identical across all
+projects. A filename identifies an artifact's role (vision.md, prd.md,
+architecture.md, phase-plan.md), never its project. This is a consequence of
+Technique Neutrality: the method fixes the form by which an artifact is named and
+referenced, so that authority pointers resolve identically for every project.
+
+```text
+the project slug and project name must not appear in any artifact filename or in
+  any cross-reference path between artifacts; cross-references use the fixed
+  canonical paths
+the slug must not be baked into filenames or cross-reference paths; it lives as a
+  field in docs/project/project.yaml and is echoed only as the artifact identity
+  field below
+project identity is carried by location (the docs/project/ tree and the
+  repository), by project.yaml, and by a strictly required front-matter field,
+  project: <slug>, on every per-project authority artifact (every gate artifact,
+  supporting artifact, and the gate log; navigational index files such as
+  directory README.md files are exempt)
+the project front-matter field must be present and must match the slug in
+  project.yaml; it is a checkable provenance claim, not decoration
+authority pointers, including AGENTS.md, reference canonical artifacts by their
+  fixed full path; because names are project-independent, a single pointer is
+  correct for all projects and requires no per-project maintenance
+```
+
+Scaling down a small project may combine or omit content (per the Blast-Radius
+Scaling Principle), but it does not float artifact names: a combined or reduced
+artifact still uses its canonical role-based name. Naming is fixed independently of
+how much content a project's gates carry.
 
 ## Documentation Artifact Chain
 

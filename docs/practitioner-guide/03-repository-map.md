@@ -153,7 +153,7 @@ Each artifact directory supports a lifecycle stage (one major movement through t
 - `architecture/`: system structure, boundaries, lifecycle, and technology decisions;
 - `security-governance/`: identity, authorization, data, audit, tool, and approval rules;
 - `decisions/`: ADRs (architecture decision records) and durable technical decisions;
-- `build-plan/`: phase roadmap, build plans, tactical plans, construction directives, review docs;
+- `build-plan/`: phase plan, build plans, tactical plans, construction directives, review docs;
 - `testing/`: test and UAT plans;
 - `traceability/`: requirement-to-test-to-implementation evidence;
 - `as-built/`: final record of what was actually built.

@@ -1,6 +1,7 @@
 # Code Review Report: [Project Name] — Phase [N]: [Phase Name]
 
 Status: Draft | Ready for Review | Complete | Stale | Superseded
+project: [project-slug]
 Date:
 Reviewer:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 7: Code Review Verifies Conformance
@@ -181,3 +182,29 @@ Check for:
 ```
 
 Implementation is ready for acceptance: Yes | No | Pending remediation
+
+---
+
+## Supporting Artifacts
+
+Project-specific artifacts produced by whatever analysis or design technique this
+project uses (for example a data model, an object-interaction model, a
+state-transition model, a user-story set, or a UX specification) attach here as
+typed references. This section is empty when the project needs none.
+
+Each entry uses a relationship type from the constitution's bounded vocabulary
+(Rule 12), the canonical path to the supporting artifact, and a short note on what
+it supports. The relationship type declares the coherence obligation and which end
+holds authority:
+
+```text
+implements:     docs/project/design/<artifact>.md     - <what it realizes>
+satisfies:      docs/project/design/<artifact>.md      - <what it fulfills>
+tested-by:      docs/project/testing/<artifact>.md     - <what verifies it>
+constrained-by: docs/project/design/<artifact>.md      - <what limits it>
+refines:        docs/project/design/<artifact>.md      - <what detail it adds>
+```
+
+References form a directed acyclic graph and are one level deep (Rule 12);
+supporting artifacts obey the form discipline in Rule 13 (valid kebab identifier,
+canonical location, required project front-matter field, typed relationship).

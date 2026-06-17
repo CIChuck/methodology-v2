@@ -142,7 +142,7 @@ combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
 evidence:
-  - path: docs/project/vision/vendor-contract-tracker-vision.md
+  - path: docs/project/vision/vision.md
     revision: TBD
     status: Accepted
 checked: "Confirmed that the vision keeps integrations deferred and names integration scope as a PRD question."
@@ -156,7 +156,7 @@ open_questions_carried_forward:
 conditions:
   - PRD must keep integrations deferred unless explicitly approved.
 next_role: prd-agent
-next_artifact: docs/project/prd/vendor-contract-tracker-prd.md
+next_artifact: docs/project/prd/prd.md
 manifest_updated: true
 ```
 ````
