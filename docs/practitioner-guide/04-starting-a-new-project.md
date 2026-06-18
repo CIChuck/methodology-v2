@@ -60,6 +60,7 @@ the slug, so an artifact declares which project it belongs to without that
 identity being baked into its path. You do not name these files; the scaffold
 does, identically for every project.
 
+
 ## Inspect The Manifest
 
 After initialization, inspect:
