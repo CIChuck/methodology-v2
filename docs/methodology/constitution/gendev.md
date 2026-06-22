@@ -85,6 +85,40 @@ projects where traceability and testability matter
 
 This standard may be scaled down for small work, but the traceability chain should not be abandoned.
 
+## Verification-First Principle
+
+A project must define how it will know the work is correct before it builds the work, and a human
+must approve that definition of correctness in a form precise enough to test. Verification is a
+design input, not a downstream check. This principle is the reason "what tests prove it works?" is
+one of the questions the Core Principle requires answered before code generation.
+
+Verification answers three distinct questions. They are exhaustive: there is nothing to verify
+outside the requirement, the design, and the code.
+
+```text
+behavioral:     does the implementation do what is required, including the negative and edge
+                cases, not only the happy path? (user acceptance is the user-facing slice)
+design:         does the design hold under the conditions it must survive (partition, network
+                loss, security boundary, degradation, scale, evolution)? this is evaluable the
+                moment the design is written, before any code exists
+implementation: is the code sound as an artifact and durable under change (correct types and
+                contracts, no brittle assumptions that erode over time)?
+```
+
+What unifies the three is that each asks whether the work is correct under conditions the happy
+path does not reveal: the requirement's edges, the design's failure modes, and time.
+
+Verification-First is a methodological commitment, not a technique. The method requires the
+verification and gates it; it does not prescribe how the verification is produced. Test-driven,
+behavior-driven, acceptance-test-driven, property-based, and classic test-after development are
+techniques, and the method stays neutral on them under the same reasoning as Technique Neutrality.
+The philosophy is methodology; the practice is technique. The maxim: define how you will know it
+works before you make it work.
+
+This standard scales with blast radius (a small project may answer the three questions briefly,
+including an honest "no failure modes beyond single-process operation"), but the questions should
+not be left unasked.
+
 ## Blast-Radius Scaling Principle
 
 GenDev ceremony scales with the blast radius of the work. Blast radius means the plausible impact
@@ -169,9 +203,10 @@ requirement
 
 If a requirement cannot be traced to a test or UAT check, it is not yet implementation-ready.
 
-### Rule 3: Tests Are Design Artifacts
+### Rule 3: Verification Is a Design Input
 
-Tests must be planned before or during architecture and tactical planning, not treated as cleanup after code generation.
+As a consequence of the Verification-First Principle, tests and other verification are planned
+before or during architecture and tactical planning, not treated as cleanup after code generation.
 
 Architecture and implementation plans should identify:
 
