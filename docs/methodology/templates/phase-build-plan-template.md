@@ -83,6 +83,21 @@ Which architecture rules or constraints are in force for this phase?
   data model implications
 ```
 
+### Architecture Mirror Check
+
+Hold the G3 architecture up as a mirror and check what reflects back. This is
+design verification re-asked at phase scope against the already-ratified
+architecture; it is a check, not a new architecture document.
+
+```text
+Does the work planned for this phase still conform to the G3 architecture?
+Did planning this phase reveal anything the architecture did not anticipate
+  (a missing interface, an unhandled failure mode, an assumption that does not
+  hold)?
+If the architecture must change, that is a regression against G3, not a silent
+  phase decision: raise it, do not absorb it here.
+```
+
 ---
 
 ## Phase Scope
@@ -256,6 +271,15 @@ Regression note:
 ```text
 On exit, this test joins the accumulated regression suite and is re-run as a
 required regression check on every subsequent phase.
+```
+
+Traceability:
+
+```text
+The features this phase delivers, and the exit test that proves them, must trace
+back to the PRD requirements (and through them to the vision) this phase claims to
+satisfy. A phase exit that cannot name which PRD requirements it has implemented
+has not verified that it built the right thing, only that it built some thing.
 ```
 
 ---

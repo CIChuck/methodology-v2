@@ -301,19 +301,59 @@ Every major architecture rule must trace to one or more PRD requirements.
 
 ---
 
-## Acceptance Criteria Seed
+## Verification Specification
+
+This section is the human-approved encoding of how the implementation will be
+proven correct. It is derived from the G2 acceptance criteria (in EARS form for
+C2/C3) and, because those criteria are already test-shaped, each entry here traces
+directly back to a same-shaped requirement. A human approves this specification as
+a faithful encoding of intent, separately from and before approving any code. That
+approval is what lets the build phase grade generated code against this
+specification rather than against prose, and lets an AI reviewer judge against
+human-certified intent rather than its own reinterpretation.
+
+For each requirement (or coherent group), record the verification that will prove
+it, across the three verification questions the Verification-First Principle names.
+Cross-cutting concerns (security, performance, operational, deployment) are not a
+fourth category; they appear within these three.
 
 ```text
-Tests are design artifacts — they must be seeded during architecture, not after code generation.
-What tests will eventually prove this architecture is correctly implemented?
-List them here. They become the starting point for the Test and UAT Plan.
+Requirement: REQ-...
+Behavioral:    what proves the implementation does what is required, including the
+               unwanted-behavior (If/then) cases — derived from the EARS criteria
+Design:        what about this requirement depends on the design holding under
+               stress (see the interrogation below); reference the failure mode
+Implementation: what makes the code for this sound and durable (contracts, types,
+               assumptions that must not erode)
+UAT:           the user-facing scenario that demonstrates this feature (designed
+               now, executed at phase exit)
 ```
 
+Approved by: TBD
+Approved on: TBD
+
+The verification evidence itself (test results, reports, UAT logs) is not recorded
+here; it attaches to the relevant artifacts as supporting artifacts through the
+`tested-by` typed reference when the work is done.
+
+## Design-Verification Interrogation
+
+Design verification asks whether this architecture holds under the conditions it
+must survive. It is evaluable now, on paper, before any code exists. Answer these
+prompts proportional to blast radius: a C1 project may answer briefly, including an
+honest "no failure modes beyond single-process operation"; a C3 project expands
+each into a real analysis. The point is that the questions are asked, and their
+answers recorded, not deferred to an incident.
+
 ```text
-What unit behavior must be verifiable?
-What integration points must be testable?
-What security boundaries require negative tests?
-What state transitions require assertion?
+What failure modes must this design survive (partition, network loss, crash and
+  restart, partial failure, resource exhaustion)? For each, how does the design
+  respond?
+Where might this design not scale, and at what point?
+Where might this design paint the project into an evolutionary corner — what future
+  change would be expensive because of a decision made here?
+What security boundaries does the design rely on, and what happens when one is
+  crossed or fails?
 ```
 
 ---
@@ -377,4 +417,6 @@ Before proceeding to build planning:
 [ ] state and lifecycle are fully defined
 [ ] deferred architecture is marked with reasons
 [ ] all architecture rules trace to PRD requirements
+[ ] the verification specification exists, is human-approved, and traces to the G2 acceptance criteria
+[ ] the design-verification interrogation is answered (proportional to blast radius)
 ```

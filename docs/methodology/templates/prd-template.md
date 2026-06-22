@@ -68,6 +68,37 @@ do not describe implementation
 do not combine multiple requirements in one row
 ```
 
+### Acceptance Criteria in EARS Form
+
+For C2 and C3 projects, acceptance criteria are written in EARS notation (Easy
+Approach to Requirements Syntax): five sentence templates that remove the ambiguity
+free prose hides and make each criterion structurally already a test. C1 contained
+projects may use plain observable acceptance criteria instead, though EARS is still
+encouraged.
+
+```text
+Ubiquitous:  The system shall <response>.                         (always true)
+Event:       When <trigger>, the system shall <response>.         (triggered)
+State:       While <state>, the system shall <response>.          (state-bound)
+Unwanted:    If <condition>, then the system shall <response>.    (error/negative path)
+Optional:    Where <feature>, the system shall <response>.        (feature-conditional)
+```
+
+The unwanted-behavior form is required where error paths exist: if a requirement
+has failure modes, its acceptance criteria must include the If/then cases, not only
+the happy path. An EARS criterion converts to a test assertion with no
+reinterpretation (When X, the system shall Y becomes trigger X, assert Y), which is
+what lets the G3 verification specification and the downstream build loop grade
+against criteria rather than against prose. EARS disciplines form, not correctness:
+a criterion can be EARS-formed and still wrong; human approval still certifies that
+the criterion is right.
+
+Cross-cutting concerns (security, performance, operational, deployment) are not a
+separate kind of criterion; they appear as behavioral criteria in EARS form (for
+example, If invalid credentials are presented, then the system shall reject the
+request), with their design and implementation aspects carried at G3 and in the
+build phase.
+
 ---
 
 ## Non-Functional Requirements
@@ -242,6 +273,8 @@ Before proceeding to architecture:
 ```text
 [ ] requirements are specific
 [ ] every requirement has acceptance criteria
+[ ] acceptance criteria are in EARS form (C2/C3; plain observable criteria allowed for C1)
+[ ] unwanted-behavior (If/then) criteria exist for requirements with error paths
 [ ] edge cases are captured
 [ ] all requirements can be traced to a test
 [ ] deferred items are documented with reasons

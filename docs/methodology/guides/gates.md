@@ -131,7 +131,7 @@ Required:
 - PRD;
 - stable requirement IDs;
 - functional and non-functional requirements;
-- acceptance criteria;
+- acceptance criteria (in EARS form for C2/C3; plain observable criteria allowed for C1);
 - edge cases;
 - deferred items;
 - testability notes.
@@ -141,6 +141,7 @@ Human approval: required.
 Exit criteria:
 
 - every baseline requirement has acceptance criteria;
+- acceptance criteria are in EARS form (C2/C3), including unwanted-behavior cases where error paths exist;
 - requirements are specific enough for architecture and tests;
 - deferred items have reasons;
 - open questions that block architecture are resolved or assigned.
@@ -167,6 +168,8 @@ Required:
 - state lifecycle;
 - interfaces;
 - error and failure behavior;
+- a human-approved verification specification, derived from the G2 acceptance criteria;
+- a design-verification interrogation (failure modes, scale, evolution), proportional to blast radius;
 - deferred architecture.
 
 Human approval: required.
@@ -177,6 +180,8 @@ Exit criteria:
 - ownership boundaries are clear;
 - state and lifecycle are defined;
 - stack decision is accepted;
+- the verification specification is human-approved and traces to the G2 acceptance criteria;
+- the design-verification interrogation is answered;
 - implementation does not need to invent core structure.
 
 Agents must stop if:
