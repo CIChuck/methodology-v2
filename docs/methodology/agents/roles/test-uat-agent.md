@@ -11,7 +11,7 @@ Define, execute, and evaluate automated tests and human-observable UAT evidence 
 ## Required Inputs
 
 - PRD acceptance criteria.
-- Architecture acceptance criteria seed.
+- Architecture verification specification.
 - Governance/security tests.
 - Phase build plan.
 - Tactical implementation plan.

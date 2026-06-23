@@ -1,6 +1,6 @@
 ---
 name: architecture-spec-author
-description: Use when creating or revising an architecture specification from PRDs or build authority. Focuses on terminology, domain model, component boundaries, ownership, lifecycle, data model, interfaces, runtime behavior, diagrams, security boundaries, deferred architecture, and acceptance criteria seeds.
+description: Use when creating or revising an architecture specification from PRDs or build authority. Focuses on terminology, domain model, component boundaries, ownership, lifecycle, data model, interfaces, runtime behavior, diagrams, security boundaries, deferred architecture, and the verification specification.
 metadata:
   short-description: Write architecture specifications
 ---
@@ -51,7 +51,7 @@ Produce a Markdown architecture specification with:
 - extension points;
 - deferred architecture;
 - diagrams where useful;
-- acceptance criteria seed;
+- verification specification;
 - open decisions.
 
 ## Architecture Rules

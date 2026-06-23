@@ -1506,7 +1506,7 @@ Include:
 - extension points;
 - deferred architecture;
 - diagrams where useful;
-- acceptance criteria seed;
+- verification specification;
 - open decisions.
 
 Every major architecture rule must trace back to one or more PRD requirements.

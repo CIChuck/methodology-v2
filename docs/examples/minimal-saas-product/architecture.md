@@ -47,7 +47,7 @@ when activity is required.
 - Webhook integrations.
 - Custom workflow engine.
 
-## Acceptance Criteria Seed
+## Verification Specification
 
 - Cross-workspace access is denied in tests.
 - Status changes produce activity records.
