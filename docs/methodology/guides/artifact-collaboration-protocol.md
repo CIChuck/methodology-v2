@@ -299,7 +299,7 @@ Responsible role: Test UAT Agent.
 Inputs:
 
 - requirements;
-- architecture acceptance criteria seed;
+- architecture verification specification;
 - governance/security tests;
 - phase plan.
 

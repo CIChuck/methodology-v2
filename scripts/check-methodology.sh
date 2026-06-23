@@ -1298,6 +1298,84 @@ check_vision_success_criteria() {
   done
 }
 
+check_ears_acceptance_criteria() {
+  # Validate that a ready/accepted PRD for a C2/C3 project expresses acceptance
+  # criteria in EARS form. C1 may use plain observable criteria, so it is skipped.
+  manifest="docs/project/project.yaml"
+  blast=""
+  [ -f "$manifest" ] && blast="$(manifest_section_value "$manifest" "scaling" "blast_radius_class" 2>/dev/null || true)"
+  case "$blast" in
+    C1) return 0 ;;
+  esac
+
+  for file in docs/project/prd/*.md; do
+    [ -e "$file" ] || continue
+
+    status="$(artifact_status "$file")"
+    case "$status" in
+      "Ready for Approval" | "Accepted") ;;
+      *) continue ;;
+    esac
+
+    # Real EARS criteria live in the requirements, not in the template's
+    # instructional "Acceptance Criteria in EARS Form" subsection. Strip that
+    # instructional subsection (and any angle-bracket placeholder lines) before
+    # looking, so the template's own examples and explanatory prose do not count.
+    candidate="$(
+      awk '
+        /^### Acceptance Criteria in EARS Form/ { in_instr = 1; next }
+        in_instr && /^(##|---)/ { in_instr = 0 }
+        in_instr { next }
+        { print }
+      ' "$file"
+    )"
+    real_ears="$(printf '%s\n' "$candidate" | grep -E '(When|While|If|Where)\b.*\bshall\b|\bThe system shall\b' | grep -v '<[a-z]')"
+    if [ -z "$real_ears" ]; then
+      fail "$file ($status) is a C2/C3 PRD but contains no concrete EARS-form acceptance criteria (When/While/If/Where ... shall, or The system shall), excluding the template's instructional examples. See constitution Verification-First Principle."
+    fi
+    # Unwanted-behavior coverage: warn if there are no concrete If/then error-path criteria.
+    real_unwanted="$(printf '%s\n' "$candidate" | grep -E '\bIf\b.*\bthe system shall\b' | grep -v '<[a-z]')"
+    if [ -z "$real_unwanted" ]; then
+      warn "$file ($status) has no concrete unwanted-behavior (If/then) acceptance criteria; confirm the requirements genuinely have no error paths."
+    fi
+  done
+}
+
+check_verification_specification() {
+  # Validate that a ready/accepted architecture carries a human-approved
+  # Verification Specification (constitution Verification-First Principle; G3).
+  for file in docs/project/architecture/*.md; do
+    [ -e "$file" ] || continue
+
+    status="$(artifact_status "$file")"
+    case "$status" in
+      "Ready for Approval" | "Accepted") ;;
+      *) continue ;;
+    esac
+
+    if ! grep -Eq '^## Verification Specification' "$file"; then
+      fail "$file ($status) is missing the required Verification Specification section (G3)."
+      continue
+    fi
+
+    spec_block="$(
+      awk '
+        /^## Verification Specification/ { in_section = 1; next }
+        in_section && /^## / { exit }
+        in_section { print }
+      ' "$file"
+    )"
+
+    # Approval must be filled in (not left TBD) for an Accepted architecture.
+    if [ "$status" = "Accepted" ]; then
+      approved_by="$(printf '%s\n' "$spec_block" | grep -E '^Approved by:' | head -1 | sed -E 's/^Approved by:[[:space:]]*//')"
+      if [ -z "$approved_by" ] || [ "$approved_by" = "TBD" ]; then
+        fail "$file is Accepted but its Verification Specification is not human-approved (Approved by is empty or TBD)."
+      fi
+    fi
+  done
+}
+
 check_phase_position() {
   manifest="docs/project/project.yaml"
   [ -f "$manifest" ] || return
@@ -1443,6 +1521,8 @@ else
   check_changed_path_enforcement
   check_current_gate_artifact_status
   check_vision_success_criteria
+  check_ears_acceptance_criteria
+  check_verification_specification
   check_phase_plans
   check_phase_position
   check_traceability_evidence

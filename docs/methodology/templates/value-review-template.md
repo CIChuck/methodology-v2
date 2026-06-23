@@ -62,6 +62,30 @@ Use one row for each due G1 success criterion.
 
 ---
 
+## User Acceptance
+
+The UAT scenarios designed at G2 (one per feature) are executed here. User
+acceptance is partly objective and partly subjective, and this section keeps the
+two honest rather than pretending the subjective part away. What is objective (the
+feature is present, it responds, the response time is within target) is recorded as
+a result. What is subjective (is it good enough) is framed against the scenario and
+a checklist, so the judgment is made against a defined frame, not a vibe.
+
+| Feature | UAT scenario | Present | Responsive (target/actual) | User verdict | Notes |
+| --- | --- | --- | --- | --- | --- |
+|  |  | yes \| no |  | accepted \| rejected \| conditional |  |
+
+```text
+For each feature, provide the user a checklist and hints for how to test it:
+  what action to take;
+  what response to expect;
+  what "good enough" looks like for this feature.
+A rejected or conditional verdict is a follow-up decision below, not a silent
+failure. Disagreement between users is recorded, not averaged away.
+```
+
+---
+
 ## Unmeasurable Criteria
 
 ```text
