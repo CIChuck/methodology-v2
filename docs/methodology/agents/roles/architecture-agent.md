@@ -23,6 +23,8 @@ implementation agents do not invent architecture.
 - Architecture specification under `docs/project/architecture/`.
 - Technology stack ADR under `docs/project/decisions/`.
 - Architecture rules traced to requirements.
+- A human-approved verification specification derived from the PRD acceptance criteria.
+- An answered design-verification interrogation (failure modes, scale, evolution), proportional to blast radius.
 - Deferred architecture list.
 
 ## Allowed Decisions

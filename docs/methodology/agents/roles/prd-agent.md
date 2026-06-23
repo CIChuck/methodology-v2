@@ -21,7 +21,10 @@ edge cases, non-goals, and deferred items.
 - PRD under `docs/project/prd/`.
 - Stable requirement IDs.
 - Baseline, deferred, optional, and open requirement statuses.
-- Testability notes and acceptance criteria.
+- Testability notes and acceptance criteria. For C2/C3 projects, acceptance
+  criteria are in EARS form (When/While/If/Where ... shall, or The system shall),
+  including unwanted-behavior (If/then) cases where error paths exist; C1 may use
+  plain observable criteria.
 
 ## Allowed Decisions
 

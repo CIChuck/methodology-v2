@@ -63,6 +63,24 @@ Produce a Markdown architecture specification with:
 - Make security-sensitive boundaries testable.
 - Mark deferred behavior clearly.
 
+## Verification (G3)
+
+The architecture carries two verification elements the G3 gate requires.
+
+- Verification specification: a human-approved encoding of how the implementation
+  will be proven correct, derived from the PRD's G2 acceptance criteria (in EARS
+  form for C2/C3). For each requirement, record the behavioral, design, and
+  implementation verification plus the user-acceptance scenario. The human approves
+  this specification as faithful to intent separately from and before approving any
+  code, so the build loop grades against approved criteria rather than prose.
+  Verification evidence (results, reports) is not placed here; it attaches later as
+  a supporting artifact via the `tested-by` reference.
+- Design-verification interrogation: answer, proportional to blast radius, what
+  failure modes the design must survive (partition, network loss, crash and
+  restart, partial failure, resource exhaustion), where it might not scale, where it
+  might paint the project into an evolutionary corner, and what happens when a
+  security boundary it relies on is crossed or fails.
+
 ## Diagrams
 
 Use Mermaid diagrams when they clarify:
@@ -85,7 +103,8 @@ Before finalizing, identify:
 - lifecycle gaps;
 - unclear ownership;
 - missing security/governance boundaries;
-- missing acceptance criteria;
+- a missing or incomplete verification specification, or one not traceable to the PRD acceptance criteria;
+- an unanswered design-verification interrogation;
 - deferred features that appear accidentally authorized;
 - implementation details that should remain tactical planning.
 
