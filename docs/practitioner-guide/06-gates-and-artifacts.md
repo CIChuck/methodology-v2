@@ -132,7 +132,7 @@ data model or a state diagram is yours (content).
 
 Because of that, the method does not enumerate every artifact a project might
 produce. A project using a particular analysis or design technique will create
-artifacts the canonical set does not name — a data model, an object-interaction
+artifacts the canonical set does not name: a data model, an object-interaction
 model, a state-transition model, a user-story set, a UX specification. These are
 **supporting artifacts**. They attach to a canonical gate artifact through that
 artifact's **Supporting Artifacts** section, as typed references:
@@ -151,7 +151,7 @@ coherence obligation and which artifact holds authority. References run from the
 canonical artifact to its supporters, form an acyclic graph (no cycles), and are
 one level deep. Supporting artifacts obey the same form discipline as everything
 else: a valid kebab-case filename, a canonical location, the required `project:`
-field, and a typed relationship — but their content and name are whatever the
+field, and a typed relationship. However, their content and name are whatever the
 technique calls for. (Constitution Rules 12 and 13.)
 
 The point of this structure is to give an AI coding agent coherent, complete
