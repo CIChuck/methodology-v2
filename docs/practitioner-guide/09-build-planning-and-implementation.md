@@ -114,6 +114,35 @@ It should include:
 If no test command exists yet, the plan should define what command will exist after stack
 initialization.
 
+### Grading Against Approved Verification
+
+The test/UAT plan does not start from a blank page. It inherits the verification specification a
+human approved at G3, architecture ready (Chapter 06), and that inheritance is what makes the build
+loop trustworthy.
+The agent generates code, the tests run, failures send it back to repair, and it iterates until the
+suite is green. That loop is only as good as what the tests encode, and here the tests encode a
+specification a human already approved as faithful to intent. The agent is grading its work against
+an approved standard, not against its own reading of the requirements, which is the whole point of
+Verification First (Chapter 02).
+
+The division of labor inside the loop is worth seeing clearly. The passing of tests is
+deterministic; a test passes or it does not, and no judgment is involved. The agent acting as
+reviewer does the work tests cannot: whether the implementation holds at the edges the tests did not
+enumerate (implementation verification), and whether the phase still conforms to the architecture
+(design verification). That last check has a name. Each phase holds the accepted G3 architecture up
+as a mirror and asks whether the work still conforms to it and whether building it revealed
+something the architecture did not anticipate. If the architecture must change, that is a regression
+against G3 raised in the open, not a quiet decision absorbed into the phase. The phase exit is the
+sum of these: tests green, the mirror check clean, and the delivered behavior traced back to the PRD
+requirements and the vision it claims to satisfy.
+
+User acceptance is the human-facing slice of the same discipline. The scenarios were designed back
+at G2, requirements ready, with the requirements; here they are run. Some of acceptance is objective (the feature is
+present, it responds, it meets its target) and some is subjective (is it good enough), and GenDev
+does not pretend the subjective part away. It scaffolds it with the scenario, a checklist, and hints
+for how to test, so the judgment is made against a defined frame rather than a vibe, and disagreement
+is recorded rather than averaged into a false consensus.
+
 ## Construction Directive
 
 The construction directive is the controlling build instruction (the accepted, specific order to

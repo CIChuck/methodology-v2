@@ -268,7 +268,27 @@ The PRD should define:
 - testability notes.
 
 The PRD is ready only when baseline requirements have observable acceptance criteria (conditions
-that prove a requirement is satisfied).
+that prove a requirement is satisfied). For C2 and C3 projects, those criteria are written in EARS
+form (the Easy Approach to Requirements Syntax), five sentence shapes that make a criterion
+structurally a test rather than a sentence open to interpretation:
+
+```text
+Ubiquitous:  The system shall <response>.                      (always true)
+Event:       When <trigger>, the system shall <response>.      (triggered)
+State:       While <state>, the system shall <response>.       (state-bound)
+Unwanted:    If <condition>, then the system shall <response>. (error or negative path)
+Optional:    Where <feature>, the system shall <response>.     (feature-conditional)
+```
+
+The value of EARS is that "When a claim is submitted, the system shall validate the member ID"
+converts to a test with no reinterpretation: trigger the event, assert the response. It also forces
+the error paths into the open, because the unwanted-behavior shape is a named slot that is visibly
+empty when you have only written the happy path. A small contained project (C1) may use plain
+observable criteria instead, but the moment a requirement has real failure modes, the discipline
+earns its keep. EARS governs form, not correctness: a criterion can be perfectly shaped and still
+wrong, which is why a human still approves the requirements. It only guarantees the criterion is
+precise enough to be worth approving and to become a test later without a second act of
+interpretation.
 
 ## G3: Architecture Ready
 
@@ -293,9 +313,31 @@ The architecture should define:
 - interfaces;
 - failure behavior;
 - technology stack decision;
-- deferred architecture.
+- deferred architecture;
+- a verification specification;
+- a design-verification interrogation.
 
 Implementation should not need to invent core structure after G3.
+
+The last two items are where Verification First (Chapter 02) becomes concrete. The **verification
+specification** takes the G2 acceptance criteria and records, for each requirement, how it will be
+proven correct across the three questions (behavioral, design, implementation) plus the
+user-acceptance scenario. Its defining property is the approval: a human signs off on this
+specification as a faithful encoding of intent, separately from and before any code exists, and
+that approval is what later lets the build loop grade code against an approved standard rather than
+against the agent's reading of the prose. The evidence itself (test results, reports) does not live
+here; it attaches later as a supporting artifact through a typed reference. How this specification
+drives the build loop, and how its evidence is gathered during implementation, is covered in
+Chapter 09.
+
+The **design-verification interrogation** is the design question asked on paper, before code can
+hide the answer. Proportional to blast radius, it records what failure modes the design must survive
+(partition, network loss, crash and restart, resource exhaustion), where it might not scale, where
+it might paint the project into an evolutionary corner, and what happens when a security boundary it
+relies on fails. A C1 project may answer briefly, including an honest "no failure modes beyond
+single-process operation." A C3 project expands each into real analysis. The point is that the
+questions are asked and answered while the design is still cheap to change, not discovered in an
+incident.
 
 ## G4: Governance Ready
 
