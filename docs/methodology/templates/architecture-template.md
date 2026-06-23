@@ -312,10 +312,11 @@ approval is what lets the build phase grade generated code against this
 specification rather than against prose, and lets an AI reviewer judge against
 human-certified intent rather than its own reinterpretation.
 
-For each requirement (or coherent group), record the verification that will prove
-it, across the three verification questions the Verification-First Principle names.
-Cross-cutting concerns (security, performance, operational, deployment) are not a
-fourth category; they appear within these three.
+For each requirement, record the verification that will prove it, across the three
+verification questions the Verification-First Principle names. (Closely related
+requirements verified by the same evidence may share an entry, but the default is
+one entry per requirement.) Cross-cutting concerns (security, performance,
+operational, deployment) are not a fourth category; they appear within these three.
 
 ```text
 Requirement: REQ-...
@@ -336,14 +337,13 @@ The verification evidence itself (test results, reports, UAT logs) is not record
 here; it attaches to the relevant artifacts as supporting artifacts through the
 `tested-by` typed reference when the work is done.
 
-## Design-Verification Interrogation
-
-Design verification asks whether this architecture holds under the conditions it
-must survive. It is evaluable now, on paper, before any code exists. Answer these
-prompts proportional to blast radius: a C1 project may answer briefly, including an
-honest "no failure modes beyond single-process operation"; a C3 project expands
-each into a real analysis. The point is that the questions are asked, and their
-answers recorded, not deferred to an incident.
+The design row above draws on a design-verification interrogation: design
+verification asks whether this architecture holds under the conditions it must
+survive, evaluable now, on paper, before any code exists. Answer these prompts
+proportional to blast radius — a C1 project may answer briefly, including an honest
+"no failure modes beyond single-process operation"; a C3 project expands each into
+a real analysis. The point is that the questions are asked and their answers
+recorded, not deferred to an incident.
 
 ```text
 What failure modes must this design survive (partition, network loss, crash and
