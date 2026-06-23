@@ -45,8 +45,10 @@ Produce a Markdown build plan with:
 - sequencing;
 - migration/removal requirements;
 - security/governance implications;
+- architecture mirror check;
 - test strategy;
 - CLI/API/UAT strategy;
+- phase exit test traced to PRD requirements and the vision;
 - acceptance criteria;
 - documentation close-out;
 - risks;
@@ -60,6 +62,13 @@ Produce a Markdown build plan with:
 - Make migration/removal work first-class for refactors.
 - Make documentation close-out part of definition of done.
 
+## Architecture Mirror Check
+
+Hold the accepted G3 architecture up as a mirror: confirm the phase still conforms
+to it, and surface anything the phase reveals that the architecture did not
+anticipate. If the architecture must change, raise it as a regression against G3,
+not as a silent phase decision.
+
 ## Accuracy Pass
 
 Before finalizing, identify:
@@ -67,6 +76,8 @@ Before finalizing, identify:
 - scope ambiguity;
 - deferred items that look included;
 - included items without acceptance criteria;
+- a phase exit test that does not trace to PRD requirements and the vision;
+- an unperformed architecture mirror check;
 - missing test strategy;
 - missing migration work;
 - missing security/governance work;

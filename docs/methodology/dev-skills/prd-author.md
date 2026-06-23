@@ -1,6 +1,6 @@
 ---
 name: prd-author
-description: Use when turning a vision/problem framing document into a Product Requirements Document with stable requirement IDs, acceptance criteria, user workflows, functional and non-functional requirements, edge cases, non-goals, deferred items, and testability notes.
+description: Use when turning a vision/problem framing document into a Product Requirements Document with stable requirement IDs, acceptance criteria in EARS form (for C2/C3), user workflows, functional and non-functional requirements, edge cases, non-goals, deferred items, and testability notes.
 metadata:
   short-description: Write testable PRDs with requirement IDs
 ---
@@ -63,6 +63,24 @@ Each requirement should include:
 - acceptance criteria;
 - testability notes;
 - status: baseline, deferred, optional, or open.
+
+### Acceptance Criteria Form (EARS)
+
+For C2 and C3 projects, write acceptance criteria in EARS notation so each criterion
+is structurally already a test and the G2 gate can be checked mechanically. C1
+contained projects may use plain observable criteria.
+
+- Ubiquitous: The system shall <response>.
+- Event: When <trigger>, the system shall <response>.
+- State: While <state>, the system shall <response>.
+- Unwanted: If <condition>, then the system shall <response>.
+- Optional: Where <feature>, the system shall <response>.
+
+Where a requirement has error paths, include the unwanted-behavior (If/then) cases,
+not only the happy path. Cross-cutting concerns (security, performance, operational,
+deployment) appear as behavioral criteria in EARS form, not as a separate category.
+EARS disciplines form, not correctness: a criterion can be EARS-formed and still
+wrong, so human approval still certifies that it is right.
 
 ## Quality Rules
 
