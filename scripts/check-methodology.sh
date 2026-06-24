@@ -583,16 +583,26 @@ check_sample_reference_drift() {
   fi
 }
 
+# Returns 0 (true) if the file contains a genuine placeholder, ignoring markdown
+# checkboxes. Templates ship "[ ]" checklist items that users mark "[x]"; those are
+# completed content, not placeholders, so they must not trip this check. We neutralize
+# checkbox tokens ("[ ]", "[x]", "[X]") before scanning for real "[placeholder]" text,
+# TBD, or "Replace with".
+has_real_placeholder() {
+  file="$1"
+  sed -E 's/\[[ xX]\]//g' "$file" | grep -Eq '\[[^][]+\]|TBD|Replace with'
+}
+
 check_accepted_doc_placeholders() {
   while IFS= read -r file; do
     if grep -Eq '^(Status|status):[[:space:]]*(Accepted|Complete|accepted|complete)[[:space:]]*$' "$file"; then
-      if grep -Eq '\[[^][]+\]|TBD|Replace with' "$file"; then
+      if has_real_placeholder "$file"; then
         fail "Accepted/complete document still has placeholders: $file"
       fi
     fi
 
     if grep -Eq '^(Status|status):[[:space:]]*(Ready for Approval|ready_for_approval)[[:space:]]*$' "$file"; then
-      if grep -Eq '\[[^][]+\]|TBD|Replace with' "$file"; then
+      if has_real_placeholder "$file"; then
         warn "Ready-for-approval document still has placeholders: $file"
       fi
     fi
@@ -1163,7 +1173,6 @@ check_manifest_approval_state() {
 
 check_accepted_artifact_approval_records() {
   manifest="docs/project/project.yaml"
-  log="docs/project/approvals/gate-log.md"
   accepted_count=0
 
   while IFS= read -r file; do
@@ -1173,9 +1182,38 @@ check_accepted_artifact_approval_records() {
   done < <(find docs/project -type f -name '*.md' -print)
 
   if [ "$accepted_count" -gt 0 ]; then
+    # The manifest is the authority for whether a real approval has occurred. Two
+    # control-plane signals count, and BOTH must be backed by a non-placeholder
+    # decider so an unapproved project cannot pass:
+    #   - approvals.current_gate.status == approved (the current gate is approved), or
+    #   - approvals.latest_decision.decision in {approved, accepted} with a real
+    #     decided_by (the durable "last real decision" summary).
+    # We deliberately do NOT scan the gate-log here: the shipped gate-log template
+    # carries an example "decision: approved" block, so grepping the log would treat
+    # the unfilled example as evidence of a real approval (a false negative). The
+    # gate-log remains the durable human-readable history; the manifest is what the
+    # checker keys on.
     gate_status="$(manifest_nested_value "$manifest" "approvals" "current_gate" "status")"
-    if [ "$gate_status" != "approved" ] && { [ ! -f "$log" ] || ! grep -Eq 'Decision:[[:space:]]*(Approved|Accepted)' "$log"; }; then
-      warn "Accepted artifact exists but no approved manifest state or gate-log decision was found."
+
+    latest_decision="$(manifest_nested_value "$manifest" "approvals" "latest_decision" "decision")"
+    latest_decided_by="$(manifest_nested_value "$manifest" "approvals" "latest_decision" "decided_by")"
+
+    approved=1
+    case "$gate_status" in
+      approved) approved=0 ;;
+    esac
+    case "$latest_decision" in
+      approved | accepted | Approved | Accepted)
+        # Require a real decider, not the fresh-init/template placeholder.
+        case "$latest_decided_by" in
+          "" | TBD | tbd) : ;;
+          *) approved=0 ;;
+        esac
+        ;;
+    esac
+
+    if [ "$approved" -ne 0 ]; then
+      warn "Accepted artifact exists but the manifest records no real approval (approvals.current_gate.status is not approved and approvals.latest_decision is unset or TBD)."
     fi
   fi
 }

@@ -28,6 +28,12 @@ jobs:
           bash -n scripts/methodology-guard.sh
           bash -n scripts/install-hooks.sh
           bash -n scripts/methodology-metrics.sh
+          bash -n scripts/test-checker.sh
+
+      - name: Run checker self-test
+        shell: bash
+        run: |
+          scripts/test-checker.sh
 
       - name: Run methodology guard
         shell: bash
