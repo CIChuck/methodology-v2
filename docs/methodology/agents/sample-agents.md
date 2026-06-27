@@ -196,7 +196,7 @@ Security-sensitive requirements need positive and negative tests.
 
 ## Examples
 
-Example artifacts may exist under `docs/examples/`. They are reference material only. Do not use
+Example artifacts may exist under `docs/resources/examples/`. They are reference material only. Do not use
 their implementation evidence, source paths, tests, CLI commands, or traceability statuses as local
 project evidence unless the active project explicitly adopts them and matching implementation files
 exist.

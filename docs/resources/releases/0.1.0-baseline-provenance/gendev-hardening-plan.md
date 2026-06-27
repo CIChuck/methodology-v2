@@ -4,11 +4,11 @@ Status: Implemented through Wave 9
 Prepared: 2026-06-10
 Implemented: 2026-06-10
 Release identity: `0.1.0-baseline` (`v0.1.0-baseline` tag after release-prep merge)
-Scope: Hardening the GenDev methodology based on the assessment documents in `docs/assessment/`  
+Scope: Hardening the GenDev methodology based on the assessment documents in `docs/resources/releases/0.1.0-baseline-provenance/`  
 Source assessments:
 
-- `docs/assessment/gendev-methodology-review.md`
-- `docs/assessment/enforcement-contract.md`
+- `docs/resources/releases/0.1.0-baseline-provenance/gendev-methodology-review.md`
+- `docs/methodology/guides/enforcement-contract.md`
 
 ## 1. Purpose
 
@@ -29,7 +29,7 @@ AI-assisted agentic development methodology:
 - cleaner repository, version, and licensing posture.
 
 The assessment documents are advisory until accepted into the methodology. Nothing in
-`docs/assessment/` is currently methodology authority unless a later change moves or references it
+`docs/resources/releases/0.1.0-baseline-provenance/` is currently methodology authority unless a later change moves or references it
 from `AGENTS.md`, `README.md`, `docs/methodology/constitution/gendev.md`, `docs/methodology/guides/`,
 or the project template manifest.
 
@@ -273,10 +273,10 @@ Target files:
 - `docs/methodology/guides/gate-transition-protocol.md`
 - `docs/project-template/approvals/gate-log.md`
 - `docs/project-template/project.yaml`
-- `docs/practitioner-guide/06-gates-and-artifacts.md`
-- `docs/practitioner-guide/07-approvals-and-risk.md`
-- `docs/practitioner-guide/16-checklists.md`
-- `docs/practitioner-guide/18-glossary.md`
+- `docs/resources/practitioner-guide/06-gates-and-artifacts.md`
+- `docs/resources/practitioner-guide/07-approvals-and-risk.md`
+- `docs/resources/practitioner-guide/16-checklists.md`
+- `docs/resources/practitioner-guide/18-glossary.md`
 - `scripts/check-methodology.sh`
 
 Design decisions:
@@ -610,11 +610,11 @@ Target files:
 - `docs/methodology/guides/subagent-coordination-protocol.md`
 - `docs/methodology/templates/code-review-report-template.md`
 - `docs/methodology/agents/roles/code-review-agent.md`
-- `docs/practitioner-guide/08-subagents-and-delegation.md`
-- `docs/practitioner-guide/10-review-remediation-and-closeout.md`
-- `docs/practitioner-guide/13-codex-specific-notes.md`
-- `docs/practitioner-guide/14-claude-code-specific-notes.md`
-- `docs/practitioner-guide/18-glossary.md`
+- `docs/resources/practitioner-guide/08-subagents-and-delegation.md`
+- `docs/resources/practitioner-guide/10-review-remediation-and-closeout.md`
+- `docs/resources/practitioner-guide/13-codex-specific-notes.md`
+- `docs/resources/practitioner-guide/14-claude-code-specific-notes.md`
+- `docs/resources/practitioner-guide/18-glossary.md`
 
 Constitutional rule:
 
@@ -663,7 +663,7 @@ Acceptance criteria:
 Validation:
 
 ```bash
-rg -n "Context Provenance|fresh context|independent" docs/methodology docs/practitioner-guide
+rg -n "Context Provenance|fresh context|independent" docs/methodology docs/resources/practitioner-guide
 ./scripts/check-methodology.sh
 ```
 
@@ -682,7 +682,7 @@ Assessment drivers:
 - A3.4 adopt enforcement contract;
 - A3.5 declare enforcement class in control plane;
 - A3.6 constitutional enforcement principle;
-- `docs/assessment/enforcement-contract.md`.
+- `docs/methodology/guides/enforcement-contract.md`.
 
 Target files:
 
@@ -792,10 +792,10 @@ Target files:
 - optional new `scripts/methodology-guard.sh`
 - `.github/workflows/methodology.yml`
 - `docs/methodology/guides/enforcement-contract.md`
-- `docs/practitioner-guide/04-starting-a-new-project.md`
-- `docs/practitioner-guide/13-codex-specific-notes.md`
-- `docs/practitioner-guide/14-claude-code-specific-notes.md`
-- `docs/practitioner-guide/16-checklists.md`
+- `docs/resources/practitioner-guide/04-starting-a-new-project.md`
+- `docs/resources/practitioner-guide/13-codex-specific-notes.md`
+- `docs/resources/practitioner-guide/14-claude-code-specific-notes.md`
+- `docs/resources/practitioner-guide/16-checklists.md`
 
 Checker hardening tasks:
 
@@ -983,7 +983,7 @@ Target files:
 - `docs/methodology/guides/subagent-coordination-protocol.md`
 - `docs/methodology/guides/enforcement-contract.md`
 - `docs/project-template/project.yaml`
-- new or updated `docs/examples/`
+- new or updated `docs/resources/examples/`
 - practitioner guide chapters 1, 4, 6, 8, 9, 12, 16, 18
 
 Recommended classes:
@@ -1021,7 +1021,7 @@ Tasks:
 2. Add class field to `project.yaml`.
 3. Add gate-combination table to gates guide.
 4. Add cost/budget fields to sub-agent assignment format.
-5. Add GenDev Lite worked example in `docs/examples/`.
+5. Add GenDev Lite worked example in `docs/resources/examples/`.
 6. Update practitioner guide to explain legitimate scaling down.
 7. Add checker warning when combined gates lack recorded justification.
 
@@ -1037,7 +1037,7 @@ Validation:
 
 ```bash
 ./scripts/check-methodology.sh
-rg -n "C1|C2|C3|blast|budget|GenDev Lite" docs/methodology docs/practitioner-guide docs/examples
+rg -n "C1|C2|C3|blast|budget|GenDev Lite" docs/methodology docs/resources/practitioner-guide docs/resources/examples
 ```
 
 Risks:
@@ -1056,23 +1056,23 @@ Assessment drivers:
 
 Target files:
 
-- `docs/practitioner-guide/README.md`
-- `docs/practitioner-guide/01-orientation.md`
-- `docs/practitioner-guide/02-core-mental-model.md`
-- `docs/practitioner-guide/04-starting-a-new-project.md`
-- `docs/practitioner-guide/06-gates-and-artifacts.md`
-- `docs/practitioner-guide/07-approvals-and-risk.md`
-- `docs/practitioner-guide/08-subagents-and-delegation.md`
-- `docs/practitioner-guide/09-build-planning-and-implementation.md`
-- `docs/practitioner-guide/10-review-remediation-and-closeout.md`
-- `docs/practitioner-guide/11-production-operations.md`
-- `docs/practitioner-guide/12-vendor-contract-tracker-walkthrough.md`
-- `docs/practitioner-guide/13-codex-specific-notes.md`
-- `docs/practitioner-guide/14-claude-code-specific-notes.md`
-- `docs/practitioner-guide/15-prompt-library.md`
-- `docs/practitioner-guide/16-checklists.md`
-- `docs/practitioner-guide/17-common-failure-modes.md`
-- `docs/practitioner-guide/18-glossary.md`
+- `docs/resources/practitioner-guide/README.md`
+- `docs/resources/practitioner-guide/01-orientation.md`
+- `docs/resources/practitioner-guide/02-core-mental-model.md`
+- `docs/resources/practitioner-guide/04-starting-a-new-project.md`
+- `docs/resources/practitioner-guide/06-gates-and-artifacts.md`
+- `docs/resources/practitioner-guide/07-approvals-and-risk.md`
+- `docs/resources/practitioner-guide/08-subagents-and-delegation.md`
+- `docs/resources/practitioner-guide/09-build-planning-and-implementation.md`
+- `docs/resources/practitioner-guide/10-review-remediation-and-closeout.md`
+- `docs/resources/practitioner-guide/11-production-operations.md`
+- `docs/resources/practitioner-guide/12-vendor-contract-tracker-walkthrough.md`
+- `docs/resources/practitioner-guide/13-codex-specific-notes.md`
+- `docs/resources/practitioner-guide/14-claude-code-specific-notes.md`
+- `docs/resources/practitioner-guide/15-prompt-library.md`
+- `docs/resources/practitioner-guide/16-checklists.md`
+- `docs/resources/practitioner-guide/17-common-failure-modes.md`
+- `docs/resources/practitioner-guide/18-glossary.md`
 
 Tasks:
 
@@ -1111,7 +1111,7 @@ Acceptance criteria:
 Validation:
 
 ```bash
-rg -n "enforcement class|attested|provenance|stale|amendment|regression|blast radius|value review|override" docs/practitioner-guide
+rg -n "enforcement class|attested|provenance|stale|amendment|regression|blast radius|value review|override" docs/resources/practitioner-guide
 ./scripts/check-methodology.sh
 ```
 
@@ -1464,15 +1464,15 @@ Recommended follow-up after tagging:
 1. Run one real downstream project from a fresh clone.
 2. Record any practitioner friction as issues or assessment notes.
 3. Decide whether the next methodology release should be `0.2.0` or a `1.0.0` candidate.
-4. Keep `docs/assessment/` advisory unless new content is deliberately ratified into methodology
+4. Keep `docs/resources/releases/0.1.0-baseline-provenance/` advisory unless new content is deliberately ratified into methodology
    authority.
 
 ## 18. Notes On Ratifying The Assessment Documents
 
-The assessment documents should remain in `docs/assessment/` as advisory source material. Ratified
+The assessment documents should remain in `docs/resources/releases/0.1.0-baseline-provenance/` as advisory source material. Ratified
 content should be moved into methodology authority through deliberate patches.
 
-Do not copy `docs/assessment/enforcement-contract.md` directly into `docs/methodology/guides/`
+Do not copy `docs/assessment/enforcement-contract.md` (the historical advisory copy, since removed) directly into `docs/methodology/guides/`
 without changes. At minimum, revise:
 
 - the reference binding section, unless hook and CI files are implemented in the same wave;

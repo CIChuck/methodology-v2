@@ -572,7 +572,7 @@ check_project_structure() {
 }
 
 check_sample_reference_drift() {
-  paths="README.md AGENTS.md docs/examples docs/methodology/agents"
+  paths="README.md AGENTS.md docs/resources/examples docs/methodology/agents"
 
   if [ -d "docs/project" ]; then
     paths="$paths docs/project"

@@ -15,7 +15,7 @@ gates, leaving the project at its real current gate to continue natively.
 
 This is the document half of "onboarding existing work." The code half
 (reverse-engineering an existing system into artifacts, per
-docs/research/existing-codebase.md) is explicitly out of scope here and revisited
+docs/resources/research/existing-codebase.md) is explicitly out of scope here and revisited
 later.
 
 ## Settled decisions

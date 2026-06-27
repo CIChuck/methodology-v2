@@ -15,7 +15,7 @@ For first orientation, read these files in order:
 ```text
 AGENTS.md
 docs/methodology/constitution/gendev.md
-docs/practitioner-guide/README.md
+docs/resources/practitioner-guide/README.md
 ```
 
 `AGENTS.md` tells AI coding agents how to enter the repository. The constitution defines the
@@ -35,17 +35,17 @@ docs/project/
 docs/project-template/
   Clone-time skeleton used by the initialization script.
 
-docs/practitioner-guide/
+docs/resources/practitioner-guide/
   Field manual for technical practitioners using the methodology with AI coding agents.
 
-docs/examples/
+docs/resources/examples/
   Non-authoritative examples and future worked examples.
 ```
 
 For a lightweight C1 path, see:
 
 ```text
-docs/examples/gendev-lite-contained-tool/
+docs/resources/examples/gendev-lite-contained-tool/
 ```
 
 ## Core Method
@@ -121,12 +121,12 @@ documents under `docs/project/`.
 - Artifact collaboration protocol: `docs/methodology/guides/artifact-collaboration-protocol.md`
 - Production operations protocol: `docs/methodology/guides/production-operations-protocol.md`
 - Orchestration validation: `docs/methodology/guides/orchestration-validation.md`
-- Practitioner guide: `docs/practitioner-guide/`
+- Practitioner guide: `docs/resources/practitioner-guide/`
 - Templates: `docs/methodology/templates/`
 - Dev-skill guidance: `docs/methodology/dev-skills/`
 - Agent role playbooks: `docs/methodology/agents/roles/`
 - Sample agent instructions: `docs/methodology/agents/sample-agents.md`
-- Examples: `docs/examples/`
+- Examples: `docs/resources/examples/`
 - Methodology checker: `scripts/check-methodology.sh`
 - Methodology guard: `scripts/methodology-guard.sh`
 - Methodology metrics: `scripts/methodology-metrics.sh`
@@ -197,8 +197,8 @@ as its architecture and phase plans mature.
 Current methodology version: `0.1.0-baseline`
 
 This is the hardened pre-1.0 baseline. The hardening waves in
-`docs/assessment/gendev-hardening-plan.md` are complete, and the release notes are in
-`docs/releases/0.1.0-baseline.md`.
+`docs/resources/releases/0.1.0-baseline-provenance/gendev-hardening-plan.md` are complete, and the release notes are in
+`docs/resources/releases/0.1.0-baseline.md`.
 
 The release tag for this baseline is expected to be:
 
