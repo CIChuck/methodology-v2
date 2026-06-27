@@ -67,7 +67,7 @@ run_checker() {
 }
 
 # Isolated tree: copy the WHOLE repo (so all checker preconditions — AGENTS.md,
-# README.md, the workflow, docs/examples, etc. — are satisfied), minus version
+# README.md, the workflow, docs/resources/examples, etc. — are satisfied), minus version
 # control and any pre-existing project, then init a FRESH project. This way the only
 # variable under test is the project we build; unrelated "missing file" errors cannot
 # mask or fake a result. Portable cp (works on GNU and BSD/macOS); cpio and its

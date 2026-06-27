@@ -13,8 +13,8 @@ example can demonstrate the current methodology without path drift.
 Current examples:
 
 ```text
-docs/examples/gendev-lite-contained-tool/
-docs/examples/minimal-saas-product/
+docs/resources/examples/gendev-lite-contained-tool/
+docs/resources/examples/minimal-saas-product/
 ```
 
 `gendev-lite-contained-tool/` shows a C1 GenDev Lite path where G1-G4 can be combined because the

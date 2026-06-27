@@ -272,7 +272,7 @@ sampling at every gate, not once per phase.
 ```
 
 **A5.2: Add a worked lightweight example.**
-Target: `docs/examples/` (a small C1-class project alongside the existing SaaS example).
+Target: `docs/resources/examples/` (a small C1-class project alongside the existing SaaS example).
 The SaaS example shows the full ceremony. A second example showing a legitimately scaled-down project answers the question every lean practitioner will ask, and inoculates GenDev against the critique that killed RUP: tailoring left entirely to the practitioner.
 
 **A5.3: Add cost control.**

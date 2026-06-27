@@ -59,7 +59,7 @@ docs/project-template/
 docs/project/
   Active project authority after initialization.
 
-docs/examples/
+docs/resources/examples/
   Non-authoritative examples.
 ```
 

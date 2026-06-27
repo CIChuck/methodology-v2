@@ -82,7 +82,7 @@ Pre-audited occurrences of the old numbering. Verify this list, then fix all of 
    (lines 44 and 173) → G6.
 8. `docs/methodology/templates/as-built-closeout-template.md` — "Gate 6 Exit Checklist" →
    classify by content per the warning above; expected G9.
-9. `docs/examples/minimal-saas-product/phase-1-code-review.md` — "Gate 5 Status" → G6.
+9. `docs/resources/examples/minimal-saas-product/phase-1-code-review.md` — "Gate 5 Status" → G6.
 
 Then run your own audit to catch anything this list missed:
 

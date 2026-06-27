@@ -156,7 +156,7 @@ or mark planned behavior as implemented unless it is actually implemented and ve
 
 ## Examples Are Not Active Authority
 
-`docs/examples/` contains example methodology artifacts. It is not the active project for a new
+`docs/resources/examples/` contains example methodology artifacts. It is not the active project for a new
 clone. Do not cite example PRDs, architecture docs, traceability matrices, implementation evidence,
 source paths, tests, or UAT claims as local project authority unless the active project explicitly
 adopts that material and matching local source/test files exist.

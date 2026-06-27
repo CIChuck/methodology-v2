@@ -266,7 +266,7 @@ of this record, when the full scope is visible on the page.
 
 - Formal methods and the rigor ladder (Design-by-Contract, property-based testing,
   model checking with TLA+/TLC, Alloy, proof assistants). The research in
-  docs/research/ argues that at high blast radius a proof and a test are different
+  docs/resources/research/ argues that at high blast radius a proof and a test are different
   classes of guarantee, and that verification class — not only volume — should
   scale with blast radius. This is a substantial, separate exploration, best
   pursued as a blast-radius-dependent rigor addendum to GenDev after this base
@@ -290,7 +290,7 @@ of this record, when the full scope is visible on the page.
 - Whether retitling Rule 3 risks breaking cross-references (the sweep must
   enumerate references to "Rule 3" and "Tests Are Design Artifacts").
 - The relationship between this amendment's G5–G6 verification loop and the
-  separate loop research (docs/research/loops.md). They meet at the same gates;
+  separate loop research (docs/resources/research/loops.md). They meet at the same gates;
   this amendment should not depend on that research but should not contradict it.
 
 ## Consequences of not doing this
