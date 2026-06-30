@@ -67,6 +67,65 @@ naming, scaffolding, or references must remain consistent with this principle. A
 future rule that couples the method to a specific technology stack or engineering
 approach violates it.
 
+## First Principles of Code Quality
+
+This is a first-order principle of the methodology, and a deliberate complement
+to Technique Neutrality. Technique Neutrality states what the method is silent
+about: how the work is conceived, modeled, and built. This principle states what
+the method is not silent about: six properties the produced code must have,
+whatever technique produced it.
+
+These six are constitutional, not technical. They do not tell a builder how to
+design or which pattern to reach for. They state properties the result must hold
+regardless of how it was built, the same way "the architecture must cohere with
+the PRD" is a property of the result and not a technique for producing it. They
+sit on the method side of the Technique Neutrality line, alongside blast radius
+and accountability, not on the technique side alongside object-oriented or
+data-driven design.
+
+The six:
+
+```text
+YAGNI  You Aren't Gonna Need It. Build only what a current, approved requirement
+       asks for. Do not build for a requirement that does not yet exist.
+KISS   Keep It Simple. The simplest structure that satisfies the requirement is
+       the correct one, not the most general or most extensible.
+DRY    Don't Repeat Yourself. Logic that already exists is called, not rewritten.
+SRP    Single Responsibility. Each unit does one coherent job.
+LA     Least Astonishment. Behavior matches what an obvious reading of the
+       requirement would lead a reader to expect.
+NAA    No Undeclared Abstractions. Every entity, field, relationship, class, and
+       interface the build introduces already appears in an approved upstream
+       authority: a business concept named in the requirements, or a design
+       element named in the architecture's Accepted Domain Model. A build
+       implements the approved model. It does not silently expand it.
+```
+
+These principles exist because a generator, left unconstrained, violates all six
+by default. Verbosity, over-generalization, duplication, conflated
+responsibilities, surprising behavior, and unrequested abstraction are the
+standing tendencies of machine generation, not occasional lapses. A test suite
+does not catch them, because all six can be present in code that passes every
+test. The method therefore states them explicitly and binds them at the points
+where generation happens.
+
+The binding mechanism follows from this. These six are restated in full in every
+construction directive's anti-drift section, at the point of generation, every
+phase, without exception. They are checked at code review by a conformance
+reviewer operating under the reviewer-independence rule. NAA in particular
+depends on the Accepted Domain Model being treated as a closed, approved list:
+once the architecture is Accepted, its Domain Model is the complete set of
+entities, fields, relationships, classes, and interfaces the build may introduce,
+and anything beyond it is a finding sent upstream as a named amendment, not a
+silent addition during a build.
+
+The canonical noun set for NAA is: entities, fields, relationships, classes, and
+interfaces. Every restatement of this principle elsewhere in the methodology uses
+that set, so the closed list and its checks describe the same membership.
+
+Every other rule in this constitution that concerns what a build produces must
+remain consistent with these six.
+
 ## Applicability
 
 Use this standard for:

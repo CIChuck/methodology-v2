@@ -162,8 +162,38 @@ Stop conditions:
 | Architecture reviewer | Boundaries, lifecycle, interfaces, stack fit. |
 | Security reviewer | Identity, authorization, audit, data sensitivity, tool access. |
 | Test reviewer | Coverage, negative tests, fixtures, UAT. |
-| Code conformance reviewer | Drift from documented authority. |
+| Code conformance reviewer | Drift from documented authority against the six constitutional principles. See Six-Principle Checklist below. |
 | Deployment reviewer | Runbook, rollback, monitoring, production readiness. |
+
+### Six-Principle Checklist (Code Conformance Reviewer)
+
+This reviewer operates under the Fresh-Context Review Rule: no shared context with the
+implementing agent, fed only the construction directive, the Accepted architecture's Domain
+Model, the surrounding codebase modules relevant to DRY checking, and the artifact under
+review.
+
+**What to check, and what each question requires as input:**
+
+| Principle | Question | Required input |
+| --- | --- | --- |
+| YAGNI (narrow) | Does the code do anything the directive's stated scope and non-goals did not ask for? | The directive's Allowed Scope and Explicit Non-Goals sections |
+| KISS | Is there a simpler structure that satisfies the same requirement? | The directive's implementation objective and the code |
+| DRY | Does this logic already exist elsewhere in the codebase? | The relevant surrounding modules, not just the new file |
+| SRP | Does any single unit (function, class, module) do more than one coherent job? | The code |
+| NAA | Does every entity, field, relationship, class, and interface in this code already appear in the Accepted architecture's Domain Model? | The Accepted architecture document's Domain Model section |
+| LA | Would the obvious reading of the requirement lead a reader to expect this behavior? | The requirement and the code |
+
+**Honest scope of this checklist.** Four of the six questions are cleanly checkable given
+the right inputs: KISS, DRY, NAA (its entity-lookup half), and narrow YAGNI. Two are
+judgment-dependent and the reviewer's finding should be treated as advisory rather than
+deterministic: broad YAGNI (was this genuinely unneeded by the project, requiring roadmap
+knowledge the reviewer does not have) and LA (what would a reader expect, which is closer
+to a human judgment call than a comparison against a document). Do not imply this checklist
+covers everything; state the limits when reporting findings.
+
+**Finding format.** Use the same finding format as all other sub-agent reviewers: principle
+violated (use the key: YAGNI, KISS, DRY, SRP, NAA, LA), specific evidence (the function,
+class, or logic at issue), severity (blocking or advisory), and recommended action.
 
 ## Parallel Review
 

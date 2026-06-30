@@ -196,6 +196,42 @@ before G4 is not your call; that is the method. Knowing which is which keeps you
 gates and from mistaking your preferred technique for a law. Bring whatever technique serves the
 problem, and let the method handle authority.
 
+### Six Things the Method Is Not Neutral About
+
+Technique Neutrality can be misread, and the misread is worth heading off, because it shapes how you
+read everything that follows. "The method stays silent on technique" does not mean the method has no
+opinion about the code that comes out the other end. It has exactly six, and they are not techniques.
+
+The constitution names them in its First Principles of Code Quality section: YAGNI (build only what a
+current requirement asks for), KISS (the simplest structure that satisfies the requirement is the
+right one), DRY (do not rewrite logic that already exists), single responsibility (each unit does one
+job), least astonishment (behavior matches the obvious reading of the requirement), and no undeclared
+abstractions (every entity, field, relationship, class, and interface the build introduces already
+appears in an approved upstream authority).
+
+The reason these sit on the method side of the line, not the technique side, is the same reason "the
+architecture must cohere with the PRD" sits there. They are properties the result must have,
+regardless of how you produced it. They do not tell you to use object-oriented decomposition or
+event storming or any other approach; they tell you that whatever you produce, by whatever technique,
+must not be over-built, over-complicated, duplicated, multi-purpose where it should be singular,
+surprising, or quietly larger in scope than what was approved. A data-driven team and an
+object-oriented team will satisfy these six in completely different-looking code, the same way they
+travel the same gates in completely different vehicles. The properties are constant; the technique
+that achieves them is yours.
+
+So the mental model is two-sided, not one. The method is silent on how you build (Technique
+Neutrality) and not silent on six specific properties of what you build (the First Principles). Hold
+both. A practitioner who remembers only the first half concludes the method has no view on code
+quality, which is wrong. A practitioner who remembers only the second half starts treating the
+principles as techniques and fighting the method's neutrality, which is also wrong. The six are
+constraints, like blast radius and accountability, that every technique has to be consistent with.
+
+These principles do real work later in the lifecycle, not here. They are restated in full in every
+construction directive and checked at code review (see the build-planning and review chapters, and
+the glossary for each principle's definition and where it binds). They are introduced here, in the
+mental model, because getting them on the right side of the technique line is what keeps the rest of
+the method coherent.
+
 ## Verification First
 
 There is a second principle that follows the same methodology-versus-technique line, and it matters
