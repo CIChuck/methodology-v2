@@ -150,20 +150,47 @@ tests cannot be meaningfully added
 architecture must be changed
 ```
 
-## 14. Anti-Drift Rules
+## 14. Anti-Drift Rules (First Principles Enforcement)
+
+These rules are the construction-directive-level restatement of the six constitutional
+principles. They are stated here in full, every phase, every directive, without exception,
+regardless of which ones appear load-bearing for this phase's scope. The asymmetry that
+decides this: a restated-but-irrelevant rule costs one ignored line; a silently dropped rule
+that turns out to matter costs a missed violation. Restate all six every time.
+
+Authority: the constitution's First Principles of Code Quality section. These are
+not arbitrary house rules. They are the constitution's six named code-quality
+principles, restated here at the point of generation so they are proximate and
+active, not buried in a document read once at session start.
 
 The AI builder must not:
 
 ```text
-implement deferred features
-broaden scope
-silently change architecture
-weaken security or governance behavior
-remove unrelated code
-rewrite unrelated modules
-mark planned behavior as implemented unless implemented
-hide skipped tests or failed verification
+[YAGNI] implement deferred features
+[YAGNI] broaden scope beyond what this directive explicitly authorizes
+[KISS]  build a more complex structure than the requirement needs; the simplest solution
+        that satisfies the requirement is the correct one
+[DRY]   duplicate logic that already exists elsewhere in this codebase; if the same
+        operation is needed, find and call what exists, do not rewrite it
+[SRP]   have any single unit (function, class, module) do more than one coherent job;
+        if a unit is doing two things, it should be two units
+[LA]    produce behavior a reader would not expect from an obvious reading of the
+        requirement; correctness without astonishment
+[NAA]   introduce any entity, field, relationship, class, or interface not already
+        present in the Accepted architecture's Domain Model; if a phase genuinely
+        needs something not yet in the model, that is a finding to send upstream,
+        not a silent addition
+[GOV]   silently change architecture
+[GOV]   weaken security or governance behavior
+[GOV]   remove unrelated code
+[GOV]   rewrite unrelated modules
+[INT]   mark planned behavior as implemented unless fully implemented
+[INT]   hide skipped tests or failed verification
 ```
+
+Key: YAGNI = You Aren't Gonna Need It; KISS = Keep It Simple; DRY = Don't Repeat Yourself;
+SRP = Single Responsibility; LA = Least Astonishment; NAA = No Undeclared Abstractions;
+GOV = Governance; INT = Integrity.
 
 ## 15. Accuracy Pass
 

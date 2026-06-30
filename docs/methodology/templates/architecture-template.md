@@ -155,6 +155,15 @@ How do entities relate to each other?
 
 Diagram if useful.
 
+Once this section reaches Accepted status, it is the closed, approved list of
+entities, fields, relationships, classes, and interfaces for this project. Every
+entity, field, relationship, class, and interface a later phase introduces must
+already be named here. If a phase's work genuinely requires something not yet in
+this model, that is a finding: send it back as a deliberate, named amendment to
+this document before the build proceeds. Nothing new is introduced silently
+during generation. This is the enforcement point for the constitution's sixth
+code-quality principle: No Undeclared Abstractions.
+
 ---
 
 ## Component Ownership
