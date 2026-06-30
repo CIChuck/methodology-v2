@@ -888,6 +888,16 @@ The field is important because downstream artifacts can become stale when an ups
 changes. If the PRD changes after architecture has pinned an older PRD revision, the architecture
 may need reconciliation before it can continue to govern implementation.
 
+## DRY
+
+DRY (Don't Repeat Yourself) is one of the constitution's six First Principles of Code Quality. It
+holds that logic which already exists in the codebase is called, not rewritten. In GenDev, DRY is a
+constitutional property of the result, not a technique: it is restated in every construction
+directive's anti-drift section and checked at code review by the code conformance reviewer, which is
+given the surrounding modules (not just the new file) because duplication can only be found by
+comparing across the codebase. DRY is one of the four principles a fresh-context reviewer can check
+cleanly given the right inputs.
+
 ## Durable Record
 
 A durable record is a file committed or maintained in the project that future humans and agents can
@@ -1173,6 +1183,18 @@ context boundary, not from whether the reviewer is human or automated.
 If implementation-session context is shared with the reviewer, the review report should record the
 exception under context provenance.
 
+## KISS
+
+KISS (Keep It Simple) is one of the constitution's six First Principles of Code Quality. It holds
+that the simplest structure which satisfies the requirement is the correct one, not the most general
+or most extensible. In GenDev, KISS is a constitutional property of the result, not a technique: it
+does not prescribe how to design, only that the result not be more complex than the requirement
+needs. It is restated in every construction directive's anti-drift section and checked at code review
+by comparing the directive's stated requirement against the resulting code. KISS is one of the four
+principles a fresh-context reviewer can check cleanly, and a reviewer with no stake in having written
+the code is often better placed to judge it than the builder, for whom every addition feels
+justified.
+
 ## Lead Agent
 
 The lead agent is the primary agent coordinating the work. It orients from project authority,
@@ -1180,6 +1202,16 @@ recommends next steps, drafts artifacts, coordinates sub-agents, reconciles outp
 records, and stops for approval.
 
 The lead agent owns process orchestration. The human owns approval.
+
+## Least Astonishment
+
+Least astonishment is one of the constitution's six First Principles of Code Quality. It holds that
+behavior should match what an obvious reading of the requirement would lead a reader to expect. In
+GenDev it is a constitutional property of the result, not a technique. Unlike KISS, DRY, and the
+entity-lookup half of no-undeclared-abstractions, least astonishment is not reliably checkable by a
+fresh-context reviewer, because judging what a reader would find surprising is a judgment call rather
+than a comparison against a document. A conformance reviewer's least-astonishment finding is
+therefore advisory, flagged for a human to weigh, not a gate failure on the reviewer's own authority.
 
 ## Manifest
 
@@ -1244,6 +1276,20 @@ moment, usually G9 or production close-out.
 
 Snapshots should not become a dashboard-writing exercise. They exist so future humans and agents can
 see what the gate log, traceability matrix, enforcement records, and value review said at close-out.
+
+## No Undeclared Abstractions
+
+No undeclared abstractions (NAA) is one of the constitution's six First Principles of Code Quality,
+and the one most specific to AI-generated code. It holds that every entity, field, relationship,
+class, and interface a build introduces must already appear in an approved upstream authority: a
+business concept named in the requirements, or a design element named in the architecture's Accepted
+Domain Model. A build implements the approved model; it does not silently expand it. This is why the
+Domain Model is treated as a closed list once accepted: anything a phase needs beyond it is a finding
+sent back to amend the architecture, not an abstraction the build invents on its own. NAA splits into
+two halves with different checkability. The entity-lookup half (does this thing already appear in the
+Domain Model) is cleanly checkable by a fresh-context reviewer given the Domain Model. The
+invented-machinery half (a base class or interface reached for to build something authorized, which
+is not a domain entity at all) is closer to a KISS judgment than a list comparison.
 
 ## Non-Goal
 
@@ -1543,6 +1589,15 @@ Security covers the protection of users, data, systems, secrets, tools, deployme
 operations. In GenDev, security is addressed explicitly in governance/security work before build
 planning.
 
+## Single Responsibility
+
+Single responsibility is one of the constitution's six First Principles of Code Quality. It holds
+that each unit (function, class, module) does one coherent job; a unit doing two things should be two
+units. In GenDev it is a constitutional property of the result, not a technique, restated in every
+construction directive's anti-drift section and checked at code review. It is closely related to
+no-undeclared-abstractions in practice, since invented machinery is often where a single
+responsibility quietly becomes two.
+
 ## Smoke Test
 
 A smoke test is a quick validation that the deployed or implemented system is basically functional.
@@ -1770,3 +1825,14 @@ A workstream is a coherent slice of phase work. It should have clear scope, impl
 expectations, tests, and close-out requirements.
 
 Good workstreams help agents implement in bounded units rather than broad, vague tasks.
+
+## YAGNI
+
+YAGNI (You Aren't Gonna Need It) is one of the constitution's six First Principles of Code Quality.
+It holds that the build implements only what a current, approved requirement asks for, not what a
+requirement that does not yet exist might one day want. In GenDev it is a constitutional property of
+the result, not a technique. YAGNI splits into two halves with different checkability. The narrow
+form (was this requested, checked against the directive's stated scope and non-goals) is cleanly
+checkable by a fresh-context reviewer. The broad form (was this genuinely unneeded by the project as
+a whole) is not, because it requires roadmap knowledge the reviewer does not have, so a broad-YAGNI
+finding is advisory, flagged for a human, not a gate failure on the reviewer's own authority.

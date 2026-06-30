@@ -155,6 +155,7 @@ It should include:
 - allowed scope;
 - non-goals;
 - required workstreams;
+- anti-drift rules (the six first principles, restated; see below);
 - required tests and verification;
 - security and governance requirements;
 - documentation close-out requirements;
@@ -162,6 +163,31 @@ It should include:
 
 The implementation agent should follow the directive rather than renegotiating the product
 (reopening product or architecture decisions during the build).
+
+### The Anti-Drift Rules and the Six Principles
+
+The directive's anti-drift section is where the constitution's six code-quality principles become
+concrete for a specific phase. The constitution states them once, as standing authority; the
+directive restates all six, in full, at the point where generation actually happens, so they are
+proximate rather than buried in a document the agent read once at the start. You will see the same
+six in every directive, every phase, even when some look irrelevant to the phase in front of you.
+That repetition is deliberate. A principle restated when it turns out not to matter costs one ignored
+line; a principle dropped because the phase looked like it would not implicate it costs a missed
+violation when the phase touches more than its scope implied, which phases routinely do.
+
+The six, in the form the directive carries them: do not build for requirements that do not yet exist
+(YAGNI); do not build a more complex structure than the requirement needs (KISS); do not rewrite
+logic that already exists in the codebase (DRY); do not let any unit do more than one job (single
+responsibility); do not produce behavior a reader would not expect from the obvious reading of the
+requirement (least astonishment); and do not introduce any entity, field, relationship, class, or
+interface that is not already in the Accepted architecture's Domain Model (no undeclared
+abstractions). The last one is why the Domain Model is a closed list once accepted: if a phase
+genuinely needs something not in it, that is a finding sent back to amend the architecture, not a
+thing the build invents on its own.
+
+You do not have to write these from scratch. The construction directive template carries them as a
+standing section; your job at build planning is to make sure the phase's scope and non-goals are
+specific enough that the principles have something concrete to bind against.
 
 ## Implementation Prompt
 

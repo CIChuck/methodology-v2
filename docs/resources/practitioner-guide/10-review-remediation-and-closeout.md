@@ -39,6 +39,33 @@ implementation by inventing hidden authority. The finding should recommend amend
 The lead agent should then classify the amendment, record the decision, and reconcile downstream
 artifacts before acceptance.
 
+### Checking the Six Principles
+
+Conformance is not only "does the code match the directive's scope." It also includes whether the
+code holds the constitution's six code-quality principles, and this is a specific reviewer's job. The
+sub-agent coordination protocol defines a code conformance reviewer that checks exactly this, under
+the same independence rule as all conformance review: it works from the directive, the Accepted
+architecture's Domain Model, the relevant surrounding code, and the artifact under review, with no
+access to the implementing agent's session.
+
+The reviewer asks six questions: was anything built that no requirement or directive asked for
+(YAGNI); is there a simpler structure that satisfies the same requirement (KISS); does this logic
+already exist elsewhere in the codebase (DRY); does any single unit do more than one job (single
+responsibility); does every entity, field, relationship, class, and interface in the code already
+appear in the Domain Model (no undeclared abstractions); and would the obvious reading of the
+requirement lead a reader to expect this behavior (least astonishment).
+
+Be honest about what this reviewer can and cannot settle, because overclaiming here is its own kind
+of drift. Four of the six are cleanly checkable given the right inputs: KISS, DRY, the entity-lookup
+half of no-undeclared-abstractions, and the narrow form of YAGNI (was it requested, checked against
+a specific non-goals section). Two are not reliably checkable by an independent reviewer and should
+be treated as advisory rather than blocking: the broad form of YAGNI (was this genuinely unneeded by
+the project, which requires roadmap knowledge the reviewer does not have) and least astonishment
+(what a reader would find surprising, which is a judgment call, not a comparison against a document).
+A review that reports a broad-YAGNI or least-astonishment concern is flagging something for a human
+to weigh, not failing the gate on its own authority. Treating all six as equally mechanical would
+claim a precision the reviewer does not have.
+
 ## Context Provenance
 
 Every code review report should include context provenance, the record of what the reviewer was
