@@ -31,6 +31,27 @@ The artifact holds the content. The gate log (the durable approval history) hold
 approval record. The manifest (the compact `project.yaml` project-state summary) summarizes the
 current state.
 
+### Closing a Gate with close-gate.sh
+
+Writing those three records by hand is easy to get wrong: a missed front-matter status, a ledger
+that advances without a gate-log entry, a gate-log block missing a required field. `scripts/close-gate.sh`
+performs all three writes as one guarded action, so the approver affirms the decision and the
+script records it faithfully.
+
+Run it from the project root with the gate to close, for example `scripts/close-gate.sh G1`. The
+script refuses to close if the ledger is not sitting at that gate, so gates cannot close out of
+order. It reads the gate's real exit checklist from the template and walks the approver through
+each item, refusing to close unless every item is affirmed. It collects the approval metadata the
+gate-log block requires, then flips the artifact status to Accepted, advances `current_gate` in
+the manifest, and appends the gate-log record with the affirmed checklist items named inside it.
+
+The script records a decision; it does not make one. It will not let the ledger run ahead of an
+actual affirmation, which is the same discipline the rest of this chapter describes, enforced
+mechanically. Run interactively it prompts for each answer. It also reads from standard input, so
+a prepared set of answers can be piped in. That makes gate closure usable in regression tests and
+automated pipelines, not only by hand, which is useful for exercising a project's gate sequence
+end to end without a person at the keyboard for every prompt.
+
 ## What Requires Human Approval
 
 Human approval is required for:

@@ -27,6 +27,12 @@ cause. `C1` means contained, low-risk, reversible work. `C2` means ordinary prod
 means critical work with higher data, operational, integration, automation, or irreversible-action
 exposure.
 
+For the three document gates (G1 vision, G2 PRD, G3 architecture), the G1-G3 checklists below are
+the same items `scripts/close-gate.sh` reads from the templates and walks the approver through at
+closing time. Running the script is the operational way to work these three checklists: it refuses
+to close unless every item is affirmed, and it records the affirmations in the gate log. The other
+checklists here remain manual reminders.
+
 ## New Project Checklist
 
 ```text
