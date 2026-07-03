@@ -27,6 +27,28 @@ Also treating updates/upgrades maintenance and break-fix to existing Gendev proj
 - you have an AI coding agent (an AI tool that can inspect files, draft artifacts, write code, and
 run commands) available, such as Codex or Claude Code.
 
+## Bringing The Methodology To An Existing Repository
+
+The steps below assume you cloned the baseline repository and are starting a project inside it.
+Two other starting points are common, and each has a script that handles it.
+
+If you have a repository that already holds its own code and you want to bring GenDev to it rather
+than start inside a fresh clone, run `scripts/install-methodology.sh` from inside the baseline
+repository, passing the target repository path. It copies the methodology (the constitution,
+guides, templates, agents, and the scripts) into the target so that repository can be run under
+GenDev governance. It does not touch the target's own code, and it will not overwrite an existing
+methodology install without `--force`. After it runs, initialize the project in the target the same
+way this chapter describes.
+
+If you have a presales or discovery repository that already holds a vision, PRD, or architecture,
+written for a customer rather than to a template, run `scripts/backfill-methodology.sh` against it.
+It seeds the methodology the same way, then writes a per-document conformance report naming which
+required sections and front-matter each existing document has and which it is missing. That report
+drives the mid-stream start: you initialize the project, then work each existing document through
+its gate as a reformatting task rather than authoring it from a blank page. The appendix, Starting
+Mid-Stream, covers that flow end to end, including the reformatting and validation directives for
+each gate and the scripted gate close.
+
 ## Initialize The Project
 
 From the repository root, run:

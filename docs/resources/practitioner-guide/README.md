@@ -25,6 +25,11 @@ reference.
 The chapters define GenDev-specific terms inline at first use where a new practitioner may need
 immediate context. Chapter 18 provides the deeper glossary for review and reference.
 
+The appendix, Starting Mid-Stream, is reference material for one specific case: bringing GenDev to a
+repository that already holds a vision, PRD, or architecture written before the methodology was in
+place, as often happens when a project grows out of presales work. Read it when that is your
+starting point rather than a blank slate.
+
 The guide now assumes the hardened GenDev baseline: explicit approvals, structured gate records,
 artifact provenance, amendment/regression discipline, independent review context provenance,
 enforcement class, blast-radius scaling, process metrics, value review, and production operations.
@@ -51,6 +56,8 @@ to canonical artifacts as typed references (Chapter 06).
 16. [Checklists](16-checklists.md)
 17. [Common Failure Modes](17-common-failure-modes.md)
 18. [Glossary](18-glossary.md)
+
+Appendix: [Starting Mid-Stream](19-starting-mid-stream.md)
 
 ## How To Use This Guide
 
