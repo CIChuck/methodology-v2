@@ -49,8 +49,8 @@ The plan must define:
 - security and governance constraints;
 - test and UAT requirements;
 - the phase exit test (the test that must pass for the phase to exit, its
-  execution commands, and its pass criteria), with the 90% meaningful-coverage
-  target and the justified-exception rule;
+  execution commands, and its pass criteria), with the project coverage policy
+  and justified-exception rule;
 - acceptance criteria;
 - documentation close-out requirements.
 
@@ -97,7 +97,8 @@ written. It must:
 - pin every authority document (construction directive, tactical plan, build plan, architecture,
   governance/security, PRD) at its accepted revision;
 - restate scope boundaries and non-goals;
-- require the phase exit test and the regression suite to pass, with the coverage target;
+- require the phase exit test and the regression suite to pass, with the project
+  coverage policy target;
 - state validation gates the building agent must confirm before declaring the phase built;
 - state reporting requirements (files changed, tests, commands, skipped verification with reasons,
   deviations, coverage status, residual risks);

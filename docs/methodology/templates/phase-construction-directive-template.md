@@ -105,8 +105,8 @@ Require unit, integration, security/governance, negative, migration, and
 CLI/API/UAT tests as applicable.
 
 ```text
-Coverage target: at least 90% meaningful coverage for new or materially changed
-code. A shortfall must be justified in writing with a named residual risk.
+Coverage target: follow project coverage policy for new or materially changed code.
+A shortfall must be justified in writing with a named residual risk.
 ```
 
 ## 10. Verification Directives

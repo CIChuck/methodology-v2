@@ -33,6 +33,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: TBD
+criterion_ids:
+  - G1-REQ-ID
+  - G1-AC-COVERAGE
 gate_started_on: YYYY-MM-DD
 ready_for_approval_on: YYYY-MM-DD
 approval_requested_on: YYYY-MM-DD

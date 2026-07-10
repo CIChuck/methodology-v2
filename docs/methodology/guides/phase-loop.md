@@ -21,9 +21,10 @@ appear in the gate enumeration.
 
 ## The loop
 
-After G5 closes (`G5.0`), the project holds an accepted phase plan: the ordered
-partition of the build into independently testable phases, with a requirement
-coverage map and declared integration criteria. The build then proceeds one
+After the phase plan is accepted at `G5.0`, the project holds an accepted phase
+plan: the ordered partition of the build into independently testable phases, with a
+requirement coverage map and declared integration criteria. The build then proceeds
+one
 phase at a time. For each phase, identified by a stable label:
 
 ```
@@ -63,8 +64,9 @@ This is where construction happens. From the pinned build prompt:
 4. The regression suite — the accumulated exit tests of all previously exited
    phases — is green at that revision. A prior exit test failing is a regression,
    handled by the amendment and regression protocol.
-5. Coverage meets at least 90% meaningful coverage for new or materially changed
-   code, or the shortfall is justified in writing with a named residual risk.
+5. Coverage follows the project-declared coverage policy (metric, target, scope,
+   command/source, and any exclusions). If not all targets are met, the shortfall
+   must be justified in writing and carried as a named residual risk.
 6. A named approver — a human by default, a delegated reviewer context only where
    the manifest explicitly authorizes it — records the exit decision with
    `decided_by` and a substantive `checked` statement in the `phase_transition`

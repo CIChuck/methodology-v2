@@ -83,7 +83,7 @@ You must:
 - preserve security, governance, identity, permission, audit, policy, approval,
   and data-handling requirements;
 - implement required tests;
-- target at least 90% meaningful test coverage for new or materially changed
+- target project-defined coverage policy coverage for new or materially changed
   code unless impractical and justified in writing with a named residual risk;
 - include negative tests where required;
 - include migration or legacy-rejection tests where required;
@@ -126,7 +126,7 @@ Before the phase is declared built, the building agent must confirm:
 ```text
 [ ] the phase exit test (from the build plan) passes at the candidate revision
 [ ] the accumulated regression suite is green
-[ ] coverage meets target or the shortfall is justified with a named residual risk
+[ ] coverage meets project-defined target or the shortfall is justified with a named residual risk
 [ ] required verification commands ran or were reported as skipped with reasons
 [ ] required documentation was updated
 ```
@@ -157,7 +157,7 @@ all authority paths are correct and pinned at accepted revisions
 construction directive exists and is Accepted
 tactical implementation plan exists and is Accepted
 build plan exists and is Accepted
-90% coverage target is included
+project coverage policy reference is included
 non-goals are explicit
 documentation close-out is included
 reporting requirements are included

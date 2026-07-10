@@ -253,9 +253,9 @@ Define:
 Coverage standard:
 
 ```text
-At least 90% meaningful coverage for new or materially changed code. A shortfall
-requires a written justification recorded here and a named residual risk. Never
-accept a shortfall silently.
+Coverage requirement follows the project-defined coverage policy. A shortfall must be
+recorded in this artifact with written justification and a named residual risk.
+Never accept a shortfall silently.
 ```
 
 Adequacy approver:

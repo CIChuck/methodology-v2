@@ -94,11 +94,11 @@ DRY    Don't Repeat Yourself. Logic that already exists is called, not rewritten
 SRP    Single Responsibility. Each unit does one coherent job.
 LA     Least Astonishment. Behavior matches what an obvious reading of the
        requirement would lead a reader to expect.
-NAA    No Undeclared Abstractions. Every entity, field, relationship, class, and
-       interface the build introduces already appears in an approved upstream
-       authority: a business concept named in the requirements, or a design
-       element named in the architecture's Accepted Domain Model. A build
-       implements the approved model. It does not silently expand it.
+NAA    No Undeclared Abstractions. Any authority-bearing abstraction the build
+       introduces must already be declared in approved upstream authority or be
+       introduced through an amendment before use. A build implements the
+       approved model. It does not silently expand behavior, authority boundaries,
+       or trust model.
 ```
 
 These principles exist because a generator, left unconstrained, violates all six
@@ -112,16 +112,32 @@ where generation happens.
 The binding mechanism follows from this. These six are restated in full in every
 construction directive's anti-drift section, at the point of generation, every
 phase, without exception. They are checked at code review by a conformance
-reviewer operating under the reviewer-independence rule. NAA in particular
-depends on the Accepted Domain Model being treated as a closed, approved list:
-once the architecture is Accepted, its Domain Model is the complete set of
-entities, fields, relationships, classes, and interfaces the build may introduce,
-and anything beyond it is a finding sent upstream as a named amendment, not a
-silent addition during a build.
+reviewer operating under the reviewer-independence rule.
 
-The canonical noun set for NAA is: entities, fields, relationships, classes, and
-interfaces. Every restatement of this principle elsewhere in the methodology uses
-that set, so the closed list and its checks describe the same membership.
+For this methodology, NAA applies to authority-bearing abstractions:
+
+```text
+domain or business concepts and rules
+persisted, shared, externally exchanged, or security-sensitive fields
+public, externally consumed, or cross-component interfaces
+architectural boundaries (components, services, storage, ownership)
+trust, identity, authorization, audit, data sensitivity, and lifecycle control
+```
+
+A build may add implementation-local detail without amendment only when the build
+task already authorizes it and all of these conditions hold:
+
+```text
+it is private to a component or test scope
+it does not add product behavior, policy, or observable semantics
+it does not add shared, persisted, or externally exchanged state
+it does not add or alter public or cross-component contracts
+it does not change acceptance, governance, or phase boundaries
+it is proportionate under YAGNI, KISS, DRY, and SRP
+```
+
+Typical allowed categories are private helpers, local adapters, internal value
+types, framework-generated types, test fixtures, fakes, and mocks.
 
 Every other rule in this constitution that concerns what a build produces must
 remain consistent with these six.
@@ -1180,10 +1196,13 @@ integration criteria are declared
 the partitioning rationale records the sizing criterion
 ```
 
-The G5 to G6 span has an interior phase loop: after G5 closes, the build
-proceeds one phase at a time through interior checkpoints (`G5.x`) that produce
-each phase's planning artifacts and record its exit. Checkpoints are not gates;
-the canonical definition is in docs/methodology/guides/gates.md ("G5 Interior:
+The G5 to G6 span has an interior phase loop: while current gate stays G5, the
+build proceeds one phase at a time through interior checkpoints (`G5.x`) that
+produce each phase's planning artifacts and record its exit. Checkpoints are not
+gates; `G5.0` is the phase plan checkpoint, not a gate transition. Current
+gate remains G5 through all `G5.x`.
+
+The canonical definition is in docs/methodology/guides/gates.md ("G5 Interior:
 The Phase Loop") and docs/methodology/guides/phase-loop.md.
 
 ### G6: Implementation Ready For Review
@@ -1191,10 +1210,10 @@ The Phase Loop") and docs/methodology/guides/phase-loop.md.
 Exit criteria:
 
 ```text
-authorized scope is implemented
-required tests were run or skipped with reason
-no known deferred-feature leakage is unreported
-documentation changes needed for review are present or identified
+all declared phases have closed phase-exit checkpoints
+aggregate regression suite is green at the candidate revision
+integration criteria are satisfied or carried forward as explicit residuals
+implementation summary and evidence are complete enough for one conformance cycle
 ```
 
 ### G7: Acceptance Ready
@@ -1214,12 +1233,11 @@ traceability matrix reflects actual status
 Exit criteria:
 
 ```text
-release scope is accepted
-deployment commands and rollback commands are documented
-sensitive environment variables and secrets are accounted for
-production-impacting migrations are approved
-known limitations are visible
-post-deployment owner is identified
+deployment/release scope is accepted
+deployment approvals, command/rollback plan, runbook, and monitoring are defined
+production-impacting migrations and security implications are approved
+post-deployment owner, value-review disposition, and validation trigger are defined
+if not deploying, a non-deployment disposition is explicitly accepted
 ```
 
 ### G9: As-Built Closed
@@ -1229,8 +1247,9 @@ Exit criteria:
 ```text
 future agents can understand the actual system without chat history
 implemented behavior, deferred behavior, and deviations are explicit
-test evidence is recorded
-next phase or backlog state is clear
+deployment/validation outcomes and operational disposition are recorded
+test evidence is complete and traceable
+project status is closed for this iteration or release
 ```
 
 ## AI-Assisted Build Prompt Standard

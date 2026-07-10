@@ -27,7 +27,7 @@ This document is complete when:
 ```text
 the build is partitioned into ordered, independently testable phases, every
 in-scope requirement is assigned to a phase, and integration criteria are
-declared. Accepting it closes G5 (checkpoint G5.0).
+declared. Acceptance of this artifact is the phase plan checkpoint at `G5.0`.
 ```
 
 ---
@@ -124,7 +124,7 @@ undefined integration criteria:
 ordering hazards:
 ```
 
-## G5.0 Checkpoint — Phase Plan Ready (G5 Exit)
+## G5.0 Checkpoint — Phase Plan Ready
 
 ```text
 [ ] every in-scope requirement is mapped to an owning phase
@@ -134,9 +134,9 @@ ordering hazards:
 [ ] cross-phase rules are stated
 ```
 
-Closure discipline: accepting this plan is the G5 gate transition, recorded as a
-`gate_transition` event; the manifest `phase_position` is set to `G5.0` and the
-`phases` list is populated in the same commit.
+Closure discipline: phase-plan acceptance is recorded at the `G5.0` checkpoint,
+`phase_position` is set to `G5.0`, and the `phases` list is populated in the
+same commit.
 
 ---
 

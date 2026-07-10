@@ -68,6 +68,7 @@ Approved by:
 Date:
 Scope approved:
 Evidence reviewed:
+Criterion IDs:
 Checked:
 Known risks accepted:
 Conditions:
@@ -150,6 +151,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: TBD
+criterion_ids:
+  - G1-REQ-ID
+  - G1-AC-COVERAGE
 gate_started_on: YYYY-MM-DD
 ready_for_approval_on: YYYY-MM-DD
 approval_requested_on: YYYY-MM-DD
@@ -191,6 +195,7 @@ Evidence reviewed:
 Enforcement class:
 Blast-radius class:
 Combined gate justification, if applicable:
+Criterion IDs:
 Gate started on:
 Ready for approval on:
 Approval requested on:
@@ -300,6 +305,9 @@ approvals:
     gate: G1
     status: pending
     required_approver: TBD
+    criterion_ids:
+      - G1-REQ-ID
+      - G1-AC-COVERAGE
     approved_by: TBD
     approved_on: TBD
     evidence:
@@ -313,6 +321,9 @@ approvals:
     next_artifact: docs/project/prd/prd.md
   latest_decision:
     decision: TBD
+    criterion_ids:
+      - G1-REQ-ID
+      - G1-AC-COVERAGE
     decided_by: TBD
     decided_on: TBD
     record: docs/project/approvals/gate-log.md

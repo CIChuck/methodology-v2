@@ -239,9 +239,8 @@ Agents must stop if:
 Purpose: Authorize the build by ratifying the phase partition. The
 implementation itself is carried out through the phase loop interior to the
 G5 to G6 span (see "G5 Interior: The Phase Loop" below). G5 certifies the
-plan that governs that loop; it does not certify any single phase's
-construction artifacts, which are produced and accepted at interior
-checkpoints.
+build plan for the loop; it does not certify any single phase's construction
+artifacts, which are produced and accepted at interior checkpoints.
 
 Required:
 
@@ -264,8 +263,8 @@ Exit criteria:
   together, bounded to what a focused implementation session can hold with its
   authority).
 
-Closing G5 is the checkpoint addressed as `G5.0`: the phase plan is accepted
-and the phase loop may begin.
+The G5.0 checkpoint addresses phase-plan acceptance. The plan is accepted at G5.0
+inside major gate G5; it does not close the gate.
 
 Agents must stop if:
 
@@ -285,17 +284,17 @@ separate gate-approval ceremony and never appears in the gate enumeration. The
 `G5.x` form is deliberately a sub-address of the G5 to G6 span so it cannot be
 mistaken for a gate.
 
-After G5 closes (`G5.0`), the project holds an accepted phase plan. The build
+After the phase plan is accepted at `G5.0`, the project holds an active phase plan. The build
 then proceeds one phase at a time. For each phase, identified by a stable phase
 id, the loop produces four planning artifacts and one execution result, marked
 by these checkpoints:
 
 ```
-G5.0          G5 closed: phase plan accepted               (gate_transition)
+G5.0          G5.0: phase plan accepted                    (phase_checkpoint)
 G5.<id>.1     phase build plan ready                       (phase_checkpoint)
 G5.<id>.2     tactical implementation plan ready           (phase_checkpoint)
 G5.<id>.3     construction directive ready and build
-              prompt issued at a pinned revision           (phase_checkpoint)
+	              prompt issued at a pinned revision           (phase_checkpoint)
 G5.<id>.4     phase exit: built, tested, learnings written (phase_transition)
 ```
 
@@ -303,7 +302,7 @@ G5.<id>.4     phase exit: built, tested, learnings written (phase_transition)
 
 | Position | Closes when | Owning template (`docs/methodology/templates/`) | Authoring prompt |
 | --- | --- | --- | --- |
-| G5.0 | phase plan `Accepted` at a pinned revision; `gate_transition` recorded | `phase-plan-template.md` | Phase Plan Prompt |
+| G5.0 | phase plan `Accepted` at a pinned revision; `phase_checkpoint` recorded | `phase-plan-template.md` | Phase Plan Prompt |
 | G5.\<id\>.1 | phase build plan `Accepted`; `phase_checkpoint` recorded | `phase-build-plan-template.md` | Phase Build Plan Prompt |
 | G5.\<id\>.2 | tactical plan `Accepted`; `phase_checkpoint` recorded | `tactical-implementation-template.md` | Tactical Implementation Plan Prompt |
 | G5.\<id\>.3 | construction directive `Accepted` and build prompt issued at a pinned revision; `phase_checkpoint` recorded | `phase-construction-directive-template.md` + `phase-build-prompt-template.md` | Construction Directive Prompt + Build Prompt Prompt |
@@ -338,9 +337,11 @@ computed from the id.
 4. The regression suite (the accumulated exit tests of all previously exited
    phases) is green at that revision. A prior phase's exit test failing is a
    regression, handled by the amendment and regression protocol.
-5. Coverage standard: at least 90% meaningful coverage for new or materially
-   changed code. A shortfall requires a written justification and a named
-   residual risk, never silent acceptance.
+5. Coverage standard is whatever this project declares in `scaling.coverage_policy`
+at each checkpoint. It must be reproducible at phase scope and tied to an exact
+command and/or explicit evidence source. If the project declares no strict
+coverage metric, the required residual risk and an explicit best-effort explanation
+must be recorded for any shortfall.
 6. A named approver (a human by default; a delegated reviewer context only where
    the project manifest explicitly authorizes it) records the phase exit
    decision with `decided_by` and a substantive `checked` statement in the
@@ -369,13 +370,14 @@ not waivable: a phase that cannot be tested has not been bounded correctly.
 
 ## G6: Implementation Ready For Review
 
-Purpose: Confirm implementation is ready for conformance review.
+Purpose: Confirm implementation is ready for conformance review after every declared
+phase has exited at `G5.<id>.4` and aggregate evidence is bounded.
 
 Entry criteria:
 
 - every phase declared in the phase plan has a closed `G5.<id>.4` event;
-- the accumulated regression suite is green at the G6 candidate revision;
-- the integration criteria declared in the phase plan are satisfied, or carried
+- aggregate regression suite is green at the G6 candidate revision;
+- integration criteria declared in the phase plan are satisfied, or carried
   as enumerated residuals.
 
 Required:
@@ -392,9 +394,10 @@ verification.
 Exit criteria:
 
 - authorized scope is implemented;
-- required tests were run or skipped with reason;
-- no known deferred-feature leakage is unreported;
-- documentation changes needed for review are present or identified.
+- every phase has documented residuals and no unreported deferred-feature leakage;
+- required tests were run or explicitly skipped with reasons;
+- implementation summary and phase evidence are present and complete enough for one conformance cycle;
+- documentation changes needed for review are present or explicitly identified.
 
 Agents must stop if:
 
@@ -423,9 +426,10 @@ Exit criteria:
 
 - critical findings are remediated;
 - major findings are remediated or explicitly accepted with rationale;
-- tests and UAT evidence exist;
-- residual risk is documented;
-- traceability matrix reflects actual status.
+- tests and UAT evidence exist and map to claimed residuals;
+- implementation summary is complete and traceable;
+- traceability matrix reflects actual status;
+- residual risks are closed or explicitly accepted by named human.
 
 Agents must stop if:
 
@@ -438,18 +442,21 @@ Agents must stop if:
 
 ## G8: Deployment Ready
 
-Purpose: Confirm the accepted product state can be deployed or released.
+Purpose: Confirm the accepted product state can be deployed, prepared for deployment,
+or accepted for non-deployment disposition.
 
 Required:
 
 - deployment target and environment assumptions;
 - config/secrets documentation;
-- migration and rollback plan;
-- operational checks;
+- separate deployment-readiness evidence for either deployment or explicit non-deployment
+  disposition;
+- migration and rollback or irreversibility analysis;
+- operational checks and incident response plan;
 - security sign-off for production-sensitive behavior;
 - release notes or deployment checklist;
 - production runbook;
-- post-deployment validation plan;
+- post-deployment or post-readiness validation plan;
 - monitoring and alert review;
 - incident and rollback decision procedure.
 
@@ -457,12 +464,12 @@ Human approval: required.
 
 Exit criteria:
 
-- release scope is accepted;
-- deployment commands and rollback commands are documented;
-- sensitive environment variables and secrets are accounted for;
-- production-impacting migrations are approved;
-- known limitations are visible;
-- post-deployment owner is identified.
+- deployment scope, artifact, and release intent are accepted;
+- deployment command/rollback strategy, monitoring, and incident ownership are defined;
+- production-impacting migrations and security implications are approved or explicitly deferred;
+- value-review trigger, disposition policy, and ownership are defined;
+- named deployment approver authorization is recorded, or explicit non-deployment
+  approval is recorded.
 
 Agents must stop if:
 
@@ -494,7 +501,9 @@ Exit criteria:
 
 - future agents can understand the actual system without chat history;
 - implemented behavior, deferred behavior, and deviations are explicit;
-- test evidence is recorded;
+- deployment or non-deployment disposition is recorded;
+- operational results, rollbacks, incidents, and monitoring outcomes are recorded;
+- final test/UAT and value disposition records are complete;
 - next phase or backlog state is clear.
 
 Agents must stop if:

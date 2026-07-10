@@ -210,7 +210,7 @@ Approval criteria:
 - data and secrets handling are documented;
 - agent/tool stop conditions exist or are N/A.
 
-## Phase Roadmap
+## Phase Plan
 
 Responsible role: Phase Planning Agent.
 
