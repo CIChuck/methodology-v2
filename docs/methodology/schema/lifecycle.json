@@ -1,0 +1,2386 @@
+{
+  "schema_version": 2,
+  "registry": {
+    "id": "gendev-lifecycle",
+    "status": "candidate",
+    "target_release": "0.5.0-operational-coherence",
+    "released_current": null,
+    "source_file": "docs/methodology/schema/lifecycle.json",
+    "human_authority": "docs/methodology/guides/gates.md",
+    "constitutional_authority": "docs/methodology/constitution/gendev.md",
+    "generated_contract": "scripts/lib/lifecycle-contract.sh",
+    "generator": "scripts/generate-lifecycle-contract.py",
+    "description": "Mechanically determinate lifecycle vocabulary and bindings proposed for GenDev 0.5."
+  },
+  "versions": {
+    "candidate": "0.5.0-operational-coherence",
+    "candidate_status": "proposed",
+    "release_stage": "pre-1.0",
+    "released_current": null,
+    "observation_revision": "02ae0fc192a898cd482007dfc65612ff907a3bda",
+    "observed_active_claims": [
+      {
+        "source_file": "README.md",
+        "field": "release badge and prose",
+        "value": "0.1.0-baseline"
+      },
+      {
+        "source_file": "docs/methodology/constitution/gendev.md",
+        "field": "Version",
+        "value": "0.1.0-baseline"
+      },
+      {
+        "source_file": "docs/project-template/project.yaml",
+        "field": "project.methodology_version",
+        "value": "0.4.0-verification-first"
+      }
+    ],
+    "published_tags_observed": [
+      "v0.1.0-baseline"
+    ],
+    "synchronization_targets": [
+      {
+        "source_file": "README.md",
+        "field": "current methodology version",
+        "delivery_state": "current",
+        "release_value_pattern": "(?m)^Current methodology version: `0\\.5\\.0-operational-coherence`\\s*$"
+      },
+      {
+        "source_file": "docs/methodology/constitution/gendev.md",
+        "field": "Version",
+        "delivery_state": "current",
+        "release_value_pattern": "(?m)^Version: 0\\.5\\.0-operational-coherence\\s*$"
+      },
+      {
+        "source_file": "docs/project-template/project.yaml",
+        "field": "project.methodology_version",
+        "delivery_state": "current",
+        "release_value_pattern": "(?m)^\\s+methodology_version:\\s*0\\.5\\.0-operational-coherence\\s*$"
+      },
+      {
+        "source_file": "docs/methodology/schema/lifecycle.json",
+        "field": "versions.released_current",
+        "delivery_state": "current",
+        "release_value_pattern": "(?m)^\\s*\"released_current\":\\s*\"0\\.5\\.0-operational-coherence\""
+      },
+      {
+        "source_file": "docs/resources/releases/README.md",
+        "field": "latest release",
+        "delivery_state": "planned",
+        "required_work_package": "WP-11",
+        "release_value_pattern": "(?m)^Latest release:\\s*0\\.5\\.0-operational-coherence\\s*$"
+      }
+    ],
+    "release_rules": {
+      "candidate_must_not_be_presented_as_released": true,
+      "active_targets_change_atomically": true,
+      "unknown_historical_mapping_is_not_tagged": true,
+      "tag_publication_requires_separate_human_approval": true
+    }
+  },
+  "vocabularies": {
+    "artifact_statuses": [
+      "Draft",
+      "Ready for Review",
+      "Ready for Approval",
+      "Accepted",
+      "Complete",
+      "Stale",
+      "Superseded"
+    ],
+    "gate_statuses": [
+      "pending",
+      "drafting",
+      "ready_for_review",
+      "ready_for_approval",
+      "approved",
+      "blocked",
+      "superseded",
+      "closed"
+    ],
+    "project_statuses": [
+      "initialized",
+      "active",
+      "blocked",
+      "closed"
+    ],
+    "phase_loop_statuses": [
+      "not_started",
+      "active",
+      "blocked",
+      "ready_for_g6",
+      "closed",
+      "legacy_unreconciled"
+    ],
+    "phase_statuses": [
+      "pending",
+      "planning",
+      "authorized",
+      "in_progress",
+      "ready_for_exit",
+      "exited",
+      "blocked",
+      "superseded"
+    ],
+    "approval_decisions": [
+      "approved",
+      "rejected",
+      "blocked",
+      "superseded"
+    ],
+    "remediation_dispositions": [
+      "complete",
+      "not_required",
+      "blocked"
+    ],
+    "value_review_dispositions": [
+      "complete",
+      "not_due",
+      "not_applicable"
+    ],
+    "value_results": [
+      "met",
+      "missed",
+      "unmeasurable"
+    ],
+    "enforcement_classes": [
+      "attested",
+      "guarded",
+      "protected"
+    ],
+    "blast_radius_classes": [
+      "C1",
+      "C2",
+      "C3"
+    ]
+  },
+  "value_review_contract": {
+    "artifact_status_is_separate_from_disposition": true,
+    "unowned_future_work_is_invalid": true,
+    "unmeasurable_is_not_success": true,
+    "dispositions": [
+      {
+        "id": "complete",
+        "required_fields": ["criterion_results"],
+        "item_contract": "value_result_item",
+        "allowed_results": ["met", "missed", "unmeasurable"],
+        "follow_up_required_for": ["missed", "unmeasurable"]
+      },
+      {
+        "id": "not_due",
+        "required_fields": ["trigger", "expected_date_when_knowable", "owner", "evidence_source", "next_review_mechanism"],
+        "allowed_results": [],
+        "follow_up_required_for": []
+      },
+      {
+        "id": "not_applicable",
+        "required_fields": ["rationale", "accepted_by", "accepted_on"],
+        "allowed_results": [],
+        "follow_up_required_for": []
+      }
+    ]
+  },
+  "ratification_contract": {
+    "reviewed_status": "Ready for Approval",
+    "resulting_status": "Accepted",
+    "evidence_category": "new_acceptance_status_only",
+    "human_record_fields": ["decision_record", "decision", "approver", "decision_date", "reviewed_revision", "reviewed_blob_oid", "checked_statement", "amendments_or_constraints", "risk_disposition", "ratification_record"],
+    "computed_closeout_fields": ["reviewed_digest", "resulting_blob_oid", "resulting_digest"],
+    "status_only_exactly_one_line": true,
+    "line_ending_preserved": true
+  },
+  "paths": {
+    "canonical_directories": [
+      "docs/project/approvals",
+      "docs/project/architecture",
+      "docs/project/as-built",
+      "docs/project/build-plan",
+      "docs/project/build-plan/phases",
+      "docs/project/decisions",
+      "docs/project/deployment",
+      "docs/project/design",
+      "docs/project/prd",
+      "docs/project/review",
+      "docs/project/security-governance",
+      "docs/project/testing",
+      "docs/project/traceability",
+      "docs/project/vision"
+    ],
+    "project_scaffold_directories": [
+      {"path": "docs/project/approvals", "delivery_state": "current"},
+      {"path": "docs/project/architecture", "delivery_state": "current"},
+      {"path": "docs/project/as-built", "delivery_state": "current"},
+      {"path": "docs/project/build-plan", "delivery_state": "current"},
+      {"path": "docs/project/build-plan/phases", "delivery_state": "current"},
+      {"path": "docs/project/decisions", "delivery_state": "current"},
+      {"path": "docs/project/deployment", "delivery_state": "planned", "required_work_package": "WP-04"},
+      {"path": "docs/project/design", "delivery_state": "planned", "required_work_package": "WP-04"},
+      {"path": "docs/project/prd", "delivery_state": "current"},
+      {"path": "docs/project/review", "delivery_state": "planned", "required_work_package": "WP-04"},
+      {"path": "docs/project/security-governance", "delivery_state": "current"},
+      {"path": "docs/project/testing", "delivery_state": "current"},
+      {"path": "docs/project/traceability", "delivery_state": "current"},
+      {"path": "docs/project/vision", "delivery_state": "current"}
+    ],
+    "forbidden_competing_directories": [
+      "docs/project/supporting"
+    ],
+    "canonical_fixed_artifacts": {
+      "manifest": "docs/project/project.yaml",
+      "gate_log": "docs/project/approvals/gate-log.md",
+      "vision": "docs/project/vision/vision.md",
+      "prd": "docs/project/prd/prd.md",
+      "architecture": "docs/project/architecture/architecture.md",
+      "technology_stack": "docs/project/decisions/0001-technology-stack.md",
+      "governance_security": "docs/project/security-governance/governance-security-spec.md",
+      "phase_plan": "docs/project/build-plan/phase-plan.md",
+      "implementation_summary": "docs/project/build-plan/implementation-summary.md",
+      "traceability": "docs/project/traceability/traceability-matrix.md",
+      "final_code_review": "docs/project/review/code-review.md",
+      "aggregate_remediation": "docs/project/review/remediation.md",
+      "final_test_uat": "docs/project/testing/final-test-uat-report.md",
+      "deployment_readiness": "docs/project/deployment/deployment-readiness.md",
+      "production_runbook": "docs/project/deployment/production-runbook.md",
+      "deployment_record": "docs/project/deployment/deployment-record.md",
+      "project_value_review": "docs/project/as-built/value-review.md",
+      "project_as_built": "docs/project/as-built/as-built-closeout.md"
+    },
+    "phase_artifact_patterns": {
+      "phase_build_plan": "docs/project/build-plan/phases/phase-<id>-build-plan.md",
+      "tactical_plan": "docs/project/build-plan/phases/phase-<id>-tactical-implementation-plan.md",
+      "construction_directive": "docs/project/build-plan/phases/phase-<id>-construction-directive.md",
+      "build_prompt": "docs/project/build-plan/phases/phase-<id>-build-prompt.md",
+      "implementation_evidence": "docs/project/build-plan/phases/phase-<id>-implementation-evidence.md",
+      "phase_code_review": "docs/project/build-plan/phases/phase-<id>-code-review.md",
+      "phase_remediation": "docs/project/build-plan/phases/phase-<id>-remediation.md",
+      "phase_learnings": "docs/project/build-plan/phases/phase-<id>-learnings.md",
+      "phase_test_uat": "docs/project/testing/phase-<id>-test-uat-plan.md",
+      "phase_as_built": "docs/project/as-built/phase-<id>-as-built-closeout.md",
+      "phase_value_review": "docs/project/as-built/phase-<id>-value-review.md"
+    },
+    "supporting_design_pattern": "docs/project/design/<name>.md",
+    "rules": {
+      "phase_id_placeholder_is_only_valid_in_patterns": true,
+      "fixed_authority_paths_must_not_contain_placeholders": true,
+      "technique_specific_supporting_artifacts_use_design_directory": true
+    }
+  },
+  "roles": [
+    {
+      "id": "none",
+      "source_file": null,
+      "kind": "terminal",
+      "may_approve": false
+    },
+    {
+      "id": "product-vision-agent",
+      "source_file": "docs/methodology/agents/roles/product-vision-agent.md",
+      "kind": "authoring",
+      "may_approve": false
+    },
+    {
+      "id": "prd-agent",
+      "source_file": "docs/methodology/agents/roles/prd-agent.md",
+      "kind": "authoring",
+      "may_approve": false
+    },
+    {
+      "id": "architecture-agent",
+      "source_file": "docs/methodology/agents/roles/architecture-agent.md",
+      "kind": "authoring",
+      "may_approve": false
+    },
+    {
+      "id": "security-governance-agent",
+      "source_file": "docs/methodology/agents/roles/security-governance-agent.md",
+      "kind": "authoring",
+      "may_approve": false
+    },
+    {
+      "id": "phase-planning-agent",
+      "source_file": "docs/methodology/agents/roles/phase-planning-agent.md",
+      "kind": "authoring",
+      "may_approve": false
+    },
+    {
+      "id": "implementation-agent",
+      "source_file": "docs/methodology/agents/roles/implementation-agent.md",
+      "kind": "implementation",
+      "may_approve": false
+    },
+    {
+      "id": "test-uat-agent",
+      "source_file": "docs/methodology/agents/roles/test-uat-agent.md",
+      "kind": "verification",
+      "may_approve": false
+    },
+    {
+      "id": "code-review-agent",
+      "source_file": "docs/methodology/agents/roles/code-review-agent.md",
+      "kind": "independent_review",
+      "may_approve": false
+    },
+    {
+      "id": "remediation-agent",
+      "source_file": "docs/methodology/agents/roles/remediation-agent.md",
+      "kind": "remediation",
+      "may_approve": false
+    },
+    {
+      "id": "deployment-readiness-agent",
+      "source_file": "docs/methodology/agents/roles/deployment-readiness-agent.md",
+      "kind": "operations",
+      "may_approve": false
+    },
+    {
+      "id": "as-built-closeout-agent",
+      "source_file": "docs/methodology/agents/roles/as-built-closeout-agent.md",
+      "kind": "closeout",
+      "may_approve": false
+    },
+    {
+      "id": "named-human-approver",
+      "source_file": "docs/methodology/guides/human-approval-protocol.md",
+      "kind": "human_approval",
+      "may_approve": true
+    },
+    {
+      "id": "named-human-deployment-approver",
+      "source_file": "docs/methodology/guides/production-operations-protocol.md",
+      "kind": "human_approval",
+      "may_approve": true
+    },
+    {
+      "id": "named-human-security-approver",
+      "source_file": "docs/methodology/guides/human-approval-protocol.md",
+      "kind": "human_approval",
+      "may_approve": true
+    },
+    {
+      "id": "named-human-operational-owner",
+      "source_file": "docs/methodology/guides/production-operations-protocol.md",
+      "kind": "human_confirmation",
+      "may_approve": false
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "name": "Project Initialized",
+      "purpose": "Confirm the baseline has an active project workspace and identity.",
+      "predecessor": null,
+      "successor": "G1",
+      "active_role": "product-vision-agent",
+      "primary_artifact": "project_manifest",
+      "human_approval": "conditional_overwrite_only",
+      "criterion_ids": [
+        "G0-MANIFEST",
+        "G0-SCAFFOLD",
+        "G0-IDENTITY"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G1",
+      "name": "Vision Ready",
+      "purpose": "Establish why the product exists and what success means.",
+      "predecessor": "G0",
+      "successor": "G2",
+      "active_role": "product-vision-agent",
+      "primary_artifact": "vision",
+      "human_approval": "required",
+      "criterion_ids": [
+        "G1-PROBLEM",
+        "G1-USERS",
+        "G1-SUCCESS",
+        "G1-NON-GOALS",
+        "G1-RISKS-QUESTIONS"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G2",
+      "name": "Requirements Ready",
+      "purpose": "Convert the vision into testable product requirements.",
+      "predecessor": "G1",
+      "successor": "G3",
+      "active_role": "prd-agent",
+      "primary_artifact": "prd",
+      "human_approval": "required",
+      "criterion_ids": [
+        "G2-REQ-ID",
+        "G2-AC-COVERAGE",
+        "G2-EARS-FORM",
+        "G2-OBSERVABLE-FORM",
+        "G2-UNWANTED-BEHAVIOR",
+        "G2-TESTABILITY"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G3",
+      "name": "Architecture Ready",
+      "purpose": "Define system structure, boundaries, lifecycle, stack, and verification design.",
+      "predecessor": "G2",
+      "successor": "G4",
+      "active_role": "architecture-agent",
+      "primary_artifact": "architecture",
+      "human_approval": "required",
+      "criterion_ids": [
+        "G3-ARCH-TRACE",
+        "G3-BOUNDARIES",
+        "G3-STATE-LIFECYCLE",
+        "G3-STACK-ACCEPTED",
+        "G3-VERIFICATION-SPEC",
+        "G3-VERIFICATION-TRACE",
+        "G3-DESIGN-INTERROGATION"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G4",
+      "name": "Governance Ready",
+      "purpose": "Make security, policy, identity, audit, and agent/tool behavior explicit.",
+      "predecessor": "G3",
+      "successor": "G5",
+      "active_role": "security-governance-agent",
+      "primary_artifact": "governance_security",
+      "human_approval": "required",
+      "criterion_ids": [
+        "G4-ACTOR-MODEL",
+        "G4-AUTHORIZATION",
+        "G4-AUDIT",
+        "G4-SECRETS-DATA",
+        "G4-TRUST-TOOLS",
+        "G4-NEGATIVE-TESTS"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G5",
+      "name": "Build Ready",
+      "purpose": "Plan and execute the bounded phase loop without changing the active major gate.",
+      "predecessor": "G4",
+      "successor": "G6",
+      "active_role": "phase-planning-agent",
+      "primary_artifact": "phase_plan",
+      "human_approval": "each_authority_acceptance_checkpoint_and_phase_exit",
+      "criterion_ids": [
+        "G5-PHASE-ORDER",
+        "G5-REQ-COVERAGE",
+        "G5-INTEGRATION",
+        "G5-PARTITION",
+        "G5-COVERAGE-POLICY"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G6",
+      "name": "Implementation Ready For Review",
+      "purpose": "Assemble aggregate implementation and readiness evidence for whole-build review.",
+      "predecessor": "G5",
+      "successor": "G7",
+      "active_role": "implementation-agent",
+      "primary_artifact": "implementation_summary",
+      "human_approval": "conditional_skipped_critical_verification_or_nonwaivable_residual",
+      "criterion_ids": [
+        "G6-IMPLEMENTATION-SUMMARY",
+        "G6-CANDIDATE-REVISION",
+        "G6-CHANGED-FILES",
+        "G6-INTEGRATION-REGRESSION",
+        "G6-DEVIATIONS-RESIDUALS",
+        "G6-REVIEW-PACKAGE"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G7",
+      "name": "Acceptance Ready",
+      "purpose": "Complete final review, remediation, verification, traceability, and implementation acceptance.",
+      "predecessor": "G6",
+      "successor": "G8",
+      "active_role": "code-review-agent",
+      "primary_artifact": "final_code_review",
+      "human_approval": "required_implementation_acceptance",
+      "criterion_ids": [
+        "G7-INDEPENDENT-REVIEW",
+        "G7-REMEDIATION",
+        "G7-FINAL-UAT",
+        "G7-TRACEABILITY",
+        "G7-RESIDUAL-RISK",
+        "G7-UPSTREAM-BINDINGS"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G8",
+      "name": "Deployment Ready",
+      "purpose": "Complete deployment readiness and operations, then authorize and record deployment or an explicit non-deployment disposition.",
+      "predecessor": "G7",
+      "successor": "G9",
+      "active_role": "deployment-readiness-agent",
+      "primary_artifact": "deployment_readiness",
+      "human_approval": "required_deployment_and_closeout",
+      "criterion_ids": [
+        "G8-READINESS",
+        "G8-RUNBOOK",
+        "G8-RELEASE-SCOPE",
+        "G8-CONFIG-SECRETS",
+        "G8-MIGRATION-ROLLBACK",
+        "G8-MONITORING-OWNERSHIP",
+        "G8-VALUE-PREREQUISITES",
+        "G8-DEPLOYMENT-APPROVAL"
+      ],
+      "terminal": false
+    },
+    {
+      "id": "G9",
+      "name": "As-Built Closed",
+      "purpose": "Preserve the actual project state after deployment or non-deployment disposition.",
+      "predecessor": "G8",
+      "successor": null,
+      "active_role": "none",
+      "primary_artifact": "project_as_built",
+      "human_approval": "required_project_closeout",
+      "criterion_ids": [
+        "G9-DEPLOYMENT-DISPOSITION",
+        "G9-OPERATIONS-RESULTS",
+        "G9-VALUE-DISPOSITION",
+        "G9-FINAL-TRACEABILITY",
+        "G9-AS-BUILT-CLOSEOUT"
+      ],
+      "terminal": true
+    }
+  ],
+  "criteria": [
+    {"id": "G0-MANIFEST", "gate": "G0", "description": "The project manifest exists and is structurally valid."},
+    {"id": "G0-SCAFFOLD", "gate": "G0", "description": "The canonical project-wide scaffold exists."},
+    {"id": "G0-IDENTITY", "gate": "G0", "description": "Project name, slug, owner, and initialization date are recorded."},
+    {"id": "G1-PROBLEM", "gate": "G1", "description": "The problem and product purpose are explicit."},
+    {"id": "G1-USERS", "gate": "G1", "description": "Target users are explicit."},
+    {"id": "G1-SUCCESS", "gate": "G1", "description": "Success criteria and read timing are measurable."},
+    {"id": "G1-NON-GOALS", "gate": "G1", "description": "Non-goals are explicit."},
+    {"id": "G1-RISKS-QUESTIONS", "gate": "G1", "description": "Assumptions, risks, and blocking questions have dispositions."},
+    {"id": "G2-REQ-ID", "gate": "G2", "description": "Every in-scope requirement has a stable identifier."},
+    {"id": "G2-AC-COVERAGE", "gate": "G2", "description": "Every baseline requirement has acceptance criteria."},
+    {"id": "G2-EARS-FORM", "gate": "G2", "description": "C2 and C3 acceptance criteria are mechanically recognizable EARS statements."},
+    {"id": "G2-OBSERVABLE-FORM", "gate": "G2", "description": "C1 may use concrete observable criteria instead of EARS."},
+    {"id": "G2-UNWANTED-BEHAVIOR", "gate": "G2", "description": "Every class states unwanted behavior wherever an error or failure path exists."},
+    {"id": "G2-TESTABILITY", "gate": "G2", "description": "Requirements are specific enough to verify and architect."},
+    {"id": "G3-ARCH-TRACE", "gate": "G3", "description": "Architecture rules trace to requirements."},
+    {"id": "G3-BOUNDARIES", "gate": "G3", "description": "Components, ownership, interfaces, and trust boundaries are explicit."},
+    {"id": "G3-STATE-LIFECYCLE", "gate": "G3", "description": "Runtime, data, state, and failure lifecycles are defined."},
+    {"id": "G3-STACK-ACCEPTED", "gate": "G3", "description": "The technology-stack decision is Accepted."},
+    {"id": "G3-VERIFICATION-SPEC", "gate": "G3", "description": "A named human approved the verification specification."},
+    {"id": "G3-VERIFICATION-TRACE", "gate": "G3", "description": "Verification cases, commands, and oracles map to G2 criteria."},
+    {"id": "G3-DESIGN-INTERROGATION", "gate": "G3", "description": "Failure, scale, and evolution interrogation is proportional to blast radius."},
+    {"id": "G4-ACTOR-MODEL", "gate": "G4", "description": "Actors, identities, roles, and permissions are explicit."},
+    {"id": "G4-AUTHORIZATION", "gate": "G4", "description": "Allowed and forbidden authorization behavior is explicit."},
+    {"id": "G4-AUDIT", "gate": "G4", "description": "Audit events, fields, retention, and ownership are explicit."},
+    {"id": "G4-SECRETS-DATA", "gate": "G4", "description": "Secrets and data sensitivity handling are explicit."},
+    {"id": "G4-TRUST-TOOLS", "gate": "G4", "description": "Trust boundaries and external tool access are explicit."},
+    {"id": "G4-NEGATIVE-TESTS", "gate": "G4", "description": "Security and governance negative tests are defined."},
+    {"id": "G5-PHASE-ORDER", "gate": "G5", "description": "Declared phases have stable IDs and explicit order."},
+    {"id": "G5-REQ-COVERAGE", "gate": "G5", "description": "Every in-scope requirement maps to an owning phase."},
+    {"id": "G5-INTEGRATION", "gate": "G5", "description": "Cross-phase integration criteria and ownership are declared."},
+    {"id": "G5-PARTITION", "gate": "G5", "description": "The partition rationale bounds each phase to coherent work."},
+    {"id": "G5-COVERAGE-POLICY", "gate": "G5", "description": "Verification coverage declares metric, target, scope, command, exclusions, owner, and shortfall handling."},
+    {"id": "G5-PHASE-SCOPE", "gate": "G5", "checkpoint": "G5.<id>.1", "description": "The phase build plan defines bounded scope, requirements, and exit conditions."},
+    {"id": "G5-PHASE-EXIT-TEST-DESIGN", "gate": "G5", "checkpoint": "G5.<id>.1", "description": "Test and UAT design is sufficient to define the phase exit proof."},
+    {"id": "G5-TACTICAL-TASKS", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "The tactical plan uses stable workstream and task IDs."},
+    {"id": "G5-TACTICAL-DEPENDENCIES", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "Task dependencies and execution order are explicit."},
+    {"id": "G5-TACTICAL-PATHS", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "Each task identifies authorized file and module paths."},
+    {"id": "G5-TACTICAL-TESTS", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "Each task maps required tests and negative cases."},
+    {"id": "G5-TACTICAL-VERIFICATION", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "Each task declares executable verification commands and expected evidence."},
+    {"id": "G5-TACTICAL-ROLLBACK", "gate": "G5", "checkpoint": "G5.<id>.2", "description": "Each task declares rollback, recovery, or irreversibility handling."},
+    {"id": "G5-DIRECTIVE-COMPLETE", "gate": "G5", "checkpoint": "G5.<id>.3", "description": "The construction directive completely binds scope, authority, quality, security, verification, and stop rules."},
+    {"id": "G5-BUILD-PROMPT", "gate": "G5", "checkpoint": "G5.<id>.3", "description": "The build prompt points to the complete directive and tactical task set without becoming separate authority."},
+    {"id": "G5-TEST-PLAN-ACCEPTED", "gate": "G5", "checkpoint": "G5.<id>.3", "description": "The phase test and UAT plan is human-approved."},
+    {"id": "G5-UPSTREAM-PINNED", "gate": "G5", "checkpoint": "G5.<id>.3", "description": "Every governing upstream artifact is pinned to reviewed bytes."},
+    {"id": "G5-IMPLEMENTATION-APPROVAL", "gate": "G5", "checkpoint": "G5.<id>.3", "description": "A named human authorizes bounded implementation."},
+    {"id": "G5-EXIT-IMPLEMENTATION", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Implementation evidence binds the exact phase candidate and changed files."},
+    {"id": "G5-EXIT-TEST-UAT", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Planned tests and UAT ran with commands, results, and evidence."},
+    {"id": "G5-EXIT-REVIEW", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Independent review binds the exact phase candidate."},
+    {"id": "G5-EXIT-REMEDIATION", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Remediation is Complete or validly not_required by a clean review."},
+    {"id": "G5-EXIT-TRACEABILITY", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Cumulative traceability records the phase requirement outcomes."},
+    {"id": "G5-EXIT-AS-BUILT", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Per-phase as-built closeout is Complete."},
+    {"id": "G5-EXIT-LEARNINGS", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Phase learnings are Accepted for downstream planning."},
+    {"id": "G5-EXIT-REGRESSION", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Regression evidence identifies the command, result, and phases covered."},
+    {"id": "G5-EXIT-COVERAGE", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Coverage reports target, actual result, and any accepted shortfall."},
+    {"id": "G5-EXIT-RESIDUALS", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Residual findings and risks have valid dispositions."},
+    {"id": "G5-EXIT-AMENDMENTS", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "Applicable amendments are identified and reconciled."},
+    {"id": "G5-EXIT-VALUE-DISPOSITION", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "The per-phase value-review path and complete, not_due, or not_applicable disposition are bound."},
+    {"id": "G5-EXIT-APPROVAL", "gate": "G5", "checkpoint": "G5.<id>.4", "description": "A named human approves the complete phase exit evidence set."},
+    {"id": "G5-LOOP-AUTHORIZED", "gate": "G5", "transition": "G5-to-G6", "description": "A valid G5.0 event authorized the declared phase loop."},
+    {"id": "G5-ALL-PHASES-EXITED", "gate": "G5", "transition": "G5-to-G6", "description": "Every declared, nonsuperseded phase has one valid exit event."},
+    {"id": "G5-WHOLE-CANDIDATE", "gate": "G5", "transition": "G5-to-G6", "description": "The exact whole-build candidate revision is bound."},
+    {"id": "G5-INTEGRATION-REGRESSION", "gate": "G5", "transition": "G5-to-G6", "description": "Final phase-loop integration and regression criteria passed or have valid residual disposition."},
+    {"id": "G5-CURRENT-TRACEABILITY", "gate": "G5", "transition": "G5-to-G6", "description": "Traceability is current across every declared phase."},
+    {"id": "G5-RESIDUAL-DISPOSITION", "gate": "G5", "transition": "G5-to-G6", "description": "Every residual is enumerated and nonwaivable risk has named-human acceptance."},
+    {"id": "G6-IMPLEMENTATION-SUMMARY", "gate": "G6", "description": "The aggregate implementation summary is Complete."},
+    {"id": "G6-CANDIDATE-REVISION", "gate": "G6", "description": "The exact whole-build candidate revision is recorded."},
+    {"id": "G6-CHANGED-FILES", "gate": "G6", "description": "The changed-file inventory is complete."},
+    {"id": "G6-INTEGRATION-REGRESSION", "gate": "G6", "description": "Cross-phase integration and regression results are complete."},
+    {"id": "G6-DEVIATIONS-RESIDUALS", "gate": "G6", "description": "Deviations and residual findings have dispositions."},
+    {"id": "G6-REVIEW-PACKAGE", "gate": "G6", "description": "The final review package is complete."},
+    {"id": "G7-INDEPENDENT-REVIEW", "gate": "G7", "description": "Independent final review is Complete at the exact candidate."},
+    {"id": "G7-REMEDIATION", "gate": "G7", "description": "Aggregate remediation is Complete or validly not_required."},
+    {"id": "G7-FINAL-UAT", "gate": "G7", "description": "Final test and UAT evidence is Complete."},
+    {"id": "G7-TRACEABILITY", "gate": "G7", "description": "Cumulative traceability reflects verified implementation."},
+    {"id": "G7-RESIDUAL-RISK", "gate": "G7", "description": "Critical findings are closed and major residuals are human-accepted."},
+    {"id": "G7-UPSTREAM-BINDINGS", "gate": "G7", "description": "Reused Accepted authority is bound byte-identically to its originating event."},
+    {"id": "G8-READINESS", "gate": "G8", "description": "Deployment readiness is Accepted through a separate approval event."},
+    {"id": "G8-RUNBOOK", "gate": "G8", "description": "The production runbook is Complete."},
+    {"id": "G8-RELEASE-SCOPE", "gate": "G8", "description": "Release scope and exact candidate are bound."},
+    {"id": "G8-CONFIG-SECRETS", "gate": "G8", "description": "Environment, configuration, and secrets handling are ready."},
+    {"id": "G8-MIGRATION-ROLLBACK", "gate": "G8", "description": "Migration and rollback or irreversibility are explicit."},
+    {"id": "G8-MONITORING-OWNERSHIP", "gate": "G8", "description": "Monitoring, incident response, and operational ownership are explicit."},
+    {"id": "G8-VALUE-PREREQUISITES", "gate": "G8", "description": "Value-review triggers, owners, and evidence sources are ready."},
+    {"id": "G8-DEPLOYMENT-APPROVAL", "gate": "G8", "description": "A named human deployment approver authorized the production or non-deployment action."},
+    {"id": "G9-DEPLOYMENT-DISPOSITION", "gate": "G9", "description": "Deployment results or explicit non-deployment disposition are Complete."},
+    {"id": "G9-OPERATIONS-RESULTS", "gate": "G9", "description": "Monitoring, rollback, and incident outcomes are recorded."},
+    {"id": "G9-VALUE-DISPOSITION", "gate": "G9", "description": "Project value review has a valid complete, not_due, or not_applicable disposition."},
+    {"id": "G9-FINAL-TRACEABILITY", "gate": "G9", "description": "Final traceability reflects actual system state and residuals."},
+    {"id": "G9-AS-BUILT-CLOSEOUT", "gate": "G9", "description": "Project-level as-built closeout is Complete and human-approved."}
+  ],
+  "transitions": [
+    {
+      "id": "G0-to-G1",
+      "from": "G0",
+      "to": "G1",
+      "event_type": "project_initialization",
+      "command": "scripts/init-project.sh",
+      "approval": "conditional_overwrite_only",
+      "resulting_project_status": "initialized",
+      "resulting_role": "product-vision-agent",
+      "required_artifacts": ["project_manifest", "gate_log"],
+      "artifact_requirement_policy": "project_initialization_result",
+      "criterion_ids": ["G0-MANIFEST", "G0-SCAFFOLD", "G0-IDENTITY"],
+      "terminal": false
+    },
+    {
+      "id": "G1-to-G2",
+      "from": "G1",
+      "to": "G2",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G1",
+      "approval": "named_human",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "active",
+      "resulting_role": "prd-agent",
+      "required_artifacts": ["vision"],
+      "artifact_requirements": [
+        {"artifact_id": "vision", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "criterion_ids": ["G1-PROBLEM", "G1-USERS", "G1-SUCCESS", "G1-NON-GOALS", "G1-RISKS-QUESTIONS"],
+      "terminal": false
+    },
+    {
+      "id": "G2-to-G3",
+      "from": "G2",
+      "to": "G3",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G2",
+      "approval": "named_human",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "active",
+      "resulting_role": "architecture-agent",
+      "required_artifacts": ["prd"],
+      "artifact_requirements": [
+        {"artifact_id": "prd", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "criterion_ids": ["G2-REQ-ID", "G2-AC-COVERAGE", "G2-EARS-FORM", "G2-OBSERVABLE-FORM", "G2-UNWANTED-BEHAVIOR", "G2-TESTABILITY"],
+      "terminal": false
+    },
+    {
+      "id": "G3-to-G4",
+      "from": "G3",
+      "to": "G4",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G3",
+      "approval": "named_human",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "active",
+      "resulting_role": "security-governance-agent",
+      "required_artifacts": ["architecture", "technology_stack"],
+      "artifact_requirements": [
+        {"artifact_id": "architecture", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]},
+        {"artifact_id": "technology_stack", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "criterion_ids": ["G3-ARCH-TRACE", "G3-BOUNDARIES", "G3-STATE-LIFECYCLE", "G3-STACK-ACCEPTED", "G3-VERIFICATION-SPEC", "G3-VERIFICATION-TRACE", "G3-DESIGN-INTERROGATION"],
+      "terminal": false
+    },
+    {
+      "id": "G4-to-G5",
+      "from": "G4",
+      "to": "G5",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G4",
+      "approval": "named_human",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "active",
+      "resulting_role": "phase-planning-agent",
+      "required_artifacts": ["governance_security"],
+      "artifact_requirements": [
+        {"artifact_id": "governance_security", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "criterion_ids": ["G4-ACTOR-MODEL", "G4-AUTHORIZATION", "G4-AUDIT", "G4-SECRETS-DATA", "G4-TRUST-TOOLS", "G4-NEGATIVE-TESTS"],
+      "terminal": false,
+      "notes": "Enters phase planning. It does not create or complete G5.0."
+    },
+    {
+      "id": "G5-to-G6",
+      "from": "G5",
+      "to": "G6",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G5",
+      "approval": "conditional_nonwaivable_residual",
+      "approval_profiles": ["no_additional_approval", "named_human"],
+      "named_human_condition": "skipped_critical_verification_or_otherwise_nonwaivable_residual",
+      "resulting_project_status": "active",
+      "resulting_role": "implementation-agent",
+      "required_artifacts": ["phase_plan", "traceability"],
+      "artifact_requirements": [
+        {"artifact_id": "phase_plan", "reviewed_statuses": ["Accepted"], "resulting_statuses": ["Accepted"], "evidence_categories": ["accepted_authority_unchanged"]},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+      ],
+      "required_event_bindings": ["all_declared_phase_exit_event_ids"],
+      "transition_specific_event_fields": ["whole_build_candidate_revision", "integration_regression_result", "residual_findings"],
+      "criterion_ids": ["G5-LOOP-AUTHORIZED", "G5-ALL-PHASES-EXITED", "G5-WHOLE-CANDIDATE", "G5-INTEGRATION-REGRESSION", "G5-CURRENT-TRACEABILITY", "G5-RESIDUAL-DISPOSITION"],
+      "terminal": false
+    },
+    {
+      "id": "G6-to-G7",
+      "from": "G6",
+      "to": "G7",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G6",
+      "approval": "conditional_skipped_critical_verification_or_risk",
+      "approval_profiles": ["no_additional_approval", "named_human"],
+      "named_human_condition": "skipped_critical_verification_or_allowed_risk_disposition",
+      "resulting_project_status": "active",
+      "resulting_role": "code-review-agent",
+      "required_artifacts": ["implementation_summary", "traceability"],
+      "artifact_requirements": [
+        {"artifact_id": "implementation_summary", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+      ],
+      "criterion_ids": ["G6-IMPLEMENTATION-SUMMARY", "G6-CANDIDATE-REVISION", "G6-CHANGED-FILES", "G6-INTEGRATION-REGRESSION", "G6-DEVIATIONS-RESIDUALS", "G6-REVIEW-PACKAGE"],
+      "terminal": false
+    },
+    {
+      "id": "G7-to-G8",
+      "from": "G7",
+      "to": "G8",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G7",
+      "approval": "named_human_implementation_acceptance",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "active",
+      "resulting_role": "deployment-readiness-agent",
+      "required_artifacts": ["final_code_review", "aggregate_remediation", "final_test_uat", "traceability"],
+      "artifact_requirements": [
+        {"artifact_id": "final_code_review", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "aggregate_remediation", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"], "required_dispositions": ["complete", "not_required"]},
+        {"artifact_id": "final_test_uat", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+      ],
+      "required_dynamic_evidence": ["accepted_upstream_authority_set"],
+      "transition_specific_event_fields": ["accepted_release_candidate", "deployment_intent"],
+      "criterion_ids": ["G7-INDEPENDENT-REVIEW", "G7-REMEDIATION", "G7-FINAL-UAT", "G7-TRACEABILITY", "G7-RESIDUAL-RISK", "G7-UPSTREAM-BINDINGS"],
+      "terminal": false
+    },
+    {
+      "id": "G8-to-G9",
+      "from": "G8",
+      "to": "G9",
+      "event_type": "gate_transition",
+      "command": "scripts/close-gate.sh G8",
+      "approval": "named_human_project_closeout",
+      "approval_profiles": ["named_human"],
+      "resulting_project_status": "closed",
+      "resulting_role": "none",
+      "required_artifacts": ["deployment_record", "project_value_review", "traceability", "project_as_built"],
+      "artifact_requirements": [
+        {"artifact_id": "deployment_record", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "project_value_review", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"], "required_dispositions": ["complete", "not_due", "not_applicable"], "disposition_contract": "value_review_contract"},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "project_as_built", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+      ],
+      "required_event_bindings": ["deployment_approval_or_non_deployment_approval"],
+      "transition_specific_event_fields": ["deployment_disposition", "operational_results", "value_disposition", "terminal_closeout"],
+      "conditional_transition_specific_event_fields": {
+        "deploy": ["operational_owner_confirmation"]
+      },
+      "criterion_ids": ["G9-DEPLOYMENT-DISPOSITION", "G9-OPERATIONS-RESULTS", "G9-VALUE-DISPOSITION", "G9-FINAL-TRACEABILITY", "G9-AS-BUILT-CLOSEOUT"],
+      "terminal": true,
+      "terminal_closeout": true
+    }
+  ],
+  "checkpoints": [
+    {
+      "id": "G5.0",
+      "position_pattern": "^G5\\.0$",
+      "order": 0,
+      "name": "Phase Loop Authorized",
+      "event_type": "phase_checkpoint",
+      "approval": "named_human",
+      "nullable_event_fields": ["phase_id"],
+      "active_major_gate": "G5",
+      "resulting_role": "phase-planning-agent",
+      "required_artifacts": ["phase_plan", "traceability"],
+      "artifact_requirements": [
+        {"artifact_id": "phase_plan", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+      ],
+      "criterion_ids": ["G5-PHASE-ORDER", "G5-REQ-COVERAGE", "G5-INTEGRATION", "G5-PARTITION", "G5-COVERAGE-POLICY"],
+      "required_evidence": [
+        {"class": "phase_partition", "artifact_ids": ["phase_plan"], "event_fields": ["evidence"]},
+        {"class": "requirement_coverage", "artifact_ids": ["phase_plan", "traceability"], "event_fields": ["evidence"]},
+        {"class": "integration_criteria", "artifact_ids": ["phase_plan"], "event_fields": ["evidence"]},
+        {"class": "coverage_policy", "artifact_ids": ["phase_plan"], "event_fields": ["evidence"]}
+      ]
+    },
+    {
+      "id": "G5.<id>.1",
+      "position_pattern": "^G5\\.([A-Za-z0-9]+(-[A-Za-z0-9]+)*)\\.1$",
+      "order": 1,
+      "name": "Phase Build Definition Ready",
+      "event_type": "phase_checkpoint",
+      "approval": "named_human",
+      "active_major_gate": "G5",
+      "resulting_role": "phase-planning-agent",
+      "required_artifacts": ["phase_build_plan", "phase_test_uat"],
+      "artifact_requirements": [
+        {"artifact_id": "phase_build_plan", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "reference_requirements": [
+        {"artifact_id": "phase_test_uat", "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted"], "binding_mode": "pinned_checkpoint_reference", "required_fields": ["artifact_path", "status", "revision", "blob_oid", "digest"]}
+      ],
+      "criterion_ids": ["G5-PHASE-SCOPE", "G5-PHASE-EXIT-TEST-DESIGN"],
+      "required_evidence": [
+        {"class": "phase_scope", "artifact_ids": ["phase_build_plan"], "event_fields": ["evidence"]},
+        {"class": "phase_exit_test_design", "artifact_ids": ["phase_build_plan"], "event_fields": ["evidence", "references"], "binding_mode": "pinned_checkpoint_reference", "referenced_artifact_ids": ["phase_test_uat"]}
+      ]
+    },
+    {
+      "id": "G5.<id>.2",
+      "position_pattern": "^G5\\.([A-Za-z0-9]+(-[A-Za-z0-9]+)*)\\.2$",
+      "order": 2,
+      "name": "Tactical Execution Ready",
+      "event_type": "phase_checkpoint",
+      "approval": "named_human",
+      "active_major_gate": "G5",
+      "resulting_role": "phase-planning-agent",
+      "required_artifacts": ["tactical_plan"],
+      "artifact_requirements": [
+        {"artifact_id": "tactical_plan", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "criterion_ids": ["G5-TACTICAL-TASKS", "G5-TACTICAL-DEPENDENCIES", "G5-TACTICAL-PATHS", "G5-TACTICAL-TESTS", "G5-TACTICAL-VERIFICATION", "G5-TACTICAL-ROLLBACK"],
+      "required_evidence": [
+        {"class": "stable_tasks", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]},
+        {"class": "dependencies", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]},
+        {"class": "paths", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]},
+        {"class": "tests", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]},
+        {"class": "verification", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]},
+        {"class": "rollback", "artifact_ids": ["tactical_plan"], "event_fields": ["evidence"]}
+      ]
+    },
+    {
+      "id": "G5.<id>.3",
+      "position_pattern": "^G5\\.([A-Za-z0-9]+(-[A-Za-z0-9]+)*)\\.3$",
+      "order": 3,
+      "name": "Phase Authorized For Implementation",
+      "event_type": "phase_checkpoint",
+      "approval": "named_human",
+      "active_major_gate": "G5",
+      "resulting_role": "implementation-agent",
+      "required_artifacts": ["construction_directive", "build_prompt", "phase_test_uat"],
+      "artifact_requirements": [
+        {"artifact_id": "construction_directive", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]},
+        {"artifact_id": "build_prompt", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]},
+        {"artifact_id": "phase_test_uat", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "required_dynamic_evidence": ["accepted_upstream_authority_set"],
+      "criterion_ids": ["G5-DIRECTIVE-COMPLETE", "G5-BUILD-PROMPT", "G5-TEST-PLAN-ACCEPTED", "G5-UPSTREAM-PINNED", "G5-IMPLEMENTATION-APPROVAL"],
+      "required_evidence": [
+        {"class": "pinned_upstream_authority", "artifact_ids": ["construction_directive"], "event_fields": ["evidence"]},
+        {"class": "complete_construction_directive", "artifact_ids": ["construction_directive"], "event_fields": ["evidence"]},
+        {"class": "accepted_test_uat_plan", "artifact_ids": ["phase_test_uat"], "event_fields": ["evidence"]}
+      ]
+    },
+    {
+      "id": "G5.<id>.4",
+      "position_pattern": "^G5\\.([A-Za-z0-9]+(-[A-Za-z0-9]+)*)\\.4$",
+      "order": 4,
+      "name": "Phase Exited",
+      "event_type": "phase_transition",
+      "approval": "named_human_phase_exit",
+      "active_major_gate": "G5",
+      "resulting_role": "phase-planning-agent",
+      "required_artifacts": ["implementation_evidence", "phase_test_uat", "phase_code_review", "phase_remediation", "traceability", "phase_as_built", "phase_learnings", "phase_value_review"],
+      "artifact_requirements": [
+        {"artifact_id": "implementation_evidence", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "phase_test_uat", "reviewed_statuses": ["Accepted"], "resulting_statuses": ["Accepted"], "evidence_categories": ["accepted_authority_unchanged"]},
+        {"artifact_id": "phase_code_review", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "phase_remediation", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"], "required_dispositions": ["complete", "not_required"]},
+        {"artifact_id": "traceability", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "phase_as_built", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]},
+        {"artifact_id": "phase_learnings", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]}
+      ],
+      "reference_requirements": [
+        {"artifact_id": "phase_value_review", "allowed_statuses": ["Draft", "Complete"], "required_dispositions": ["complete", "not_due", "not_applicable"], "status_by_disposition": {"complete": ["Complete"], "not_due": ["Draft"], "not_applicable": ["Complete"]}, "disposition_contract": "value_review_contract", "binding_mode": "pinned_subordinate_reference", "parent_artifact_id": "phase_as_built", "required_fields": ["artifact_path", "status", "revision", "blob_oid", "digest", "value_review.disposition", "value_review.details"]}
+      ],
+      "criterion_ids": ["G5-EXIT-IMPLEMENTATION", "G5-EXIT-TEST-UAT", "G5-EXIT-REVIEW", "G5-EXIT-REMEDIATION", "G5-EXIT-TRACEABILITY", "G5-EXIT-AS-BUILT", "G5-EXIT-LEARNINGS", "G5-EXIT-REGRESSION", "G5-EXIT-COVERAGE", "G5-EXIT-RESIDUALS", "G5-EXIT-AMENDMENTS", "G5-EXIT-VALUE-DISPOSITION", "G5-EXIT-APPROVAL"],
+      "required_evidence": [
+        {"class": "implementation_candidate", "artifact_ids": ["implementation_evidence"], "event_fields": ["candidate_revision", "evidence"]},
+        {"class": "executed_test_uat", "artifact_ids": ["phase_test_uat", "implementation_evidence"], "event_fields": ["evidence", "test_uat_execution"]},
+        {"class": "independent_phase_review", "artifact_ids": ["phase_code_review"], "event_fields": ["evidence", "blocking_finding_count"]},
+        {"class": "remediation_disposition", "artifact_ids": ["phase_remediation"], "event_fields": ["evidence", "remediation_disposition"]},
+        {"class": "cumulative_traceability", "artifact_ids": ["traceability"], "event_fields": ["evidence", "phase_requirement_ids"]},
+        {"class": "phase_as_built_closeout", "artifact_ids": ["phase_as_built"], "event_fields": ["evidence"]},
+        {"class": "phase_learnings", "artifact_ids": ["phase_learnings"], "event_fields": ["evidence"]},
+        {"class": "regression", "artifact_ids": ["implementation_evidence", "phase_test_uat"], "event_fields": ["regression_result"]},
+        {"class": "coverage_result", "artifact_ids": ["implementation_evidence", "phase_test_uat"], "event_fields": ["coverage_result"]},
+        {"class": "residual_risks", "artifact_ids": ["phase_code_review", "phase_remediation"], "event_fields": ["residual_findings"]},
+        {"class": "amendments", "artifact_ids": [], "event_fields": ["amendments"]},
+        {"class": "phase_value_disposition", "artifact_ids": ["phase_as_built"], "event_fields": ["evidence", "references"], "binding_mode": "pinned_subordinate_reference", "referenced_artifact_ids": ["phase_value_review"]},
+        {"class": "named_approval", "artifact_ids": [], "event_fields": ["approver", "approved_on", "checked_statement", "risk_disposition"]}
+      ]
+    }
+  ],
+  "evidence_categories": [
+    {
+      "id": "new_acceptance_status_only",
+      "reviewed_status": "Ready for Approval",
+      "resulting_status": "Accepted",
+      "content_rule": "Only the single canonical Status header changes; every other byte and the line-ending convention are preserved.",
+      "originating_event_required": false
+    },
+    {
+      "id": "complete_report_unchanged",
+      "reviewed_status": "Complete",
+      "resulting_status": "Complete",
+      "content_rule": "Reviewed and resulting Git blob OIDs and portable content digests are equal.",
+      "originating_event_required": false
+    },
+    {
+      "id": "accepted_authority_unchanged",
+      "reviewed_status": "Accepted",
+      "resulting_status": "Accepted",
+      "content_rule": "Reviewed and resulting blobs/digests are equal and the originating approval event binds the same path and blob.",
+      "originating_event_required": true
+    }
+  ],
+  "events": [
+    {
+      "id": "project_initialization",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": true,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "from_gate", "to_gate", "occurred_on", "manifest_result", "checked_statement"]
+    },
+    {
+      "id": "gate_transition",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": true,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "from_gate", "to_gate", "criterion_ids", "evidence", "approval_profile", "checked_statement", "enforcement_context", "manifest_result", "next_state"],
+      "conditional_field_sets": {
+        "named_human": ["decision", "approver", "approved_on", "risk_disposition"],
+        "no_additional_approval": ["approval_disposition", "recorded_by", "recorded_on", "no_additional_approval_basis"],
+        "G8-to-G9": ["deployment_disposition", "operational_results", "value_disposition", "terminal_closeout"],
+        "G8-to-G9:deploy": ["operational_owner_confirmation"]
+      }
+    },
+    {
+      "id": "phase_checkpoint",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "major_gate", "position", "phase_id", "criterion_ids", "evidence", "references", "decision", "approver", "approved_on", "checked_statement", "risk_disposition", "enforcement_context", "manifest_result", "next_state"],
+      "field_constraints": {
+        "phase_id": {"nullable_only_at": ["G5.0"]}
+      }
+    },
+    {
+      "id": "phase_transition",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "major_gate", "position", "phase_id", "candidate_revision", "criterion_ids", "evidence", "references", "test_uat_execution", "blocking_finding_count", "remediation_disposition", "phase_requirement_ids", "regression_result", "decision", "approver", "approved_on", "checked_statement", "risk_disposition", "coverage_result", "residual_findings", "amendments", "enforcement_context", "manifest_result", "next_state"],
+      "conditional_field_sets": {
+        "delegated_phase_exit": ["delegation"]
+      }
+    },
+    {
+      "id": "deployment_approval",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "major_gate", "release_candidate", "deployment_intent", "criterion_ids", "evidence", "value_prerequisites", "decision", "approver", "approved_on", "checked_statement", "security_approval", "risk_disposition", "enforcement_context", "manifest_result", "next_state"],
+      "conditional_field_sets": {
+        "non_deployment": ["disposition", "rationale", "scope", "release_candidate", "approver", "approved_on", "future_trigger_or_finality"]
+      }
+    },
+    {
+      "id": "amendment",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "authority_path", "change_scope", "impact", "evidence", "decision", "approver", "approved_on", "checked_statement", "risk_disposition", "enforcement_context", "next_state"]
+    },
+    {
+      "id": "gate_regression",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": true,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "from_gate", "to_gate", "invalidated_criteria", "decision", "approver", "approved_on", "checked_statement", "risk_disposition", "enforcement_context", "manifest_result", "next_state"]
+    },
+    {
+      "id": "reconciliation",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "amendment_id", "artifacts", "remaining_stale_artifacts", "gate_movement_unblocked", "reconciled_on", "reconciled_by", "checked_statement", "manifest_result"]
+    },
+    {
+      "id": "migration_reconciliation",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "source_methodology_version", "target_methodology_version", "historical_event_reference", "mapped_gate_or_checkpoint", "mapped_evidence_classes", "unresolved_fields", "provenance", "decision", "approval_disposition", "risk_disposition", "checked_statement"],
+      "conditional_field_sets": {
+        "named_human_required": ["approver", "approval_date"],
+        "duplicate_mapping": ["supersedes_event_id", "correction_reason"]
+      },
+      "allowed_decisions": ["mapped", "partially_mapped", "not_mapped"],
+      "historical_event_reference_contract": {
+        "allowed_kinds": ["stable_event_id", "content_digest"],
+        "required_fields_by_kind": {
+          "stable_event_id": ["event_id"],
+          "content_digest": ["source_path", "reviewed_revision", "digest_algorithm", "content_digest"]
+        },
+        "digest_algorithm": "sha256",
+        "line_number_only_forbidden": true
+      },
+      "approval_rules": {
+        "named_human_required_when": ["blast_radius_C3", "unresolved_approval_provenance", "unresolved_security_provenance", "residual_historical_uncertainty_accepted"],
+        "critical_security_or_approval_uncertainty_waivable": false,
+        "automation_or_unbound_role_may_approve": false
+      },
+      "unresolved_fields_propagate_to_readiness": true,
+      "duplicate_mapping_requires_supersedes_event_id": true
+    },
+    {
+      "id": "traceability_sample",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "gate", "phase_id", "sampled_by", "sampled_on", "requirement_id", "traceability_row", "result", "discrepancy", "discrepancy_disposition"]
+    },
+    {
+      "id": "enforcement_attestation",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "gate", "attested_by", "attested_on", "requirements_checked", "result", "exceptions"]
+    },
+    {
+      "id": "enforcement_override",
+      "schema_version": 2,
+      "append_only": true,
+      "changes_major_gate": false,
+      "required_fields": ["event_id", "event_type", "schema_version", "project", "gate", "decision", "approved_by", "approved_on", "requirements_bypassed", "reason", "incident_or_emergency", "checked_statement", "risk_disposition", "enforcement_context", "normal_enforcement_resumed_on", "reconciliation_required", "next_state"]
+    }
+  ],
+  "event_history": {
+    "append_only": true,
+    "template_projection": "docs/methodology/templates/gate-log-template.md",
+    "template_projection_state": "planned",
+    "required_work_package": "WP-04",
+    "enforcement": {
+      "state": "planned",
+      "required_work_package": "WP-05",
+      "enforcer_path": "scripts/lib/gate-log.awk",
+      "verification_suite": "tests/methodology/test-enforcement-tools.sh",
+      "required_behaviors": ["append_only", "correction_event", "duplicate_latest_rejected", "supersession_cycle_rejected"]
+    },
+    "corrections_are_new_events": true,
+    "correction_fields": ["supersedes_event_id", "correction_reason"],
+    "duplicate_latest_is_invalid": true,
+    "supersession_cycles_are_invalid": true,
+    "prior_event_text_must_remain_byte_identical": true
+  },
+  "event_reference_item": {
+    "required_fields": ["artifact_id", "artifact_path", "status", "revision", "blob_oid", "digest"],
+    "portable_digest_algorithm": "sha256",
+    "cannot_satisfy_acceptance_without_evidence_category": true
+  },
+  "event_binding_rules": [
+    {
+      "id": "all_declared_phase_exit_event_ids",
+      "event_type": "phase_transition",
+      "quantifier": "exactly_one_per_declared_nonsuperseded_phase",
+      "coverage_source": "manifest.phase.phases",
+      "position_pattern": "^G5\\.[A-Za-z0-9]+(-[A-Za-z0-9]+)*\\.4$",
+      "allowed_decisions": ["approved"],
+      "same_project_required": true,
+      "exact_candidate_required": true
+    },
+    {
+      "id": "accepted_upstream_authority_set",
+      "event_types": ["gate_transition", "phase_checkpoint"],
+      "quantifier": "every_reused_accepted_authority",
+      "evidence_category": "accepted_authority_unchanged",
+      "originating_event_required": true,
+      "same_path_and_blob_required": true
+    },
+    {
+      "id": "deployment_approval_or_non_deployment_approval",
+      "event_type": "deployment_approval",
+      "quantifier": "exactly_one_latest_unsuperseded",
+      "major_gate": "G8",
+      "allowed_intents": ["deploy", "non_deployment"],
+      "allowed_decisions": ["approved"],
+      "same_project_required": true,
+      "exact_release_candidate_required": true,
+      "required_criterion_ids_source": "deployment.criterion_ids",
+      "terminal_correlation_contract": "deployment.terminal_correlations"
+    }
+  ],
+  "event_evidence_item": {
+    "required_fields": [
+      "artifact_id",
+      "artifact_path",
+      "category",
+      "reviewed_revision",
+      "reviewed_blob_oid",
+      "reviewed_digest",
+      "resulting_blob_oid",
+      "resulting_digest",
+      "status"
+    ],
+    "conditional_fields": {
+      "accepted_authority_unchanged": ["originating_event_id"]
+    },
+    "revision_rules": {
+      "must_resolve_in_git": true,
+      "dirty_untracked_missing_or_placeholder_rejected": true,
+      "reviewed_blob_must_match_revision_path": true,
+      "portable_digest_algorithm": "sha256",
+      "one_category_exactly": true
+    }
+  },
+  "event_serialization": {
+    "schema_version": 2,
+    "profile": "restricted_yaml_v2",
+    "default_scalar_value_contract": "nonempty_string",
+    "common_conditional_field_sets": {
+      "correction": ["supersedes_event_id", "correction_reason"]
+    },
+    "field_contracts": {
+      "amendment_id": {"shape": "scalar"},
+      "approval_date": {"shape": "scalar", "value_contract": "iso_date"},
+      "approval_disposition": {"shape": "scalar"},
+      "approval_profile": {"shape": "scalar"},
+      "approved_by": {"shape": "scalar"},
+      "approved_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "approver": {"shape": "scalar"},
+      "attested_by": {"shape": "scalar"},
+      "attested_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "authority_path": {"shape": "scalar"},
+      "blocking_finding_count": {"shape": "scalar", "value_contract": "nonnegative_integer"},
+      "candidate_revision": {"shape": "scalar", "value_contract": "git_revision"},
+      "change_scope": {"shape": "scalar"},
+      "checked_statement": {"shape": "scalar"},
+      "correction_reason": {"shape": "scalar"},
+      "decision": {"shape": "scalar", "value_contract": "contextual_event_decision"},
+      "deployment_disposition": {"shape": "scalar", "value_contract": "deployment_terminal_disposition"},
+      "deployment_intent": {"shape": "scalar", "value_contract": "deployment_intent"},
+      "discrepancy": {"shape": "scalar"},
+      "discrepancy_disposition": {"shape": "scalar"},
+      "disposition": {"shape": "scalar"},
+      "event_id": {"shape": "scalar", "value_contract": "event_id_pattern"},
+      "event_type": {"shape": "scalar", "value_contract": "event_type_id"},
+      "from_gate": {"shape": "scalar", "value_contract": "gate_id"},
+      "future_trigger_or_finality": {"shape": "scalar"},
+      "gate": {"shape": "scalar", "value_contract": "gate_id"},
+      "gate_movement_unblocked": {"shape": "scalar", "value_contract": "boolean"},
+      "impact": {"shape": "scalar"},
+      "incident_or_emergency": {"shape": "scalar", "value_contract": "boolean"},
+      "major_gate": {"shape": "scalar", "value_contract": "gate_id"},
+      "mapped_gate_or_checkpoint": {"shape": "scalar"},
+      "no_additional_approval_basis": {"shape": "scalar"},
+      "normal_enforcement_resumed_on": {"shape": "scalar", "value_contract": "iso_date_or_null"},
+      "occurred_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "phase_id": {"shape": "scalar", "value_contract": "phase_id_or_null"},
+      "position": {"shape": "scalar", "value_contract": "checkpoint_position"},
+      "project": {"shape": "scalar"},
+      "rationale": {"shape": "scalar"},
+      "reason": {"shape": "scalar"},
+      "reconciled_by": {"shape": "scalar"},
+      "reconciled_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "reconciliation_required": {"shape": "scalar", "value_contract": "boolean"},
+      "recorded_by": {"shape": "scalar"},
+      "recorded_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "release_candidate": {"shape": "scalar", "value_contract": "git_revision"},
+      "remediation_disposition": {"shape": "scalar", "value_contract": "remediation_disposition"},
+      "requirement_id": {"shape": "scalar"},
+      "result": {"shape": "scalar"},
+      "sampled_by": {"shape": "scalar"},
+      "sampled_on": {"shape": "scalar", "value_contract": "iso_date"},
+      "schema_version": {"shape": "scalar", "value_contract": "fixed:2"},
+      "scope": {"shape": "scalar"},
+      "source_methodology_version": {"shape": "scalar"},
+      "supersedes_event_id": {"shape": "scalar", "value_contract": "event_id_pattern"},
+      "target_methodology_version": {"shape": "scalar"},
+      "terminal_closeout": {"shape": "scalar", "value_contract": "boolean"},
+      "to_gate": {"shape": "scalar", "value_contract": "gate_id"},
+      "traceability_row": {"shape": "scalar"},
+      "amendments": {"shape": "scalar_list"},
+      "criterion_ids": {"shape": "scalar_list", "min_items": 1},
+      "invalidated_criteria": {"shape": "scalar_list", "min_items": 1},
+      "mapped_evidence_classes": {"shape": "scalar_list"},
+      "phase_requirement_ids": {"shape": "scalar_list"},
+      "remaining_stale_artifacts": {"shape": "scalar_list"},
+      "requirements_bypassed": {"shape": "scalar_list", "min_items": 1},
+      "requirements_checked": {"shape": "scalar_list", "min_items": 1},
+      "unresolved_fields": {"shape": "scalar_list"},
+      "coverage_result": {"shape": "record", "item_contract": "coverage_result"},
+      "delegation": {"shape": "record", "item_contract": "delegation"},
+      "enforcement_context": {"shape": "record", "item_contract": "enforcement_context"},
+      "historical_event_reference": {"shape": "record", "item_contract": "historical_event_reference"},
+      "manifest_result": {"shape": "record", "item_contract": "manifest_result"},
+      "next_state": {"shape": "record", "item_contract": "next_state"},
+      "operational_owner_confirmation": {"shape": "record", "item_contract": "operational_owner_confirmation"},
+      "operational_results": {"shape": "record", "item_contract": "operational_results"},
+      "regression_result": {"shape": "record", "item_contract": "regression_result"},
+      "risk_disposition": {"shape": "record", "item_contract": "risk_disposition"},
+      "security_approval": {"shape": "record", "item_contract": "security_approval"},
+      "test_uat_execution": {"shape": "record", "item_contract": "test_uat_execution"},
+      "value_disposition": {"shape": "record", "item_contract": "value_review"},
+      "value_prerequisites": {"shape": "record", "item_contract": "value_review"},
+      "artifacts": {"shape": "record_list", "item_contract": "reconciliation_artifact_item", "min_items": 1},
+      "evidence": {"shape": "record_list", "item_contract": "event_evidence_item", "min_items": 1},
+      "exceptions": {"shape": "record_list", "item_contract": "enforcement_exception_item"},
+      "provenance": {"shape": "record_list", "item_contract": "migration_provenance_item", "min_items": 1},
+      "references": {"shape": "record_list", "item_contract": "event_reference_item"},
+      "residual_findings": {"shape": "record_list", "item_contract": "residual_finding_item"}
+    },
+    "record_contracts": {
+      "event_evidence_item": {
+        "required_fields": ["artifact_id", "artifact_path", "category", "reviewed_revision", "reviewed_blob_oid", "reviewed_digest", "resulting_blob_oid", "resulting_digest", "status"],
+        "conditional_field_sets": {"accepted_authority_unchanged": ["originating_event_id"]},
+        "conditional_profile_selector": "category",
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"artifact_id": "artifact_id", "artifact_path": "canonical_artifact_path", "category": "evidence_category", "reviewed_revision": "git_revision", "reviewed_blob_oid": "git_blob_oid", "reviewed_digest": "sha256", "resulting_blob_oid": "git_blob_oid", "resulting_digest": "sha256", "status": "artifact_status", "originating_event_id": "event_id_pattern"}
+      },
+      "event_reference_item": {
+        "required_fields": ["artifact_id", "artifact_path", "status", "revision", "blob_oid", "digest"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"artifact_id": "artifact_id", "artifact_path": "canonical_artifact_path", "status": "artifact_status", "revision": "git_revision", "blob_oid": "git_blob_oid", "digest": "sha256"}
+      },
+      "coverage_result": {
+        "required_fields": ["policy_reference", "metric", "measurement_tool", "denominator", "target", "actual", "result", "scope", "measurement_command", "exclusions", "exclusion_rationale", "owner", "shortfall_disposition"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"exclusions": "scalar_list"}
+      },
+      "delegation": {
+        "required_fields": ["delegated_by", "delegated_to", "accepted_by", "scope", "starts_on", "ends_on"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"starts_on": "iso_date", "ends_on": "iso_date"}
+      },
+      "enforcement_context": {
+        "required_fields": ["enforcement_class", "blast_radius_class", "checker_result", "exceptions"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"exceptions": "scalar_list"},
+        "field_value_contracts": {"enforcement_class": "enforcement_class", "blast_radius_class": "blast_radius_class"}
+      },
+      "historical_event_reference": {
+        "required_fields": ["kind"],
+        "conditional_field_sets": {
+          "stable_event_id": ["event_id"],
+          "content_digest": ["source_path", "reviewed_revision", "digest_algorithm", "content_digest"]
+        },
+        "conditional_profile_selector": "kind",
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"kind": "migration_reference_kind", "event_id": "event_id_pattern", "reviewed_revision": "git_revision", "digest_algorithm": "fixed:sha256", "content_digest": "sha256"}
+      },
+      "manifest_result": {
+        "required_fields": ["project_status", "current_gate", "active_role", "phase_position", "current_phase_id", "latest_decision_event_id", "manifest_digest"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"project_status": "project_status", "current_gate": "gate_id", "active_role": "role_id", "phase_position": "checkpoint_position_or_null", "current_phase_id": "phase_id_or_null", "latest_decision_event_id": "event_id_pattern_or_null", "manifest_digest": "sha256"}
+      },
+      "next_state": {
+        "required_fields": ["project_status", "current_gate", "active_role", "phase_position", "next_artifact_id"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"project_status": "project_status", "current_gate": "gate_id", "active_role": "role_id", "phase_position": "checkpoint_position_or_null", "next_artifact_id": "artifact_id_or_null"}
+      },
+      "operational_owner_confirmation": {
+        "required_fields": ["confirmed_by", "confirmed_on", "checked_statement"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"confirmed_on": "iso_date"}
+      },
+      "operational_results": {
+        "required_fields": ["production_action_performed", "rollback_status", "incident_status", "monitoring_status", "evidence_event_ids"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"evidence_event_ids": "scalar_list"},
+        "field_min_items": {"evidence_event_ids": 1},
+        "field_value_contracts": {"production_action_performed": "boolean"}
+      },
+      "regression_result": {
+        "required_fields": ["candidate_revision", "commands", "result", "phases_covered"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"commands": "scalar_list", "phases_covered": "scalar_list"},
+        "field_min_items": {"commands": 1, "phases_covered": 1},
+        "field_value_contracts": {"candidate_revision": "git_revision"}
+      },
+      "risk_disposition": {
+        "required_fields": ["disposition", "rationale"],
+        "conditional_field_sets": {
+          "accepted": ["accepted_by", "accepted_on"],
+          "follow_up": ["owner", "target_date"]
+        },
+        "conditional_profile_selector": "disposition",
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"accepted_on": "iso_date", "target_date": "iso_date"}
+      },
+      "security_approval": {
+        "required_fields": ["required", "decision"],
+        "conditional_field_sets": {
+          "required": ["approver", "approved_on", "checked_statement"],
+          "not_required": ["basis"]
+        },
+        "conditional_profile_selector": "required",
+        "conditional_profile_value_map": {"true": "required", "false": "not_required"},
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"required": "boolean", "decision": "approval_decision", "approved_on": "iso_date"}
+      },
+      "test_uat_execution": {
+        "required_fields": ["candidate_revision", "command_results", "evidence_event_ids"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"command_results": "record_list", "evidence_event_ids": "scalar_list"},
+        "field_item_contracts": {"command_results": "command_result_item"},
+        "field_min_items": {"command_results": 1, "evidence_event_ids": 1},
+        "field_value_contracts": {"candidate_revision": "git_revision"}
+      },
+      "command_result_item": {
+        "required_fields": ["command", "result"],
+        "default_field_shape": "scalar"
+      },
+      "value_review": {
+        "required_fields": ["disposition", "details"],
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"details": "record"},
+        "field_item_contracts": {"details": "value_review_details"},
+        "field_value_contracts": {"disposition": "value_review_disposition"}
+      },
+      "value_review_details": {
+        "required_fields": [],
+        "conditional_field_sets": {
+          "complete": ["criterion_results"],
+          "not_due": ["trigger", "expected_date_when_knowable", "owner", "evidence_source", "next_review_mechanism"],
+          "not_applicable": ["rationale", "accepted_by", "accepted_on"]
+        },
+        "conditional_profile_selector": "parent.disposition",
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"criterion_results": "record_list"},
+        "field_item_contracts": {"criterion_results": "value_result_item"},
+        "field_min_items": {"criterion_results": 1}
+      },
+      "value_result_item": {
+        "required_fields": ["criterion_id", "evidence", "result"],
+        "conditional_field_sets": {
+          "missed": ["follow_up_decision"],
+          "unmeasurable": ["follow_up_decision"]
+        },
+        "conditional_profile_selector": "result",
+        "default_field_shape": "scalar",
+        "field_shape_overrides": {"evidence": "scalar_list"},
+        "field_min_items": {"evidence": 1},
+        "field_value_contracts": {"result": "value_result"}
+      },
+      "reconciliation_artifact_item": {
+        "required_fields": ["artifact_id", "artifact_path", "status", "action", "evidence_event_id"],
+        "default_field_shape": "scalar"
+      },
+      "residual_finding_item": {
+        "required_fields": ["finding_id", "severity", "disposition", "owner", "rationale"],
+        "default_field_shape": "scalar"
+      },
+      "migration_provenance_item": {
+        "required_fields": ["artifact_path", "reviewed_revision", "blob_oid", "digest"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"reviewed_revision": "git_revision", "blob_oid": "git_blob_oid", "digest": "sha256"}
+      },
+      "enforcement_exception_item": {
+        "required_fields": ["requirement_id", "disposition", "rationale", "approved_by", "approved_on"],
+        "default_field_shape": "scalar",
+        "field_value_contracts": {"approved_on": "iso_date"}
+      }
+    }
+  },
+  "approval_policy": {
+    "phase_checkpoint_acceptance": {
+      "approver_kind": "named_human",
+      "changes_major_gate": false,
+      "automation_or_unbound_role_may_approve": false
+    },
+    "phase_exit": {
+      "approver_kind": "named_human",
+      "c1_c2_delegation_allowed": true,
+      "delegation_event_type": "phase_transition",
+      "delegation_event_profile": "delegated_phase_exit",
+      "delegation_event_field": "delegation",
+      "delegation_allowed_classes": ["C1", "C2"],
+      "delegation_prohibited_classes": ["C3"],
+      "c1_c2_delegation_required_fields": [
+        "delegated_by",
+        "delegated_to",
+        "accepted_by",
+        "scope",
+        "starts_on",
+        "ends_on"
+      ],
+      "c3_delegation_allowed": false,
+      "automation_or_unbound_role_may_approve": false,
+      "critical_findings_block": true,
+      "major_residual_requires_named_human_risk_acceptance": true
+    },
+    "implementation_acceptance": {
+      "approver_kind": "named_human",
+      "automation_or_unbound_role_may_approve": false
+    },
+    "deployment": {
+      "approver_kind": "named_human_deployment_approver",
+      "security_approver_when_governance_requires": true,
+      "automation_or_unbound_role_may_approve": false
+    },
+    "project_closeout": {
+      "approver_kind": "named_human",
+      "operational_owner_confirmation_when_deployed": true,
+      "automation_or_unbound_role_may_approve": false
+    }
+  },
+  "deployment": {
+    "authorization_event": "deployment_approval",
+    "intents": ["deploy", "non_deployment"],
+    "production_action_automatic": false,
+    "criterion_ids": ["G8-READINESS", "G8-RUNBOOK", "G8-RELEASE-SCOPE", "G8-CONFIG-SECRETS", "G8-MIGRATION-ROLLBACK", "G8-MONITORING-OWNERSHIP", "G8-VALUE-PREREQUISITES", "G8-DEPLOYMENT-APPROVAL"],
+    "artifact_requirements": [
+      {"artifact_id": "deployment_readiness", "reviewed_statuses": ["Ready for Approval"], "resulting_statuses": ["Accepted"], "evidence_categories": ["new_acceptance_status_only"]},
+      {"artifact_id": "production_runbook", "reviewed_statuses": ["Complete"], "resulting_statuses": ["Complete"], "evidence_categories": ["complete_report_unchanged"]}
+    ],
+    "value_prerequisite_contract": {
+      "contract": "value_review_contract",
+      "required_fields": ["disposition", "details"],
+      "must_be_complete_before_authorization": true
+    },
+    "deploy_path": {
+      "authorization_required_before_action": true,
+      "deployment_record_status": "Complete",
+      "operational_owner_confirmation_required": true,
+      "terminal_disposition": "deployed",
+      "production_action_performed": true
+    },
+    "non_deployment_path": {
+      "allowed": true,
+      "authorization_required": true,
+      "required_fields": [
+        "disposition",
+        "rationale",
+        "scope",
+        "release_candidate",
+        "approver",
+        "approved_on",
+        "future_trigger_or_finality"
+      ],
+      "deployment_record_status": "Complete",
+      "terminal_disposition": "not_deployed",
+      "production_action_performed": false
+    },
+    "terminal_correlations": [
+      {"authorization_intent": "deploy", "terminal_disposition": "deployed", "production_action_performed": true},
+      {"authorization_intent": "non_deployment", "terminal_disposition": "not_deployed", "production_action_performed": false}
+    ],
+    "authorization_intent_must_match_terminal_disposition": true,
+    "terminal_transition": "G8-to-G9"
+  },
+  "artifacts": [
+    {
+      "id": "project_manifest",
+      "path": "docs/project/project.yaml",
+      "path_kind": "fixed",
+      "kind": "control_plane",
+      "template": "docs/project-template/project.yaml",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9"],
+      "evidence_class": "manifest_state",
+      "allowed_statuses": [],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": false
+    },
+    {
+      "id": "gate_log",
+      "path": "docs/project/approvals/gate-log.md",
+      "path_kind": "fixed",
+      "kind": "append_only_event_log",
+      "template": "docs/methodology/templates/gate-log-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "named-human-approver",
+      "lifecycle_bindings": ["G0", "G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8", "G9"],
+      "evidence_class": "durable_approval_events",
+      "allowed_statuses": [],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": false
+    },
+    {
+      "id": "vision",
+      "path": "docs/project/vision/vision.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/vision-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "product-vision-agent",
+      "lifecycle_bindings": ["G1"],
+      "evidence_class": "accepted_authority",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "prd",
+      "path": "docs/project/prd/prd.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/prd-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "prd-agent",
+      "lifecycle_bindings": ["G2"],
+      "evidence_class": "accepted_authority",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "architecture",
+      "path": "docs/project/architecture/architecture.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/architecture-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "architecture-agent",
+      "lifecycle_bindings": ["G3"],
+      "evidence_class": "accepted_authority",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "technology_stack",
+      "path": "docs/project/decisions/0001-technology-stack.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/0001-technology-stack-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "architecture-agent",
+      "lifecycle_bindings": ["G3"],
+      "evidence_class": "accepted_authority",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "governance_security",
+      "path": "docs/project/security-governance/governance-security-spec.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/governance-security-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "security-governance-agent",
+      "lifecycle_bindings": ["G4"],
+      "evidence_class": "accepted_authority",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_plan",
+      "path": "docs/project/build-plan/phase-plan.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/phase-plan-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G5.0", "G5"],
+      "evidence_class": "phase_partition",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_build_plan",
+      "path": "docs/project/build-plan/phases/phase-<id>-build-plan.md",
+      "path_kind": "phase_pattern",
+      "kind": "authority",
+      "template": "docs/methodology/templates/phase-build-plan-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G5.<id>.1"],
+      "evidence_class": "phase_scope",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "tactical_plan",
+      "path": "docs/project/build-plan/phases/phase-<id>-tactical-implementation-plan.md",
+      "path_kind": "phase_pattern",
+      "kind": "authority",
+      "template": "docs/methodology/templates/tactical-implementation-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G5.<id>.2"],
+      "evidence_class": "stable_tasks",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "construction_directive",
+      "path": "docs/project/build-plan/phases/phase-<id>-construction-directive.md",
+      "path_kind": "phase_pattern",
+      "kind": "authority",
+      "template": "docs/methodology/templates/phase-construction-directive-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G5.<id>.3"],
+      "evidence_class": "complete_construction_directive",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "build_prompt",
+      "path": "docs/project/build-plan/phases/phase-<id>-build-prompt.md",
+      "path_kind": "phase_pattern",
+      "kind": "execution_instruction",
+      "template": "docs/methodology/templates/phase-build-prompt-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "phase-planning-agent",
+      "lifecycle_bindings": ["G5.<id>.3"],
+      "evidence_class": "build_prompt",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_test_uat",
+      "path": "docs/project/testing/phase-<id>-test-uat-plan.md",
+      "path_kind": "phase_pattern",
+      "kind": "authority_and_evidence",
+      "template": "docs/methodology/templates/test-uat-plan-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "test-uat-agent",
+      "lifecycle_bindings": ["G5.<id>.1", "G5.<id>.3", "G5.<id>.4"],
+      "evidence_class": "executed_test_uat",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "implementation_evidence",
+      "path": "docs/project/build-plan/phases/phase-<id>-implementation-evidence.md",
+      "path_kind": "phase_pattern",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/phase-implementation-evidence-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "implementation-agent",
+      "lifecycle_bindings": ["G5.<id>.4"],
+      "evidence_class": "implementation_candidate",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_code_review",
+      "path": "docs/project/build-plan/phases/phase-<id>-code-review.md",
+      "path_kind": "phase_pattern",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/code-review-report-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "code-review-agent",
+      "lifecycle_bindings": ["G5.<id>.4"],
+      "evidence_class": "independent_phase_review",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_remediation",
+      "path": "docs/project/build-plan/phases/phase-<id>-remediation.md",
+      "path_kind": "phase_pattern",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/phase-remediation-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "remediation-agent",
+      "lifecycle_bindings": ["G5.<id>.4"],
+      "evidence_class": "remediation_disposition",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_learnings",
+      "path": "docs/project/build-plan/phases/phase-<id>-learnings.md",
+      "path_kind": "phase_pattern",
+      "kind": "authority",
+      "template": "docs/methodology/templates/phase-learnings-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "as-built-closeout-agent",
+      "lifecycle_bindings": ["G5.<id>.4"],
+      "evidence_class": "phase_learnings",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_as_built",
+      "path": "docs/project/as-built/phase-<id>-as-built-closeout.md",
+      "path_kind": "phase_pattern",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/as-built-closeout-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "as-built-closeout-agent",
+      "lifecycle_bindings": ["G5.<id>.4"],
+      "evidence_class": "phase_as_built_closeout",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "phase_value_review",
+      "path": "docs/project/as-built/phase-<id>-value-review.md",
+      "path_kind": "phase_pattern",
+      "kind": "value_evidence",
+      "template": "docs/methodology/templates/value-review-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "as-built-closeout-agent",
+      "lifecycle_bindings": ["G5.<id>.4", "G9"],
+      "evidence_class": "phase_value_disposition",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "traceability",
+      "path": "docs/project/traceability/traceability-matrix.md",
+      "path_kind": "fixed",
+      "kind": "cumulative_evidence",
+      "template": "docs/methodology/templates/traceability-matrix-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "test-uat-agent",
+      "lifecycle_bindings": ["G5.0", "G5.<id>.4", "G5", "G6", "G7", "G8", "G9"],
+      "evidence_class": "cumulative_traceability",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "current",
+      "provenance_required": true
+    },
+    {
+      "id": "implementation_summary",
+      "path": "docs/project/build-plan/implementation-summary.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/implementation-summary-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "implementation-agent",
+      "lifecycle_bindings": ["G6"],
+      "evidence_class": "aggregate_implementation_readiness",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "final_code_review",
+      "path": "docs/project/review/code-review.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/final-code-review-report-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "code-review-agent",
+      "lifecycle_bindings": ["G7"],
+      "evidence_class": "aggregate_independent_review",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "aggregate_remediation",
+      "path": "docs/project/review/remediation.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/aggregate-remediation-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "remediation-agent",
+      "lifecycle_bindings": ["G7"],
+      "evidence_class": "aggregate_remediation",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "final_test_uat",
+      "path": "docs/project/testing/final-test-uat-report.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/final-test-uat-report-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "test-uat-agent",
+      "lifecycle_bindings": ["G7"],
+      "evidence_class": "aggregate_test_uat",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "deployment_readiness",
+      "path": "docs/project/deployment/deployment-readiness.md",
+      "path_kind": "fixed",
+      "kind": "authority",
+      "template": "docs/methodology/templates/deployment-readiness-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "deployment-readiness-agent",
+      "lifecycle_bindings": ["G8"],
+      "evidence_class": "deployment_readiness",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "production_runbook",
+      "path": "docs/project/deployment/production-runbook.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/production-runbook-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "deployment-readiness-agent",
+      "lifecycle_bindings": ["G8"],
+      "evidence_class": "production_operations",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "deployment_record",
+      "path": "docs/project/deployment/deployment-record.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/deployment-record-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "deployment-readiness-agent",
+      "lifecycle_bindings": ["G9"],
+      "evidence_class": "deployment_or_non_deployment_result",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "project_value_review",
+      "path": "docs/project/as-built/value-review.md",
+      "path_kind": "fixed",
+      "kind": "value_evidence",
+      "template": "docs/methodology/templates/project-value-review-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "as-built-closeout-agent",
+      "lifecycle_bindings": ["G9"],
+      "evidence_class": "project_value_disposition",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "project_as_built",
+      "path": "docs/project/as-built/as-built-closeout.md",
+      "path_kind": "fixed",
+      "kind": "evidence_report",
+      "template": "docs/methodology/templates/project-as-built-closeout-template.md",
+      "template_state": "planned",
+      "lifecycle_state": "planned",
+      "owner_role": "as-built-closeout-agent",
+      "lifecycle_bindings": ["G9"],
+      "evidence_class": "project_as_built_closeout",
+      "allowed_statuses": ["Draft", "Ready for Review", "Complete", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    },
+    {
+      "id": "supporting_design",
+      "path": "docs/project/design/<name>.md",
+      "path_kind": "supporting_pattern",
+      "kind": "supporting_design",
+      "template": "docs/methodology/templates/adr-template.md",
+      "template_state": "current",
+      "lifecycle_state": "current",
+      "owner_role": "architecture-agent",
+      "lifecycle_bindings": ["G3", "G4", "G5"],
+      "evidence_class": "technique_specific_support",
+      "allowed_statuses": ["Draft", "Ready for Review", "Ready for Approval", "Accepted", "Stale", "Superseded"],
+      "project_identity_required": true,
+      "identity_contract_state": "planned",
+      "required_work_package": "WP-04",
+      "provenance_required": true
+    }
+  ],
+  "manifest": {
+    "schema_version": 2,
+    "source_file": "docs/project-template/project.yaml",
+    "contract_state": "planned",
+    "required_work_package": "WP-04",
+    "field_states": {
+      "phase.loop_status": {"contract_state": "planned", "required_work_package": "WP-04"},
+      "phase.current_phase_id": {"contract_state": "planned", "required_work_package": "WP-04"}
+    },
+    "required_fields": [
+      "project.name",
+      "project.slug",
+      "project.status",
+      "project.current_gate",
+      "project.methodology_version",
+      "human_control.owner",
+      "human_control.approver",
+      "human_control.deployment_approver",
+      "collaboration.active_role",
+      "scaling.blast_radius_class",
+      "approvals.current_gate",
+      "approvals.latest_decision",
+      "phase.loop_status",
+      "phase.phase_position",
+      "phase.current_phase_id",
+      "phase.phase_plan",
+      "phase.phases"
+    ],
+    "invariants": [
+      {"id": "MANIFEST-GATE-MAJOR", "rule": "project.current_gate is exactly one declared G0-G9 ID."},
+      {
+        "id": "MANIFEST-PHASE-AXIS",
+        "rule": "phase.phase_position is null before G5, records the most recently completed checkpoint inside G5, and retains the final phase position after the loop closes; it never changes project.current_gate.",
+        "before_g5": "null",
+        "inside_g5": "latest_completed_checkpoint",
+        "retained_final_position": true,
+        "major_gate_independent": true
+      },
+      {"id": "MANIFEST-PHASE-MEMBER", "rule": "phase.current_phase_id is null or names exactly one declared phase."},
+      {"id": "MANIFEST-PHASE-ORDER", "rule": "Phase array order is authoritative and IDs are unique."},
+      {"id": "MANIFEST-LATEST-SUMMARY", "rule": "approvals.latest_decision summarizes but never replaces a gate-log event."},
+      {"id": "MANIFEST-TERMINAL", "rule": "G9 requires project.status closed, active_role none, and no next gate, role, or artifact.", "current_gate": "G9", "project_status": "closed", "active_role": "none", "next_gate_must_be_null": true, "next_role_must_be_null": true, "next_artifact_must_be_null": true},
+      {"id": "MANIFEST-STRICT-V2", "rule": "New 0.5 projects use strict schema version 2; legacy mode is explicit and version-bound."}
+    ]
+  },
+  "identifiers": {
+    "phase_id": {
+      "pattern": "^[A-Za-z0-9]+(-[A-Za-z0-9]+)*$",
+      "examples": ["1", "10-5", "15a", "API-2"]
+    },
+    "workstream": {
+      "pattern": "^PH-([A-Za-z0-9]+(-[A-Za-z0-9]+)*)-WS([0-9]{2})$",
+      "format": "PH-<phase-id>-WS<NN>",
+      "example": "PH-1-WS01",
+      "immutable_after_status": "Accepted",
+      "reuse_retired_ids": false
+    },
+    "task": {
+      "pattern": "^PH-([A-Za-z0-9]+(-[A-Za-z0-9]+)*)-T([0-9]{3})$",
+      "format": "PH-<phase-id>-T<NNN>",
+      "examples": ["PH-1-T010", "PH-10-5-T020"],
+      "immutable_after_status": "Accepted",
+      "reuse_retired_ids": false
+    },
+    "event_id": {
+      "pattern": "^EV-[0-9]{8}-[A-Za-z0-9][A-Za-z0-9-]*$"
+    },
+    "checkpoint": {
+      "pattern": "^G5(\\.0|\\.[A-Za-z0-9]+(-[A-Za-z0-9]+)*\\.[1-4])$"
+    }
+  },
+  "references": {
+    "relationships": [
+      "implements",
+      "satisfies",
+      "tested-by",
+      "constrained-by",
+      "refines"
+    ],
+    "target_kinds": [
+      {
+        "id": "canonical_artifact",
+        "path_scope": "canonical_fixed_or_phase_artifact",
+        "identity_contract": "registered_artifact_identity_and_provenance",
+        "authority_direction": "derive_from_registered_artifact_kind",
+        "lifecycle_owner": "registered_artifact_owner_and_bindings",
+        "cycle_policy": "global_reference_dag",
+        "depth_policy": "registered_canonical_lifecycle",
+        "validation_severity": "error_when_mechanical_warning_when_judgment"
+      },
+      {
+        "id": "supporting_design",
+        "path_scope": "docs/project/design/",
+        "identity_contract": "project_identity_and_derived_from_canonical_source",
+        "form_contract": "textual_technique_specific_design",
+        "authority_direction": "support_only",
+        "lifecycle_owner": "declared_canonical_source_owner",
+        "cycle_policy": "global_reference_dag",
+        "depth_policy": "default_one_or_approved_exception",
+        "validation_severity": "error_when_mechanical_warning_when_judgment"
+      }
+    ],
+    "enforcement": {
+      "state": "planned",
+      "required_work_package": "WP-05",
+      "enforcer_path": "scripts/check-methodology.sh",
+      "verification_suite": "tests/methodology/test-reference-graph.sh",
+      "required_rule_ids": ["REF-TARGET-KIND", "REF-CANONICAL-PATH", "REF-SUPPORTING-PATH", "REF-AUTHORITY-DIRECTION", "REF-NO-CYCLE", "REF-DEPTH"]
+    },
+    "depth_policy": {
+      "default_supporting_depth": 1,
+      "greater_depth_requires_exception": true,
+      "exception_required_fields": ["declared_by", "justification", "maximum_depth", "approved_by", "approved_on"],
+      "supporting_to_supporting_reference_allowed_only_by_exception": true
+    },
+    "rules": [
+      {"id": "REF-TARGET-KIND", "rule": "Every typed reference declares exactly one target kind."},
+      {"id": "REF-CANONICAL-PATH", "rule": "Canonical authority and evidence references resolve to registered canonical paths."},
+      {"id": "REF-SUPPORTING-PATH", "rule": "Supporting-design references resolve only below docs/project/design/."},
+      {"id": "REF-AUTHORITY-DIRECTION", "rule": "Supporting artifacts cannot govern canonical authority."},
+      {"id": "REF-NO-CYCLE", "rule": "All typed reference edges participate in one directed acyclic graph; approved depth exceptions do not permit cycles."},
+      {"id": "REF-DEPTH", "rule": "Supporting-design references are one level deep by default; greater depth requires a declared, justified, named-human-approved exception."}
+    ]
+  },
+  "scaling": {
+    "g2_criterion_form_by_class": {
+      "C1": {
+        "required_all": [],
+        "required_any": ["G2-EARS-FORM", "G2-OBSERVABLE-FORM"]
+      },
+      "C2": {
+        "required_all": ["G2-EARS-FORM"],
+        "required_any": []
+      },
+      "C3": {
+        "required_all": ["G2-EARS-FORM"],
+        "required_any": []
+      }
+    },
+    "classes": [
+      {
+        "id": "C1",
+        "label": "Contained",
+        "gate_combination": "G1-G4 may combine with explicit content preservation, evidence, named-human approval, and recorded justification.",
+        "requirements_form": "plain_observable_or_ears",
+        "unwanted_behavior_required": true,
+        "verification_spec_required": true,
+        "design_interrogation": "proportional",
+        "phase_exit_evidence_waivable": false
+      },
+      {
+        "id": "C2",
+        "label": "Standard",
+        "gate_combination": "Full chain by default; a combination requires explicit span, preserved criteria, justification, and named-human approval.",
+        "requirements_form": "ears",
+        "unwanted_behavior_required": true,
+        "verification_spec_required": true,
+        "design_interrogation": "proportional",
+        "phase_exit_evidence_waivable": false
+      },
+      {
+        "id": "C3",
+        "label": "Critical",
+        "gate_combination": "prohibited",
+        "requirements_form": "ears",
+        "unwanted_behavior_required": true,
+        "verification_spec_required": true,
+        "design_interrogation": "expanded",
+        "phase_exit_evidence_waivable": false
+      }
+    ],
+    "combined_gate_required_fields": [
+      "span",
+      "blast_radius_class",
+      "mode",
+      "justification",
+      "preserved_criterion_ids",
+      "evidence",
+      "approved_by",
+      "approved_on",
+      "event_id"
+    ],
+    "combined_gate_rules": {
+      "c3_prohibited": true,
+      "nonadjacent_requires_declared_decision": true,
+      "all_spanned_criteria_preserved": true,
+      "nonwaivable_evidence_preserved": true,
+      "phase_exit_may_combine_form_not_evidence": true
+    },
+    "coverage_policy": {
+      "universal_percentage": null,
+      "required_fields": ["metric", "measurement_tool", "denominator", "target", "scope", "measurement_command", "exclusions", "exclusion_rationale", "owner", "shortfall_disposition"],
+      "shortfall_requires_named_risk_acceptance": true
+    }
+  },
+  "naa": {
+    "name": "No Undeclared Abstractions",
+    "authority_bearing_categories": [
+      "domain_business_entity_or_invariant",
+      "persisted_shared_external_or_security_relevant_field",
+      "public_or_cross_component_contract",
+      "architectural_component_or_ownership_boundary",
+      "trust_identity_authorization_audit_or_lifecycle_boundary"
+    ],
+    "task_permitted_private_categories": [
+      "private_helper",
+      "local_adapter",
+      "internal_value_type",
+      "test_fixture",
+      "fake",
+      "mock",
+      "framework_generated_type"
+    ],
+    "private_exception_conditions": [
+      "no_new_product_concept",
+      "no_persisted_or_shared_state",
+      "no_public_contract",
+      "no_ownership_boundary",
+      "no_governance_behavior",
+      "covered_by_approved_tactical_task"
+    ],
+    "quality_principles_still_apply": ["YAGNI", "KISS", "DRY", "SRP", "Least Astonishment"]
+  },
+  "compatibility": {
+    "new_project_mode": "strict_schema_v2",
+    "legacy_mode": "explicit_version_bound_migration",
+    "legacy_event_policy": "Historical unknowns are recorded, never fabricated.",
+    "new_events_in_legacy_mode": "must_conform_to_schema_v2",
+    "automatic_gate_regression": false,
+    "scaffold": {
+      "fresh_init": "project_wide_only",
+      "phase_scaffold_command": "scripts/init-phase.sh",
+      "phase_scaffold_state": "planned",
+      "required_work_package": "WP-04",
+      "seed_phase_option": "--seed-phase",
+      "seed_phase_must_be_complete": true
+    }
+  },
+  "decisions": [
+    {"id": "D-001", "title": "Release Shape", "state": "ready_for_ratification", "mechanical_bindings": ["versions"]},
+    {"id": "D-002", "title": "Platform Contract", "state": "ready_for_ratification", "mechanical_bindings": ["generation.platform_contract"]},
+    {"id": "D-003", "title": "Core Dependency Policy", "state": "ready_for_ratification", "mechanical_bindings": ["generation.runtime_dependency_policy"]},
+    {"id": "D-004", "title": "Two-Axis G5 State Model", "state": "ready_for_ratification", "mechanical_bindings": ["gates.G5", "checkpoints", "manifest.invariants"]},
+    {"id": "D-005", "title": "Complete Phase Exit", "state": "ready_for_ratification", "mechanical_bindings": ["checkpoints.G5.<id>.4"]},
+    {"id": "D-006", "title": "Phase Exit Approval", "state": "ready_for_ratification", "mechanical_bindings": ["checkpoints.G5.<id>.4.approval", "approval_policy.phase_exit", "events.phase_transition", "scaling.classes"]},
+    {"id": "D-007", "title": "NAA Authority Boundary", "state": "ready_for_ratification", "mechanical_bindings": ["naa"]},
+    {"id": "D-008", "title": "Tactical Identifier Contract", "state": "ready_for_ratification", "mechanical_bindings": ["identifiers.workstream", "identifiers.task"]},
+    {"id": "D-009", "title": "Canonical Artifact References", "state": "ready_for_ratification", "mechanical_bindings": ["paths", "references"]},
+    {"id": "D-010", "title": "Coverage Policy", "state": "ready_for_ratification", "mechanical_bindings": ["scaling.coverage_policy"]},
+    {"id": "D-011", "title": "Approval Evidence Contract", "state": "ready_for_ratification", "mechanical_bindings": ["events", "event_serialization", "event_evidence_item"]},
+    {"id": "D-012", "title": "Reviewed Revision Contract", "state": "ready_for_ratification", "mechanical_bindings": ["evidence_categories", "event_evidence_item.revision_rules", "event_reference_item", "event_serialization.record_contracts.event_evidence_item"]},
+    {"id": "D-013", "title": "Legacy Compatibility", "state": "ready_for_ratification", "mechanical_bindings": ["compatibility"]},
+    {"id": "D-014", "title": "Scaffold Timing", "state": "ready_for_ratification", "mechanical_bindings": ["compatibility.scaffold"]},
+    {"id": "D-015", "title": "Release And Historical Tags", "state": "ready_for_ratification", "mechanical_bindings": ["versions.release_rules"]},
+    {"id": "D-016", "title": "Single Lifecycle Registry", "state": "ready_for_ratification", "mechanical_bindings": ["registry", "generation"]},
+    {"id": "D-017", "title": "Verification-First Scaling", "state": "ready_for_ratification", "mechanical_bindings": ["criteria.G2", "criteria.G3", "scaling.classes"]},
+    {"id": "D-018", "title": "Post-Loop Evidence Chain", "state": "ready_for_ratification", "mechanical_bindings": ["transitions.G5-to-G9", "events.deployment_approval", "deployment", "value_review_contract", "artifacts.aggregate"]}
+  ],
+  "decision_records": [
+    {
+      "source_file": "docs/methodology/design/operational-coherence-decision-record.md",
+      "classification": "active_candidate",
+      "lifecycle_state": "current",
+      "ratification_state": "ready_for_approval",
+      "decision_ids": ["D-001", "D-002", "D-003", "D-004", "D-005", "D-006", "D-008", "D-009", "D-010", "D-011", "D-012", "D-013", "D-014", "D-015", "D-016", "D-017", "D-018"]
+    },
+    {
+      "source_file": "docs/methodology/design/naa-authority-boundary-decision-record.md",
+      "classification": "active_candidate",
+      "lifecycle_state": "current",
+      "ratification_state": "ready_for_approval",
+      "decision_ids": ["D-007"]
+    },
+    {
+      "source_file": "docs/methodology/design/phase-loop-decision-record.md",
+      "classification": "partially_superseded_candidate",
+      "lifecycle_state": "current",
+      "clauses_still_in_force": ["bounded phase loop", "phase IDs are labels", "ordered phase manifest", "phase learning continuity"],
+      "supersession_target": "docs/methodology/design/operational-coherence-decision-record.md"
+    },
+    {
+      "source_file": "docs/methodology/design/documentation-structure-decision-record.md",
+      "classification": "partially_superseded_candidate",
+      "lifecycle_state": "current",
+      "clauses_still_in_force": ["canonical project authority", "technique neutrality", "typed artifact references"],
+      "supersession_target": "docs/methodology/design/operational-coherence-decision-record.md"
+    },
+    {
+      "source_file": "docs/methodology/design/gate-numbering-reconciliation-decision-record.md",
+      "classification": "partially_superseded_candidate",
+      "lifecycle_state": "current",
+      "clauses_still_in_force": ["G0 through G9 major enumeration", "no ordinal shadow enumeration"],
+      "supersession_target": "docs/methodology/design/operational-coherence-decision-record.md"
+    },
+    {
+      "source_file": "docs/methodology/design/verification-first-decision-record.md",
+      "classification": "partially_superseded_candidate",
+      "lifecycle_state": "current",
+      "clauses_still_in_force": ["testable requirements before architecture", "human-approved verification specification", "design interrogation", "value feedback"],
+      "supersession_target": "docs/methodology/design/operational-coherence-decision-record.md"
+    },
+    {
+      "source_file": "docs/methodology/design/sample-design.md",
+      "classification": "historical_example",
+      "lifecycle_state": "current",
+      "clauses_still_in_force": [],
+      "supersession_target": null
+    }
+  ],
+  "document_sweep": {
+    "active_roots": [
+      "AGENTS.md",
+      "README.md",
+      "docs/methodology",
+      "docs/project-template",
+      "docs/resources/practitioner-guide",
+      "scripts",
+      ".github/workflows"
+    ],
+    "active_with_classification": [
+      "docs/methodology/design"
+    ],
+    "non_authoritative_current_examples": [
+      "docs/resources/examples"
+    ],
+    "historical_roots": [
+      "docs/resources/releases"
+    ],
+    "research_roots": [
+      "docs/resources/research",
+      "docs/resources/evolution"
+    ],
+    "rules": {
+      "active_prose_coherence": true,
+      "design_decisions_follow_classification": true,
+      "examples_are_validated_but_never_authority": true,
+      "historical_prose_is_not_rewritten": true,
+      "historical_links_and_release_metadata_are_validated": true,
+      "research_is_excluded_from_current_rule_prose_checks": true
+    },
+    "enforcement": {
+      "active_prose_and_examples": {
+        "state": "planned",
+        "required_work_package": "WP-09",
+        "enforcer_path": "scripts/check-methodology.sh",
+        "verification_suite": "tests/methodology/test-documentation-coherence.sh",
+        "required_checks": ["active_prose_coherence", "classified_design_decisions", "current_examples_non_authoritative"]
+      },
+      "historical_links_and_release_metadata": {
+        "state": "planned",
+        "required_work_package": "WP-11",
+        "enforcer_path": "scripts/check-lifecycle-coherence.py",
+        "verification_suite": "tests/methodology/test-release-coherence.sh",
+        "required_checks": ["historical_links", "release_metadata", "version_synchronization"]
+      }
+    }
+  },
+  "generation": {
+    "generator": "scripts/generate-lifecycle-contract.py",
+    "output": "scripts/lib/lifecycle-contract.sh",
+    "deterministic": true,
+    "registry_digest_algorithm": "sha256",
+    "platform_contract": [
+      "macOS system Bash 3.2 and BSD utilities",
+      "Ubuntu GitHub-hosted runner Bash and GNU utilities"
+    ],
+    "runtime_dependency_policy": {
+      "installed_core": ["Bash 3.2", "portable POSIX-like utilities", "Git", "tar"],
+      "baseline_only_validator": "Python 3 standard library",
+      "installed_transition_commands_require_python": false
+    },
+    "forbidden_shell_features": [
+      "mapfile",
+      "associative arrays",
+      "sed -i",
+      "GNU 0,/regex/ addressing",
+      "GNU-only cpio flags"
+    ]
+  }
+}

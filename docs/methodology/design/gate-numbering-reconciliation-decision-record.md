@@ -95,3 +95,35 @@ Updated documentation:
 Independent conformance review is required before merge. The reviewer should receive the build
 prompt, the diff, and the verification transcript, but not the implementing agent's session
 transcript.
+
+## Append-Only Classification Notice: 2026-07-10
+
+This notice preserves the original `Status: Proposed` header. The G0-G9
+reconciliation is implemented in the current constitution, gate guide, manifest,
+checker, and templates, and Git records the implementing change at
+`bae030b91ec680042ea4e1f08641a8ababc4fc0b`. The repository does not contain a
+separate durable human-ratification record sufficient to rewrite the historical
+header to Accepted, so this notice does not manufacture one.
+
+Coherence classification: **Active implemented baseline rule with incomplete
+ratification provenance; proposed partial supersession pending human
+ratification**.
+
+Proposed successor:
+`docs/methodology/design/operational-coherence-decision-record.md` (D-004,
+D-016, and D-018).
+
+If and only if that exact successor record is ratified, the implemented G0-G9
+rule remains active and this record is **Partially Superseded** as follows:
+
+| Historical clause | Disposition after ratification | Successor rule |
+| --- | --- | --- |
+| Decision: adopt G0-G9 as the single enumeration | Remains active | D-004 and D-018 preserve G0-G9, including terminal G9. |
+| Decision: `gates.md` is canonical for numbers, names, and detailed criteria | Partially superseded | Under D-016, the constitution delegates enumeration to the canonical lifecycle model, the JSON registry is its validated machine-readable contract, and `gates.md` remains the normative human explanation. |
+| Mapping from the prior six-step constitution model | Remains active historical reconciliation | Operational coherence does not restore the retired numbering. |
+| Consequence: acceptance maps to G7 and project close-out to G9 | Remains active and is made complete | D-018 supplies the aggregate G6-G9 evidence and approval ownership. |
+| Security/Governance statement: "Enforcement semantics are unchanged" | Historical and superseded for 0.5 | D-004, D-005, D-006, D-011, D-012, and D-018 introduce explicit strict enforcement without changing numbering. |
+
+The missing historical ratification provenance must remain visible in release
+metadata under D-015. Until successor ratification, this notice classifies the
+observed implementation but grants no new normative authority.

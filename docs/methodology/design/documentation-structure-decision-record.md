@@ -237,3 +237,36 @@ lives inline in init-project.sh. Extract it to gate-log-template.md.
 - A malformed supporting-artifact filename or location is rejected.
 - AGENTS.md names canonical files and those paths exist after init.
 - Every canonical template contains a Supporting Artifacts section.
+
+## Append-Only Classification Notice: 2026-07-10
+
+This notice preserves the complete historical record above. It does not alter
+the original Accepted status or make proposed operational-coherence decisions
+normative before their explicit human ratification.
+
+Current classification: **Active; proposed partial supersession pending human
+ratification**.
+
+Proposed successor:
+`docs/methodology/design/operational-coherence-decision-record.md` (D-009,
+D-011, D-013, D-014, and D-016).
+
+If and only if that exact successor record is ratified, this record becomes
+**Partially Superseded** with this clause-level disposition:
+
+| Historical clause | Disposition after ratification | Successor rule |
+| --- | --- | --- |
+| Technique Neutrality principle | Remains active | Operational coherence constrains authority and evidence form, not design technique. |
+| Consequences 1 and 2: canonical naming and architecture-independent documentation scaffold | Remain active | D-014 refines only when phase-specific files are created. |
+| Consequence 3: supporting artifacts referenced from canonical artifacts | Partially superseded | D-009 distinguishes a reference to canonical authority/evidence from a reference to technique-specific supporting design. |
+| Consequence 4: typed, acyclic, depth-bounded graph | Partially superseded | Relationship vocabulary and DAG discipline remain active; D-009 adds required target kind so path, identity, authority direction, and graph rules are selected explicitly. |
+| Consequence 5: unspecified "canonical supporting-artifact location" | Superseded in location and target classification | D-009 fixes `docs/project/design/` as the only supporting-design location and rejects competing `docs/project/supporting/`. Content/name neutrality remains active. |
+| Consequence 6: phase plan absorbs the roadmap | Remains active | D-014 derives just-in-time phase scaffold IDs from that phase plan. |
+| Consequence 7: gate-log template houses the canonical event schema | Partially superseded | Append-only event history remains active. D-011 and D-016 make the lifecycle registry authoritative for mechanically determinate event vocabulary/bindings; the template remains the human-facing rendered form. |
+| Baseline consequence: "No migration" | Superseded | D-013 establishes explicit preservation-first, version-bound migration. |
+| Baseline consequence: initialization adds the canonical supporting-artifact location | Refined | D-009 names that location `docs/project/design/`; D-014 separates project-wide initialization from just-in-time phase creation. |
+
+Canonical role-based filenames, required `project:` provenance, the
+architecture/code-scaffold distinction, Technique Neutrality, textual supporting
+design, and the prohibition on silent roadmap replacement remain active. Until
+successor ratification, every historical clause retains its prior authority.
