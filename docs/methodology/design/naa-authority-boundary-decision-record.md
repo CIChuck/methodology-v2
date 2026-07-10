@@ -1,7 +1,7 @@
 # Decision Record: No Undeclared Abstractions Authority Boundary
 
 Date: 2026-07-10
-Status: Ready for Approval
+Status: Accepted
 Ratification method: Exact-revision named-human approval
 Owner: GenDev maintainers
 Target release: `0.5.0-operational-coherence`
