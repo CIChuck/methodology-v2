@@ -1,6 +1,7 @@
 # Phase Build Prompt: [Project Name] — Phase [id]: [Phase Name]
 
 Status: Draft | Ready for Review | Ready for Approval | Accepted | Stale | Superseded
+project: [project-slug]
 Date:
 Owner:
 Position: G5.[id].3

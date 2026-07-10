@@ -1,6 +1,7 @@
 # ADR-[NNNN]: [Decision Title]
 
 Status: Proposed | Ready for Approval | Accepted | Stale | Rejected | Superseded
+project: [project-slug]
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Rule 10: Decisions Must Be Durable
