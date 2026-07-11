@@ -61,6 +61,14 @@ th_run_case "RC-008" 0 "historical 0.5 independent review records a non-pending 
    ! rg -n 'Review result: Pending|independent review pending|Review package prepared; independent review pending' docs/resources/evolution/0.5.0-operational-coherence-review.md" \
   'Independent review complete'
 
+th_run_case "RC-010" 0 "1.0.1 independent review artifact records a non-pending result" \
+  "cd '$repo_root' && \
+   rg -n '^Status: Independent review complete' docs/resources/evolution/1.0.1-independent-review.md && \
+   rg -n '^Blocking findings after remediation: none' docs/resources/evolution/1.0.1-independent-review.md && \
+   rg -n '^## Reviewer Identity' docs/resources/evolution/1.0.1-independent-review.md && \
+   ! rg -n 'Review result: Pending|independent review pending' docs/resources/evolution/1.0.1-independent-review.md" \
+  'Independent review complete'
+
 th_run_case "RC-009" 0 "closeout ledger records all findings and WP-11 tasks" \
   "cd '$repo_root' && \
    ledger='docs/resources/evolution/0.5.0-operational-coherence-closeout-ledger.md' && \
