@@ -82,8 +82,11 @@ require_line '^Status: Active 1\.0 adoption guidance$' docs/resources/releases/1
 require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/README.md
 require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/04-starting-a-new-project.md
 require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/19-starting-mid-stream.md
-require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/13-codex-specific-notes.md
-require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/14-claude-code-specific-notes.md
+# Tool-specific notes must carry a dated review line. The assertion is
+# structural (a valid date must exist) rather than pinned to a single date, so
+# reviewing the notes does not require editing this checker in lockstep.
+require_line 'Last reviewed: 2[0-9]{3}-[0-9]{2}-[0-9]{2}' docs/resources/practitioner-guide/13-codex-specific-notes.md
+require_line 'Last reviewed: 2[0-9]{3}-[0-9]{2}-[0-9]{2}' docs/resources/practitioner-guide/14-claude-code-specific-notes.md
 require_line '^## Prerequisites$' README.md
 require_line 'ripgrep' README.md
 require_line 'ripgrep' AGENTS.md

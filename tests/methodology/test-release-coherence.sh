@@ -54,7 +54,7 @@ th_run_case "RC-007" 0 "release index separates published release from active ca
    ! rg -n '^Latest release: 1\\.0\\.[01]$' docs/resources/releases/README.md" \
   'Active release candidate'
 
-th_run_case "RC-008" 0 "independent review artifact records a non-pending result" \
+th_run_case "RC-008" 0 "historical 0.5 independent review records a non-pending result" \
   "cd '$repo_root' && \
    rg -n '^Status: Independent review complete' docs/resources/evolution/0.5.0-operational-coherence-review.md && \
    rg -n '^Blocking findings after remediation:' docs/resources/evolution/0.5.0-operational-coherence-review.md && \
