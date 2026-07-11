@@ -77,6 +77,31 @@ Small projects may combine artifacts when they are classified as contained C1 wo
 still needs to exist. Default C2 product work should normally use the full chain. Critical C3 work
 should add review, evidence, and enforcement discipline rather than compressing gates.
 
+## Prerequisites
+
+GenDev requires these tools on every platform:
+
+```text
+bash 4 or later
+git
+python3
+ripgrep (rg)
+```
+
+Ripgrep is required, not optional: the coherence checkers and regression suites
+standardize on one regex engine so pattern checks behave identically everywhere.
+Install it with `apt install ripgrep`, `brew install ripgrep`,
+`winget install BurntSushi.ripgrep.MSVC`, or `cargo install ripgrep`.
+
+Verify prerequisites before initializing:
+
+```bash
+./scripts/gendev-doctor.sh
+```
+
+The doctor reports each prerequisite, and `init-project.sh` refuses to
+initialize until all of them are present.
+
 ## Initialize A Project
 
 From a fresh clone:

@@ -230,6 +230,12 @@ Do not implement code.
 
 ## First-Run Preflight
 
+GenDev declares four prerequisites: bash 4+, git, python3, and ripgrep (rg).
+The doctor reports each one, and `./scripts/init-project.sh` refuses to run
+until all are present. Install ripgrep with `apt install ripgrep`,
+`brew install ripgrep`, `winget install BurntSushi.ripgrep.MSVC`, or
+`cargo install ripgrep`.
+
 Before drafting G1 content, run the 1.0 orientation commands from the repository root:
 
 ```bash

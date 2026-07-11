@@ -3,6 +3,14 @@
 
 set -u
 
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+. "$script_dir/lib/gendev-common.sh"
+
+# Point-of-use guard: every assertion below runs through rg. Without this
+# guard, a missing rg makes the negative assertions pass silently, which is
+# the failure mode this checker exists to prevent.
+gendev_require_tool "check-doc-coherence.sh" rg || exit 3
+
 errors=0
 
 fail() {
@@ -76,6 +84,12 @@ require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/pract
 require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/19-starting-mid-stream.md
 require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/13-codex-specific-notes.md
 require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/14-claude-code-specific-notes.md
+require_line '^## Prerequisites$' README.md
+require_line 'ripgrep' README.md
+require_line 'ripgrep' AGENTS.md
+require_line 'ripgrep' docs/resources/practitioner-guide/04-starting-a-new-project.md
+require_line 'ripgrep' docs/resources/practitioner-guide/16-checklists.md
+require_line '^## Prerequisites$' docs/resources/releases/1.0.1-adoption.md
 require_executable scripts/gendev-doctor.sh
 require_executable scripts/project-state.sh
 require_executable scripts/new-artifact.sh

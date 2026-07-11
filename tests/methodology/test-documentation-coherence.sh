@@ -39,6 +39,14 @@ th_run_case "DOC-006" 0 "active documentation passes release identity and prefli
   "cd '$repo_root' && ./scripts/check-doc-coherence.sh" \
   'Documentation coherence: clean'
 
+th_run_case "DOC-007" 3 "doc-coherence checker fails loudly when ripgrep is missing" \
+  "tmpbin=\"\$(mktemp -d)\" && \
+   for tool in bash sh dirname cat rm; do \
+     src=\"\$(command -v \"\$tool\" 2>/dev/null)\" && [ -n \"\$src\" ] && ln -s \"\$src\" \"\$tmpbin/\$tool\"; \
+   done; \
+   cd '$repo_root' && PATH=\"\$tmpbin\" ./scripts/check-doc-coherence.sh" \
+  'requires rg'
+
 th_summary
 
 exit $(( TH_CASE_FAIL > 0 ))

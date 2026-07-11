@@ -48,6 +48,7 @@ checklists here remain manual reminders.
 [ ] scaling.blast_radius_class confirmed as C1, C2, or C3
 [ ] scaling.classification_reason recorded
 [ ] scaling.combined_gates empty or justified
+[ ] prerequisites present: bash 4+, git, python3, ripgrep (rg)
 [ ] ./scripts/gendev-doctor.sh passes or findings are dispositioned
 [ ] ./scripts/project-state.sh reports the expected gate and approval state
 [ ] ./scripts/check-methodology.sh passes
