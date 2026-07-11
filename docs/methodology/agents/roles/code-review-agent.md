@@ -73,7 +73,7 @@ Human approval is required to accept critical or major findings without remediat
 
 Complete when the team can decide whether to accept, remediate, or reopen planning.
 
-## 0.5 Operational Coherence Ownership
+## Operational Coherence Ownership
 
 Distinguish per-phase review from aggregate G6/G7 review. Phase review checks the implemented phase
 against its directive, tactical task IDs, phase plan, test/UAT plan, and authority. G6 readiness is

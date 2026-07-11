@@ -469,18 +469,18 @@ Treat the project as drifted. Reconcile artifact status, manifest state, and gat
 continuing. Prefer the runtime transition command for the corrected approval.
 ```
 
-## Legacy Migration Hazard
+## Imported Authority Hazard
 
 Symptom:
 
 ```text
-An older project is backfilled and imported documents are treated as Accepted because they already
-exist.
+A repository is backfilled and imported product documents are treated as Accepted because they
+already exist.
 ```
 
 Risk:
 
-- unconformed legacy content bypasses current templates, EARS/observable criteria, verification
+- unconformed imported content bypasses current templates, EARS/observable criteria, verification
 specification, approval, and traceability requirements.
 
 Correction:

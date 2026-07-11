@@ -52,7 +52,7 @@ Human approval is required to close the phase.
 Complete when future developers and agents can understand the actual system without relying on chat
 history.
 
-## 0.5 Operational Coherence Ownership
+## Operational Coherence Ownership
 
 Own terminal G9 close-out. Confirm final traceability, deployment or non-deployment record,
 operational validation, value-review disposition, known limitations, deferred items, and aggregate

@@ -13,6 +13,14 @@ References used for this chapter:
 - `https://code.claude.com/docs/en/settings`
 - `https://code.claude.com/docs/en/sub-agents`
 
+1.0 review stamp:
+
+- Last reviewed: 2026-07-11
+- Review scope: Claude Code-specific GenDev operation, including surfaces, CLAUDE.md and AGENTS.md
+  relationship, settings scopes, project rules, subagents, memory, hooks, and guard behavior.
+- Source status: official Claude Code documentation pages above were reachable during 1.0 release
+  work.
+
 ## Start From The Repository Root
 
 Start Claude Code from the initialized repository root (the top-level directory of the active
@@ -54,9 +62,9 @@ A symlink may also work on systems that support it, but an import is more portab
 
 ## Use Claude Rules For Claude-Specific Project Behavior
 
-For larger projects, Claude Code supports `.claude/rules/` files. Rules are scoped instruction
-files that guide Claude Code behavior for a project or path. Use rules for Claude-specific behavior
-that should not live in the methodology itself.
+For larger projects, Claude Code supports project rules under `.claude/rules/`. Rules are scoped
+instruction files that guide Claude Code behavior for a project or path. Use rules for
+Claude-specific behavior that should not live in the methodology itself.
 
 Examples:
 
@@ -133,6 +141,11 @@ a reconciled findings list with conflicts and required human decisions.
 For conformance review, configure or prompt review subagents to start from fresh context: authority
 documents, implementation diff, verification evidence, and explicit questions only. Avoid sharing
 the implementer transcript unless the review report records the exception.
+
+Project-specific Claude Code subagents belong under `.claude/agents/` when they should be checked
+into the repository for the team. Personal subagents belong under `~/.claude/agents/`. Keep GenDev
+approval and authority rules in the methodology; use Claude subagent files only to package bounded
+review roles.
 
 ## Claude Memory And GenDev Authority
 

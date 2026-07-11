@@ -6,8 +6,18 @@ This chapter contains Codex-specific operating notes for using GenDev. Codex is 
 agent environment. This chapter does not restate the full methodology. Use it only for behavior
 that changes because the agent is Codex.
 
-Reference used for this chapter: OpenAI Codex manual, fetched 2026-06-10 from
-`https://developers.openai.com/codex/codex-manual.md`.
+1.0 review stamp:
+
+- Last reviewed: 2026-07-11
+- Review scope: Codex-specific GenDev operation, including repository instructions, sandbox and
+  approval distinction, command surfaces, subagent usage, and methodology guard behavior.
+- Sources checked: official Codex product page at `https://chatgpt.com/codex/`; current-session
+  Codex behavior for `AGENTS.md`, sandboxing, approvals, skills, plugin/app connectors, and command
+  execution.
+- Limitation: the official Codex manual fetch from
+  `https://developers.openai.com/codex/codex-manual.md` was attempted during 1.0 work but did not
+  return the expected content-hash header. Treat this chapter as 1.0 operational guidance, not as a
+  complete Codex product reference.
 
 ## Start From The Repository Root
 

@@ -32,10 +32,10 @@ diagnostic_emit() {
   actual="$message"
 
   case "$message" in
-    "Manifest declares methodology_version 0.5.0-operational-coherence but gate-log contains structured events without event_id and schema_version: 2."*)
+    "Manifest declares methodology_version 1.0.0 but gate-log contains structured events without event_id and schema_version: 2."*)
       code="GENDEV-COMPAT-001"
       file="docs/project/approvals/gate-log.md"
-      expected="all 0.5 structured events have event_id and schema_version 2"
+      expected="all 1.0 structured events have event_id and schema_version 2"
       actual="one or more structured events are missing event_id or schema_version 2"
       ;;
     "Manifest legacy migration mode is active, but gate-log contains structured events without event_id and schema_version: 2."*)
@@ -1252,16 +1252,16 @@ check_version_compatibility_state() {
       warn "Manifest project.methodology_version is missing; compatibility mode cannot be determined."
       return
       ;;
-    0.5.0-operational-coherence)
+    1.0.0)
       if [ -f "$log" ] && gate_log_has_non_schema2_event "$log"; then
-        fail "Manifest declares methodology_version 0.5.0-operational-coherence but gate-log contains structured events without event_id and schema_version: 2."
+        fail "Manifest declares methodology_version 1.0.0 but gate-log contains structured events without event_id and schema_version: 2."
       fi
       return
       ;;
   esac
 
   if [ -z "$migration_mode" ]; then
-    warn "Manifest project.methodology_version is legacy/pinned ($methodology_version); strict 0.5 schema checks require explicit migration mode."
+    warn "Manifest project.methodology_version is older-version/pinned ($methodology_version); strict 1.0 schema checks require explicit onboarding mode."
     return
   fi
 
@@ -1273,8 +1273,8 @@ check_version_compatibility_state() {
     fail "Manifest migration.source_methodology_version must match project.methodology_version ($methodology_version)."
   fi
 
-  if [ "$migration_target" != "0.5.0-operational-coherence" ]; then
-    fail "Manifest migration.target_methodology_version must be 0.5.0-operational-coherence."
+  if [ "$migration_target" != "1.0.0" ]; then
+    fail "Manifest migration.target_methodology_version must be 1.0.0."
   fi
 
   if ! valid_sha256_digest_ref "$migration_digest"; then

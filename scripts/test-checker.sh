@@ -466,13 +466,13 @@ mv "$manifest.bak" "$manifest"
 # TEST 9 (compatibility): incomplete explicit legacy migration mode is blocked.
 # ============================================================================
 cp "$manifest" "$manifest.bak"
-edit "$manifest" 's/^  methodology_version: 0.5.0-operational-coherence/  methodology_version: 0.4.0-verification-first/'
+edit "$manifest" 's/^  methodology_version: 1.0.0/  methodology_version: 0.4.0-verification-first/'
 cat >> "$manifest" <<'EOF'
 
 migration:
   mode: explicit_version_bound_migration
   source_methodology_version: 0.4.0-verification-first
-  target_methodology_version: 0.5.0-operational-coherence
+  target_methodology_version: 1.0.0
   assessment_digest: sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   approved_by: TBD
   approved_on: TBD
@@ -490,13 +490,13 @@ mv "$manifest.bak" "$manifest"
 # TEST 10 (compatibility): complete explicit legacy migration mode can pass.
 # ============================================================================
 cp "$manifest" "$manifest.bak"
-edit "$manifest" 's/^  methodology_version: 0.5.0-operational-coherence/  methodology_version: 0.4.0-verification-first/'
+edit "$manifest" 's/^  methodology_version: 1.0.0/  methodology_version: 0.4.0-verification-first/'
 cat >> "$manifest" <<'EOF'
 
 migration:
   mode: explicit_version_bound_migration
   source_methodology_version: 0.4.0-verification-first
-  target_methodology_version: 0.5.0-operational-coherence
+  target_methodology_version: 1.0.0
   assessment_digest: sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef
   approved_by: Selftest Owner
   approved_on: 2026-07-10
@@ -511,19 +511,19 @@ fi
 mv "$manifest.bak" "$manifest"
 
 # ============================================================================
-# TEST 11 (compatibility): 0.5 strict mode requires schema-2 events.
+# TEST 11 (compatibility): 1.0 strict mode requires schema-2 events.
 # ============================================================================
 cp "$manifest" "$manifest.bak"
 cp "$gate_log" "$gate_log.bak"
-edit "$manifest" 's/^  methodology_version: 0.4.0-verification-first/  methodology_version: 0.5.0-operational-coherence/'
+edit "$manifest" 's/^  methodology_version: 0.4.0-verification-first/  methodology_version: 1.0.0/'
 edit "$gate_log" 's/^schema_version: 2/schema_version: 1/'
 run_checker "$proj"
-if printf '%s\n' "$CHECK_OUT" | grep -q 'declares methodology_version 0.5.0-operational-coherence' &&
+if printf '%s\n' "$CHECK_OUT" | grep -q 'declares methodology_version 1.0.0' &&
    printf '%s\n' "$CHECK_OUT" | grep -q '\[GENDEV-COMPAT-001\]' &&
-   printf '%s\n' "$CHECK_OUT" | grep -q 'expected="all 0.5 structured events have event_id and schema_version 2"'; then
-  ok "negative control: 0.5 strict mode requires schema-2 events"
+   printf '%s\n' "$CHECK_OUT" | grep -q 'expected="all 1.0 structured events have event_id and schema_version 2"'; then
+  ok "negative control: 1.0 strict mode requires schema-2 events"
 else
-  ko "negative control: 0.5 non-schema-2 event was NOT caught"
+  ko "negative control: 1.0 non-schema-2 event was NOT caught"
   printf '%s\n' "$CHECK_OUT" | sed 's/^/      /'
 fi
 mv "$manifest.bak" "$manifest"

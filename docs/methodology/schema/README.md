@@ -1,16 +1,15 @@
 # GenDev Lifecycle Registry
 
-Status: Candidate for human ratification
+Status: Release-mode production registry; publication pending
 Schema version: 2
-Target release: `0.5.0-operational-coherence`
+Target release: `1.0.0`
 Registry: `docs/methodology/schema/lifecycle.json`
 
 ## Purpose
 
 The lifecycle registry is the machine-readable source for GenDev enumerations and bindings that
 must remain identical across checkers, transition commands, templates, and human guidance. It
-defines mechanically determinate data; it does not replace the methodology's normative prose or
-make a candidate decision authoritative.
+defines mechanically determinate data; it does not replace the methodology's normative prose.
 
 The registry exists to prevent each shell command from carrying a separate copy of gate names,
 status values, paths, event types, and phase rules. Installed shell commands consume the generated
@@ -19,11 +18,7 @@ runtime.
 
 ## Authority And Precedence
 
-Until the operational-coherence decision records receive explicit human ratification, this file and
-the registry are candidate implementation artifacts. Plan approval authorized their preparation;
-it did not amend the constitution.
-
-After ratification and the WP-03 constitutional amendment, authority is divided as follows:
+Authority is divided as follows:
 
 1. `docs/methodology/constitution/gendev.md` states constitutional requirements and delegates the
    major gate enumeration to the canonical lifecycle model.
@@ -40,8 +35,15 @@ in the same reviewed change, regenerate the shell contract, and rerun coherence 
 
 ## Candidate And Release Modes
 
-The registry intentionally describes both the current baseline and the complete 0.5 target. It does
-not falsely claim that every target template, directory, or command already exists.
+The registry supports two validation modes:
+
+- candidate mode, used only while a future release target is being assembled and
+  still has explicit planned work; and
+- release mode, used for the published production methodology.
+
+The live 1.0 registry is release-mode metadata for a production candidate. It
+means the registry contains no planned delivery markers. It does not, by
+itself, mean that the publication tag has been created.
 
 Delivery markers use these values:
 
@@ -61,16 +63,18 @@ Candidate validation requires all `current` files and contracts and permits only
 remaining `planned` marker. A missing file without an explicit planned declaration and work-package
 owner is always a finding.
 
-The registry metadata remains:
+The live registry metadata is:
 
 ```text
-registry.status: candidate
-versions.candidate_status: proposed
-versions.released_current: null
+registry.status: released
+registry.target_release: 1.0.0
+versions.candidate_status: released
+versions.released_current: 1.0.0
+versions.release_stage: production
+versions.publication_status: pending_publication
 ```
 
-through WP-10. WP-11 may change those fields only as part of the reviewed, atomic 0.5 release-prep
-change. The observed baseline split remains recorded separately at revision
+The historical baseline split remains recorded separately at revision
 `02ae0fc192a898cd482007dfc65612ff907a3bda`:
 
 ```text
@@ -80,11 +84,11 @@ docs/project-template/project.yaml                       0.4.0-verification-firs
 observed published tag                                   v0.1.0-baseline
 ```
 
-Recording those claims is evidence, not endorsement. Candidate validation confirms them against the
-live pre-release files. Release validation treats them as preserved baseline observations and
-instead requires `registry.status: released`, both `released_current` fields equal to the candidate,
-and every synchronization target's `release_value_pattern` to match its live file. The claims must
-not be silently normalized before that synchronized release change.
+Recording those claims is evidence, not endorsement. Release validation treats
+them as preserved historical observations and requires `registry.status:
+released`, both `released_current` fields equal to the active release target,
+and every synchronization target's `release_value_pattern` to match its live
+file.
 
 ## Registry Shape
 

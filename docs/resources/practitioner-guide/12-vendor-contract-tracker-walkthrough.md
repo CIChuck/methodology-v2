@@ -502,12 +502,89 @@ needs enough evidence (proof supporting readiness) and human approval to let fut
 understand why the project moved forward. The value review keeps the project honest about whether
 the delivered product achieved the success criteria declared at the start.
 
-## 0.5 Walkthrough Reading Note
+## Walkthrough Reading Note
 
 This walkthrough is practitioner teaching material, not executable example evidence. Read it through
-the current 0.5 lifecycle: C2 criteria use EARS form and include unwanted behavior, G3 approves a
+the current 1.0 lifecycle: C2 criteria use EARS form and include unwanted behavior, G3 approves a
 verification specification with criterion IDs, G5.0 accepts the phase plan, each phase uses the
 G5.<phase>.1 through G5.<phase>.3 checkpoint ladder before implementation, G6 is aggregate review
 readiness, G7 is final acceptance, G8 records deployment or approved non-deployment, and G9 is
 terminal as-built close-out. Current executable and planning examples live under
 `docs/resources/examples/current/`.
+
+## Production Close-Out Illustration
+
+For 1.0, the walkthrough should be read as reaching terminal close-out, even when the product is
+not deployed to a live environment. The following excerpts show the expected shape. They are
+illustrative, not substitute evidence for a real project.
+
+### Aggregate Review Excerpt
+
+```text
+Status: Complete
+project: vendor-contract-tracker
+Candidate revision: abc1234
+Changed files reviewed:
+  - src/contracts/importer.py
+  - src/contracts/repository.py
+  - tests/test_contract_import.py
+Integration regression result: pass
+Residual findings: none blocking
+Reviewer independence: fresh context; implementation transcript not used
+```
+
+### Deployment Readiness Excerpt
+
+```text
+Status: Complete
+Deployment is intended now: no
+Release artifact: local operator package
+Deployment target: no production target for walkthrough
+Approval owner: Vendor Ops Owner
+Non-deployment trigger: internal workflow validation only
+Rollback readiness: restore prior repository revision
+Monitoring owner: Vendor Ops Owner
+```
+
+### Gate-Log Event Excerpt
+
+```text
+event_id: evt-g8-nondeploy-001
+schema_version: 2
+event_type: deployment_approval
+gate: G8
+deployment_intent: non_deployment
+release_candidate: abc1234
+approved_by: Vendor Ops Owner
+approved_on: 2026-07-11
+evidence_event_ids:
+  - evt-g7-final-acceptance-001
+```
+
+### Terminal Close-Out Excerpt
+
+```text
+Status: Complete
+Deployment disposition: approved non-deployment
+Operations result: no live operations started
+Value disposition: not_due
+Final traceability: current
+As-built close-out: complete
+Known residuals: none blocking
+Next review trigger: first real production deployment request
+```
+
+The lead agent should generate missing late-lifecycle artifacts with:
+
+```bash
+./scripts/new-artifact.sh --kind final-code-review
+./scripts/new-artifact.sh --kind aggregate-remediation
+./scripts/new-artifact.sh --kind deployment-readiness
+./scripts/new-artifact.sh --kind production-runbook
+./scripts/new-artifact.sh --kind deployment-record
+./scripts/new-artifact.sh --kind project-value-review
+./scripts/new-artifact.sh --kind project-as-built
+```
+
+The human must still approve G8 deployment or non-deployment and G9 close-out. Generated files do
+not advance gates by themselves.

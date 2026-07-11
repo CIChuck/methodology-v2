@@ -3,8 +3,8 @@ project:
   slug: "[project-slug]"
   status: initialized
   current_gate: G1
-  methodology_version: 0.5.0-operational-coherence
-  methodology_release_stage: pre-1.0
+  methodology_version: 1.0.0
+  methodology_release_stage: production
   initialized_on: "[YYYY-MM-DD]"
 
 human_control:

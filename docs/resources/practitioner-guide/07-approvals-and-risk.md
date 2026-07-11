@@ -338,7 +338,7 @@ Before approving a gate, confirm:
 [ ] I expect the agent to record this in gate-log.md and project.yaml.
 ```
 
-## 0.5 Complete Transition Discipline
+## Complete Transition Discipline
 
 A gate transition is complete only when the control plane and evidence agree. The approval record
 must identify the exact reviewed revision or explicitly say why the revision is still `TBD`, the

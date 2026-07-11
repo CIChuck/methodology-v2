@@ -194,20 +194,21 @@ This repository is a methodology baseline, not an implemented product. Product-s
 tests, configuration, CI, deployment, and runtime commands should be added by the initialized project
 as its architecture and phase plans mature.
 
-Current methodology version: `0.5.0-operational-coherence`
+Current methodology version: `1.0.0`
 
-This is the hardened pre-1.0 baseline. The hardening waves in
-`docs/resources/releases/0.1.0-baseline-provenance/gendev-hardening-plan.md` are complete, and the release notes are in
-`docs/resources/releases/0.1.0-baseline.md`.
+This is the GenDev 1.0 production release line. Release notes are in
+`docs/resources/releases/1.0.0.md`, and the release execution log is in
+`docs/resources/evolution/1.0.0-production-release-execution-log.md`.
 
-The release tag for this baseline is expected to be:
+The planned release tag is:
 
 ```text
-v0.1.0-baseline
+v1.0.0
 ```
 
-Reserve `1.0.0` for a later stable methodology release after the hardened baseline has been used in
-real initialized projects and any adoption feedback has been reconciled.
+Before publication, the release branch must pass local validation, remote CI,
+branch protection verification, independent review, and GitHub Release
+publication gates recorded in the 1.0 release plan.
 
 ## License
 

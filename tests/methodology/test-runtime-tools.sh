@@ -14,7 +14,14 @@ th_set_suite "runtime-tools"
 th_set_keep_on_failure "${TH_KEEP_ON_FAILURE:-0}"
 th_require_compatible_bash
 
-work_root="$repo_root/.tmp/methodology-runtime-tools-$(date +%s)-$$"
+if [ -n "${GENDEV_TEST_TMPDIR:-}" ]; then
+  work_parent="$GENDEV_TEST_TMPDIR"
+elif [ -n "${TH_WORKDIR:-}" ]; then
+  work_parent="$TH_WORKDIR"
+else
+  work_parent="$repo_root/.tmp"
+fi
+work_root="$work_parent/methodology-runtime-tools-$(date +%s)-$$"
 if [ -z "$work_root" ] || [ "$work_root" = "" ]; then
   th_init_suite
 else

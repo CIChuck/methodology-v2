@@ -238,9 +238,9 @@ artifact to complete.
 
 That keeps implementation from becoming accidental product definition.
 
-## 0.5 Task-Executable Phase Planning
+## Task-Executable Phase Planning
 
-A tactical implementation plan is not merely a narrative. In 0.5 it should carry stable task IDs
+A tactical implementation plan is not merely a narrative. In 1.0 it should carry stable task IDs
 that can be cited by implementation evidence, review findings, remediation records, and traceability
 rows. A useful task ID names the phase, workstream, and task, for example `P1-WS2-T003`.
 

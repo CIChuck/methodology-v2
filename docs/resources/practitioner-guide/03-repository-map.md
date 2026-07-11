@@ -95,9 +95,15 @@ docs/project/
   vision/
   prd/
   architecture/
+  design/
   security-governance/
   decisions/
   build-plan/
+    README.md
+    phase-plan.md
+    phases/
+  review/
+  deployment/
   testing/
   traceability/
   as-built/
@@ -173,9 +179,12 @@ Each artifact directory supports a lifecycle stage (one major movement through t
 - `vision/`: why the product exists and what success means;
 - `prd/`: testable product requirements;
 - `architecture/`: system structure, boundaries, lifecycle, and technology decisions;
+- `design/`: supporting design artifacts attached to canonical authority;
 - `security-governance/`: identity, authorization, data, audit, tool, and approval rules;
 - `decisions/`: ADRs (architecture decision records) and durable technical decisions;
 - `build-plan/`: phase plan, build plans, tactical plans, construction directives, review docs;
+- `review/`: independent review and remediation evidence that is not phase-local;
+- `deployment/`: deployment readiness, deployment approval, rollback, and non-deployment records;
 - `testing/`: test and UAT plans;
 - `traceability/`: requirement-to-test-to-implementation evidence;
 - `as-built/`: final record of what was actually built.
@@ -188,6 +197,8 @@ Useful inspection commands:
 rg --files docs/project
 sed -n '1,160p' docs/project/project.yaml
 sed -n '1,120p' docs/project/approvals/gate-log.md
+./scripts/gendev-doctor.sh
+./scripts/project-state.sh
 ./scripts/check-methodology.sh
 ```
 

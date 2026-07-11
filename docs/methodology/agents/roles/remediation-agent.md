@@ -47,7 +47,7 @@ Human approval is required for accepted residual findings or planning changes.
 
 Complete when every finding is remediated, explicitly accepted, or reopened as planning work.
 
-## 0.5 Operational Coherence Ownership
+## Operational Coherence Ownership
 
 Resolve each finding exactly once: fixed, deferred with approval, accepted as risk with approval,
 amendment required, or planning gap. Keep remediation tied to the finding, source authority,

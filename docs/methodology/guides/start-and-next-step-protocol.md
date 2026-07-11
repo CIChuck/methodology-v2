@@ -27,13 +27,15 @@ Before recommending a next action, the agent checks:
 ```text
 1. Current branch/workspace status, if relevant.
 2. AGENTS.md.
-3. docs/project/project.yaml.
-4. Current gate.
-5. Current collaboration mode.
-6. Current blast-radius class.
-7. Current active artifact.
-8. Current approval state and approval log.
-9. Blocking missing authority.
+3. ./scripts/gendev-doctor.sh, when available.
+4. docs/project/project.yaml, after initialization.
+5. ./scripts/project-state.sh, after initialization.
+6. Current gate.
+7. Current collaboration mode.
+8. Current blast-radius class.
+9. Current active artifact.
+10. Current approval state and approval log.
+11. Blocking missing authority.
 ```
 
 If `docs/project/` does not exist, the next action is initialization.
@@ -47,10 +49,12 @@ Agent response:
 ```text
 1. Confirm whether docs/project exists.
 2. If missing, recommend running ./scripts/init-project.sh "Project Name".
-3. If initialized, read project.yaml and identify current gate.
-4. Ask for or confirm collaboration mode.
-5. Ask for or confirm project owner and gate approver before any approval boundary.
-6. Recommend the first actionable step.
+3. Run ./scripts/gendev-doctor.sh.
+4. If initialized, run ./scripts/project-state.sh and read project.yaml.
+5. Identify current gate, active artifact, and approval state.
+6. Ask for or confirm collaboration mode.
+7. Ask for or confirm project owner and gate approver before any approval boundary.
+8. Recommend the first actionable step.
 ```
 
 If no project name exists, ask for it.
@@ -60,6 +64,8 @@ If the project is initialized at G1, begin the vision loop.
 First-run preflight should capture:
 
 ```text
+gendev-doctor result:
+project-state result, after initialization:
 Project owner:
 Gate approver:
 Deployment approver, if known:

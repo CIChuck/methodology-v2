@@ -30,7 +30,8 @@ a bounded review or analysis task.
 ```text
 Let's begin. Follow AGENTS.md and docs/project/project.yaml. Use the GenDev start-and-next-step
 protocol and tell me the current gate, blast-radius class, active artifact, approval state, and
-recommended next step.
+recommended next step. Run ./scripts/gendev-doctor.sh first, and run ./scripts/project-state.sh if
+the project is initialized.
 ```
 
 ## Set Mode
@@ -53,7 +54,8 @@ Use execution-focused mode for the accepted construction directive. Implement on
 ```text
 Re-orient from AGENTS.md, docs/project/project.yaml, docs/project/approvals/gate-log.md, and the
 current active artifact. Report current gate, mode, blast-radius class, artifact status, approval
-state, blockers, and next recommendation.
+state, blockers, and next recommendation. Start with ./scripts/gendev-doctor.sh and
+./scripts/project-state.sh when docs/project exists.
 ```
 
 ## Classify Blast Radius
@@ -194,7 +196,7 @@ Resume from durable project state, not chat memory. Re-read project.yaml, gate-l
 active artifact. Identify drift and recommend the next action.
 ```
 
-## 0.5 Remediation And Close-Out Prompts
+## Remediation And Close-Out Prompts
 
 ```text
 Create the phase remediation record for Phase 1. Use the code review report, accepted construction

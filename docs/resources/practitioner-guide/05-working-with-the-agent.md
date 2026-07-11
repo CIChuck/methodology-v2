@@ -27,11 +27,39 @@ Lead proactively.
 The agent should interpret those prompts through
 `docs/methodology/guides/start-and-next-step-protocol.md`, not as generic permission to do anything.
 
+For GenDev 1.0 work, the agent should begin by running:
+
+```bash
+./scripts/gendev-doctor.sh
+```
+
+If the project is initialized, it should also run:
+
+```bash
+./scripts/project-state.sh
+```
+
+The agent should summarize the reported current gate, next artifact, required approver, and
+recommended validation before making changes. If the project is not initialized, `gendev-doctor.sh`
+reports the initialization command.
+
 ## "What's Next?"
 
 Use `What's next?` when you want the agent to orient from current project state (the manifest,
 approval log, active artifact, and relevant project files) and recommend the next
 methodology-aware action (the next action that follows GenDev rather than generic coding instinct).
+
+When a required late-lifecycle artifact is missing, ask the agent to create it through the canonical
+artifact generator instead of inventing a path:
+
+```bash
+./scripts/new-artifact.sh --kind final-code-review
+./scripts/new-artifact.sh --kind deployment-readiness
+./scripts/new-artifact.sh --kind project-as-built
+```
+
+Generated artifacts still require normal review, evidence, and approval; the generator only prevents
+path and template drift.
 
 Expected response shape:
 
@@ -223,4 +251,3 @@ confirmation when the current mode requires confirmation.
 Brainstorming is allowed before an artifact is ready, but it must not become hidden authority. Use the agent to explore candidate goals, users, requirements, risks, or architecture options, then ask it to map only accepted material into the artifact template. Keep speculative ideas labeled as options, open questions, or rejected alternatives until a human accepts them.
 
 Traceability should begin early and become more precise as artifacts mature. Vision discussions may produce outcome-level criteria. PRD work turns those criteria into stable requirement IDs and acceptance criteria. Architecture work binds requirements to components, verification strategy, and coverage expectations. The traceability matrix can therefore evolve progressively, but each row must name its source authority and must not claim verification before matching evidence exists.
-

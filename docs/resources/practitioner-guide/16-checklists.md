@@ -48,7 +48,10 @@ checklists here remain manual reminders.
 [ ] scaling.blast_radius_class confirmed as C1, C2, or C3
 [ ] scaling.classification_reason recorded
 [ ] scaling.combined_gates empty or justified
+[ ] ./scripts/gendev-doctor.sh passes or findings are dispositioned
+[ ] ./scripts/project-state.sh reports the expected gate and approval state
 [ ] ./scripts/check-methodology.sh passes
+[ ] ./scripts/check-doc-coherence.sh passes when methodology docs changed
 [ ] optional local hook installed, if the team wants pre-commit checks
 [ ] AI agent started from repository root
 [ ] owner identified
@@ -78,6 +81,8 @@ checklists here remain manual reminders.
 ```text
 [ ] agent read AGENTS.md
 [ ] agent read docs/project/project.yaml
+[ ] agent ran ./scripts/gendev-doctor.sh or reported why it was not applicable
+[ ] agent ran ./scripts/project-state.sh after docs/project existed
 [ ] agent identified current gate
 [ ] agent identified active artifact
 [ ] agent identified approval state
@@ -237,7 +242,7 @@ checklists here remain manual reminders.
 [ ] next phase or backlog state clear
 ```
 
-## 0.5 Additional Operational Checks
+## Additional Operational Checks
 
 G2 criteria checks:
 
@@ -262,8 +267,10 @@ Phase-exit checks:
 ```text
 [ ] phase evidence cites stable tactical task IDs
 [ ] test/UAT commands and results are recorded honestly
+[ ] generated phase artifacts use ./scripts/new-artifact.sh when a supported kind exists
 [ ] independent phase review records exact reviewed revision
 [ ] remediation disposition exists even when remediation is not required
 [ ] traceability rows point to real evidence, not templates or plans
 [ ] per-phase as-built close-out records actual behavior and deviations
+[ ] ./scripts/check-doc-coherence.sh passes before release-note or guide publication
 ```

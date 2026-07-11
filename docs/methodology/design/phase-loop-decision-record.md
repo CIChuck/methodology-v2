@@ -4,6 +4,9 @@ Date: 2026-06-12
 Status: Accepted
 Owner: GenDev maintainers
 
+Historical note: this record predates the 1.0 release and remains accepted design evidence. Later
+0.5 references in the compatibility table are historical, not current release targets.
+
 ## Context
 
 The G5 to G6 span is where construction happens. The baseline methodology
