@@ -3,8 +3,8 @@
   "registry": {
     "id": "gendev-lifecycle",
     "status": "released",
-    "target_release": "1.0.0",
-    "released_current": "1.0.0",
+    "target_release": "1.0.1",
+    "released_current": "1.0.1",
     "source_file": "docs/methodology/schema/lifecycle.json",
     "human_authority": "docs/methodology/guides/gates.md",
     "constitutional_authority": "docs/methodology/constitution/gendev.md",
@@ -13,12 +13,12 @@
     "description": "Mechanically determinate lifecycle vocabulary and bindings for GenDev 1.0."
   },
   "versions": {
-    "candidate": "1.0.0",
+    "candidate": "1.0.1",
     "candidate_status": "released",
     "release_stage": "production",
     "publication_status": "pending_publication",
-    "planned_publication_tag": "v1.0.0",
-    "released_current": "1.0.0",
+    "planned_publication_tag": "v1.0.1",
+    "released_current": "1.0.1",
     "observation_revision": "02ae0fc192a898cd482007dfc65612ff907a3bda",
     "observed_active_claims": [
       {
@@ -49,32 +49,32 @@
         "source_file": "README.md",
         "field": "current methodology version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^Current methodology version: `1\\.0\\.0`\\s*$"
+        "release_value_pattern": "(?m)^Current methodology version: `1\\.0\\.1`\\s*$"
       },
       {
         "source_file": "docs/methodology/constitution/gendev.md",
         "field": "Version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^Version: 1\\.0\\.0\\s*$"
+        "release_value_pattern": "(?m)^Version: 1\\.0\\.1\\s*$"
       },
       {
         "source_file": "docs/project-template/project.yaml",
         "field": "project.methodology_version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^\\s+methodology_version:\\s*1\\.0\\.0\\s*$"
+        "release_value_pattern": "(?m)^\\s+methodology_version:\\s*1\\.0\\.1\\s*$"
       },
       {
         "source_file": "docs/methodology/schema/lifecycle.json",
         "field": "versions.released_current",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^\\s*\"released_current\":\\s*\"1\\.0\\.0\""
+        "release_value_pattern": "(?m)^\\s*\"released_current\":\\s*\"1\\.0\\.1\""
       },
       {
         "source_file": "docs/resources/releases/README.md",
         "field": "active release candidate",
         "delivery_state": "current",
         "required_work_package": "WP-11",
-        "release_value_pattern": "(?m)^Active release candidate:\\s*1\\.0\\.0\\s*$"
+        "release_value_pattern": "(?m)^Active release candidate:\\s*1\\.0\\.1\\s*$"
       }
     ],
     "release_rules": {

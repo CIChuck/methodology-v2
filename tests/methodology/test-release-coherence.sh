@@ -49,9 +49,9 @@ th_run_case "RC-006" 0 "current examples expose strict metadata and legacy bound
 th_run_case "RC-007" 0 "release index separates published release from active candidate" \
   "cd '$repo_root' && \
    rg -n '^Latest published release: 0\\.5\\.0-operational-coherence$' docs/resources/releases/README.md && \
-   rg -n '^Active release candidate: 1\\.0\\.0$' docs/resources/releases/README.md && \
-   rg -n '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.0.md && \
-   ! rg -n '^Latest release: 1\\.0\\.0$' docs/resources/releases/README.md" \
+   rg -n '^Active release candidate: 1\\.0\\.1$' docs/resources/releases/README.md && \
+   rg -n '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.1.md && \
+   ! rg -n '^Latest release: 1\\.0\\.[01]$' docs/resources/releases/README.md" \
   'Active release candidate'
 
 th_run_case "RC-008" 0 "independent review artifact records a non-pending result" \

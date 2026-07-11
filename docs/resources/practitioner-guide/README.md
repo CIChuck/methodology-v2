@@ -25,7 +25,7 @@ reference.
 The chapters define GenDev-specific terms inline at first use where a new practitioner may need
 immediate context. Chapter 18 provides the deeper glossary for review and reference.
 
-The 1.0 adoption guide, `docs/resources/releases/1.0.0-adoption.md`, is the concise entry point for
+The 1.0 adoption guide, `docs/resources/releases/1.0.1-adoption.md`, is the concise entry point for
 starting a new project or bringing existing product artifacts under GenDev control. The appendix,
 Starting Mid-Stream, is reference material for one specific case: bringing GenDev to a repository
 that already holds a vision, PRD, or architecture written before the methodology was in place, as

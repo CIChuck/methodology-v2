@@ -15,7 +15,7 @@ hold real vision, PRD, or architecture content that predates the method. The que
 is narrow and practical. Given what you already have, what is the next gate you must work, and what
 does working it require.
 
-The concise 1.0 adoption path is recorded in `docs/resources/releases/1.0.0-adoption.md`. This
+The concise 1.0 adoption path is recorded in `docs/resources/releases/1.0.1-adoption.md`. This
 appendix expands that path for repositories that already contain product artifacts. It is not a
 legacy GenDev migration workflow.
 

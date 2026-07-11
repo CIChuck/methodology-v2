@@ -194,16 +194,16 @@ This repository is a methodology baseline, not an implemented product. Product-s
 tests, configuration, CI, deployment, and runtime commands should be added by the initialized project
 as its architecture and phase plans mature.
 
-Current methodology version: `1.0.0`
+Current methodology version: `1.0.1`
 
 This is the GenDev 1.0 production release line. Release notes are in
-`docs/resources/releases/1.0.0.md`, and the release execution log is in
-`docs/resources/evolution/1.0.0-production-release-execution-log.md`.
+`docs/resources/releases/1.0.1.md`, and the release execution log is in
+`docs/resources/evolution/1.0.1-production-release-execution-log.md`.
 
 The planned release tag is:
 
 ```text
-v1.0.0
+v1.0.1
 ```
 
 Before publication, the release branch must pass local validation, remote CI,

@@ -32,7 +32,7 @@ diagnostic_emit() {
   actual="$message"
 
   case "$message" in
-    "Manifest declares methodology_version 1.0.0 but gate-log contains structured events without event_id and schema_version: 2."*)
+    "Manifest declares methodology_version "*" but gate-log contains structured events without event_id and schema_version: 2."*)
       code="GENDEV-COMPAT-001"
       file="docs/project/approvals/gate-log.md"
       expected="all 1.0 structured events have event_id and schema_version 2"
@@ -1252,9 +1252,9 @@ check_version_compatibility_state() {
       warn "Manifest project.methodology_version is missing; compatibility mode cannot be determined."
       return
       ;;
-    1.0.0)
+    "$GENDEV_LIFECYCLE_TARGET_VERSION")
       if [ -f "$log" ] && gate_log_has_non_schema2_event "$log"; then
-        fail "Manifest declares methodology_version 1.0.0 but gate-log contains structured events without event_id and schema_version: 2."
+        fail "Manifest declares methodology_version $GENDEV_LIFECYCLE_TARGET_VERSION but gate-log contains structured events without event_id and schema_version: 2."
       fi
       return
       ;;
@@ -1273,8 +1273,8 @@ check_version_compatibility_state() {
     fail "Manifest migration.source_methodology_version must match project.methodology_version ($methodology_version)."
   fi
 
-  if [ "$migration_target" != "1.0.0" ]; then
-    fail "Manifest migration.target_methodology_version must be 1.0.0."
+  if [ "$migration_target" != "$GENDEV_LIFECYCLE_TARGET_VERSION" ]; then
+    fail "Manifest migration.target_methodology_version must be $GENDEV_LIFECYCLE_TARGET_VERSION."
   fi
 
   if ! valid_sha256_digest_ref "$migration_digest"; then
