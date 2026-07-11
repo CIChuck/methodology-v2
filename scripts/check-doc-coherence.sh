@@ -58,6 +58,8 @@ require_line 'methodology_release_stage: production' docs/project-template/proje
 
 require_file docs/resources/releases/1.0.0.md
 require_file docs/resources/releases/1.0.0-adoption.md
+require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/13-codex-specific-notes.md
+require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/14-claude-code-specific-notes.md
 require_executable scripts/gendev-doctor.sh
 require_executable scripts/project-state.sh
 require_executable scripts/new-artifact.sh
