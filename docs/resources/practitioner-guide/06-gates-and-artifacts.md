@@ -485,3 +485,36 @@ What measurement or value-review evidence is now due?
 What risk is being accepted?
 What happens next?
 ```
+
+## 0.5 Operational Coherence Notes
+
+The current lifecycle has two layers. G0 through G9 remain the only gates. The `G5.x` addresses are
+checkpoints inside the G5-to-G6 phase loop; they are not new gates and they do not create a
+separate approval ceremony unless the active project records one.
+
+G5.0 accepts the aggregate phase plan. Each implementation phase then moves through its own
+checkpoint ladder:
+
+```text
+G5.<phase>.1 phase build plan
+G5.<phase>.2 tactical implementation plan with stable workstream/task IDs
+G5.<phase>.3 construction directive and issued build prompt
+phase implementation and phase evidence
+phase review, remediation disposition, traceability update, and per-phase as-built record
+```
+
+Only after every declared live phase has exited can the project move from G5 to G6. G6 is aggregate
+whole-build review readiness. G7 is aggregate final acceptance after review and remediation. G8 is
+release or non-deployment readiness. G9 is terminal as-built close-out.
+
+Coverage is project-declared, not a universal percentage. The coverage contract names the
+requirements, verification criteria, phases, tests, UAT evidence, and review evidence required for
+the project. Supporting artifacts must be referenced with typed target kinds such as `implements`,
+`satisfies`, `tested-by`, `constrained-by`, or `refines`, and the referenced artifact must exist at
+the declared target kind.
+
+For G2, C2 and C3 projects use EARS-form acceptance criteria. C1 projects may use plain observable
+criteria when the work is genuinely contained, but every class still records unwanted behavior for
+failure and abuse paths where those paths exist. G3 must convert those criteria into a
+human-approved verification specification with stable criterion IDs before implementation planning
+uses them.

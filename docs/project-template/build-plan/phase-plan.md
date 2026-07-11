@@ -10,11 +10,11 @@ Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/prd/[prd-document].md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/[architecture-document].md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
-  - path: docs/project/security-governance/[governance-document].md
+  - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
 
 ---

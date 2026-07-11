@@ -193,3 +193,24 @@ resume point.
 Resume from durable project state, not chat memory. Re-read project.yaml, gate-log.md, and the
 active artifact. Identify drift and recommend the next action.
 ```
+
+## 0.5 Remediation And Close-Out Prompts
+
+```text
+Create the phase remediation record for Phase 1. Use the code review report, accepted construction
+directive, tactical task IDs, test/UAT evidence, and traceability matrix. Resolve each finding once:
+fixed, deferred with approval, risk accepted with approval, amendment required, or planning gap.
+Do not broaden scope.
+```
+
+```text
+Perform aggregate G6 readiness preparation. Confirm every declared live phase has exited, the
+aggregate regression and integration evidence exists, implementation summary is complete, current
+traceability is reconciled, and residuals are named before requesting G5 -> G6 approval.
+```
+
+```text
+Perform terminal G8 -> G9 close-out. Use the deployment record or approved non-deployment
+disposition, operational validation, value-review disposition, final traceability, and as-built
+close-out. Do not mark unmeasurable value as success.
+```

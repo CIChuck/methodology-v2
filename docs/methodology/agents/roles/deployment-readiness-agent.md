@@ -53,3 +53,9 @@ Human deployment approval is required.
 
 Complete when release scope, environment, migration, rollback, operational checks, and residual risk
 are explicit and approved.
+
+## 0.5 Operational Coherence Ownership
+
+Own G8 readiness without performing deployment by implication. Prepare either deployment approval
+or an approved non-deployment disposition, then ensure G8-to-G9 has deployment/non-deployment
+record, operational validation or N/A rationale, value-review disposition, and close-out owner.

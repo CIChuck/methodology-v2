@@ -5,13 +5,13 @@ project: [project-slug]
 Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Product Requirements Document
-Source: `docs/project/vision/[vision-document].md`
+Source: `docs/project/vision/vision.md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/vision/[vision-document].md
+  - path: docs/project/vision/vision.md
     revision: TBD
 
 ---

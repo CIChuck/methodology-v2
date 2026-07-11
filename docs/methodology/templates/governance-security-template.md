@@ -6,19 +6,19 @@ Date:
 Owner:
 Authority: `docs/methodology/constitution/gendev.md` — Governance and Security Specification
 Source:
-  Vision: `docs/project/vision/[vision-document].md`
-  PRD: `docs/project/prd/[prd-document].md`
-  Architecture: `docs/project/architecture/[architecture-document].md`
+  Vision: `docs/project/vision/vision.md`
+  PRD: `docs/project/prd/prd.md`
+  Architecture: `docs/project/architecture/architecture.md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
-  - path: docs/project/vision/[vision-document].md
+  - path: docs/project/vision/vision.md
     revision: TBD
-  - path: docs/project/prd/[prd-document].md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/[architecture-document].md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
 
 ---

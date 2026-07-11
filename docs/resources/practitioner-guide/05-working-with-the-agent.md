@@ -218,14 +218,9 @@ In GenDev, the methodology usually supplies the next step. The agent should reco
 confirmation when the current mode requires confirmation.
 
 
+## Brainstorming Artifacts With The Agent
 
-```text
-refinement:
+Brainstorming is allowed before an artifact is ready, but it must not become hidden authority. Use the agent to explore candidate goals, users, requirements, risks, or architecture options, then ask it to map only accepted material into the artifact template. Keep speculative ideas labeled as options, open questions, or rejected alternatives until a human accepts them.
 
-We should put a subsection here that describes how to brainstorm with the agent in order to create an artifact like a vision artifact or the PRD. 
-
-A number of scenarios where the traceability matrix begins to evolve between vision and PRD, and PRD and architecture, etc. 
-
-It actually might be a separate chapter altogether. 
-```
+Traceability should begin early and become more precise as artifacts mature. Vision discussions may produce outcome-level criteria. PRD work turns those criteria into stable requirement IDs and acceptance criteria. Architecture work binds requirements to components, verification strategy, and coverage expectations. The traceability matrix can therefore evolve progressively, but each row must name its source authority and must not claim verification before matching evidence exists.
 

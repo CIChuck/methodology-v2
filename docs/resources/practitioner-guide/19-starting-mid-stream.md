@@ -9,11 +9,11 @@ sketches an architecture before the deal even closes. By the time GenDev enters 
 or two or three of the first gates' documents already exist, written for a customer to read, not
 to satisfy a template.
 
-This addendum covers that case: the methodology is seated in the repository, AGENTS.md is primed,
-the project is freshly initialized so the ledger sits at G1 with no gates yet accepted, and you
-already hold real vision, PRD, or architecture content that predates the method. The question this
-answers is narrow and practical. Given what you already have, what is the next gate you must work,
-and what does working it require.
+This addendum covers that case: the methodology is seated in the repository, agent instructions are
+preserved or explicitly integrated, the control plane exists with the ledger at G1, and you already
+hold real vision, PRD, or architecture content that predates the method. The question this answers
+is narrow and practical. Given what you already have, what is the next gate you must work, and what
+does working it require.
 
 ## The one rule underneath every entry point
 
@@ -37,26 +37,33 @@ Regardless of what you start with, before any gate work begins, two things must 
 are mechanical, deterministic, and non-negotiable, because the rest of the methodology reads from
 specific paths and will not find content that sits anywhere else.
 
-### Prerequisite: the project is already initialized
+### Prerequisite: the control plane exists
 
-This addendum assumes `init-project.sh` has already been run, once, by the practitioner. That is
-the G0 act, and it is what creates the ledger you are about to advance. Running it scaffolds
-`docs/project/`, writes `docs/project/project.yaml` with `current_gate: G1`, and creates
-`docs/project/approvals/gate-log.md`. G0 is the metaphorical start, the setup that lets you enter
-the gate sequence; G1, the vision gate, is where the ledger begins.
+For a normal existing-code repository with no prior authority documents, run
+`scripts/install-methodology.sh TARGET_REPO`, then run `scripts/init-project.sh "Project Name"` from
+inside the target. That is the G0 act, and it creates the ledger you are about to advance.
 
-Two scripts get you to that starting line, depending on where you began. If the methodology is not
-yet in the repository at all, `scripts/install-methodology.sh` seeds it. If the repository is a
-presales or discovery repository that already holds vision, PRD, or architecture content,
-`scripts/backfill-methodology.sh` seeds the methodology and writes a per-document conformance report
-that names exactly which required sections and front-matter each document is missing. That report
-is what makes each gate's reformatting directive precise. Whichever you use, run `init-project.sh`
-afterward to create the ledger, then proceed.
+For a presales or discovery repository that already holds one or more authority documents, run
+`scripts/backfill-methodology.sh` from the baseline repository and declare the imported sources, for
+example:
 
-The order for a mid-stream start is therefore: run `init-project.sh` to create the ledger, place
-your existing documents into their folders (the two steps below), then begin the per-gate
-conformance cycle. Initialization comes first because there is no ledger to stamp until it has
-run, and the cycle's final step at every gate is a ledger write.
+```bash
+./scripts/backfill-methodology.sh \
+  --project-name "Customer Portal" \
+  --vision ../customer/vision.md \
+  --prd ../customer/prd.md \
+  ../customer-repo
+```
+
+Backfill seeds the methodology, creates missing `docs/project/` control-plane files and directories,
+copies only missing imported authority into canonical paths, preserves existing imported bytes, and
+writes `docs/project/backfill-conformance-report.md`. It runs the checker and records the real exit
+status in the report. It does not mark imported documents Accepted and it does not infer missing
+customer intent.
+
+The order for a mid-stream start is therefore: install or backfill to create the control plane,
+confirm the imported documents are in canonical paths, then begin the per-gate conformance cycle.
+There is no separate destructive initialization step after backfill.
 
 If the repository already has a `project.yaml` and a gate log, initialization has already
 happened; do not run it again, since it will refuse to overwrite an existing project without

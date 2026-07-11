@@ -33,6 +33,9 @@ from_gate: G1
 to_gate: G2
 decision: approved
 decided_by: TBD
+criterion_ids:
+  - G1-REQ-ID
+  - G1-AC-COVERAGE
 gate_started_on: YYYY-MM-DD
 ready_for_approval_on: YYYY-MM-DD
 approval_requested_on: YYYY-MM-DD
@@ -277,7 +280,68 @@ learnings: docs/project/build-plan/phases/phase-1-learnings.md
 manifest_updated: true
 ```
 ````
+## Schema 2 Event Projection
 
+This section projects the current machine-readable event schemas so gate-log authors can copy event records without relying on unstated fields.
+
+### project_initialization
+
+Fields: event_id, event_type, schema_version, project, from_gate, to_gate, occurred_on, manifest_result, checked_statement
+
+### gate_transition
+
+Fields: event_id, event_type, schema_version, project, from_gate, to_gate, criterion_ids, evidence, approval_profile, checked_statement, enforcement_context, manifest_result, next_state
+Profile named_human: decision, approver, approved_on, risk_disposition
+Profile no_additional_approval: approval_disposition, recorded_by, recorded_on, no_additional_approval_basis
+Profile G8-to-G9: deployment_disposition, operational_results, value_disposition, terminal_closeout
+Profile G8-to-G9:deploy: operational_owner_confirmation
+
+### phase_checkpoint
+
+Fields: event_id, event_type, schema_version, project, major_gate, position, phase_id, criterion_ids, evidence, references, decision, approver, approved_on, checked_statement, risk_disposition, enforcement_context, manifest_result, next_state
+
+### phase_transition
+
+Fields: event_id, event_type, schema_version, project, major_gate, position, phase_id, candidate_revision, criterion_ids, evidence, references, test_uat_execution, blocking_finding_count, remediation_disposition, phase_requirement_ids, regression_result, decision, approver, approved_on, checked_statement, risk_disposition, coverage_result, residual_findings, amendments, enforcement_context, manifest_result, next_state
+Profile delegated_phase_exit: delegation
+
+### deployment_approval
+
+Fields: event_id, event_type, schema_version, project, major_gate, release_candidate, deployment_intent, criterion_ids, evidence, value_prerequisites, decision, approver, approved_on, checked_statement, security_approval, risk_disposition, enforcement_context, manifest_result, next_state
+Profile non_deployment: disposition, rationale, scope, release_candidate, approver, approved_on, future_trigger_or_finality
+
+### amendment
+
+Fields: event_id, event_type, schema_version, project, authority_path, change_scope, impact, evidence, decision, approver, approved_on, checked_statement, risk_disposition, enforcement_context, next_state
+
+### gate_regression
+
+Fields: event_id, event_type, schema_version, project, from_gate, to_gate, invalidated_criteria, decision, approver, approved_on, checked_statement, risk_disposition, enforcement_context, manifest_result, next_state
+
+### reconciliation
+
+Fields: event_id, event_type, schema_version, project, amendment_id, artifacts, remaining_stale_artifacts, gate_movement_unblocked, reconciled_on, reconciled_by, checked_statement, manifest_result
+
+### migration_reconciliation
+
+Fields: event_id, event_type, schema_version, project, source_methodology_version, target_methodology_version, historical_event_reference, mapped_gate_or_checkpoint, mapped_evidence_classes, unresolved_fields, provenance, decision, approval_disposition, risk_disposition, checked_statement
+Profile named_human_required: approver, approval_date
+Profile duplicate_mapping: supersedes_event_id, correction_reason
+
+### traceability_sample
+
+Fields: event_id, event_type, schema_version, project, gate, phase_id, sampled_by, sampled_on, requirement_id, traceability_row, result, discrepancy, discrepancy_disposition
+
+### enforcement_attestation
+
+Fields: event_id, event_type, schema_version, project, gate, attested_by, attested_on, requirements_checked, result, exceptions
+
+### enforcement_override
+
+Fields: event_id, event_type, schema_version, project, gate, decision, approved_by, approved_on, requirements_bypassed, reason, incident_or_emergency, checked_statement, risk_disposition, enforcement_context, normal_enforcement_resumed_on, reconciliation_required, next_state
+
+### event_history_corrections
+
+Fields: supersedes_event_id, correction_reason
 ## Gate Records
-
 No gate approvals recorded yet.

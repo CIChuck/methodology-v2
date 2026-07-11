@@ -1,72 +1,69 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-#
-# backfill-methodology.sh
-#
-# For a presales repo that already has the methodology folder tree and already
-# has vision, PRD, and architecture docs sitting in their correct subfolders
-# (written for customer consumption, not yet conformed to the templates), this
-# script does two deterministic jobs:
-#
-#   1. Seeds the methodology (the rulebook) into the repo, same as
-#      install-methodology.sh.
-#   2. Produces a per-gate conformance report: for each of the three docs
-#      already in place, which required front-matter fields and which required
-#      sections the template wants but the document does not yet have.
-#
-# It does not move, rewrite, or reformat any document. Conforming the content
-# is per-gate agent work, driven by the report this script produces. Each gate
-# (G1 vision, G2 PRD, G3 architecture) becomes: reformat the already-placed
-# document to its template and satisfy the exit checklist. The report is what
-# makes each of those directives precise.
-#
-# Assumes the target already has:
-#   docs/project/vision/vision.md
-#   docs/project/prd/prd.md
-#   docs/project/architecture/architecture.md
 
 set -euo pipefail
 
 usage() {
   cat <<'USAGE'
 Usage:
-  scripts/backfill-methodology.sh [--force] [--with-resources] TARGET_REPO_PATH
+  scripts/backfill-methodology.sh [options] TARGET_REPO_PATH
 
-Run from inside the methodology repo. Seeds the methodology into a presales
-repo that already has the project folder tree and its vision, PRD, and
-architecture docs in place, then writes a conformance report to
-docs/project/backfill-conformance-report.md in the target.
+Installs the methodology and creates a non-destructive GenDev control plane for
+an existing project that already has at least one authority document.
 
 Options:
-  --force            Overwrite an existing docs/methodology in the target.
-  --with-resources   Also copy docs/resources.
-  -h, --help         Show this help.
+  --project-name NAME          Project name for a newly-created manifest.
+  --vision PATH                Existing vision document to import or validate.
+  --prd PATH                   Existing PRD document to import or validate.
+  --architecture PATH          Existing architecture document to import or validate.
+  --dry-run                    Validate and report without writing.
+  --force                      Upgrade GenDev-owned methodology assets only; never overwrite imported authority.
+  --with-resources             Also install docs/resources reference material.
+  -h, --help                   Show this help.
 USAGE
 }
 
 force=0
 with_resources=0
+dry_run=0
+project_name=""
+vision_src=""
+prd_src=""
+architecture_src=""
 
 while [ "$#" -gt 0 ]; do
   case "${1:-}" in
     -h|--help) usage; exit 0 ;;
     --force) force=1; shift ;;
     --with-resources) with_resources=1; shift ;;
+    --dry-run) dry_run=1; shift ;;
+    --project-name)
+      [ "$#" -ge 2 ] || { echo "--project-name requires a value" >&2; exit 2; }
+      project_name="$2"; shift 2 ;;
+    --vision)
+      [ "$#" -ge 2 ] || { echo "--vision requires a path" >&2; exit 2; }
+      vision_src="$2"; shift 2 ;;
+    --prd)
+      [ "$#" -ge 2 ] || { echo "--prd requires a path" >&2; exit 2; }
+      prd_src="$2"; shift 2 ;;
+    --architecture)
+      [ "$#" -ge 2 ] || { echo "--architecture requires a path" >&2; exit 2; }
+      architecture_src="$2"; shift 2 ;;
     -*) echo "Unknown option: $1" >&2; usage; exit 2 ;;
     *) break ;;
   esac
 done
 
-if [ "$#" -ne 1 ]; then usage; exit 2; fi
+if [ "$#" -ne 1 ]; then
+  usage
+  exit 2
+fi
 
 target_repo="$1"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "$script_dir/.." && pwd)"
+. "$repo_root/scripts/lib/gendev-distribution.sh"
 
-if [ ! -f "$repo_root/docs/methodology/constitution/gendev.md" ]; then
-  echo "Not in the methodology repo (no docs/methodology/constitution/gendev.md)." >&2
-  exit 1
-fi
 if [ ! -d "$target_repo" ]; then
   echo "Target does not exist: $target_repo" >&2
   exit 1
@@ -77,183 +74,262 @@ if [ "$target_repo" = "$repo_root" ]; then
   exit 1
 fi
 
-# The three docs must already be in place. This script backfills, it does not
-# create or move them.
-missing_docs=0
-for rel in \
-  "docs/project/vision/vision.md" \
-  "docs/project/prd/prd.md" \
-  "docs/project/architecture/architecture.md"; do
-  if [ ! -f "$target_repo/$rel" ]; then
+if [ -z "$project_name" ]; then
+  project_name="$(basename "$target_repo")"
+fi
+
+canonical_vision="docs/project/vision/vision.md"
+canonical_prd="docs/project/prd/prd.md"
+canonical_architecture="docs/project/architecture/architecture.md"
+
+legacy_mode=0
+if [ -z "$vision_src$prd_src$architecture_src" ]; then
+  legacy_mode=1
+  vision_src="$target_repo/$canonical_vision"
+  prd_src="$target_repo/$canonical_prd"
+  architecture_src="$target_repo/$canonical_architecture"
+fi
+
+import_count=0
+missing=0
+for pair in \
+  "vision|$vision_src|$canonical_vision" \
+  "prd|$prd_src|$canonical_prd" \
+  "architecture|$architecture_src|$canonical_architecture"; do
+  kind="${pair%%|*}"
+  rest="${pair#*|}"
+  src="${rest%%|*}"
+  rel="${rest#*|}"
+  [ -z "$src" ] && continue
+  if [ ! -f "$src" ]; then
     echo "Expected doc not found in target: $rel" >&2
-    missing_docs=1
+    missing=1
+    continue
   fi
+  import_count=$((import_count + 1))
 done
-if [ "$missing_docs" -ne 0 ]; then
-  echo "This script expects vision, PRD, and architecture already placed in their subfolders." >&2
-  echo "For a repo without them, use install-methodology.sh then init-project.sh." >&2
+
+if [ "$missing" -ne 0 ]; then
+  if [ "$legacy_mode" -eq 1 ]; then
+    echo "This script expects at least one existing authority document; legacy invocation checked vision, PRD, and architecture paths." >&2
+  fi
   exit 1
 fi
-
-# --- Step 1: seed the methodology (same rulebook install) ---
-if [ -e "$target_repo/docs/methodology" ] && [ "$force" -ne 1 ]; then
-  echo "docs/methodology already exists in the target. Re-run with --force to overwrite." >&2
-  exit 1
+if [ "$import_count" -eq 0 ]; then
+  echo "Declare at least one existing authority document with --vision, --prd, or --architecture." >&2
+  exit 2
 fi
 
-echo "Seeding methodology into: $target_repo"
-
-copy_tree() {
-  src="$1"; dest="$2"
-  [ -e "$src" ] || { echo "Warning: missing source $src" >&2; return 0; }
-  rm -rf "$dest"; cp -R "$src" "$dest"; echo "  copied $(basename "$src")"
+preflight_import_collision() {
+  src="$1"
+  rel="$2"
+  [ -z "$src" ] && return 0
+  dest="$target_repo/$rel"
+  [ -f "$dest" ] || return 0
+  if cmp -s "$src" "$dest"; then
+    return 0
+  fi
+  src_abs="$(cd "$(dirname "$src")" && pwd)/$(basename "$src")"
+  dest_abs="$(cd "$(dirname "$dest")" && pwd)/$(basename "$dest")"
+  if [ "$src_abs" != "$dest_abs" ]; then
+    echo "Refusing to overwrite imported authority: $rel" >&2
+    return 1
+  fi
 }
 
-mkdir -p "$target_repo/docs"
-copy_tree "$repo_root/docs/methodology"      "$target_repo/docs/methodology"
-copy_tree "$repo_root/docs/project-template" "$target_repo/docs/project-template"
+preflight_import_collision "$vision_src" "$canonical_vision"
+preflight_import_collision "$prd_src" "$canonical_prd"
+preflight_import_collision "$architecture_src" "$canonical_architecture"
 
-mkdir -p "$target_repo/scripts"
-for s in check-methodology.sh methodology-guard.sh install-hooks.sh init-project.sh methodology-metrics.sh test-checker.sh; do
-  [ -f "$repo_root/scripts/$s" ] && { cp "$repo_root/scripts/$s" "$target_repo/scripts/$s"; chmod +x "$target_repo/scripts/$s"; echo "  copied scripts/$s"; }
-done
-
-if [ -f "$repo_root/AGENTS.md" ]; then
-  if [ -e "$target_repo/AGENTS.md" ] && [ "$force" -ne 1 ]; then
-    echo "  target already has AGENTS.md, left untouched"
+hash_file() {
+  if command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$1" | awk '{print $1}'
+  elif command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$1" | awk '{print $1}'
   else
-    cp "$repo_root/AGENTS.md" "$target_repo/AGENTS.md"; echo "  copied AGENTS.md"
+    python3 - "$1" <<'PY'
+import hashlib
+import sys
+with open(sys.argv[1], 'rb') as handle:
+    print(hashlib.sha256(handle.read()).hexdigest())
+PY
   fi
+}
+
+slug="$(printf '%s' "$project_name" | tr '[:upper:]' '[:lower:]' | sed -E 's/[^a-z0-9]+/-/g; s/^-+//; s/-+$//')"
+[ -n "$slug" ] || { echo "Project name must contain at least one alphanumeric character." >&2; exit 2; }
+today="$(date +%F)"
+
+if [ "$dry_run" -ne 1 ]; then
+  if [ -e "$target_repo/docs/methodology" ] && [ "$force" -ne 1 ]; then
+    echo "docs/methodology already exists in the target. Re-run with --force to upgrade GenDev-owned paths." >&2
+    exit 1
+  fi
+  install_args=""
+  [ "$force" -eq 1 ] && install_args="$install_args --force"
+  [ "$with_resources" -eq 1 ] && install_args="$install_args --with-resources"
+  # shellcheck disable=SC2086
+  "$repo_root/scripts/install-methodology.sh" $install_args "$target_repo" >/dev/null
 fi
 
-[ "$with_resources" -eq 1 ] && copy_tree "$repo_root/docs/resources" "$target_repo/docs/resources"
+if [ "$dry_run" -eq 1 ]; then
+  echo "DRY RUN: would backfill $target_repo"
+  exit 0
+fi
 
-# --- Step 2: conformance report ---
+mkdir -p \
+  "$target_repo/docs/project/approvals" \
+  "$target_repo/docs/project/vision" \
+  "$target_repo/docs/project/prd" \
+  "$target_repo/docs/project/architecture" \
+  "$target_repo/docs/project/security-governance" \
+  "$target_repo/docs/project/decisions" \
+  "$target_repo/docs/project/build-plan/phases" \
+  "$target_repo/docs/project/testing" \
+  "$target_repo/docs/project/traceability" \
+  "$target_repo/docs/project/as-built" \
+  "$target_repo/docs/project/deployment" \
+  "$target_repo/docs/project/review"
+
+install_import() {
+  src="$1"
+  rel="$2"
+  [ -z "$src" ] && return 0
+  dest="$target_repo/$rel"
+  if [ -f "$dest" ]; then
+    if cmp -s "$src" "$dest"; then
+      return 0
+    fi
+    if [ "$(cd "$(dirname "$src")" && pwd)/$(basename "$src")" != "$(cd "$(dirname "$dest")" && pwd)/$(basename "$dest")" ]; then
+      echo "Refusing to overwrite imported authority: $rel" >&2
+      return 1
+    fi
+    return 0
+  fi
+  mkdir -p "$(dirname "$dest")"
+  cp "$src" "$dest"
+}
+
+install_import "$vision_src" "$canonical_vision"
+install_import "$prd_src" "$canonical_prd"
+install_import "$architecture_src" "$canonical_architecture"
+
+render_template() {
+  src="$1"
+  dest="$2"
+  [ -f "$dest" ] && return 0
+  project_name_sed="$(printf '%s' "$project_name" | sed 's/[\/&]/\\&/g')"
+  slug_sed="$(printf '%s' "$slug" | sed 's/[\/&]/\\&/g')"
+  today_sed="$(printf '%s' "$today" | sed 's/[\/&]/\\&/g')"
+  sed \
+    -e "s/\[Project Name\]/$project_name_sed/g" \
+    -e "s/\[project name\]/$project_name_sed/g" \
+    -e "s/\[project-slug\]/$slug_sed/g" \
+    -e "s/\[YYYY-MM-DD\]/$today_sed/g" \
+    -e "s/^Date:$/Date: $today_sed/g" \
+    -e "s/^Owner:$/Owner: TBD/g" \
+    "$src" > "$dest"
+}
+
+render_template "$target_repo/docs/project-template/project.yaml" "$target_repo/docs/project/project.yaml"
+render_template "$target_repo/docs/methodology/templates/gate-log-template.md" "$target_repo/docs/project/approvals/gate-log.md"
+render_template "$target_repo/docs/methodology/templates/governance-security-template.md" "$target_repo/docs/project/security-governance/governance-security-spec.md"
+render_template "$target_repo/docs/methodology/templates/traceability-matrix-template.md" "$target_repo/docs/project/traceability/traceability-matrix.md"
+render_template "$target_repo/docs/methodology/templates/0001-technology-stack-template.md" "$target_repo/docs/project/decisions/0001-technology-stack.md"
+render_template "$target_repo/docs/methodology/templates/phase-plan-template.md" "$target_repo/docs/project/build-plan/phase-plan.md"
+
 report="$target_repo/docs/project/backfill-conformance-report.md"
-tpl_root="$repo_root/docs/methodology/templates"
+checker_output="$target_repo/docs/project/backfill-checker-output.txt"
+checker_rc=0
+(
+  cd "$target_repo"
+  ./scripts/check-methodology.sh > "$checker_output" 2>&1
+) || checker_rc=$?
 
-# Front-matter fields every template requires (the keys, minus the placeholder values).
-FRONT_MATTER="Status project Date Owner Authority Produced-by Produced-on Derived-from"
+front_matter_keys='Status project Date Owner Authority Produced by Produced on Produced with Agent identity Derived from'
 
-# Extract the required '## ' section titles from a template.
-required_sections() {
-  grep "^## " "$1" | sed 's/^## //'
+has_key() {
+  doc="$1"
+  key="$2"
+  grep -qi "^${key}:" "$doc"
 }
 
-# Classify a required section against the doc's actual headings:
-#   present  - a heading matches the template title (leading words, case-insensitive)
-#   likely   - no title match, but the section's distinctive keyword appears as
-#              some heading in the doc (content probably there under another name)
-#   absent   - neither
-classify_section() {
-  doc="$1"; title="$2"
-  key="$(printf '%s' "$title" | sed 's/ *(.*//')"
-  # tolerate an optional numbering prefix like "## 6. " before the title
-  if grep -qiE "^## *([0-9]+\.? *)?${key}" "$doc"; then
-    echo "present"; return
-  fi
-  kw="$(printf '%s' "$key" | awk '{print $NF}')"
-  if [ -n "$kw" ] && grep -qiE "^##.*${kw}" "$doc"; then
-    echo "likely"; return
-  fi
-  echo "absent"
-}
-
-# Does the doc carry a front-matter key?
-has_front_matter() {
-  doc="$1"; key="$2"
-  case "$key" in
-    Produced-by) grep -qi "^Produced by:" "$doc" ;;
-    Produced-on) grep -qi "^Produced on:" "$doc" ;;
-    Derived-from) grep -qi "^Derived from:" "$doc" ;;
-    project) grep -qi "^project:" "$doc" ;;
-    *) grep -qi "^${key}:" "$doc" ;;
-  esac
-}
-
-report_doc() {
-  gate="$1"; label="$2"; doc="$3"; tpl="$4"
+write_doc_report() {
+  label="$1"
+  rel="$2"
+  src="$3"
+  [ -z "$src" ] && return 0
+  doc="$target_repo/$rel"
   {
-    echo "## $gate: $label"
-    echo ""
-    echo "Document: \`${doc#$target_repo/}\`"
-    echo "Template: \`docs/methodology/templates/$(basename "$tpl")\`"
-    echo ""
-    echo "### Front-matter"
-    echo ""
-    fm_missing=0
-    for key in $FRONT_MATTER; do
-      if has_front_matter "$doc" "$key"; then
+    echo "## $label"
+    echo
+    echo "canonical_path: $rel"
+    echo "source_path: $src"
+    echo "sha256: $(hash_file "$doc")"
+    echo
+    echo "### Required provenance and identity fields"
+    for key in $front_matter_keys; do
+      case "$key" in
+        Produced|by|on|with|Agent|identity|Derived|from) continue ;;
+      esac
+      if has_key "$doc" "$key"; then
         echo "- present: $key"
       else
         echo "- MISSING: $key"
-        fm_missing=$((fm_missing + 1))
       fi
     done
-    echo ""
-    echo "### Required sections"
-    echo ""
-    sec_absent=0
-    sec_likely=0
-    while IFS= read -r title; do
-      [ -z "$title" ] && continue
-      state="$(classify_section "$doc" "$title")"
-      case "$state" in
-        present) echo "- present: $title" ;;
-        likely)  echo "- LIKELY (content present under a different heading, rename/adapt): $title"; sec_likely=$((sec_likely + 1)) ;;
-        absent)  echo "- ABSENT (no matching content, must be written): $title"; sec_absent=$((sec_absent + 1)) ;;
-      esac
-    done <<EOF
-$(required_sections "$tpl")
-EOF
-    echo ""
-    echo "### $gate reformatting directive (for the agent)"
-    echo ""
-    echo "Conform \`${doc#$target_repo/}\` to its template. Preserve the existing"
-    echo "customer-facing content. Three kinds of work, in order of care:"
-    echo ""
-    echo "1. Add the $fm_missing missing front-matter field(s) listed above."
-    echo "2. For the $sec_likely LIKELY section(s): the content already exists under"
-    echo "   a different heading. Rename and lightly adapt to the template's exact"
-    echo "   section title and structure. Do not rewrite the substance or invent new"
-    echo "   content; this is a mapping task, not an authoring task."
-    echo "3. For the $sec_absent ABSENT section(s): no matching content exists. Write"
-    echo "   it only from what the document and its upstream authority already support."
-    echo "   If the content genuinely does not exist, mark it explicitly (\"None\" or"
-    echo "   \"Open question\") rather than inventing scope."
-    echo ""
-    echo "Then satisfy the $gate exit checklist. Do not introduce new scope at any step."
-    echo ""
-    echo "---"
-    echo ""
+    for key in "Produced by" "Produced on" "Produced with" "Agent identity" "Derived from"; do
+      if has_key "$doc" "$key"; then
+        echo "- present: $key"
+      else
+        echo "- MISSING: $key"
+      fi
+    done
+    echo
   } >> "$report"
 }
 
-cat > "$report" <<EOF
+cat > "$report" <<EOF_REPORT
 # Backfill Conformance Report
 
-Generated by backfill-methodology.sh. This repo entered the methodology with
-vision, PRD, and architecture already written for customer consumption. Each
-gate below becomes a reformatting task: conform the already-placed document to
-its template and satisfy the exit checklist. This report lists, per document,
-which required front-matter and sections are present and which are missing, so
-each gate's agent directive is precise.
+Status: Complete
+project: $slug
+Date: $today
+Owner: TBD
+Authority: docs/methodology/constitution/gendev.md
+Produced by: scripts/backfill-methodology.sh
+Produced on: $today
+Produced with: GenDev methodology backfill
+Agent identity: gendev-backfill
+Derived from:
+  - path: docs/project/project.yaml
+    revision: N/A
 
-Gate sequence for this backfill: G1 (vision), then G2 (PRD), then G3
-(architecture). Do them in order. Close G3 to reach architecture-ready.
+This report is heuristic guidance, not approval. It does not mark imported authority as Accepted.
+Lifecycle progression must stop at the first missing or unaccepted upstream gate.
 
----
+checker_exit_status: $checker_rc
+checker_output: docs/project/backfill-checker-output.txt
+next_gate_specific_conformance_action: reconcile the first imported authority document that is missing required fields or remains unaccepted.
 
-EOF
+EOF_REPORT
 
-report_doc "G1" "Vision"       "$target_repo/docs/project/vision/vision.md"             "$tpl_root/vision-template.md"
-report_doc "G2" "PRD"          "$target_repo/docs/project/prd/prd.md"                   "$tpl_root/prd-template.md"
-report_doc "G3" "Architecture" "$target_repo/docs/project/architecture/architecture.md" "$tpl_root/architecture-template.md"
+write_doc_report "Vision" "$canonical_vision" "$vision_src"
+write_doc_report "PRD" "$canonical_prd" "$prd_src"
+write_doc_report "Architecture" "$canonical_architecture" "$architecture_src"
 
-echo
-echo "Done."
-echo "Methodology seeded, and conformance report written to:"
-echo "  ${report#$target_repo/}"
-echo
-echo "Next: work the report gate by gate (G1 vision, G2 PRD, G3 architecture)."
-echo "Each gate's reformatting directive is in the report. Close G3 to finish the backfill."
+cat >> "$report" <<EOF_REPORT
+## Imported Document Availability
+
+- vision: $([ -n "$vision_src" ] && echo present || echo missing)
+- prd: $([ -n "$prd_src" ] && echo present || echo missing)
+- architecture: $([ -n "$architecture_src" ] && echo present || echo missing)
+
+## Real Checker Status
+
+The checker was run after the control plane existed. Exit status: $checker_rc.
+Expected conformance gaps remain until imported authority is reconciled to templates and approved.
+EOF_REPORT
+
+echo "Backfill complete. Report: docs/project/backfill-conformance-report.md"
+echo "Checker exit status: $checker_rc"

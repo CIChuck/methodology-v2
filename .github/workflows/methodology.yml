@@ -10,9 +10,13 @@ permissions:
   contents: read
 
 jobs:
-  methodology:
-    name: methodology
-    runs-on: ubuntu-latest
+  shell-and-unit:
+    name: shell-and-unit (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - name: Check out repository
@@ -20,22 +24,84 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Validate shell scripts
+      - name: Print versions
         shell: bash
         run: |
-          bash -n scripts/check-methodology.sh
-          bash -n scripts/init-project.sh
-          bash -n scripts/methodology-guard.sh
-          bash -n scripts/install-hooks.sh
-          bash -n scripts/methodology-metrics.sh
-          bash -n scripts/test-checker.sh
+          /bin/bash --version | head -n 1
+          git --version
+          python3 --version
+          ./scripts/test-methodology.sh --platform-summary --list
 
-      - name: Run checker self-test
+      - name: Syntax-check discovered shell surfaces
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite shell-syntax
+
+      - name: Run parser, checker, lifecycle, and metrics units
         shell: bash
         run: |
-          scripts/test-checker.sh
+          ./scripts/test-methodology.sh --suite checker
+          ./scripts/test-methodology.sh --suite lifecycle
+          ./scripts/test-methodology.sh --suite metrics
 
-      - name: Run methodology guard
+  runtime-integration:
+    name: runtime-integration (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run lifecycle runtime integration
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite runtime-tools
+
+      - name: Run staged guard and hook integration
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite enforcement-tools
+
+  distribution-integration:
+    name: distribution-integration (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run install and backfill integration
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite distribution-tools
+
+  event-and-range-guard:
+    name: event-and-range-guard (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run guard/range suite
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite enforcement-tools
+
+      - name: Run actual repository range guard
         shell: bash
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
@@ -49,8 +115,71 @@ jobs:
             fi
           fi
 
+          if ! git cat-file -e "$base_ref^{commit}"; then
+            printf 'ERROR: base ref missing: %s\n' "$base_ref" >&2
+            exit 1
+          fi
+          if ! git cat-file -e "$head_ref^{commit}"; then
+            printf 'ERROR: head ref missing: %s\n' "$head_ref" >&2
+            exit 1
+          fi
+
           scripts/methodology-guard.sh --range "$base_ref" "$head_ref"
 
-      - name: Run methodology metrics
+  examples:
+    name: examples (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run current examples
         shell: bash
-        run: scripts/methodology-metrics.sh docs/project
+        run: ./scripts/test-methodology.sh --suite examples
+
+  migration:
+    name: migration (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run migration fixtures
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite migration
+
+  release-coherence:
+    name: release-coherence (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run release coherence checks
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite release-coherence
+
+      - name: Run repository methodology checker
+        shell: bash
+        run: ./scripts/check-methodology.sh

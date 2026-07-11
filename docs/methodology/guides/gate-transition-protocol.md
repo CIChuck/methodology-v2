@@ -79,6 +79,9 @@ blast_radius_class: C2
 combined_gates: N/A
 combined_gate_justification: N/A
 artifact_status: Accepted
+criterion_ids:
+  - G2-REQ-ID
+  - G2-AC-COVERAGE
 evidence:
   - path: docs/project/vision/vision.md
     revision: TBD
@@ -315,10 +318,9 @@ Stop if:
 
 ## G5 -> G6: Build Ready To Implementation Ready For Review
 
-This transition spans the entire phase loop. G5 closes when the phase plan is
-accepted (G5.0); the build then proceeds one phase at a time through the
-interior G5.<id> checkpoints. G6 is entered only after every planned phase has
-exited.
+This transition spans the entire phase loop. The phase plan is accepted at G5.0 and
+the build then proceeds one phase at a time through interior G5.<id> checkpoints.
+G6 is entered only after every planned phase has exited.
 
 Required:
 
@@ -426,31 +428,54 @@ Stop if:
 
 - rollback is undefined for risky changes;
 - production credentials are requested in chat;
-- monitoring or validation is missing;
+- deployment readiness evidence is missing for monitored release risks;
 - deployment target is not approved.
 
 ## G8 -> G9: Deployment Ready To As-Built Closed
 
 Required:
 
-- deployment or release decision;
-- post-deployment validation results, if deployed;
-- rollback status or confirmation not needed;
+- deployment approval event, release decision, or explicit non-deployment disposition.
+- post-deployment validation results for deployment, or explicit non-deployment outcome.
+- deployment disposition is present and status is not unknown.
 - production known limitations;
 - final as-built close-out;
 - traceability update.
 
 Review questions:
 
-- Did deployment occur?
-- Did post-deployment checks pass?
-- Were incidents, rollback, or follow-up items recorded?
-- Can future agents understand the production state?
+- Was deployment executed, intentionally skipped, or explicitly deferred?
+- Did disposition and evidence match the accepted G8 decision?
+- Were incidents, rollout risks, rollback decisions, and follow-ups recorded?
+- Can future agents understand the production state and disposition?
 
 Human approval: required for phase close.
 
 Next role: Product Vision Agent, Phase Planning Agent, or Deployment Readiness Agent, depending on
 next work.
+
+## Runtime Transition Atomicity And Recovery Limits
+
+Lifecycle write commands use a process-level transaction for governed file updates:
+
+- render every candidate file before replacing any governed file;
+- acquire a project-local transition lock before installation;
+- record original file hashes and backup paths in a recovery journal;
+- replace only governed files that belong to the requested transition;
+- run the methodology checker against the real post-write state;
+- roll back all governed files from backups if any write or post-write check fails;
+- remove the lock, backups, and journal only after success is confirmed.
+
+This protects normal command failures, validation failures, denied prompts, interrupted processes,
+and post-write checker failures. It is not a filesystem durability guarantee. Abrupt power loss,
+kernel crash, storage failure, or manual deletion between individual file replacements can still
+leave partial state. If that happens, treat the transition lock and recovery journal as recovery
+evidence, restore from recorded backups where present, and rerun the command only after confirming
+the reviewed revision still matches the pre-transition artifact bytes.
+
+Deployment approval recording remains a documentation/state transition only. It must not run
+production commands, fetch secrets, deploy software, tag releases, push branches, or mark terminal
+close-out complete by itself.
 
 Next artifact: next phase plan or operational follow-up backlog.
 

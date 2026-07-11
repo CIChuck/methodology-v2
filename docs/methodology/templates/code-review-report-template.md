@@ -8,9 +8,9 @@ Authority: `docs/methodology/constitution/gendev.md` — Rule 7: Code Review Ver
 Source:
   Construction Directive: `docs/project/build-plan/phases/[directive].md`
   Tactical Plan: `docs/project/build-plan/phases/[tactical-plan].md`
-  Architecture: `docs/project/architecture/[architecture-document].md`
-  Governance/Security: `docs/project/security-governance/[governance-document].md`
-  PRD: `docs/project/prd/[prd-document].md`
+  Architecture: `docs/project/architecture/architecture.md`
+  Governance/Security: `docs/project/security-governance/governance-security-spec.md`
+  PRD: `docs/project/prd/prd.md`
   Traceability Matrix: `docs/project/traceability/[traceability-matrix].md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
@@ -21,11 +21,11 @@ Derived from:
     revision: TBD
   - path: docs/project/build-plan/phases/[tactical-plan].md
     revision: TBD
-  - path: docs/project/architecture/[architecture-document].md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
-  - path: docs/project/security-governance/[governance-document].md
+  - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
-  - path: docs/project/prd/[prd-document].md
+  - path: docs/project/prd/prd.md
     revision: TBD
   - path: docs/project/traceability/[traceability-matrix].md
     revision: TBD

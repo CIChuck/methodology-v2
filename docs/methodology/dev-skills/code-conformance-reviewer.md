@@ -101,3 +101,9 @@ Delta review:
 ## Completion Standard
 
 The review is complete when the user can decide whether to accept, remediate, or reopen planning.
+
+## 0.5 Operational Coherence Requirements
+
+Report whether the review is per-phase or aggregate. Cite the exact reviewed revision, source
+authority revisions, tactical task IDs, test/UAT evidence, and traceability rows. G6 readiness is
+not final acceptance; G7 acceptance requires review/remediation disposition and human approval.

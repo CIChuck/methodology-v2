@@ -236,3 +236,34 @@ checklists here remain manual reminders.
 [ ] value review status recorded, if production or measurable value occurred
 [ ] next phase or backlog state clear
 ```
+
+## 0.5 Additional Operational Checks
+
+G2 criteria checks:
+
+```text
+[ ] C2/C3 acceptance criteria use EARS form
+[ ] C1 criteria are concrete and observable when EARS is intentionally not used
+[ ] unwanted behavior is specified for every known error or abuse path
+[ ] each requirement has a stable ID
+```
+
+G3 verification checks:
+
+```text
+[ ] verification specification has stable criterion IDs
+[ ] each criterion traces to G2 requirements or unwanted behavior
+[ ] design interrogation is proportional to C1/C2/C3 blast radius
+[ ] human approval confirms the specification faithfully encodes intent
+```
+
+Phase-exit checks:
+
+```text
+[ ] phase evidence cites stable tactical task IDs
+[ ] test/UAT commands and results are recorded honestly
+[ ] independent phase review records exact reviewed revision
+[ ] remediation disposition exists even when remediation is not required
+[ ] traceability rows point to real evidence, not templates or plans
+[ ] per-phase as-built close-out records actual behavior and deviations
+```

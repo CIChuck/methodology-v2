@@ -7,9 +7,9 @@ Owner:
 Position: G5.[id].1
 Authority: `docs/methodology/constitution/gendev.md` — Phase Build Plan
 Source:
-  PRD: `docs/project/prd/[prd-document].md`
-  Architecture: `docs/project/architecture/[architecture-document].md`
-  Governance/Security: `docs/project/security-governance/[governance-document].md`
+  PRD: `docs/project/prd/prd.md`
+  Architecture: `docs/project/architecture/architecture.md`
+  Governance/Security: `docs/project/security-governance/governance-security-spec.md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
@@ -17,11 +17,11 @@ Agent identity: TBD
 Derived from:
   - path: docs/project/build-plan/phase-plan.md
     revision: TBD
-  - path: docs/project/prd/[prd-document].md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/architecture/[architecture-document].md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
-  - path: docs/project/security-governance/[governance-document].md
+  - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
 
 ---
@@ -195,7 +195,7 @@ permission, audit, approval, policy, data-sensitivity, or secrets-handling
 requirements in force for this phase. If none apply, state why.
 
 Below the baseline, record what must be verified before the phase can close.
-Reference: docs/project/security-governance/[governance-document].md
+Reference: docs/project/security-governance/governance-security-spec.md
 ```
 
 ---
@@ -253,9 +253,9 @@ Define:
 Coverage standard:
 
 ```text
-At least 90% meaningful coverage for new or materially changed code. A shortfall
-requires a written justification recorded here and a named residual risk. Never
-accept a shortfall silently.
+Coverage requirement follows the project-defined coverage policy. A shortfall must be
+recorded in this artifact with written justification and a named residual risk.
+Never accept a shortfall silently.
 ```
 
 Adequacy approver:

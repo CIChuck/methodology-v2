@@ -301,3 +301,39 @@ verify early; those who read the gates literally will treat verification as a
 build-phase activity and defer it. Worse, AI judges will grade AI-generated code
 against reinterpreted prose, which verifies nothing — the precise failure a
 method built on AI-generated code can least afford.
+
+## Append-Only Classification Notice: 2026-07-10
+
+This notice preserves the complete historical record above. It does not alter
+the original Accepted status or make the proposed successor effective before
+explicit human ratification.
+
+Current classification: **Active; proposed partial supersession pending human
+ratification**.
+
+Proposed successor:
+`docs/methodology/design/operational-coherence-decision-record.md` (D-005,
+D-009, D-010, D-017, and D-018).
+
+If and only if that exact successor record is ratified, this record becomes
+**Partially Superseded** with this clause-level disposition:
+
+| Historical clause | Disposition after ratification | Successor rule |
+| --- | --- | --- |
+| Verification-First principle and three verification questions | Remain active | D-017 scales form, not the requirement to define and approve correctness. |
+| Context summary: "EARS-formed acceptance criteria at G2" | Partially superseded for C1 | D-017 permits plain, concrete, observable C1 criteria; C2/C3 retain EARS. |
+| Gate table G2 row: "EARS acceptance criteria" | Partially superseded for C1 | D-017 requires the C1 observable alternative and negative cases for every class. |
+| Step 1: universal EARS capture at G2 | Partially superseded for C1 | Its EARS mechanism remains active for C2/C3; C1 may use observable criteria. |
+| Step 2 and Consequence 3: human-approved G3 verification specification | Remain active and are clarified | D-017 requires the specification and proportional design interrogation for every class. |
+| Step 3: code graded against approved verification | Remains active | D-005 provides the complete per-phase evidence binding. |
+| Consequence 2: every G2 criterion must use EARS | Partially superseded for C1 | C2/C3 remain mechanically EARS-formed; all classes require explicit unwanted behavior where failure paths exist. |
+| Consequence 4: phase-exit/value-review evidence through `tested-by` | Partially superseded | D-005 supplies complete phase exit; D-018 assigns post-loop/value ownership; D-009 requires reference target kind. |
+| Consequence 5: scale verification by blast radius | Remains active and is made determinate | D-017 defines the C1/C2/C3 criterion-form boundary. D-010 requires a project-declared coverage contract. |
+| Enforcement bullet: EARS conformance at G2 | Partially superseded for C1 | Enforcement is class-aware under D-017. |
+| Open question: whether C1 may use relaxed criterion form | Resolved | Yes, under D-017's concrete-observable and negative-case requirements. |
+| Open question: relationship to the G5-G6 loop | Resolved for operational ownership | D-005 and D-018 define phase and aggregate evidence boundaries. |
+
+Technique neutrality, the human-approved test-specification keystone, the
+division between deterministic tests and independent judgment, and the
+requirement to approve verification before construction remain active. Until
+successor ratification, every historical clause retains its prior authority.

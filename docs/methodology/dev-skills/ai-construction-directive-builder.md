@@ -73,3 +73,10 @@ Before finalizing, verify:
 ## Completion Standard
 
 The directive is complete when it can be sent to an implementation agent as the controlling build authority.
+
+## 0.5 Operational Coherence Requirements
+
+A construction directive binds the implementation agent to accepted authority, stable tactical task
+IDs, verification commands, negative tests, documentation close-out, and stop conditions. It must
+not authorize unplanned requirements, architecture, governance, migration, deployment, or
+blast-radius changes.

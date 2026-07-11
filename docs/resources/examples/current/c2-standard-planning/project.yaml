@@ -1,0 +1,15 @@
+project:
+  name: "Standard Planning Example"
+  slug: standard-planning-example
+  current_gate: G5.3
+  status: planning
+methodology:
+  version: 0.5.0-operational-coherence
+  schema_mode: strict
+scaling:
+  blast_radius_class: C2
+  classification_reason: "Standard product planning with user-facing workflow and confidential business metadata."
+approvals:
+  current_gate:
+    gate: G5.3
+    status: ready_for_implementation

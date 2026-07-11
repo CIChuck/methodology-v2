@@ -67,9 +67,12 @@ mkdir -p \
   "$target/vision" \
   "$target/prd" \
   "$target/architecture" \
+  "$target/design" \
   "$target/security-governance" \
   "$target/decisions" \
   "$target/build-plan/phases" \
+  "$target/review" \
+  "$target/deployment" \
   "$target/testing" \
   "$target/traceability" \
   "$target/as-built"

@@ -168,3 +168,17 @@ context and risk level) may mean:
 
 That is acceptable when risk is low and explicitly accepted. It is not acceptable to have no
 deployment procedure, no rollback thinking, and no owner.
+
+## 0.5 Deployment, Non-Deployment, Value Review, And Terminal Close-Out
+
+G8 supports two honest paths. A deployable product records deployment readiness and a separate
+human deployment approval before release. A non-deployed artifact, such as a distributed local CLI,
+records an approved non-deployment disposition instead. Both paths still require an operational
+record explaining what happened, who owns follow-up, and what validation or non-applicability claim
+supports the decision.
+
+G8-to-G9 is terminal. It requires the deployment record or non-deployment disposition, operational
+validation result where applicable, final traceability, as-built close-out, and value-review
+disposition. `met`, `missed`, and `unmeasurable` are distinct value-review outcomes;
+`unmeasurable` is not success. If no value readout is applicable, record why rather than claiming a
+measurement.

@@ -407,3 +407,85 @@ approval, risk, tests, and evidence.
 ```
 
 GenDev is not about document volume. It is about durable, inspectable authority.
+
+## Summary-Only Approval
+
+Symptom:
+
+```text
+The agent asks for approval based on a summary, but the approval record does not identify exact
+reviewed revisions or evidence paths.
+```
+
+Risk:
+
+- future agents cannot prove what was approved;
+- stale or substituted evidence may be treated as accepted authority.
+
+Correction:
+
+```text
+Stop. Recreate the approval summary with exact evidence paths, reviewed revisions or explicit TBD
+rationale, checked statement, accepted risks, and the manifest updates to be made.
+```
+
+## Wrong Evidence Snapshot
+
+Symptom:
+
+```text
+A review, traceability row, or gate event cites a command, artifact, or revision that is not the
+candidate actually being approved.
+```
+
+Risk:
+
+- acceptance attaches to the wrong state.
+
+Correction:
+
+```text
+Rerun or restate evidence against the candidate revision. Mark affected downstream artifacts stale
+until their evidence points at the correct snapshot.
+```
+
+## Partial Transition
+
+Symptom:
+
+```text
+project.yaml advances but the gate log lacks the matching structured event, or the artifact status
+changes without manifest/gate-log agreement.
+```
+
+Risk:
+
+- lifecycle state is ambiguous and runtime tools may refuse later transitions.
+
+Correction:
+
+```text
+Treat the project as drifted. Reconcile artifact status, manifest state, and gate-log event before
+continuing. Prefer the runtime transition command for the corrected approval.
+```
+
+## Legacy Migration Hazard
+
+Symptom:
+
+```text
+An older project is backfilled and imported documents are treated as Accepted because they already
+exist.
+```
+
+Risk:
+
+- unconformed legacy content bypasses current templates, EARS/observable criteria, verification
+specification, approval, and traceability requirements.
+
+Correction:
+
+```text
+Use backfill as a safe seeding step only. Keep imported documents Draft or Ready for Review until
+each gate's conformance, reconciliation, validation, and human approval are complete.
+```

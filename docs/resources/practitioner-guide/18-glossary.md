@@ -1137,8 +1137,9 @@ approval latency are signals, not goals.
 
 Outcome metrics outrank activity metrics. A high review finding count does not automatically mean
 good review quality. A low finding count does not automatically mean good implementation quality.
-Escape rate, value review results, traceability samples, and missed criteria help discipline those
-signals.
+Value review results, traceability samples, and missed criteria help discipline those signals.
+Escape rate is not computed at baseline because GenDev has not yet defined a structured incident
+event and denominator.
 
 ## Governance
 
@@ -1836,3 +1837,44 @@ form (was this requested, checked against the directive's stated scope and non-g
 checkable by a fresh-context reviewer. The broad form (was this genuinely unneeded by the project as
 a whole) is not, because it requires roadmap knowledge the reviewer does not have, so a broad-YAGNI
 finding is advisory, flagged for a human, not a gate failure on the reviewer's own authority.
+
+## Aggregate Close-Out
+
+Aggregate close-out is the project-level closure that happens after phase work, final review,
+remediation, deployment or non-deployment disposition, final traceability, and value-review
+disposition are reconciled. It belongs to G9, not to an individual phase review.
+
+## Coverage Contract
+
+A coverage contract is the project-declared mapping from requirements to verification criteria,
+phases, tests, UAT evidence, implementation references, review evidence, and accepted residuals. It
+replaces any undefined universal coverage percentage.
+
+## Event ID
+
+An event ID is the durable identifier for a structured lifecycle event such as a gate transition,
+phase checkpoint, deployment approval, amendment, regression, override, or terminal close-out.
+
+## Legacy Mode
+
+Legacy mode is checker compatibility for older methodology records. It may preserve historical
+records, but it is not permission for new events to omit current required fields.
+
+## Phase Evidence
+
+Phase evidence is the proof that a specific implementation phase did what its accepted phase build
+plan, tactical plan, construction directive, and test/UAT plan required. It includes command output,
+UAT notes, review results, remediation disposition, traceability updates, and per-phase as-built
+records.
+
+## Stable Task ID
+
+A stable task ID is a durable identifier in a tactical implementation plan, such as `P1-WS2-T003`,
+that lets implementation evidence, review findings, remediation records, and traceability rows cite
+the exact authorized work item.
+
+## Typed Target Kind
+
+A typed target kind is the relationship on a supporting-artifact reference, such as `implements`,
+`satisfies`, `tested-by`, `constrained-by`, or `refines`. The type states why the supporting
+artifact matters and which coherence obligation it creates.

@@ -54,3 +54,9 @@ migration, external integration, or deployment.
 
 Complete when authorized behavior is implemented, required tests are present, verification is run or
 honestly skipped, and the change is ready for conformance review.
+
+## 0.5 Operational Coherence Ownership
+
+Implement only accepted tactical task IDs from the current phase construction directive. Stop if
+work requires a new requirement, unapproved architecture, changed governance, C1/C2/C3
+reclassification, or evidence outside the accepted phase scope.

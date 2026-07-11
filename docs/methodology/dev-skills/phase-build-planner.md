@@ -86,3 +86,11 @@ Before finalizing, identify:
 ## Completion Standard
 
 The build plan is complete when a tactical implementation planner can convert it into executable workstreams.
+
+## 0.5 Operational Coherence Requirements
+
+A phase plan must declare the coverage contract, phase sequence, integration criteria, and whether
+any phase is deferred. Phase-specific planning is just in time: build plan, tactical plan,
+construction directive, build prompt, test/UAT plan, review, remediation disposition,
+traceability, and as-built evidence are produced for the active phase instead of fabricated for
+future phases.

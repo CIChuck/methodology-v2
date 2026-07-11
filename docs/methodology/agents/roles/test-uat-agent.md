@@ -48,3 +48,10 @@ Human approval is required for manual UAT acceptance and accepted coverage gaps.
 ## Completion Standard
 
 Complete when implementation can be accepted or rejected using documented evidence.
+
+## 0.5 Operational Coherence Ownership
+
+Own the translation from G2 criteria and the G3 verification specification into phase test/UAT
+plans. For C2/C3, confirm EARS criteria are represented. For C1, confirm observable criteria are
+specific enough to test. Every class needs unwanted-behavior checks where error or abuse paths
+exist.

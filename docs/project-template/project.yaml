@@ -3,7 +3,7 @@ project:
   slug: "[project-slug]"
   status: initialized
   current_gate: G1
-  methodology_version: 0.4.0-verification-first
+  methodology_version: 0.5.0-operational-coherence
   methodology_release_stage: pre-1.0
   initialized_on: "[YYYY-MM-DD]"
 
@@ -121,6 +121,8 @@ measurement:
   value_review_required_after: first_production_or_value_event
 
 phase:
+  loop_status: not_started
+  current_phase_id: null
   current: 1
   status: planning
   build_plan: docs/project/build-plan/phases/phase-1-build-plan.md
