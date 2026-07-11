@@ -3,8 +3,8 @@
 # This file deliberately uses only syntax available in macOS Bash 3.2.
 
 if [ "${GENDEV_LIFECYCLE_CONTRACT_LOADED+x}" = x ]; then
-  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = '7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' ]; then
-    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = '7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' ] && command -v gendev_gate_name >/dev/null 2>&1; then
+  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = '1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' ]; then
+    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = '1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' ] && command -v gendev_gate_name >/dev/null 2>&1; then
       return 0 2>/dev/null || exit 0
     fi
     printf '%s\n' 'lifecycle contract: incomplete loaded contract' >&2
@@ -26,11 +26,11 @@ readonly GENDEV_LIFECYCLE_REGISTRY_STATUS='released' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_REGISTRY_STATUS' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_LIFECYCLE_TARGET_VERSION='0.5.0-operational-coherence' || {
+readonly GENDEV_LIFECYCLE_TARGET_VERSION='1.0.0' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_TARGET_VERSION' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' || {
+readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_REGISTRY_SHA256' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -1202,7 +1202,7 @@ gendev_manifest_invariant_string() {
     'MANIFEST-TERMINAL:current_gate') printf '%s\n' 'G9' ;;
     'MANIFEST-TERMINAL:project_status') printf '%s\n' 'closed' ;;
     'MANIFEST-TERMINAL:active_role') printf '%s\n' 'none' ;;
-    'MANIFEST-STRICT-V2:rule') printf '%s\n' 'New 0.5 projects use strict schema version 2; legacy mode is explicit and version-bound.' ;;
+    'MANIFEST-STRICT-V2:rule') printf '%s\n' 'New 1.0 projects use strict schema version 2; older-version onboarding is explicit and version-bound.' ;;
     *) return 1 ;;
   esac
 }
@@ -3308,7 +3308,7 @@ gendev_scaling_g2_required_any() {
   esac
 }
 
-readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' || {
+readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_CONTRACT_LOADED' >&2
   return 2 2>/dev/null || exit 2
 }

@@ -50,6 +50,32 @@ role.
 
 ## Orchestration Behavior
 
+## Agent Start Contract
+
+At the start of a task, the lead agent must establish repository state before
+editing methodology or project artifacts:
+
+```bash
+./scripts/gendev-doctor.sh
+```
+
+If the project is initialized, also run:
+
+```bash
+./scripts/project-state.sh
+```
+
+Use the output to report the current gate, next artifact, required approver, and
+recommended validation. If `docs/project/` is missing, initialize the project
+before product implementation. If current state is unclear or authority is
+missing, stop and ask for human disposition rather than inferring approval.
+
+For canonical late-lifecycle artifacts, prefer the generator over ad hoc files:
+
+```bash
+./scripts/new-artifact.sh --kind deployment-readiness
+```
+
 The human may set the collaboration mode in plain language, such as:
 
 ```text

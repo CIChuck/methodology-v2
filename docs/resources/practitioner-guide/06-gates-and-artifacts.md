@@ -486,7 +486,7 @@ What risk is being accepted?
 What happens next?
 ```
 
-## 0.5 Operational Coherence Notes
+## Operational Coherence Notes
 
 The current lifecycle has two layers. G0 through G9 remain the only gates. The `G5.x` addresses are
 checkpoints inside the G5-to-G6 phase loop; they are not new gates and they do not create a

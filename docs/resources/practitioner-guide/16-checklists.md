@@ -237,7 +237,7 @@ checklists here remain manual reminders.
 [ ] next phase or backlog state clear
 ```
 
-## 0.5 Additional Operational Checks
+## Additional Operational Checks
 
 G2 criteria checks:
 

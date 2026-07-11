@@ -1,6 +1,6 @@
 # GenDev Practitioner Guide
 
-Status: Draft
+Status: 1.0 release candidate
 Audience: Product owners, developers, system architects, technical leads, and AI-agent operators.
 
 ## Purpose
@@ -30,7 +30,7 @@ repository that already holds a vision, PRD, or architecture written before the 
 place, as often happens when a project grows out of presales work. Read it when that is your
 starting point rather than a blank slate.
 
-The guide now assumes the hardened GenDev baseline: explicit approvals, structured gate records,
+The guide now assumes the GenDev 1.0 production methodology: explicit approvals, structured gate records,
 artifact provenance, amendment/regression discipline, independent review context provenance,
 enforcement class, blast-radius scaling, process metrics, value review, and production operations.
 It also assumes the documentation-structure baseline: the principle of technique neutrality
@@ -84,7 +84,7 @@ Primary authority references:
 
 ## Version Status
 
-This guide is aligned with the hardened pre-1.0 GenDev baseline. It is intentionally complete
-across the lifecycle while keeping the walkthrough thin enough to read end to end. As the
-methodology matures, the walkthrough should be embellished with richer artifact excerpts, stronger
-production evidence, and more tool-specific addenda.
+This guide is aligned with the GenDev 1.0 production release candidate. It is intentionally complete
+across the lifecycle while keeping the walkthrough readable end to end. The 1.0 release work deepens
+agent-operability, adoption guidance, validation commands, and production evidence without changing
+the methodology authority hierarchy.

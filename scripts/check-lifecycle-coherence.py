@@ -4127,7 +4127,7 @@ class Validator:
         target = self.first(versions, "candidate", "candidate_target", "target", "target_version")
         if isinstance(target, dict):
             target = self.first(target, "version", "id")
-        expected = "0.5.0-operational-coherence"
+        expected = "1.0.0"
         if target != expected:
             self.add(
                 RULE_VERSION,
@@ -4220,7 +4220,14 @@ class Validator:
         if (
             observed != expected_observed_claims
             or observation_revision != "02ae0fc192a898cd482007dfc65612ff907a3bda"
-            or versions.get("published_tags_observed") != ["v0.1.0-baseline"]
+            or versions.get("published_tags_observed")
+            != [
+                "v0.1.0-baseline",
+                "v0.2.0-phase-loop",
+                "v0.3.0-documentation-structure",
+                "v0.4.0-verification-first",
+                "v0.5.0-operational-coherence",
+            ]
         ):
             self.add(
                 RULE_VERSION,
@@ -4322,32 +4329,32 @@ class Validator:
                 "source_file": "README.md",
                 "field": "current methodology version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Current methodology version: `0\.5\.0-operational-coherence`\s*$",
+                "release_value_pattern": r"(?m)^Current methodology version: `1\.0\.0`\s*$",
             },
             {
                 "source_file": "docs/methodology/constitution/gendev.md",
                 "field": "Version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Version: 0\.5\.0-operational-coherence\s*$",
+                "release_value_pattern": r"(?m)^Version: 1\.0\.0\s*$",
             },
             {
                 "source_file": "docs/project-template/project.yaml",
                 "field": "project.methodology_version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^\s+methodology_version:\s*0\.5\.0-operational-coherence\s*$",
+                "release_value_pattern": r"(?m)^\s+methodology_version:\s*1\.0\.0\s*$",
             },
             {
                 "source_file": "docs/methodology/schema/lifecycle.json",
                 "field": "versions.released_current",
                 "delivery_state": "current",
-                "release_value_pattern": r'(?m)^\s*"released_current":\s*"0\.5\.0-operational-coherence"',
+                "release_value_pattern": r'(?m)^\s*"released_current":\s*"1\.0\.0"',
             },
             {
                 "source_file": "docs/resources/releases/README.md",
                 "field": "latest release",
                 "delivery_state": release_index_state,
                 "required_work_package": "WP-11",
-                "release_value_pattern": r"(?m)^Latest release:\s*0\.5\.0-operational-coherence\s*$",
+                "release_value_pattern": r"(?m)^Latest release:\s*1\.0\.0\s*$",
             },
         ]
         if synchronization_targets != expected_sync_targets:

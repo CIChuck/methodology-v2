@@ -169,7 +169,7 @@ context and risk level) may mean:
 That is acceptable when risk is low and explicitly accepted. It is not acceptable to have no
 deployment procedure, no rollback thinking, and no owner.
 
-## 0.5 Deployment, Non-Deployment, Value Review, And Terminal Close-Out
+## Deployment, Non-Deployment, Value Review, And Terminal Close-Out
 
 G8 supports two honest paths. A deployable product records deployment readiness and a separate
 human deployment approval before release. A non-deployed artifact, such as a distributed local CLI,

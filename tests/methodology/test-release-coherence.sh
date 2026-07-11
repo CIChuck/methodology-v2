@@ -19,6 +19,10 @@ th_run_case "RC-001" 0 "lifecycle registry and active docs are coherent" \
   "cd '$repo_root' && ./scripts/check-lifecycle-coherence.py --mode release" \
   'Lifecycle coherence: clean \(release mode\)'
 
+th_run_case "RC-001A" 0 "active documentation release identity is coherent" \
+  "cd '$repo_root' && ./scripts/check-doc-coherence.sh" \
+  'Documentation coherence: clean'
+
 th_run_case "RC-002" 1 "active docs contain no raw refinement notes" \
   "cd '$repo_root' && rg -n '^\\s*refinement:' docs/resources/practitioner-guide" \
   ''
@@ -42,9 +46,9 @@ th_run_case "RC-006" 0 "current examples expose strict metadata and legacy bound
   "cd '$repo_root' && rg -n 'strict_schema_mode|non_authoritative_current_example' docs/resources/examples/current/*/example.json && rg -n 'historical, non-authoritative|pre-phase-loop' docs/resources/examples/legacy/0.1.0-pre-phase-loop/README.md" \
   'non_authoritative_current_example'
 
-th_run_case "RC-007" 0 "release index presents 0.5 as latest release" \
+th_run_case "RC-007" 0 "release index presents 1.0 as latest release" \
   "cd '$repo_root' && \
-   rg -n '^Latest release: 0\\.5\\.0-operational-coherence$' docs/resources/releases/README.md && \
+   rg -n '^Latest release: 1\\.0\\.0$' docs/resources/releases/README.md && \
    ! rg -n '^Latest release-prep candidate:' docs/resources/releases/README.md && \
    ! rg -n '^Latest published release:' docs/resources/releases/README.md" \
   'Latest release'

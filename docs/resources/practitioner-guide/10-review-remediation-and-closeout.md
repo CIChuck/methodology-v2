@@ -221,7 +221,7 @@ Expected agent behavior:
 - report any missing evidence;
 - recommend phase acceptance or next remediation.
 
-## 0.5 Phase Review Versus Aggregate Acceptance
+## Phase Review Versus Aggregate Acceptance
 
 Per-phase review happens inside the G5-to-G6 phase loop. It checks one implemented phase against
 that phase's accepted directive, tactical plan, phase plan, test/UAT plan, and source authority.

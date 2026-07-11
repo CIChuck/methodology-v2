@@ -3,20 +3,20 @@
   "registry": {
     "id": "gendev-lifecycle",
     "status": "released",
-    "target_release": "0.5.0-operational-coherence",
-    "released_current": "0.5.0-operational-coherence",
+    "target_release": "1.0.0",
+    "released_current": "1.0.0",
     "source_file": "docs/methodology/schema/lifecycle.json",
     "human_authority": "docs/methodology/guides/gates.md",
     "constitutional_authority": "docs/methodology/constitution/gendev.md",
     "generated_contract": "scripts/lib/lifecycle-contract.sh",
     "generator": "scripts/generate-lifecycle-contract.py",
-    "description": "Mechanically determinate lifecycle vocabulary and bindings proposed for GenDev 0.5."
+    "description": "Mechanically determinate lifecycle vocabulary and bindings for GenDev 1.0."
   },
   "versions": {
-    "candidate": "0.5.0-operational-coherence",
+    "candidate": "1.0.0",
     "candidate_status": "released",
-    "release_stage": "pre-1.0",
-    "released_current": "0.5.0-operational-coherence",
+    "release_stage": "production",
+    "released_current": "1.0.0",
     "observation_revision": "02ae0fc192a898cd482007dfc65612ff907a3bda",
     "observed_active_claims": [
       {
@@ -36,39 +36,43 @@
       }
     ],
     "published_tags_observed": [
-      "v0.1.0-baseline"
+      "v0.1.0-baseline",
+      "v0.2.0-phase-loop",
+      "v0.3.0-documentation-structure",
+      "v0.4.0-verification-first",
+      "v0.5.0-operational-coherence"
     ],
     "synchronization_targets": [
       {
         "source_file": "README.md",
         "field": "current methodology version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^Current methodology version: `0\\.5\\.0-operational-coherence`\\s*$"
+        "release_value_pattern": "(?m)^Current methodology version: `1\\.0\\.0`\\s*$"
       },
       {
         "source_file": "docs/methodology/constitution/gendev.md",
         "field": "Version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^Version: 0\\.5\\.0-operational-coherence\\s*$"
+        "release_value_pattern": "(?m)^Version: 1\\.0\\.0\\s*$"
       },
       {
         "source_file": "docs/project-template/project.yaml",
         "field": "project.methodology_version",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^\\s+methodology_version:\\s*0\\.5\\.0-operational-coherence\\s*$"
+        "release_value_pattern": "(?m)^\\s+methodology_version:\\s*1\\.0\\.0\\s*$"
       },
       {
         "source_file": "docs/methodology/schema/lifecycle.json",
         "field": "versions.released_current",
         "delivery_state": "current",
-        "release_value_pattern": "(?m)^\\s*\"released_current\":\\s*\"0\\.5\\.0-operational-coherence\""
+        "release_value_pattern": "(?m)^\\s*\"released_current\":\\s*\"1\\.0\\.0\""
       },
       {
         "source_file": "docs/resources/releases/README.md",
         "field": "latest release",
         "delivery_state": "current",
         "required_work_package": "WP-11",
-        "release_value_pattern": "(?m)^Latest release:\\s*0\\.5\\.0-operational-coherence\\s*$"
+        "release_value_pattern": "(?m)^Latest release:\\s*1\\.0\\.0\\s*$"
       }
     ],
     "release_rules": {
@@ -4474,7 +4478,7 @@
       },
       {
         "id": "MANIFEST-STRICT-V2",
-        "rule": "New 0.5 projects use strict schema version 2; legacy mode is explicit and version-bound."
+        "rule": "New 1.0 projects use strict schema version 2; older-version onboarding is explicit and version-bound."
       }
     ]
   },
