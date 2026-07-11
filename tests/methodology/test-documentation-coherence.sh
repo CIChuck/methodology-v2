@@ -35,6 +35,10 @@ th_run_case "DOC-005" 0 "current examples stay non-authoritative and strict" \
   "cd '$repo_root' && rg -n 'strict_schema_mode|non_authoritative_current_example' docs/resources/examples/current/*/example.json" \
   'non_authoritative_current_example'
 
+th_run_case "DOC-006" 0 "active documentation passes release identity and preflight coherence" \
+  "cd '$repo_root' && ./scripts/check-doc-coherence.sh" \
+  'Documentation coherence: clean'
+
 th_summary
 
 exit $(( TH_CASE_FAIL > 0 ))

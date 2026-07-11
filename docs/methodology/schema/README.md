@@ -1,6 +1,6 @@
 # GenDev Lifecycle Registry
 
-Status: Released production registry
+Status: Release-mode production registry; publication pending
 Schema version: 2
 Target release: `1.0.0`
 Registry: `docs/methodology/schema/lifecycle.json`
@@ -41,8 +41,9 @@ The registry supports two validation modes:
   still has explicit planned work; and
 - release mode, used for the published production methodology.
 
-The live 1.0 registry is release-mode metadata. It must not describe candidate
-state as current state.
+The live 1.0 registry is release-mode metadata for a production candidate. It
+means the registry contains no planned delivery markers. It does not, by
+itself, mean that the publication tag has been created.
 
 Delivery markers use these values:
 
@@ -70,6 +71,7 @@ registry.target_release: 1.0.0
 versions.candidate_status: released
 versions.released_current: 1.0.0
 versions.release_stage: production
+versions.publication_status: pending_publication
 ```
 
 The historical baseline split remains recorded separately at revision

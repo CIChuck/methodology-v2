@@ -82,7 +82,7 @@ Before finalizing, identify:
 
 The plan is complete when an AI construction directive can be built from it without inventing scope, architecture, or tests.
 
-## 0.5 Operational Coherence Requirements
+## Operational Coherence Requirements
 
 Use stable workstream/task IDs for every authorized implementation task. IDs must be durable enough
 for implementation evidence, review findings, remediation records, and traceability rows to cite.

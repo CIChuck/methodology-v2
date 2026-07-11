@@ -46,23 +46,55 @@ require_line() {
 
 require_no_match 'Status: Draft' docs/resources/practitioner-guide
 require_no_match 'pre-1\.0' README.md AGENTS.md docs/resources/practitioner-guide docs/methodology/schema/README.md docs/project-template/project.yaml
-require_no_match '^## 0\.5' docs/resources/practitioner-guide
+require_no_match '^## 0\.5' docs/resources/practitioner-guide docs/methodology/agents docs/methodology/dev-skills
+require_no_match '0\.5 Operational Coherence' docs/resources/practitioner-guide docs/methodology/agents docs/methodology/dev-skills
 require_no_match 'current 0\.5 lifecycle|In 0\.5' docs/resources/practitioner-guide
+require_no_match '^## Legacy Migration Hazard$' docs/resources/practitioner-guide
+require_no_match '^Latest release:\s*1\.0\.0\s*$' docs/resources/releases/README.md
 
 require_line '^Current methodology version: `1\.0\.0`$' README.md
 require_line '^Version: 1\.0\.0$' docs/methodology/constitution/gendev.md
-require_line '^Latest release: 1\.0\.0$' docs/resources/releases/README.md
-require_line '^Status: Released production registry$' docs/methodology/schema/README.md
+if git rev-parse --verify refs/tags/v1.0.0 >/dev/null 2>&1; then
+  require_line '^Latest published release: 1\.0\.0$' docs/resources/releases/README.md
+else
+  require_line '^Latest published release: 0\.5\.0-operational-coherence$' docs/resources/releases/README.md
+  require_line '^Active release candidate: 1\.0\.0$' docs/resources/releases/README.md
+  require_line '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.0.md
+  require_line '^Publication tag: planned `v1\.0\.0`$' docs/resources/releases/1.0.0.md
+fi
+require_line '^Status: Release-mode production registry; publication pending$' docs/methodology/schema/README.md
 require_line 'methodology_version: 1\.0\.0' docs/project-template/project.yaml
 require_line 'methodology_release_stage: production' docs/project-template/project.yaml
 
 require_file docs/resources/releases/1.0.0.md
 require_file docs/resources/releases/1.0.0-adoption.md
+require_line '^Status: Active 1\.0 adoption guidance$' docs/resources/releases/1.0.0-adoption.md
+require_line 'docs/resources/releases/1\.0\.0-adoption\.md' docs/resources/practitioner-guide/README.md
+require_line 'docs/resources/releases/1\.0\.0-adoption\.md' docs/resources/practitioner-guide/04-starting-a-new-project.md
+require_line 'docs/resources/releases/1\.0\.0-adoption\.md' docs/resources/practitioner-guide/19-starting-mid-stream.md
 require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/13-codex-specific-notes.md
 require_line 'Last reviewed: 2026-07-11' docs/resources/practitioner-guide/14-claude-code-specific-notes.md
 require_executable scripts/gendev-doctor.sh
 require_executable scripts/project-state.sh
 require_executable scripts/new-artifact.sh
+
+for path in approvals architecture as-built build-plan build-plan/phases decisions deployment design prd review security-governance testing traceability vision; do
+  require_line "docs/project/$path" docs/methodology/schema/lifecycle.json
+done
+
+for path in approvals architecture as-built build-plan decisions deployment design prd review security-governance testing traceability vision; do
+  require_line "^  $path/" docs/resources/practitioner-guide/03-repository-map.md
+done
+
+for command_file in \
+  docs/resources/practitioner-guide/04-starting-a-new-project.md \
+  docs/resources/practitioner-guide/16-checklists.md \
+  docs/methodology/guides/start-and-next-step-protocol.md; do
+  require_line './scripts/gendev-doctor\.sh' "$command_file"
+  require_line './scripts/project-state\.sh' "$command_file"
+done
+require_line './scripts/check-doc-coherence\.sh' docs/resources/practitioner-guide/16-checklists.md
+require_line './scripts/new-artifact\.sh' docs/resources/practitioner-guide/16-checklists.md
 
 if [ "$errors" -eq 0 ]; then
   printf 'Documentation coherence: clean\n'

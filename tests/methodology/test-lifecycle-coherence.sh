@@ -260,7 +260,11 @@ constitution.write_text(
 )
 release_index = root / "docs/resources/releases/README.md"
 release_index.parent.mkdir(parents=True, exist_ok=True)
-release_index.write_text(f"Latest release: {candidate}\n", encoding="utf-8")
+release_index.write_text(
+    "Latest published release: 0.5.0-operational-coherence\n"
+    f"Active release candidate: {candidate}\n",
+    encoding="utf-8",
+)
 
 initializer = root / "scripts/init-project.sh"
 with initializer.open("a", encoding="utf-8") as handle:

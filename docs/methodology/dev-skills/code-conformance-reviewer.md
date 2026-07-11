@@ -102,7 +102,7 @@ Delta review:
 
 The review is complete when the user can decide whether to accept, remediate, or reopen planning.
 
-## 0.5 Operational Coherence Requirements
+## Operational Coherence Requirements
 
 Report whether the review is per-phase or aggregate. Cite the exact reviewed revision, source
 authority revisions, tactical task IDs, test/UAT evidence, and traceability rows. G6 readiness is

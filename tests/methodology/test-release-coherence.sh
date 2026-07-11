@@ -46,12 +46,13 @@ th_run_case "RC-006" 0 "current examples expose strict metadata and legacy bound
   "cd '$repo_root' && rg -n 'strict_schema_mode|non_authoritative_current_example' docs/resources/examples/current/*/example.json && rg -n 'historical, non-authoritative|pre-phase-loop' docs/resources/examples/legacy/0.1.0-pre-phase-loop/README.md" \
   'non_authoritative_current_example'
 
-th_run_case "RC-007" 0 "release index presents 1.0 as latest release" \
+th_run_case "RC-007" 0 "release index separates published release from active candidate" \
   "cd '$repo_root' && \
-   rg -n '^Latest release: 1\\.0\\.0$' docs/resources/releases/README.md && \
-   ! rg -n '^Latest release-prep candidate:' docs/resources/releases/README.md && \
-   ! rg -n '^Latest published release:' docs/resources/releases/README.md" \
-  'Latest release'
+   rg -n '^Latest published release: 0\\.5\\.0-operational-coherence$' docs/resources/releases/README.md && \
+   rg -n '^Active release candidate: 1\\.0\\.0$' docs/resources/releases/README.md && \
+   rg -n '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.0.md && \
+   ! rg -n '^Latest release: 1\\.0\\.0$' docs/resources/releases/README.md" \
+  'Active release candidate'
 
 th_run_case "RC-008" 0 "independent review artifact records a non-pending result" \
   "cd '$repo_root' && \

@@ -1,6 +1,7 @@
 # GenDev Releases
 
-Latest release: 1.0.0
+Latest published release: 0.5.0-operational-coherence
+Active release candidate: 1.0.0
 
 This index records methodology release identity, status, tag state, and adoption guidance. Tag
 creation and pushing remain publication actions requiring separate human approval.
@@ -11,8 +12,8 @@ creation and pushing remain publication actions requiring separate human approva
 | 0.2.0-phase-loop | Accepted historical release; retrospective tag approved | 2026-06-12 | `v0.2.0-phase-loop` retrospective historical tag | Ratification commit verified: `85b9ec7` Ratify phase loop: stamp 0.2.0-phase-loop, records Accepted | 0.1.0-baseline | 0.3.0-documentation-structure | Use 1.0 adoption guide for current projects. |
 | 0.3.0-documentation-structure | Accepted historical release; retrospective tag approved | 2026-06-17 | `v0.3.0-documentation-structure` retrospective historical tag | Ratification commit verified: `d11c49a` Ratify 0.3.0: release note and decision record | 0.2.0-phase-loop | 0.4.0-verification-first | Use 1.0 adoption guide for current projects. |
 | 0.4.0-verification-first | Accepted historical release; retrospective tag approved | 2026-06-20 | `v0.4.0-verification-first` retrospective historical tag | Ratification commit verified: `23acdd2` Ratify 0.4.0-verification-first | 0.3.0-documentation-structure | 0.5.0-operational-coherence | Use 1.0 adoption guide for current projects. |
-| 0.5.0-operational-coherence | Released | 2026-07-11 | `v0.5.0-operational-coherence` observed at `2841f02` | `docs/resources/evolution/0.5.0-operational-coherence-execution-log.md` | 0.4.0-verification-first | 1.0.0 | Use 1.0 adoption guide for current projects. |
-| 1.0.0 | Release branch active | 2026-07-11 | Planned `v1.0.0` | `docs/resources/evolution/1.0.0-production-release-execution-log.md` | 0.5.0-operational-coherence | N/A | `docs/resources/releases/1.0.0-adoption.md` |
+| 0.5.0-operational-coherence | Published | 2026-07-11 | `v0.5.0-operational-coherence` observed at `2841f02` | `docs/resources/evolution/0.5.0-operational-coherence-execution-log.md` | 0.4.0-verification-first | 1.0.0 | Use 1.0 adoption guide for current projects. |
+| 1.0.0 | Production candidate; publication pending | 2026-07-11 | Planned `v1.0.0` | `docs/resources/evolution/1.0.0-production-release-execution-log.md` | 0.5.0-operational-coherence | N/A | `docs/resources/releases/1.0.0-adoption.md` |
 
 ## Historical tag policy
 

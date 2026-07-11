@@ -33,7 +33,8 @@ methodology install without `--force`. It preserves an existing root `AGENTS.md`
 `--integrate-agents` only when the target owner approves adding the managed GenDev include block.
 Use `--protected-branch BRANCH` when rendering the workflow for a branch other than the detected
 current branch, and use `--with-resources` only when the target should receive reference material.
-After it runs, initialize the project in the target the same way this chapter describes.
+After it runs, initialize the project in the target the same way this chapter describes. The concise
+1.0 adoption path is recorded in `docs/resources/releases/1.0.0-adoption.md`.
 
 If you have a presales or discovery repository that already holds a vision, PRD, or architecture,
 written for a customer rather than to a template, run `scripts/backfill-methodology.sh` against it
@@ -228,6 +229,19 @@ Do not implement code.
 ```
 
 ## First-Run Preflight
+
+Before drafting G1 content, run the 1.0 orientation commands from the repository root:
+
+```bash
+./scripts/gendev-doctor.sh
+./scripts/project-state.sh
+./scripts/check-methodology.sh
+```
+
+`gendev-doctor.sh` checks repository health and required tooling, `project-state.sh` summarizes the
+active gate and approval posture, and `check-methodology.sh` verifies the initialized project paths
+and records. The lead agent should summarize any failures or warnings before it drafts or edits
+authority artifacts.
 
 The lead agent should capture or confirm:
 

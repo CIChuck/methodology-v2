@@ -15,6 +15,10 @@ hold real vision, PRD, or architecture content that predates the method. The que
 is narrow and practical. Given what you already have, what is the next gate you must work, and what
 does working it require.
 
+The concise 1.0 adoption path is recorded in `docs/resources/releases/1.0.0-adoption.md`. This
+appendix expands that path for repositories that already contain product artifacts. It is not a
+legacy GenDev migration workflow.
+
 ## The one rule underneath every entry point
 
 You enter the methodology at the gate after your last *accepted* artifact, not the gate after
@@ -64,6 +68,17 @@ customer intent.
 The order for a mid-stream start is therefore: install or backfill to create the control plane,
 confirm the imported documents are in canonical paths, then begin the per-gate conformance cycle.
 There is no separate destructive initialization step after backfill.
+
+After install or backfill, run:
+
+```bash
+./scripts/gendev-doctor.sh
+./scripts/project-state.sh
+./scripts/check-methodology.sh
+```
+
+The lead agent should report the command results before conforming imported documents or asking for
+gate approval.
 
 If the repository already has a `project.yaml` and a gate log, initialization has already
 happened; do not run it again, since it will refuse to overwrite an existing project without

@@ -3,8 +3,8 @@
 # This file deliberately uses only syntax available in macOS Bash 3.2.
 
 if [ "${GENDEV_LIFECYCLE_CONTRACT_LOADED+x}" = x ]; then
-  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = '1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' ]; then
-    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = '1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' ] && command -v gendev_gate_name >/dev/null 2>&1; then
+  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = 'ab300672e8c38e26a8b78f8ed335cfda20da29fdc2068dfe4cf6375aeb3da0a7' ]; then
+    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = 'ab300672e8c38e26a8b78f8ed335cfda20da29fdc2068dfe4cf6375aeb3da0a7' ] && command -v gendev_gate_name >/dev/null 2>&1; then
       return 0 2>/dev/null || exit 0
     fi
     printf '%s\n' 'lifecycle contract: incomplete loaded contract' >&2
@@ -30,7 +30,7 @@ readonly GENDEV_LIFECYCLE_TARGET_VERSION='1.0.0' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_TARGET_VERSION' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' || {
+readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='ab300672e8c38e26a8b78f8ed335cfda20da29fdc2068dfe4cf6375aeb3da0a7' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_REGISTRY_SHA256' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -3308,7 +3308,7 @@ gendev_scaling_g2_required_any() {
   esac
 }
 
-readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='1b1e68fe0faa1c65f7f4ad1e92e385728efa101039e8a8d53657f5ac960ebe83' || {
+readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='ab300672e8c38e26a8b78f8ed335cfda20da29fdc2068dfe4cf6375aeb3da0a7' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_CONTRACT_LOADED' >&2
   return 2 2>/dev/null || exit 2
 }

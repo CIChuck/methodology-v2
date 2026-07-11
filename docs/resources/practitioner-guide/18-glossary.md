@@ -1857,8 +1857,10 @@ phase checkpoint, deployment approval, amendment, regression, override, or termi
 
 ## Legacy Mode
 
-Legacy mode is checker compatibility for older methodology records. It may preserve historical
-records, but it is not permission for new events to omit current required fields.
+Legacy mode is checker compatibility for older methodology records preserved as history. It is not
+a workflow for migrating active GenDev projects and it is not permission for new events to omit
+current required fields. Existing product artifacts enter GenDev through adoption, import, or
+backfill.
 
 ## Phase Evidence
 
