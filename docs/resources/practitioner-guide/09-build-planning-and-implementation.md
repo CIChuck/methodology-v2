@@ -237,3 +237,15 @@ artifact to complete.
 ```
 
 That keeps implementation from becoming accidental product definition.
+
+## 0.5 Task-Executable Phase Planning
+
+A tactical implementation plan is not merely a narrative. In 0.5 it should carry stable task IDs
+that can be cited by implementation evidence, review findings, remediation records, and traceability
+rows. A useful task ID names the phase, workstream, and task, for example `P1-WS2-T003`.
+
+Scaffold phase artifacts just in time. The aggregate G5 phase plan defines the phase sequence and
+coverage contract; the phase build plan, tactical plan, construction directive, build prompt,
+phase test/UAT plan, phase evidence, phase review, remediation disposition, traceability update,
+and phase as-built close-out are produced for the phase being worked. Do not fabricate later-phase
+evidence to make the project look complete.

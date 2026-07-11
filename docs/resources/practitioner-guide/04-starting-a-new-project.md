@@ -12,16 +12,8 @@ This guide assumes:
 
 - Git is installed on your platform
 - you have cloned the baseline repository;
-- you are on the branch you intend to use;
-
-```text
-refinement:
-Arguably, a new project should always start in the main branch when starting a new cloned project.
-We don't describe using GenDev within Legacy Projects. However, that might be a very important brainstorming session to have. This may include tasks like documentation and code reverse engineering or other pre-init gates to build the 'gendev-required' gate artifacts.
-
-Also treating updates/upgrades maintenance and break-fix to existing Gendev project repos: feature updates, refactoring, replatforming etc.
-```
-
+- you are on the branch you intend to use, and you know which branch is protected or treated as
+  production authority;
 - your working tree is in a state you understand;
 - you can run shell commands from the repository root;
 - you have an AI coding agent (an AI tool that can inspect files, draft artifacts, write code, and
@@ -37,17 +29,21 @@ than start inside a fresh clone, run `scripts/install-methodology.sh` from insid
 repository, passing the target repository path. It copies the methodology (the constitution,
 guides, templates, agents, and the scripts) into the target so that repository can be run under
 GenDev governance. It does not touch the target's own code, and it will not overwrite an existing
-methodology install without `--force`. After it runs, initialize the project in the target the same
-way this chapter describes.
+methodology install without `--force`. It preserves an existing root `AGENTS.md` by default; use
+`--integrate-agents` only when the target owner approves adding the managed GenDev include block.
+Use `--protected-branch BRANCH` when rendering the workflow for a branch other than the detected
+current branch, and use `--with-resources` only when the target should receive reference material.
+After it runs, initialize the project in the target the same way this chapter describes.
 
 If you have a presales or discovery repository that already holds a vision, PRD, or architecture,
-written for a customer rather than to a template, run `scripts/backfill-methodology.sh` against it.
-It seeds the methodology the same way, then writes a per-document conformance report naming which
-required sections and front-matter each existing document has and which it is missing. That report
-drives the mid-stream start: you initialize the project, then work each existing document through
-its gate as a reformatting task rather than authoring it from a blank page. The appendix, Starting
-Mid-Stream, covers that flow end to end, including the reformatting and validation directives for
-each gate and the scripted gate close.
+written for a customer rather than to a template, run `scripts/backfill-methodology.sh` against it
+with at least one declared source such as `--vision path/to/vision.md`. It seeds the methodology,
+creates missing control-plane files and directories without replacing imported authority, and writes
+a per-document conformance report naming which required sections and front-matter each existing
+document has and which it is missing. That report drives the mid-stream start: work each existing
+document through its gate as a reformatting task rather than authoring it from a blank page. The
+appendix, Starting Mid-Stream, covers that flow end to end, including the reformatting and
+validation directives for each gate and the scripted gate close.
 
 ## Initialize The Project
 
@@ -113,11 +109,13 @@ The owner and approver fields may initially be `TBD`. The agent can draft early 
 those fields are resolved, but it should not mark the gate `ready_for_approval` (ready for a human
 approval decision) until required human authority is known.
 
-```text
-refinement: 
-this section is rather vague regarding the mechanics of sculpting project.yaml. What are the default settings, what attributes must be set to continue and what settings can be deferrred and when/in what Gate they become essential.
-```
-
+Manifest defaults are intentionally conservative. Fields that identify the project, current gate,
+approval record format, artifact paths, enforcement class, and blast-radius class must exist
+immediately because tools and agents use them for orientation. Owner, approver, attester, protected
+branch, and implementation paths may start as `TBD`, but they become blocking when the project asks
+to mark a gate ready for approval, enters implementation planning, or relies on mechanical
+enforcement. Do not delete deferred fields; replace `TBD` with named values at the gate where the
+field becomes operational.
 
 
 ## Select Blast-Radius Class
@@ -272,4 +270,3 @@ The startup phase ends when:
 - collaboration mode is known;
 - the human has supplied enough context to draft the vision document;
 - the agent knows not to proceed beyond G1 without approval.
-

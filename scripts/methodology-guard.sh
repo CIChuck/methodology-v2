@@ -2,6 +2,9 @@
 # SPDX-License-Identifier: MIT
 set -eu
 
+GENDEV_LIB_DIR="$(cd "$(dirname "$0")/lib" && pwd)"
+. "$GENDEV_LIB_DIR/gendev-common.sh"
+
 usage() {
   cat <<'USAGE'
 Usage:
@@ -18,9 +21,14 @@ USAGE
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$repo_root"
 
-tmpdir="$(mktemp -d)"
+tmpdir="$(gendev_mktemp_dir)"
+range_worktree=""
+
 cleanup() {
-  rm -rf "$tmpdir"
+  if [ -n "${range_worktree}" ] && [ -d "${range_worktree}" ]; then
+    git worktree remove --force "${range_worktree}" >/dev/null 2>&1 || rm -rf "${range_worktree}"
+  fi
+  gendev_cleanup_tmp "$tmpdir"
 }
 trap cleanup EXIT
 
@@ -28,6 +36,7 @@ changed_paths_file=""
 base_ref=""
 context_file=""
 require_task_id=0
+methodology_root=""
 
 case "${1:-}" in
   "")
@@ -35,6 +44,12 @@ case "${1:-}" in
   --staged)
     changed_paths_file="$tmpdir/changed-paths.txt"
     git diff --cached --name-only > "$changed_paths_file"
+
+    methodology_root="$tmpdir/staged-methodology"
+    staged_index="$tmpdir/staged.index"
+    mkdir -p "$methodology_root"
+    cp "$(git rev-parse --git-path index)" "$staged_index"
+    GIT_INDEX_FILE="$staged_index" git checkout-index -a -f --prefix="${methodology_root}/" >/dev/null
     ;;
   --range)
     if [ "$#" -ne 3 ]; then
@@ -48,6 +63,9 @@ case "${1:-}" in
     git diff --name-only "$base_ref" "$head_ref" > "$changed_paths_file"
     git log --format=%B "$base_ref..$head_ref" > "$context_file"
     require_task_id=1
+    range_worktree="$tmpdir/range-methodology"
+    git worktree add --detach "${range_worktree}" "$head_ref" >/dev/null
+    methodology_root="$range_worktree"
     ;;
   --changed-paths)
     if [ "$#" -lt 2 ]; then
@@ -111,4 +129,8 @@ if [ "$require_task_id" -eq 1 ]; then
   export GENDEV_REQUIRE_TASK_ID=1
 fi
 
-./scripts/check-methodology.sh
+if [ -n "$methodology_root" ]; then
+  (cd "$methodology_root" && ./scripts/check-methodology.sh)
+else
+  ./scripts/check-methodology.sh
+fi

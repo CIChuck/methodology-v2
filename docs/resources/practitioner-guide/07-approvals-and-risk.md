@@ -337,3 +337,15 @@ Before approving a gate, confirm:
 [ ] I know what role and artifact come next.
 [ ] I expect the agent to record this in gate-log.md and project.yaml.
 ```
+
+## 0.5 Complete Transition Discipline
+
+A gate transition is complete only when the control plane and evidence agree. The approval record
+must identify the exact reviewed revision or explicitly say why the revision is still `TBD`, the
+artifact status at review time, the gate being left, the gate being entered, the approver, the
+checked statement, accepted risks, and the manifest updates made.
+
+Runtime transition commands are preferred where available because they update the artifact status,
+`docs/project/project.yaml`, and `docs/project/approvals/gate-log.md` together. A manual approval
+entry that updates only one of those surfaces is a partial transition and should be treated as drift
+until reconciled.

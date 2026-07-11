@@ -1,0 +1,26 @@
+project:
+  name: "CSV Cleanup Helper"
+  slug: csv-cleanup-helper
+  current_gate: G9
+  status: closed
+  active_role: none
+methodology:
+  version: 0.5.0-operational-coherence
+  schema_mode: strict
+scaling:
+  blast_radius_class: C1
+  classification_reason: "Local reversible CLI, no network, no credentials, no persistent store, no sensitive data by design."
+  reclassification_triggers:
+    - sensitive or regulated input data
+    - production automation
+    - external integrations
+    - persistent storage
+    - destructive writes or irreversible workflow effects
+  combined_gates:
+    - gates: [G1, G2, G3, G4]
+      justification: "Contained C1 tool preserves required framing, requirements, architecture assumptions, governance assumptions, and test expectations in one combined framing artifact."
+approvals:
+  current_gate:
+    gate: G9
+    status: approved
+    latest_decision: closed

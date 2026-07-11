@@ -48,6 +48,9 @@ run_suite() {
     checker)
       suite_script="$test_dir/test-checker.sh"
       ;;
+    shell-syntax)
+      suite_script="$test_dir/test-shell-syntax.sh"
+      ;;
     lifecycle)
       suite_script="$test_dir/test-lifecycle-coherence.sh"
       ;;
@@ -60,6 +63,12 @@ run_suite() {
     enforcement-tools)
       suite_script="$test_dir/test-enforcement-tools.sh"
       ;;
+    reference-graph)
+      suite_script="$test_dir/test-reference-graph.sh"
+      ;;
+    documentation-coherence)
+      suite_script="$test_dir/test-documentation-coherence.sh"
+      ;;
     metrics)
       suite_script="$test_dir/test-metrics.sh"
       ;;
@@ -68,6 +77,9 @@ run_suite() {
       ;;
     migration)
       suite_script="$test_dir/test-migration.sh"
+      ;;
+    release-coherence)
+      suite_script="$test_dir/test-release-coherence.sh"
       ;;
     *)
       printf 'ERROR: unknown suite: %s\n' "$suite_name" >&2
@@ -94,7 +106,7 @@ run_suite() {
   "$suite_script"
 }
 
-available_suites="checker lifecycle runtime-tools distribution-tools enforcement-tools metrics examples migration"
+available_suites="shell-syntax checker lifecycle runtime-tools distribution-tools enforcement-tools reference-graph documentation-coherence metrics examples migration release-coherence"
 SELECTED="all"
 LIST_ONLY=0
 PLATFORM_SUMMARY=0

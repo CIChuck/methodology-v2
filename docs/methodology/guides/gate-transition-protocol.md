@@ -454,6 +454,29 @@ Human approval: required for phase close.
 Next role: Product Vision Agent, Phase Planning Agent, or Deployment Readiness Agent, depending on
 next work.
 
+## Runtime Transition Atomicity And Recovery Limits
+
+Lifecycle write commands use a process-level transaction for governed file updates:
+
+- render every candidate file before replacing any governed file;
+- acquire a project-local transition lock before installation;
+- record original file hashes and backup paths in a recovery journal;
+- replace only governed files that belong to the requested transition;
+- run the methodology checker against the real post-write state;
+- roll back all governed files from backups if any write or post-write check fails;
+- remove the lock, backups, and journal only after success is confirmed.
+
+This protects normal command failures, validation failures, denied prompts, interrupted processes,
+and post-write checker failures. It is not a filesystem durability guarantee. Abrupt power loss,
+kernel crash, storage failure, or manual deletion between individual file replacements can still
+leave partial state. If that happens, treat the transition lock and recovery journal as recovery
+evidence, restore from recorded backups where present, and rerun the command only after confirming
+the reviewed revision still matches the pre-transition artifact bytes.
+
+Deployment approval recording remains a documentation/state transition only. It must not run
+production commands, fetch secrets, deploy software, tag releases, push branches, or mark terminal
+close-out complete by itself.
+
 Next artifact: next phase plan or operational follow-up backlog.
 
 Stop if:

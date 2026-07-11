@@ -54,3 +54,10 @@ Human approval is required for phase scope and tactical plan acceptance.
 
 Complete when an implementation agent can build from the tactical plan without inventing scope,
 architecture, tests, or documentation obligations.
+
+## 0.5 Operational Coherence Ownership
+
+Own G5.0 aggregate phase-plan readiness and the just-in-time phase checkpoint ladder. Ensure every
+phase has G5.<phase>.1 phase build plan, G5.<phase>.2 tactical plan with stable task IDs,
+G5.<phase>.3 construction directive/build prompt, and explicit test/UAT expectations before
+implementation begins.

@@ -142,10 +142,10 @@ whole artifact stays diff-able and coherence-checkable.
 
 ## Consequence 6: Phase Plan Absorbs the Roadmap and Defines the Feature Breakdown
 
-phase-roadmap.md is retired. It overlapped phase-plan.md and its only unique
+The former phase roadmap artifact is retired. It overlapped phase-plan.md and its only unique
 content was live phase tracking, which the phase plan absorbs.
 
-- init-project.sh stops generating phase-roadmap.md; the roadmap field is removed
+- init-project.sh stops generating the retired phase roadmap artifact; the roadmap field is removed
   from project.yaml; references point at phase-plan.md.
 - The phase-plan template gains a per-phase feature breakdown: one detail block
   per phase stating the features it delivers, the requirements it covers, its
@@ -220,7 +220,7 @@ lives inline in init-project.sh. Extract it to gate-log-template.md.
 - check-methodology.sh: validate the project front-matter field (present and
   matching project.yaml) and supporting-artifact form (identifier, location).
 - phase-plan template: add the per-phase feature breakdown; retire
-  phase-roadmap.md (init-project.sh stops generating it; remove the roadmap field
+  the former phase roadmap artifact (init-project.sh stops generating it; remove the roadmap field
   from project.yaml).
 - gate-log: extract gate-log-template.md; init-project.sh renders from it.
 - Practitioner guide: update to teach canonical naming, the scaffold distinction,

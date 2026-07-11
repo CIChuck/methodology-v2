@@ -77,3 +77,9 @@ Identify:
 ## Completion Standard
 
 The matrix is complete when major requirements have visible architecture, implementation, and verification paths or are explicitly deferred/blocked.
+
+## 0.5 Operational Coherence Requirements
+
+Traceability rows must distinguish planned, implemented, reviewed, and verified states. A row may
+claim `verified` only when it cites real execution or UAT evidence and review status. Do not count
+template examples, future commands, or legacy examples as approval evidence.

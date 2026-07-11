@@ -1,0 +1,19 @@
+{
+  "methodology_version": "0.5.0-operational-coherence",
+  "example_status": "non_authoritative_current_example",
+  "blast_radius_class": "C2",
+  "declared_gate": "G5.3",
+  "real_code": false,
+  "strict_schema_mode": true,
+  "authority_files": [
+    "vision/vision.md",
+    "prd/prd.md",
+    "architecture/architecture.md",
+    "security-governance/governance-security-spec.md",
+    "build-plan/phase-plan.md",
+    "build-plan/phases/phase-1-build-plan.md",
+    "build-plan/phases/phase-1-tactical-plan.md",
+    "build-plan/phases/phase-1-construction-directive.md"
+  ],
+  "validation_commands": []
+}

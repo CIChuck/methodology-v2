@@ -7,16 +7,24 @@ Do not use example source paths, test names, CLI commands, implementation eviden
 statuses as evidence for a newly initialized project unless that project explicitly adopts the
 example and contains matching local implementation files.
 
-Examples should be added only after the operating workflow and gate model are stable enough that the
-example can demonstrate the current methodology without path drift.
-
-Current examples:
+## Current Examples
 
 ```text
-docs/resources/examples/gendev-lite-contained-tool/
-docs/resources/examples/minimal-saas-product/
+docs/resources/examples/current/c1-csv-cleanup/
+docs/resources/examples/current/c2-standard-planning/
 ```
 
-`gendev-lite-contained-tool/` shows a C1 GenDev Lite path where G1-G4 can be combined because the
-work is contained, reversible, and non-sensitive. `minimal-saas-product/` shows a fuller product
-path with separate artifacts.
+`current/c1-csv-cleanup/` is a small executable C1 GenDev Lite example with real fixture input,
+positive CLI output verification, and a missing-file negative case. `current/c2-standard-planning/`
+is a C2 planning example that stops before implementation and does not claim verified evidence.
+
+## Legacy Examples
+
+```text
+docs/resources/examples/legacy/0.1.0-pre-phase-loop/gendev-lite-contained-tool/
+docs/resources/examples/legacy/0.1.0-pre-phase-loop/minimal-saas-product/
+```
+
+Legacy examples are preserved for historical reference only. They predate the G5 phase loop and are
+excluded from current-conformance checks. Do not rewrite their artifact claims to look current, and
+do not cite them as evidence for a 0.5 project.

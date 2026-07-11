@@ -194,7 +194,7 @@ for target in data["versions"]["synchronization_targets"]:
     target["delivery_state"] = "current"
 
 projection_path = root / data["event_history"]["template_projection"]
-projection_marker = "\n## Release Fixture Schema 2 Event Projection\n"
+projection_marker = "\n## Schema 2 Event Projection\n"
 projection_text = projection_path.read_text(encoding="utf-8").split(projection_marker, 1)[0]
 projection_lines = [projection_text.rstrip(), projection_marker.strip()]
 for event in data["events"]:
@@ -382,8 +382,10 @@ elif mutation == "weaken_d18_controls":
 elif mutation == "remove_enforcement_ownership":
     data["references"].pop("enforcement", None)
     data["document_sweep"].pop("enforcement", None)
-elif mutation == "premature_current_enforcement":
-    data["references"]["enforcement"]["state"] = "current"
+elif mutation == "missing_current_enforcement_suite":
+    data["references"]["enforcement"]["verification_suite"] = (
+        "tests/methodology/missing-reference-graph-suite.sh"
+    )
 elif mutation == "weaken_event_predicate":
     record(data["event_binding_rules"], "all_declared_phase_exit_event_ids").pop(
         "quantifier", None
@@ -422,21 +424,17 @@ elif mutation == "stale_version_target":
     data["versions"]["candidate"] = "0.4.0-verification-first"
 elif mutation == "bad_observation_revision":
     data["versions"]["observation_revision"] = "0" * 40
-elif mutation == "premature_release_claim":
-    candidate = data["versions"]["candidate"]
-    data["registry"]["status"] = "released"
-    data["registry"]["released_current"] = candidate
-    data["versions"]["released_current"] = candidate
-    data["versions"]["candidate_status"] = "released"
+elif mutation == "release_identity_mismatch":
+    data["registry"]["released_current"] = "0.4.0-verification-first"
+    data["versions"]["released_current"] = "0.4.0-verification-first"
 elif mutation == "invalid_candidate_status":
     data["registry"]["status"] = "banana"
     data["versions"]["candidate_status"] = "banana"
 elif mutation == "fabricated_ratification_metadata":
     data["decision_records"][0]["reviewed_digest"] = "0" * 64
 elif mutation == "planned_without_work_package":
-    artifact = next(
-        item for item in data["artifacts"] if item.get("lifecycle_state") == "planned"
-    )
+    artifact = data["artifacts"][0]
+    artifact["lifecycle_state"] = "planned"
     artifact.pop("required_work_package", None)
 elif mutation == "unbound_phase_exit_evidence":
     checkpoint = record(data["checkpoints"], "G5.<id>.4")
@@ -562,32 +560,32 @@ run_mutation_case() {
   label="$3"
   reset_fixture
   mutate_registry "$mutation"
-  run_validator --format human --mode candidate
+  run_validator --format human --mode release
   expect_rc 1 "$label rejects the mutation"
   expect_rule "$expected_rule" "$label"
 }
 
-# The checked-in candidate must be clean in both output formats.
-run_validator --format human --mode candidate
-expect_rc 0 "clean candidate validates in human format"
+# The checked-in release must be clean in both output formats.
+run_validator --format human --mode release
+expect_rc 0 "clean release validates in human format"
 if printf '%s\n' "$CHECK_OUT" | grep -q 'Lifecycle coherence: clean'; then
   pass "human clean diagnostic is explicit"
 else
   fail "human clean diagnostic is missing"
 fi
 
-run_validator --format json --mode candidate
-expect_rc 0 "clean candidate validates in JSON format"
+run_validator --format json --mode release
+expect_rc 0 "clean release validates in JSON format"
 if printf '%s\n' "$CHECK_OUT" | grep -q '"status": "clean"'; then
   pass "JSON clean status is machine-readable"
 else
   fail "JSON clean status is missing"
 fi
 
-# Planned WP-02+ delivery is valid for a candidate but blocks release mode.
-run_validator --format human --mode release
-expect_rc 1 "release mode rejects intentionally planned delivery"
-expect_rule "LC-DELIVERY-001" "release delivery boundary"
+# Candidate mode rejects a released registry posture.
+run_validator --format human --mode candidate
+expect_rc 1 "candidate mode rejects released registry posture"
+expect_rule "LC-VERSION-001" "candidate/release identity boundary"
 
 # Generator output is byte-deterministic.
 generated_one="$workdir/generated-one.sh"
@@ -708,7 +706,7 @@ expect_contract_value "$contract" "required" \
 expect_contract_value "$contract" "event_id" \
   "event serialization projects migration reference fields" \
   gendev_migration_reference_required_fields stable_event_id
-expect_contract_value "$contract" "planned" \
+expect_contract_value "$contract" "current" \
   "event-history accessor projects enforcement state" \
   gendev_event_history_enforcement_string state
 expect_contract_value "$contract" "true" \
@@ -944,9 +942,9 @@ run_mutation_case \
   "LC-DELIVERY-001" \
   "removed enforcement ownership"
 run_mutation_case \
-  "premature_current_enforcement" \
+  "missing_current_enforcement_suite" \
   "LC-DELIVERY-001" \
-  "premature current enforcement claim"
+  "missing current enforcement suite"
 run_mutation_case \
   "weaken_event_predicate" \
   "LC-EVENT-001" \
@@ -974,7 +972,7 @@ reset_fixture
 vision_template="$fixture/docs/methodology/templates/vision-template.md"
 sed '/^project:/d' "$vision_template" > "$workdir/vision-template.md"
 mv "$workdir/vision-template.md" "$vision_template"
-run_validator --format json --mode candidate
+run_validator --format json --mode release
 expect_rc 1 "missing project field rejects the template"
 expect_rule "LC-TEMPLATE-PROJECT-001" "missing project field"
 
@@ -983,15 +981,15 @@ run_mutation_case \
   "competing_supporting_directory" \
   "LC-SUPPORTING-DIR-001" \
   "competing supporting directory"
-run_mutation_case "stale_version_target" "LC-VERSION-001" "stale candidate version target"
+run_mutation_case "stale_version_target" "LC-VERSION-001" "stale release version target"
 run_mutation_case \
   "bad_observation_revision" \
   "LC-VERSION-001" \
   "unresolvable baseline observation revision"
 run_mutation_case \
-  "premature_release_claim" \
+  "release_identity_mismatch" \
   "LC-VERSION-001" \
-  "premature candidate release claim"
+  "release identity mismatch"
 run_mutation_case \
   "invalid_candidate_status" \
   "LC-VERSION-001" \
@@ -1108,7 +1106,7 @@ run_nested_shape_case() {
   reset_fixture
   mutate_registry "$mutation"
 
-  run_validator --format human --mode candidate
+  run_validator --format human --mode release
   expect_rc 1 "$shape_label is rejected in human format"
   expect_rule "LC-SCHEMA-001" "$shape_label human diagnostic"
   if ! printf '%s\n' "$CHECK_OUT" | grep -q 'Traceback'; then
@@ -1117,7 +1115,7 @@ run_nested_shape_case() {
     fail "$shape_label human diagnostic contains a traceback"
   fi
 
-  run_validator --format json --mode candidate
+  run_validator --format json --mode release
   expect_rc 1 "$shape_label is rejected in JSON format"
   expect_rule "LC-SCHEMA-001" "$shape_label JSON diagnostic"
   if printf '%s\n' "$CHECK_OUT" | grep -q '"status": "findings"' && \
@@ -1147,7 +1145,7 @@ run_nested_shape_case \
 # A source-level edit to generated output must be detected independently.
 reset_fixture
 printf '\n# unauthorized edit\n' >> "$contract"
-run_validator --format human --mode candidate
+run_validator --format human --mode release
 expect_rc 1 "generated contract mismatch is rejected"
 expect_rule "LC-GENERATED-001" "generated contract mismatch"
 
@@ -1191,14 +1189,14 @@ data["generation"]["generator"] = "scripts/comment-spoof-generator.py"
 data["generation"]["output"] = "scripts/lib/lifecycle-comment-spoof.sh"
 registry_path.write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
 PY
-run_validator --format human --mode candidate
+run_validator --format human --mode release
 expect_rc 1 "comment-spoofed API name is rejected"
 expect_rule "LC-GENERATED-001" "comment-spoofed API name"
 
 # Parser and invocation failures are configuration errors (RC=2), not findings.
 reset_fixture
 printf '{invalid json\n' > "$registry"
-run_validator --format human --mode candidate
+run_validator --format human --mode release
 expect_rc 2 "malformed registry JSON is a parser failure"
 
 python3 - "$registry_clean" "$workdir" <<'PY'
@@ -1230,7 +1228,7 @@ run_strict_json_case() {
   label="$2"
   diagnostic="$3"
   cp "$source" "$registry"
-  run_validator --format human --mode candidate
+  run_validator --format human --mode release
   expect_rc 2 "$label is a validator parser failure"
   if printf '%s\n' "$CHECK_OUT" | grep -q "$diagnostic" && \
     ! printf '%s\n' "$CHECK_OUT" | grep -q 'Traceback'; then
@@ -1266,7 +1264,7 @@ run_strict_json_case \
 
 reset_fixture
 printf '\377' > "$registry"
-run_validator --format json --mode candidate
+run_validator --format json --mode release
 expect_rc 2 "non-UTF-8 registry is a parser failure"
 if printf '%s\n' "$CHECK_OUT" | grep -q '"status": "error"'; then
   pass "non-UTF-8 JSON parser failure is machine-readable"

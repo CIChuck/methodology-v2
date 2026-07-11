@@ -80,3 +80,9 @@ Update or identify needed updates to:
 ## Completion Standard
 
 Close-out is complete when findings are remediated or accepted, tests are evidenced, and docs match the implemented system.
+
+## 0.5 Operational Coherence Requirements
+
+For each finding, record one disposition and the evidence that supports it. Close-out must reconcile
+traceability, phase evidence, as-built behavior, deviations, known limitations, deferred items, and
+any amendment or regression decisions. Do not mark planned behavior as implemented without evidence.

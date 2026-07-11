@@ -501,3 +501,13 @@ The documents can be lightweight at first. The gate discipline should not be lig
 needs enough evidence (proof supporting readiness) and human approval to let future agents
 understand why the project moved forward. The value review keeps the project honest about whether
 the delivered product achieved the success criteria declared at the start.
+
+## 0.5 Walkthrough Reading Note
+
+This walkthrough is practitioner teaching material, not executable example evidence. Read it through
+the current 0.5 lifecycle: C2 criteria use EARS form and include unwanted behavior, G3 approves a
+verification specification with criterion IDs, G5.0 accepts the phase plan, each phase uses the
+G5.<phase>.1 through G5.<phase>.3 checkpoint ladder before implementation, G6 is aggregate review
+readiness, G7 is final acceptance, G8 records deployment or approved non-deployment, and G9 is
+terminal as-built close-out. Current executable and planning examples live under
+`docs/resources/examples/current/`.

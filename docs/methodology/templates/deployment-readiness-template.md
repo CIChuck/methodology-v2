@@ -12,7 +12,7 @@ Agent identity: TBD
 Derived from:
   - path: docs/project/as-built/final-implementation-summary.md
     revision: TBD
-  - path: docs/project/security-governance/[governance-document].md
+  - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
   - path: docs/project/testing/[test-uat-plan].md
     revision: TBD

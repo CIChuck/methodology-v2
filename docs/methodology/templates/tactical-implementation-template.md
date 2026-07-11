@@ -9,9 +9,9 @@ Authority: `docs/methodology/constitution/gendev.md` — Tactical Implementation
 Source:
   Phase Build Plan: `docs/project/build-plan/phases/[phase-build-plan].md`
   Prior Phase Learnings: `docs/project/build-plan/phases/[prior-phase-learnings].md` (N/A for the first phase)
-  Architecture: `docs/project/architecture/[architecture-document].md`
-  PRD: `docs/project/prd/[prd-document].md`
-  Governance/Security: `docs/project/security-governance/[governance-document].md`
+  Architecture: `docs/project/architecture/architecture.md`
+  PRD: `docs/project/prd/prd.md`
+  Governance/Security: `docs/project/security-governance/governance-security-spec.md`
 Produced by: TBD
 Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
@@ -21,11 +21,11 @@ Derived from:
     revision: TBD
   - path: docs/project/build-plan/phases/[prior-phase-learnings].md
     revision: TBD
-  - path: docs/project/architecture/[architecture-document].md
+  - path: docs/project/architecture/architecture.md
     revision: TBD
-  - path: docs/project/prd/[prd-document].md
+  - path: docs/project/prd/prd.md
     revision: TBD
-  - path: docs/project/security-governance/[governance-document].md
+  - path: docs/project/security-governance/governance-security-spec.md
     revision: TBD
 
 ---

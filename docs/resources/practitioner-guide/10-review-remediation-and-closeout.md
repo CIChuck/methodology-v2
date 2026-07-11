@@ -220,3 +220,18 @@ Expected agent behavior:
 - update artifact provenance or mark downstream artifacts stale when authority changed;
 - report any missing evidence;
 - recommend phase acceptance or next remediation.
+
+## 0.5 Phase Review Versus Aggregate Acceptance
+
+Per-phase review happens inside the G5-to-G6 phase loop. It checks one implemented phase against
+that phase's accepted directive, tactical plan, phase plan, test/UAT plan, and source authority.
+Per-phase close-out records what that phase actually changed.
+
+G6 is different: it is aggregate implementation readiness for review after all declared live phases
+have exited. G7 is final implementation acceptance after aggregate review and remediation. G9 is
+terminal project close-out. Do not label a per-phase review as G6, and do not label G6 as final
+acceptance.
+
+Remediation records should resolve each finding exactly once: fixed, deferred with approval,
+accepted as risk with approval, escalated as an amendment, or reopened as a planning gap. Close-out
+must carry the actual result, not the intended result from the plan.

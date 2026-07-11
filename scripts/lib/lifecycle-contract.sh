@@ -3,8 +3,8 @@
 # This file deliberately uses only syntax available in macOS Bash 3.2.
 
 if [ "${GENDEV_LIFECYCLE_CONTRACT_LOADED+x}" = x ]; then
-  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = '7e7fc6bafce3e667d90876c831fd95377728d65817a14b0fa028b07817b9e74c' ]; then
-    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = '7e7fc6bafce3e667d90876c831fd95377728d65817a14b0fa028b07817b9e74c' ] && command -v gendev_gate_name >/dev/null 2>&1; then
+  if [ "$GENDEV_LIFECYCLE_CONTRACT_LOADED" = '7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' ]; then
+    if [ "${GENDEV_LIFECYCLE_REGISTRY_SHA256:-}" = '7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' ] && command -v gendev_gate_name >/dev/null 2>&1; then
       return 0 2>/dev/null || exit 0
     fi
     printf '%s\n' 'lifecycle contract: incomplete loaded contract' >&2
@@ -22,7 +22,7 @@ readonly GENDEV_LIFECYCLE_SCHEMA_VERSION='2' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_SCHEMA_VERSION' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_LIFECYCLE_REGISTRY_STATUS='candidate' || {
+readonly GENDEV_LIFECYCLE_REGISTRY_STATUS='released' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_REGISTRY_STATUS' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -30,7 +30,7 @@ readonly GENDEV_LIFECYCLE_TARGET_VERSION='0.5.0-operational-coherence' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_TARGET_VERSION' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='7e7fc6bafce3e667d90876c831fd95377728d65817a14b0fa028b07817b9e74c' || {
+readonly GENDEV_LIFECYCLE_REGISTRY_SHA256='7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_REGISTRY_SHA256' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -250,7 +250,7 @@ readonly GENDEV_MANIFEST_SOURCE_FILE='docs/project-template/project.yaml' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_MANIFEST_SOURCE_FILE' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_MANIFEST_CONTRACT_STATE='planned' || {
+readonly GENDEV_MANIFEST_CONTRACT_STATE='current' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_MANIFEST_CONTRACT_STATE' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -350,7 +350,7 @@ readonly GENDEV_COMPATIBILITY_SCAFFOLD_PHASE_COMMAND='scripts/init-phase.sh' || 
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_COMPATIBILITY_SCAFFOLD_PHASE_COMMAND' >&2
   return 2 2>/dev/null || exit 2
 }
-readonly GENDEV_COMPATIBILITY_SCAFFOLD_STATE='planned' || {
+readonly GENDEV_COMPATIBILITY_SCAFFOLD_STATE='current' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_COMPATIBILITY_SCAFFOLD_STATE' >&2
   return 2 2>/dev/null || exit 2
 }
@@ -1132,7 +1132,7 @@ gendev_event_history_string() {
   [ "$#" -eq 1 ] || return 2
   case "$1" in
     'template_projection') printf '%s\n' 'docs/methodology/templates/gate-log-template.md' ;;
-    'template_projection_state') printf '%s\n' 'planned' ;;
+    'template_projection_state') printf '%s\n' 'current' ;;
     'required_work_package') printf '%s\n' 'WP-04' ;;
     *) return 1 ;;
   esac
@@ -1153,7 +1153,7 @@ gendev_event_history_boolean() {
 gendev_event_history_enforcement_string() {
   [ "$#" -eq 1 ] || return 2
   case "$1" in
-    'state') printf '%s\n' 'planned' ;;
+    'state') printf '%s\n' 'current' ;;
     'required_work_package') printf '%s\n' 'WP-05' ;;
     'enforcer_path') printf '%s\n' 'scripts/lib/gate-log.awk' ;;
     'verification_suite') printf '%s\n' 'tests/methodology/test-enforcement-tools.sh' ;;
@@ -1173,8 +1173,8 @@ gendev_reference_depth_rule() {
 gendev_manifest_field_contract_state() {
   [ "$#" -eq 1 ] || return 2
   case "$1" in
-    'phase.loop_status') printf '%s\n' 'planned' ;;
-    'phase.current_phase_id') printf '%s\n' 'planned' ;;
+    'phase.loop_status') printf '%s\n' 'current' ;;
+    'phase.current_phase_id') printf '%s\n' 'current' ;;
     *) return 1 ;;
   esac
 }
@@ -2431,22 +2431,22 @@ gendev_artifact_template_state() {
     'construction_directive') printf '%s\n' 'current' ;;
     'build_prompt') printf '%s\n' 'current' ;;
     'phase_test_uat') printf '%s\n' 'current' ;;
-    'implementation_evidence') printf '%s\n' 'planned' ;;
+    'implementation_evidence') printf '%s\n' 'current' ;;
     'phase_code_review') printf '%s\n' 'current' ;;
-    'phase_remediation') printf '%s\n' 'planned' ;;
+    'phase_remediation') printf '%s\n' 'current' ;;
     'phase_learnings') printf '%s\n' 'current' ;;
     'phase_as_built') printf '%s\n' 'current' ;;
     'phase_value_review') printf '%s\n' 'current' ;;
     'traceability') printf '%s\n' 'current' ;;
-    'implementation_summary') printf '%s\n' 'planned' ;;
-    'final_code_review') printf '%s\n' 'planned' ;;
-    'aggregate_remediation') printf '%s\n' 'planned' ;;
-    'final_test_uat') printf '%s\n' 'planned' ;;
-    'deployment_readiness') printf '%s\n' 'planned' ;;
-    'production_runbook') printf '%s\n' 'planned' ;;
-    'deployment_record') printf '%s\n' 'planned' ;;
-    'project_value_review') printf '%s\n' 'planned' ;;
-    'project_as_built') printf '%s\n' 'planned' ;;
+    'implementation_summary') printf '%s\n' 'current' ;;
+    'final_code_review') printf '%s\n' 'current' ;;
+    'aggregate_remediation') printf '%s\n' 'current' ;;
+    'final_test_uat') printf '%s\n' 'current' ;;
+    'deployment_readiness') printf '%s\n' 'current' ;;
+    'production_runbook') printf '%s\n' 'current' ;;
+    'deployment_record') printf '%s\n' 'current' ;;
+    'project_value_review') printf '%s\n' 'current' ;;
+    'project_as_built') printf '%s\n' 'current' ;;
     'supporting_design') printf '%s\n' 'current' ;;
     *) return 1 ;;
   esac
@@ -2468,22 +2468,22 @@ gendev_artifact_lifecycle_state() {
     'construction_directive') printf '%s\n' 'current' ;;
     'build_prompt') printf '%s\n' 'current' ;;
     'phase_test_uat') printf '%s\n' 'current' ;;
-    'implementation_evidence') printf '%s\n' 'planned' ;;
+    'implementation_evidence') printf '%s\n' 'current' ;;
     'phase_code_review') printf '%s\n' 'current' ;;
-    'phase_remediation') printf '%s\n' 'planned' ;;
+    'phase_remediation') printf '%s\n' 'current' ;;
     'phase_learnings') printf '%s\n' 'current' ;;
     'phase_as_built') printf '%s\n' 'current' ;;
     'phase_value_review') printf '%s\n' 'current' ;;
     'traceability') printf '%s\n' 'current' ;;
-    'implementation_summary') printf '%s\n' 'planned' ;;
-    'final_code_review') printf '%s\n' 'planned' ;;
-    'aggregate_remediation') printf '%s\n' 'planned' ;;
-    'final_test_uat') printf '%s\n' 'planned' ;;
-    'deployment_readiness') printf '%s\n' 'planned' ;;
-    'production_runbook') printf '%s\n' 'planned' ;;
-    'deployment_record') printf '%s\n' 'planned' ;;
-    'project_value_review') printf '%s\n' 'planned' ;;
-    'project_as_built') printf '%s\n' 'planned' ;;
+    'implementation_summary') printf '%s\n' 'current' ;;
+    'final_code_review') printf '%s\n' 'current' ;;
+    'aggregate_remediation') printf '%s\n' 'current' ;;
+    'final_test_uat') printf '%s\n' 'current' ;;
+    'deployment_readiness') printf '%s\n' 'current' ;;
+    'production_runbook') printf '%s\n' 'current' ;;
+    'deployment_record') printf '%s\n' 'current' ;;
+    'project_value_review') printf '%s\n' 'current' ;;
+    'project_as_built') printf '%s\n' 'current' ;;
     'supporting_design') printf '%s\n' 'current' ;;
     *) return 1 ;;
   esac
@@ -2576,26 +2576,26 @@ gendev_artifact_identity_contract_state() {
     'phase_plan') printf '%s\n' 'current' ;;
     'phase_build_plan') printf '%s\n' 'current' ;;
     'tactical_plan') printf '%s\n' 'current' ;;
-    'construction_directive') printf '%s\n' 'planned' ;;
-    'build_prompt') printf '%s\n' 'planned' ;;
+    'construction_directive') printf '%s\n' 'current' ;;
+    'build_prompt') printf '%s\n' 'current' ;;
     'phase_test_uat') printf '%s\n' 'current' ;;
-    'implementation_evidence') printf '%s\n' 'planned' ;;
+    'implementation_evidence') printf '%s\n' 'current' ;;
     'phase_code_review') printf '%s\n' 'current' ;;
-    'phase_remediation') printf '%s\n' 'planned' ;;
-    'phase_learnings') printf '%s\n' 'planned' ;;
+    'phase_remediation') printf '%s\n' 'current' ;;
+    'phase_learnings') printf '%s\n' 'current' ;;
     'phase_as_built') printf '%s\n' 'current' ;;
     'phase_value_review') printf '%s\n' 'current' ;;
     'traceability') printf '%s\n' 'current' ;;
-    'implementation_summary') printf '%s\n' 'planned' ;;
-    'final_code_review') printf '%s\n' 'planned' ;;
-    'aggregate_remediation') printf '%s\n' 'planned' ;;
-    'final_test_uat') printf '%s\n' 'planned' ;;
-    'deployment_readiness') printf '%s\n' 'planned' ;;
-    'production_runbook') printf '%s\n' 'planned' ;;
-    'deployment_record') printf '%s\n' 'planned' ;;
-    'project_value_review') printf '%s\n' 'planned' ;;
-    'project_as_built') printf '%s\n' 'planned' ;;
-    'supporting_design') printf '%s\n' 'planned' ;;
+    'implementation_summary') printf '%s\n' 'current' ;;
+    'final_code_review') printf '%s\n' 'current' ;;
+    'aggregate_remediation') printf '%s\n' 'current' ;;
+    'final_test_uat') printf '%s\n' 'current' ;;
+    'deployment_readiness') printf '%s\n' 'current' ;;
+    'production_runbook') printf '%s\n' 'current' ;;
+    'deployment_record') printf '%s\n' 'current' ;;
+    'project_value_review') printf '%s\n' 'current' ;;
+    'project_as_built') printf '%s\n' 'current' ;;
+    'supporting_design') printf '%s\n' 'current' ;;
     *) return 1 ;;
   esac
 }
@@ -3308,7 +3308,7 @@ gendev_scaling_g2_required_any() {
   esac
 }
 
-readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='7e7fc6bafce3e667d90876c831fd95377728d65817a14b0fa028b07817b9e74c' || {
+readonly GENDEV_LIFECYCLE_CONTRACT_LOADED='7dd9dd68f67f3f84c3015c63d458b15a5c40875a55ab4ad5e00b9be25d995de5' || {
   printf '%s\n' 'lifecycle contract: conflicting GENDEV_LIFECYCLE_CONTRACT_LOADED' >&2
   return 2 2>/dev/null || exit 2
 }

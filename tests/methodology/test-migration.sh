@@ -43,6 +43,36 @@ th_run_case "MI-003" 1 "backfill refuses existing docs/methodology without force
    cd '$source_root' && ./scripts/backfill-methodology.sh '$migration_target'" \
   'docs/methodology already exists'
 
+vision_only="$TH_WORKDIR/migration-vision-only"
+mkdir -p "$vision_only/imports"
+printf '# Imported Vision\nStatus: Draft\n' > "$vision_only/imports/vision.md"
+cp "$vision_only/imports/vision.md" "$vision_only/imports/vision.md.expected"
+
+th_run_case "MI-004" 0 "backfill accepts explicit vision-only import" \
+  "cd '$source_root' && ./scripts/backfill-methodology.sh --project-name 'Vision Only' --vision '$vision_only/imports/vision.md' '$vision_only' >/dev/null && \
+   cmp -s '$vision_only/docs/project/vision/vision.md' '$vision_only/imports/vision.md.expected' && \
+   test -f '$vision_only/docs/project/project.yaml' && \
+   grep -q 'vision: present' '$vision_only/docs/project/backfill-conformance-report.md'" \
+  ''
+
+missing_declared="$TH_WORKDIR/migration-missing-declared"
+mkdir -p "$missing_declared"
+
+th_run_case "MI-005" 1 "backfill missing declared source aborts before mutation" \
+  "cd '$source_root' && ./scripts/backfill-methodology.sh --vision '$missing_declared/nope.md' '$missing_declared'; rc=\$?; \
+   test ! -e '$missing_declared/docs/methodology' && exit \$rc" \
+  'Expected doc not found'
+
+conflict_target="$TH_WORKDIR/migration-conflict"
+mkdir -p "$conflict_target/docs/project/vision" "$conflict_target/imports"
+printf '# Existing Vision\nStatus: Draft\n' > "$conflict_target/docs/project/vision/vision.md"
+printf '# Different Vision\nStatus: Draft\n' > "$conflict_target/imports/vision.md"
+
+th_run_case "MI-006" 1 "backfill refuses to overwrite imported authority before install" \
+  "cd '$source_root' && ./scripts/backfill-methodology.sh --force --vision '$conflict_target/imports/vision.md' '$conflict_target'; rc=\$?; \
+   test ! -e '$conflict_target/docs/methodology' && grep -q '# Existing Vision' '$conflict_target/docs/project/vision/vision.md' && exit \$rc" \
+  'Refusing to overwrite imported authority'
+
 th_summary
 
 exit $(( TH_CASE_FAIL > 0 ))

@@ -45,7 +45,7 @@ EOF
 
 th_run_case "ME-002" 0 "metrics tolerates malformed timing data" \
   "cd '$init_target' && ./scripts/methodology-metrics.sh docs/project" \
-  'missing timing fields'
+  'timing invalid'
 
 cat > docs/project/approvals/gate-log.md <<'EOF'
 # Gate Log

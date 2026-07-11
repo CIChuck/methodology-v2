@@ -45,7 +45,7 @@ docs/resources/examples/
 For a lightweight C1 path, see:
 
 ```text
-docs/resources/examples/gendev-lite-contained-tool/
+docs/resources/examples/current/c1-csv-cleanup/
 ```
 
 ## Core Method
@@ -194,7 +194,7 @@ This repository is a methodology baseline, not an implemented product. Product-s
 tests, configuration, CI, deployment, and runtime commands should be added by the initialized project
 as its architecture and phase plans mature.
 
-Current methodology version: `0.1.0-baseline`
+Current methodology version: `0.5.0-operational-coherence`
 
 This is the hardened pre-1.0 baseline. The hardening waves in
 `docs/resources/releases/0.1.0-baseline-provenance/gendev-hardening-plan.md` are complete, and the release notes are in

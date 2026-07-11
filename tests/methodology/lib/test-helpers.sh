@@ -62,8 +62,14 @@ th_temp_copy() {
   local destination="$2"
 
   rm -rf "$destination"
-  cp -R "$source/." "$destination" 2>/dev/null || cp -R "$source/" "$destination"
+  mkdir -p "$destination"
+  if (cd "$source" && tar --exclude .git --exclude .tmp -cf - .) | (cd "$destination" && tar -xf -); then
+    :
+  else
+    cp -R "$source/." "$destination" 2>/dev/null || cp -R "$source/" "$destination"
+  fi
   rm -rf "$destination/.git"
+  rm -rf "$destination/.tmp"
 }
 
 th_hash_file() {

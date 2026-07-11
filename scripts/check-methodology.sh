@@ -2,22 +2,310 @@
 # SPDX-License-Identifier: MIT
 set -u
 
+GENDEV_COMMON_DIR="$(cd "$(dirname "$0")/lib" && pwd)"
+. "$GENDEV_COMMON_DIR/gendev-common.sh"
+. "$GENDEV_COMMON_DIR/lifecycle-contract.sh"
+
 errors=0
 warnings=0
 seen_failures=""
+GENDEV_GATE_LOG_EVENTS_FILE=""
+GENDEV_GATE_LOG_EVENTS_OUTPUT=""
+GENDEV_GATE_LOG_EVENTS_RC=0
 
 info() {
   printf 'INFO: %s\n' "$1"
 }
 
+diagnostic_quote() {
+  printf '%s' "$1" | sed 's/"/'\''/g'
+}
+
+diagnostic_emit() {
+  severity="$1"
+  message="$2"
+  code="GENDEV-CHECK-000"
+  file="unknown"
+  line="unknown"
+  event_id="unknown"
+  expected="methodology invariant holds"
+  actual="$message"
+
+  case "$message" in
+    "Manifest declares methodology_version 0.5.0-operational-coherence but gate-log contains structured events without event_id and schema_version: 2."*)
+      code="GENDEV-COMPAT-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="all 0.5 structured events have event_id and schema_version 2"
+      actual="one or more structured events are missing event_id or schema_version 2"
+      ;;
+    "Manifest legacy migration mode is active, but gate-log contains structured events without event_id and schema_version: 2."*)
+      code="GENDEV-COMPAT-002"
+      file="docs/project/approvals/gate-log.md"
+      expected="legacy migration events have event_id and schema_version 2"
+      actual="one or more structured events are missing event_id or schema_version 2"
+      ;;
+    "Manifest legacy migration mode requires migration.approved_by."*)
+      code="GENDEV-COMPAT-003"
+      file="docs/project/project.yaml"
+      expected="migration.approved_by is a named human"
+      actual="missing or unknown"
+      ;;
+    "Manifest legacy migration mode requires migration.approved_on."*)
+      code="GENDEV-COMPAT-004"
+      file="docs/project/project.yaml"
+      expected="migration.approved_on is set"
+      actual="missing or unknown"
+      ;;
+    "Manifest attested enforcement is missing attestation cadence."*)
+      code="GENDEV-MANIFEST-ENFORCEMENT-001"
+      file="docs/project/project.yaml"
+      expected="enforcement.attested.cadence is set"
+      actual="missing or unknown"
+      ;;
+    "Manifest attested enforcement is missing required_attester field."*)
+      code="GENDEV-MANIFEST-ENFORCEMENT-002"
+      file="docs/project/project.yaml"
+      expected="enforcement.attested.required_attester is a named human"
+      actual="missing or unknown"
+      ;;
+    "Project current_gate "*" differs from approvals.current_gate.gate "*)
+      code="GENDEV-MANIFEST-APPROVAL-001"
+      file="docs/project/project.yaml"
+      expected="project.current_gate equals approvals.current_gate.gate"
+      actual="$message"
+      ;;
+    "Gate is approved but approved_on is not an ISO date: "*)
+      code="GENDEV-MANIFEST-APPROVAL-002"
+      file="docs/project/project.yaml"
+      expected="approvals.current_gate.approved_on is YYYY-MM-DD"
+      actual="${message##*: }"
+      ;;
+    "Gate is approved but approved_by is not set."*)
+      code="GENDEV-MANIFEST-APPROVAL-003"
+      file="docs/project/project.yaml"
+      expected="approvals.current_gate.approved_by is set"
+      actual="missing or unknown"
+      ;;
+    "Gate is approved but evidence is missing."*)
+      code="GENDEV-MANIFEST-APPROVAL-004"
+      file="docs/project/project.yaml"
+      expected="approvals.current_gate.evidence contains at least one path"
+      actual="missing or unknown"
+      ;;
+    *" is a C1 PRD but contains no concrete observable acceptance criteria."*)
+      code="GENDEV-G2-OBSERVABLE-001"
+      file="${message%% *}"
+      expected="C1 PRD has concrete observable acceptance criteria"
+      actual="missing"
+      ;;
+    *" is a C2/C3 PRD but contains no concrete EARS-form acceptance criteria "*)
+      code="GENDEV-G2-EARS-001"
+      file="${message%% *}"
+      expected="C2/C3 PRD has concrete EARS-form acceptance criteria"
+      actual="missing"
+      ;;
+    *" has no concrete unwanted-behavior acceptance criteria."*)
+      code="GENDEV-G2-UNWANTED-001"
+      file="${message%% *}"
+      expected="PRD includes all-class unwanted-behavior If/then criteria"
+      actual="missing"
+      ;;
+    *" is missing the required Verification Specification section (G3)."*)
+      code="GENDEV-G3-VERIFICATION-001"
+      file="${message%% *}"
+      expected="architecture contains Verification Specification section"
+      actual="missing"
+      ;;
+    *" Verification Specification is not human-approved "*)
+      code="GENDEV-G3-VERIFICATION-002"
+      file="${message%% *}"
+      expected="Verification Specification has non-placeholder Approved by and Approved on"
+      actual="missing or unknown"
+      ;;
+    *" Verification Specification does not trace to G2 criteria."*)
+      code="GENDEV-G3-TRACE-001"
+      file="${message%% *}"
+      expected="Verification Specification maps REQ IDs to Behavioral, Design, Implementation, and UAT checks"
+      actual="missing"
+      ;;
+    *" is missing recorded design-verification interrogation answers."*)
+      code="GENDEV-G3-INTERROGATION-001"
+      file="${message%% *}"
+      expected="architecture records design-verification interrogation answers"
+      actual="missing"
+      ;;
+    "Gate-log evidence item "*" is missing required field: "*)
+      code="GENDEV-EVIDENCE-ITEM-001"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="${message##*: }"
+      actual="missing"
+      ;;
+    "Gate-log evidence item "*" has invalid evidence category: "*)
+      code="GENDEV-EVIDENCE-ITEM-002"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="new_acceptance_status_only, complete_report_unchanged, or accepted_authority_unchanged"
+      actual="${message##*: }"
+      ;;
+    "Gate-log evidence item "*" has invalid reviewed revision: "*)
+      code="GENDEV-EVIDENCE-ITEM-003"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="non-placeholder Git revision token"
+      actual="${message##*: }"
+      ;;
+    "Gate-log evidence item "*" has invalid blob OID in "*)
+      code="GENDEV-EVIDENCE-ITEM-004"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="40- or 64-hex Git blob OID"
+      actual="$message"
+      ;;
+    "Gate-log evidence item "*" has invalid sha256 digest in "*)
+      code="GENDEV-EVIDENCE-ITEM-005"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="64-hex SHA-256 digest"
+      actual="$message"
+      ;;
+    "Gate-log evidence item "*" category complete_report_unchanged requires reviewed and resulting blobs/digests to match."*)
+      code="GENDEV-EVIDENCE-ITEM-006"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="reviewed/resulting blob OIDs and digests match"
+      actual="mismatch"
+      ;;
+    "Gate-log evidence item "*" category accepted_authority_unchanged requires reviewed and resulting blobs/digests to match."*)
+      code="GENDEV-EVIDENCE-ITEM-007"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="reviewed/resulting blob OIDs and digests match"
+      actual="mismatch"
+      ;;
+    "Gate-log evidence item "*" category accepted_authority_unchanged requires originating_event_id."*)
+      code="GENDEV-EVIDENCE-ITEM-008"
+      file="docs/project/approvals/gate-log.md"
+      event_id="$(printf '%s\n' "$message" | sed -n 's/^Gate-log evidence item in \([^ ]*\) .*/\1/p')"
+      expected="originating_event_id"
+      actual="missing"
+      ;;
+    "Late gate "*" requires artifact "*" with status "*)
+      code="GENDEV-LATE-GATE-ARTIFACT-001"
+      file="$(printf '%s\n' "$message" | sed -n "s/^Late gate [^ ]* requires artifact '\([^']*\)'.*/\1/p")"
+      expected="$(printf '%s\n' "$message" | sed -n "s/.* with status \(.*\); actual:.*/\1/p")"
+      actual="${message##*actual: }"
+      ;;
+    "G8 deployment readiness is Accepted but no structured deployment_approval event exists in gate-log.md."*)
+      code="GENDEV-G8-DEPLOYMENT-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="structured deployment_approval event"
+      actual="missing"
+      ;;
+    "G9 close-out requires project.status closed."*)
+      code="GENDEV-G9-TERMINAL-001"
+      file="docs/project/project.yaml"
+      expected="project.status closed"
+      actual="not closed"
+      ;;
+    "G9 close-out requires active_role none."*)
+      code="GENDEV-G9-TERMINAL-002"
+      file="docs/project/project.yaml"
+      expected="project.active_role none"
+      actual="not none"
+      ;;
+    "G9 close-out requires a terminal G8 -> G9 gate_transition event."*)
+      code="GENDEV-G9-TERMINAL-003"
+      file="docs/project/approvals/gate-log.md"
+      expected="terminal_closeout G8 -> G9 gate_transition"
+      actual="missing"
+      ;;
+    "G9 close-out requires value-review disposition complete, not_due, or not_applicable."*)
+      code="GENDEV-G9-VALUE-001"
+      file="docs/project/as-built/value-review.md"
+      expected="value_review.disposition complete, not_due, or not_applicable"
+      actual="missing or invalid"
+      ;;
+    "Accepted artifact exists but no complete durable approval event is visible for gate "*)
+      code="GENDEV-APPROVAL-EVENT-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="complete durable approval event for accepted artifact gate"
+      actual="missing"
+      ;;
+    "G6+ structured gate transition is missing executable or verification evidence."*)
+      code="GENDEV-GATELOG-EVIDENCE-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="G6+ gate_transition includes verification_evidence"
+      actual="missing"
+      ;;
+    "Phase "*" is marked exited but no complete G5."*)
+      code="GENDEV-PHASE-EXIT-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="complete G5.<id>.4 phase_transition event"
+      actual="missing"
+      ;;
+    "Project current_gate is G6 but not every declared phase has exited."* | \
+    "Project current_gate is G7 but not every declared phase has exited."* | \
+    "Project current_gate is G8 but not every declared phase has exited."* | \
+    "Project current_gate is G9 but not every declared phase has exited."*)
+      code="GENDEV-PHASE-EXIT-002"
+      file="docs/project/project.yaml"
+      expected="all declared phases have status exited before G6+"
+      actual="$message"
+      ;;
+    "Manifest phase.phase_position is "*" but prior phase "*" has not exited."*)
+      code="GENDEV-PHASE-ORDER-001"
+      file="docs/project/project.yaml"
+      expected="prior phase status exited before later phase checkpoint"
+      actual="$message"
+      ;;
+    *"references undeclared tactical task ID: "*)
+      code="GENDEV-TACTICAL-REF-001"
+      file="${message%% *}"
+      expected="referenced tactical task ID is declared in the Accepted tactical plan"
+      actual="${message##*: }"
+      ;;
+    *"references tactical task ID not declared in an Accepted tactical plan: "*)
+      code="GENDEV-TRACE-TASK-001"
+      file="${message%%:*}"
+      line="${message#*:}"
+      line="${line%% *}"
+      expected="traceability tactical task resolves to an Accepted tactical plan task"
+      actual="${message##*: }"
+      ;;
+    "Accepted/complete document still has placeholders: "*)
+      code="GENDEV-PLACEHOLDER-001"
+      file="${message##*: }"
+      expected="Accepted or Complete document contains no template placeholders"
+      actual="placeholder token present"
+      ;;
+    "Malformed structured"*gate-log* | "Malformed structured event record in "*)
+      code="GENDEV-GATELOG-PARSE-001"
+      file="docs/project/approvals/gate-log.md"
+      expected="restricted schema-2 structured event block"
+      actual="parse failure"
+      ;;
+  esac
+
+  printf '%s [%s] file=%s line=%s event_id=%s expected="%s" actual="%s" message="%s"\n' \
+    "$severity" \
+    "$code" \
+    "$file" \
+    "$line" \
+    "$event_id" \
+    "$(diagnostic_quote "$expected")" \
+    "$(diagnostic_quote "$actual")" \
+    "$(diagnostic_quote "$message")"
+}
+
 warn() {
   warnings=$((warnings + 1))
-  printf 'WARN: %s\n' "$1"
+  diagnostic_emit "WARN:" "$1"
 }
 
 fail() {
   errors=$((errors + 1))
-  printf 'ERROR: %s\n' "$1"
+  diagnostic_emit "ERROR:" "$1"
 }
 
 fail_once() {
@@ -262,20 +550,59 @@ gate_log_records_section() {
       in_records = 1
       next
     }
+    in_records && /^## / {
+      exit
+    }
     in_records {
       print
     }
   ' "$log"
 }
 
+gate_log_load_events() {
+  log="$1"
+
+  if [ "$GENDEV_GATE_LOG_EVENTS_FILE" != "$log" ] || [ -z "${GENDEV_GATE_LOG_EVENTS_OUTPUT+x}" ]; then
+    GENDEV_GATE_LOG_EVENTS_FILE="$log"
+    GENDEV_GATE_LOG_EVENTS_OUTPUT="$(awk -f scripts/lib/gate-log.awk "$log" 2>/tmp/gate-log.err.$$)"
+    GENDEV_GATE_LOG_EVENTS_RC=$?
+    cat "/tmp/gate-log.err.$$" 2>/dev/null
+    rm -f "/tmp/gate-log.err.$$"
+  fi
+
+  return "$GENDEV_GATE_LOG_EVENTS_RC"
+}
+
+gate_log_events() {
+  log="$1"
+
+  [ -f "$log" ] || return 1
+
+  if ! gate_log_load_events "$log"; then
+    return 1
+  fi
+
+  printf '%s\n' "$GENDEV_GATE_LOG_EVENTS_OUTPUT"
+}
+
 gate_log_has_structured_event() {
   log="$1"
   event_type="$2"
 
-  [ -f "$log" ] || return 1
+  if ! parsed_gate_events="$(
+    gate_log_events "$log"
+  )"; then
+    fail "Malformed structured event record in $log."
+    return 1
+  fi
 
-  gate_log_records_section "$log" |
-    grep -Eq "^[[:space:]]*event_type:[[:space:]]*${event_type}[[:space:]]*$"
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' -v event_type="$event_type" '{
+      if ($2 == event_type) {
+        exit_found = 1
+      }
+    }
+    END { exit !exit_found }'
 }
 
 gate_log_has_legacy_approval() {
@@ -292,29 +619,27 @@ gate_log_missing_executable_evidence_for_g6_plus() {
 
   [ -f "$log" ] || return 0
 
-  gate_log_records_section "$log" |
-    awk '
-      /^[[:space:]]*event_type:/ {
-        if (in_gate_transition && gate_is_g6_plus && !has_executable_evidence) {
+  if ! parsed_gate_events="$(
+    gate_log_events "$log"
+  )"; then
+    fail "Malformed structured event record in $log."
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' '
+      {
+        if ($2 != "gate_transition") {
+          next
+        }
+        if ($4 !~ /^G[6-9]([.-]|$)/ && $5 !~ /^G[6-9]([.-]|$)/) {
+          next
+        }
+        if ($9 == 0) {
           missing = 1
         }
-        in_gate_transition = ($0 ~ /^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$/)
-        gate_is_g6_plus = 0
-        has_executable_evidence = 0
-        next
       }
-      in_gate_transition && /^[[:space:]]*(to_gate|gate):[[:space:]]*G[6-9][[:space:]]*$/ {
-        gate_is_g6_plus = 1
-      }
-      in_gate_transition && /^[[:space:]]*(executable_evidence|verification_evidence|verification):/ {
-        has_executable_evidence = 1
-      }
-      END {
-        if (in_gate_transition && gate_is_g6_plus && !has_executable_evidence) {
-          missing = 1
-        }
-        exit !missing
-      }
+      END { exit !missing }
     '
 }
 
@@ -323,25 +648,17 @@ gate_log_has_stale_gate_transition_evidence() {
 
   [ -f "$log" ] || return 1
 
-  gate_log_records_section "$log" |
-    awk '
-      /^[[:space:]]*event_type:/ {
-        if (in_gate_transition && stale_evidence) {
-          found = 1
-        }
-        in_gate_transition = ($0 ~ /^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$/)
-        stale_evidence = 0
-        next
-      }
-      in_gate_transition && /^[[:space:]]*status:[[:space:]]*(Stale|Superseded)[[:space:]]*$/ {
-        stale_evidence = 1
-      }
-      END {
-        if (in_gate_transition && stale_evidence) {
-          found = 1
-        }
-        exit !found
-      }
+  if ! parsed_gate_events="$(
+    gate_log_events "$log"
+  )"; then
+    fail "Malformed structured event record in $log."
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' '
+      $2 == "gate_transition" && $10 == 1 { found = 1 }
+      END { exit !found }
     '
 }
 
@@ -428,6 +745,99 @@ trace_context_has_task_id() {
     "$GENDEV_TRACE_CONTEXT_FILE"
 }
 
+valid_task_id() {
+  printf '%s\n' "$1" | grep -Eq "$GENDEV_TASK_ID_PATTERN"
+}
+
+valid_workstream_id() {
+  printf '%s\n' "$1" | grep -Eq "$GENDEV_WORKSTREAM_ID_PATTERN"
+}
+
+accepted_tactical_plans() {
+  for file in docs/project/build-plan/phases/*tactical*.md; do
+    [ -e "$file" ] || continue
+    if [ "$(artifact_status "$file")" = "Accepted" ]; then
+      printf '%s\n' "$file"
+    fi
+  done
+}
+
+tactical_declared_task_ids() {
+  file="$1"
+
+  awk '
+    function trim(value) {
+      gsub(/^[[:space:]]+/, "", value)
+      gsub(/[[:space:]]+$/, "", value)
+      return value
+    }
+    /^## Workstreams/ { in_workstreams = 1; next }
+    in_workstreams && /^## / { exit }
+    in_workstreams && /^###[[:space:]]/ {
+      line = $0
+      while (match(line, /PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-T[0-9]+/)) {
+        print substr(line, RSTART, RLENGTH)
+        line = substr(line, RSTART + RLENGTH)
+      }
+      next
+    }
+    in_workstreams && /^\|/ {
+      split($0, cells, "|")
+      first = trim(cells[2])
+      if (first ~ /^PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-T[0-9]+$/) {
+        print first
+      }
+    }
+  ' "$file" | sort -u
+}
+
+tactical_declared_workstream_ids() {
+  file="$1"
+
+  awk '
+    function trim(value) {
+      gsub(/^[[:space:]]+/, "", value)
+      gsub(/[[:space:]]+$/, "", value)
+      return value
+    }
+    /^## Workstreams/ { in_workstreams = 1; next }
+    in_workstreams && /^## / { exit }
+    in_workstreams && /^###[[:space:]]/ {
+      line = $0
+      while (match(line, /PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-WS[0-9]+/)) {
+        print substr(line, RSTART, RLENGTH)
+        line = substr(line, RSTART + RLENGTH)
+      }
+      next
+    }
+    in_workstreams && /^\|/ {
+      split($0, cells, "|")
+      first = trim(cells[2])
+      if (first ~ /^PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-WS[0-9]+$/) {
+        print first
+      }
+    }
+  ' "$file" | sort -u
+}
+
+file_task_id_tokens() {
+  file="$1"
+  grep -Eo 'PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-T[0-9]+' "$file" 2>/dev/null | sort -u
+}
+
+file_workstream_id_tokens() {
+  file="$1"
+  grep -Eo 'PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-WS[0-9]+' "$file" 2>/dev/null | sort -u
+}
+
+known_tactical_task_ids() {
+  accepted_tactical_plans |
+    while IFS= read -r file; do
+      tactical_declared_task_ids "$file"
+    done |
+    sort -u
+}
+
 artifact_status() {
   file="$1"
 
@@ -452,7 +862,7 @@ artifact_derived_revisions() {
       gsub(/`/, "", path)
       next
     }
-    in_block && /^[[:space:]]+revision:[[:space:]]*.+/ {
+    in_block && /^[[:space:]]+revision:[[:space:]]*/ {
       sub("^[[:space:]]+revision:[[:space:]]*", "")
       revision = $0
       if (path != "") {
@@ -460,6 +870,437 @@ artifact_derived_revisions() {
       }
     }
   ' "$file"
+}
+
+gate_log_has_strict_approval_event() {
+  log="$1"
+  expected_to_gate="$2"
+
+  [ -f "$log" ] || return 1
+
+  if ! parsed_gate_events="$(
+    gate_log_events "$log"
+  )"; then
+    return 1
+  fi
+
+  if [ -n "$expected_to_gate" ]; then
+    printf '%s\n' "$parsed_gate_events" |
+      awk -F'\t' -v expected_to_gate="$expected_to_gate" '
+        $2 == "gate_transition" &&
+        $3 != "" &&
+        $4 != "" &&
+        $4 == expected_to_gate &&
+        ($6 == "approved" || $6 == "accepted" || $6 == "Approved" || $6 == "Accepted") &&
+        $7 == 1 &&
+        $8 == 1 &&
+        $10 == 0 {
+          found = 1
+          exit
+        }
+        END { exit !found }
+      '
+  else
+    printf '%s\n' "$parsed_gate_events" |
+      awk -F'\t' '
+        $2 == "gate_transition" &&
+        $3 != "" &&
+        $4 != "" &&
+        ($6 == "approved" || $6 == "accepted" || $6 == "Approved" || $6 == "Accepted") &&
+        $7 == 1 &&
+        $8 == 1 &&
+        $10 == 0 {
+          found = 1
+          exit
+        }
+        END { exit !found }
+      '
+  fi
+}
+
+gate_log_transition_event_count() {
+  log="$1"
+  from_gate="$2"
+  to_gate="$3"
+
+  [ -f "$log" ] || return 0
+
+  if ! parsed_gate_events="$(gate_log_events "$log")"; then
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' -v from_gate="$from_gate" -v to_gate="$to_gate" '
+      $2 == "gate_transition" && $3 == from_gate && $4 == to_gate {count++}
+      END { print count + 0 }
+    '
+}
+
+gate_log_transition_event_count_with_combined_fields() {
+  log="$1"
+  from_gate="$2"
+  to_gate="$3"
+  combined_span="$4"
+
+  [ -f "$log" ] || return 0
+
+  if ! parsed_gate_events="$(gate_log_events "$log")"; then
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' -v from_gate="$from_gate" -v to_gate="$to_gate" -v combined_span="$combined_span" '
+      function strip(value,    v) {
+        v = value
+        sub(/^[[:space:]]+/, "", v)
+        sub(/[[:space:]]+$/, "", v)
+        gsub(/^"|"$/, "", v)
+        return v
+      }
+
+      function is_unknown(value,    v) {
+        v = strip(value)
+        return (v == "" || v == "TBD" || v == "[TBD]" || v == "[]")
+      }
+
+      $2 == "gate_transition" &&
+      $3 == from_gate &&
+      $4 == to_gate &&
+      strip($12) == combined_span &&
+      !is_unknown($11) &&
+      !is_unknown($13) {
+        count++
+      }
+      END { print count + 0 }
+    '
+}
+
+gate_log_phase_exit_event_count() {
+  log="$1"
+  phase_id="$2"
+
+  [ -f "$log" ] || return 0
+
+  if ! parsed_gate_events="$(gate_log_events "$log")"; then
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' -v phase_id="$phase_id" '
+      $2 == "phase_transition" &&
+      $14 == "G5." phase_id ".4" &&
+      $15 == phase_id &&
+      ($6 == "exited" || $6 == "approved" || $6 == "accepted") &&
+      $7 == 1 &&
+      $16 == 1 &&
+      $17 == 1 &&
+      $18 == 1 {
+        count++
+      }
+      END { print count + 0 }
+    '
+}
+
+gate_log_has_non_schema2_event() {
+  log="$1"
+
+  [ -f "$log" ] || return 1
+
+  if ! parsed_gate_events="$(gate_log_events "$log")"; then
+    return 1
+  fi
+
+  printf '%s\n' "$parsed_gate_events" |
+    awk -F'\t' '
+      NF && ($19 == "" || $20 != "2") {
+        found = 1
+      }
+      END { exit !found }
+    '
+}
+
+manifest_scaling_combined_gates() {
+  manifest="$1"
+
+  awk '
+    function trim(value) {
+      gsub(/^[[:space:]]+/, "", value)
+      gsub(/[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      return value
+    }
+
+    function emit_entry() {
+      if (!in_entry) {
+        return
+      }
+      print span "|" mode "|" justification "|" approver "|" approved_on
+      span = ""
+      mode = ""
+      justification = ""
+      approver = ""
+      approved_on = ""
+      in_entry = 0
+    }
+
+    /^scaling:/ {
+      in_scaling = 1
+      next
+    }
+
+    in_scaling && /^[^[:space:]][^:]*:/ {
+      emit_entry()
+      exit
+    }
+
+    in_scaling && $0 ~ /^  combined_gates:/ {
+      in_entry = 0
+      line_value = $0
+      sub(/^[[:space:]]*combined_gates:[[:space:]]*/, "", line_value)
+      line_value = trim(line_value)
+      if (line_value == "[]" || line_value == "N/A") {
+        in_combined = 0
+        next
+      }
+      in_combined = 1
+      next
+    }
+
+    in_scaling && in_combined && /^    - / {
+      emit_entry()
+      span = ""
+      mode = ""
+      justification = ""
+      approver = ""
+      approved_on = ""
+      in_entry = 1
+      line = $0
+      sub(/^    -[[:space:]]*/, "", line)
+      if (line ~ /^[A-Za-z0-9_]+:/) {
+        key = line
+        sub(/:.*/, "", key)
+        value = line
+        sub(/^[A-Za-z0-9_]+:[[:space:]]*/, "", value)
+        value = trim(value)
+        if (key == "gates" || key == "span") {
+          span = value
+        } else if (key == "mode") {
+          mode = value
+        } else if (key == "justification") {
+          justification = value
+        } else if (key == "approved_by" || key == "approver") {
+          if (approver == "") {
+            approver = value
+          }
+        } else if (key == "approved_on") {
+          approved_on = value
+        }
+      }
+      next
+    }
+
+    in_scaling && in_combined && in_entry && $0 ~ /^      - / {
+      next
+    }
+
+    in_scaling && in_combined && in_entry && $0 ~ /^      [A-Za-z0-9_]+:/ {
+      line = $0
+      sub(/^[[:space:]]*/, "", line)
+      key = line
+      sub(/:.*/, "", key)
+      value = line
+      sub(/^[A-Za-z0-9_]+:[[:space:]]*/, "", value)
+      value = trim(value)
+
+      if (key == "gates" || key == "span") {
+        span = value
+      } else if (key == "mode") {
+        mode = value
+      } else if (key == "justification") {
+        justification = value
+      } else if (key == "approved_by" || key == "approver") {
+        if (approver == "") {
+          approver = value
+        }
+      } else if (key == "approved_on") {
+        approved_on = value
+      }
+      next
+    }
+
+    in_scaling && in_combined && /^  [A-Za-z0-9_]+:/ {
+      emit_entry()
+      in_combined = 0
+    }
+
+    END { emit_entry() }
+  ' "$manifest"
+}
+
+manifest_scaling_combined_gate_entry() {
+  manifest="$1"
+  target_span="$2"
+
+  manifest_scaling_combined_gates "$manifest" |
+    awk -F'|' -v target_span="$target_span" '$1 == target_span { print; exit }'
+}
+
+manifest_phase_entries() {
+  manifest="$1"
+
+  awk '
+    function trim(value) {
+      gsub(/^[[:space:]]+/, "", value)
+      gsub(/[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      return value
+    }
+
+    function emit_entry() {
+      if (id != "") {
+        print id "|" status
+      }
+      id = ""
+      status = ""
+    }
+
+    /^phase:/ {
+      in_phase = 1
+      next
+    }
+
+    in_phase && /^[^[:space:]][^:]*:/ {
+      emit_entry()
+      exit
+    }
+
+    in_phase && /^[[:space:]]{2}phases:[[:space:]]*\[\]/ {
+      exit
+    }
+
+    in_phase && /^[[:space:]]{2}phases:/ {
+      in_phases = 1
+      next
+    }
+
+    in_phase && in_phases && /^[[:space:]]{2}[A-Za-z0-9_]+:/ {
+      emit_entry()
+      exit
+    }
+
+    in_phase && in_phases && /^[[:space:]]{4}-[[:space:]]+id:/ {
+      emit_entry()
+      line = $0
+      sub(/^.*id:[[:space:]]*/, "", line)
+      id = trim(line)
+      next
+    }
+
+    in_phase && in_phases && id != "" && /^[[:space:]]{6}status:/ {
+      line = $0
+      sub(/^.*status:[[:space:]]*/, "", line)
+      status = trim(line)
+      next
+    }
+
+    END { emit_entry() }
+  ' "$manifest"
+}
+
+phase_artifact_path() {
+  artifact_id="$1"
+  phase_id="$2"
+
+  path="$(gendev_artifact_path "$artifact_id" 2>/dev/null || true)"
+  [ -n "$path" ] || return 1
+  printf '%s\n' "$path" | sed "s/<id>/${phase_id}/g"
+}
+
+valid_sha256_digest_ref() {
+  printf '%s\n' "$1" | grep -Eq '^sha256:[0-9a-fA-F]{64}$'
+}
+
+valid_sha256_hex() {
+  printf '%s\n' "$1" | grep -Eq '^[0-9a-fA-F]{64}$'
+}
+
+valid_git_oid() {
+  printf '%s\n' "$1" | grep -Eq '^([0-9a-fA-F]{40}|[0-9a-fA-F]{64})$'
+}
+
+valid_git_revision_token() {
+  value="$1"
+  ! is_unknown "$value" && printf '%s\n' "$value" | grep -Eq '^[A-Za-z0-9._/-]+$'
+}
+
+check_version_compatibility_state() {
+  manifest="docs/project/project.yaml"
+  log="docs/project/approvals/gate-log.md"
+
+  [ -f "$manifest" ] || return
+
+  methodology_version="$(manifest_section_value "$manifest" "project" "methodology_version")"
+  migration_mode="$(manifest_section_value "$manifest" "migration" "mode")"
+  migration_source="$(manifest_section_value "$manifest" "migration" "source_methodology_version")"
+  migration_target="$(manifest_section_value "$manifest" "migration" "target_methodology_version")"
+  migration_digest="$(manifest_section_value "$manifest" "migration" "assessment_digest")"
+  migration_approved_by="$(manifest_section_value "$manifest" "migration" "approved_by")"
+  migration_approved_on="$(manifest_section_value "$manifest" "migration" "approved_on")"
+
+  case "$methodology_version" in
+    "")
+      warn "Manifest project.methodology_version is missing; compatibility mode cannot be determined."
+      return
+      ;;
+    0.5.0-operational-coherence)
+      if [ -f "$log" ] && gate_log_has_non_schema2_event "$log"; then
+        fail "Manifest declares methodology_version 0.5.0-operational-coherence but gate-log contains structured events without event_id and schema_version: 2."
+      fi
+      return
+      ;;
+  esac
+
+  if [ -z "$migration_mode" ]; then
+    warn "Manifest project.methodology_version is legacy/pinned ($methodology_version); strict 0.5 schema checks require explicit migration mode."
+    return
+  fi
+
+  if [ "$migration_mode" != "$GENDEV_COMPATIBILITY_LEGACY_MODE" ]; then
+    fail "Manifest migration.mode must be $GENDEV_COMPATIBILITY_LEGACY_MODE for legacy migration; found: $migration_mode"
+  fi
+
+  if [ "$migration_source" != "$methodology_version" ]; then
+    fail "Manifest migration.source_methodology_version must match project.methodology_version ($methodology_version)."
+  fi
+
+  if [ "$migration_target" != "0.5.0-operational-coherence" ]; then
+    fail "Manifest migration.target_methodology_version must be 0.5.0-operational-coherence."
+  fi
+
+  if ! valid_sha256_digest_ref "$migration_digest"; then
+    fail "Manifest migration.assessment_digest must be a sha256:<64 hex> digest."
+  fi
+
+  if is_unknown "$migration_approved_by"; then
+    fail "Manifest legacy migration mode requires migration.approved_by."
+  fi
+
+  if is_unknown "$migration_approved_on"; then
+    fail "Manifest legacy migration mode requires migration.approved_on."
+  fi
+
+  if [ -f "$log" ] && gate_log_has_non_schema2_event "$log"; then
+    fail "Manifest legacy migration mode is active, but gate-log contains structured events without event_id and schema_version: 2."
+  fi
+}
+
+status_in_list() {
+  status="$1"
+  allowed="$2"
+
+  printf '%s\n' "$allowed" |
+    tr ' ' '\n' |
+    grep -Fxq "$status"
 }
 
 artifact_has_derived_revision() {
@@ -583,14 +1424,108 @@ check_sample_reference_drift() {
   fi
 }
 
-# Returns 0 (true) if the file contains a genuine placeholder, ignoring markdown
-# checkboxes. Templates ship "[ ]" checklist items that users mark "[x]"; those are
-# completed content, not placeholders, so they must not trip this check. We neutralize
-# checkbox tokens ("[ ]", "[x]", "[X]") before scanning for real "[placeholder]" text,
-# TBD, or "Replace with".
+# Returns 0 (true) if the file contains a genuine template placeholder. Markdown
+# links, images, reference labels, escaped brackets, checkboxes, and named rule
+# markers are content syntax, not placeholders.
 has_real_placeholder() {
   file="$1"
-  sed -E 's/\[[ xX]\]//g' "$file" | grep -Eq '\[[^][]+\]|TBD|Replace with'
+
+  awk '
+    function trim(s) {
+      sub(/^[[:space:]]+/, "", s)
+      sub(/[[:space:]]+$/, "", s)
+      return s
+    }
+
+    function strip_markdown_links(line,    tmp) {
+      # Ignore image links, inline links, reference links, and reference definitions.
+      gsub(/!\[[^][]*\]\([^)]*\)/, "", line)
+      gsub(/\[[^][]*\]\[[^][]*\]/, "", line)
+      gsub(/\[[^][]*\]\([^)]*\)/, "", line)
+      if (line ~ /^[[:space:]]*\[[^]]+\]:/) {
+        return ""
+      }
+
+      # Ignore escaped bracket literals: \[like this\]
+      gsub(/\\\[/, "", line)
+      gsub(/\\\]/, "", line)
+
+      # Ignore standalone markdown checkboxes first.
+      gsub(/\[[ xX]\]/, "", line)
+      return line
+    }
+
+    function lower(value) {
+      return tolower(value)
+    }
+
+    function is_placeholder_phrase(value,    v) {
+      v = lower(trim(value))
+
+      if (v == "" || v == "n/a" || v == "none") {
+        return 0
+      }
+
+      if (v == "tbd" || v == "todo" || v == "replace with") {
+        return 1
+      }
+
+      if (v ~ /(^|[^a-z0-9_])(tbd|todo)([^a-z0-9_]|$)/ ||
+          v ~ /(^|[^a-z0-9_])replace with([^a-z0-9_]|$)/) {
+        return 1
+      }
+
+      if (v == "project name" || v == "project-slug" || v == "yyyy-mm-dd" ||
+          v == "phase name" || v == "path" || v == "revision") {
+        return 1
+      }
+
+      if (v ~ /^(fill in|replace with|insert|enter|provide|describe|specify|add)($|[[:space:]:-])/) {
+        return 1
+      }
+
+      if (v ~ /(^|[[:space:]:-])(placeholder|template value|example value)($|[[:space:]:-])/) {
+        return 1
+      }
+
+      return 0
+    }
+
+    function is_placeholder_token(token) {
+      token = trim(token)
+      if (length(token) < 3) {
+        return 0
+      }
+
+      sub(/^\[/, "", token)
+      sub(/\]$/, "", token)
+
+      if (token ~ /^(YAGNI|KISS|DRY|SRP|LA|NAA|GOV|INT)$/) {
+        return 0
+      }
+
+      return is_placeholder_phrase(token)
+    }
+
+    {
+      line = $0
+      line = strip_markdown_links(line)
+      if (is_placeholder_phrase(line)) {
+        found = 1
+        exit
+      }
+      while (match(line, /\[[^][]+\]/)) {
+        token = substr(line, RSTART, RLENGTH)
+        if (is_placeholder_token(token)) {
+          found = 1
+          exit
+        }
+        line = substr(line, RSTART + RLENGTH)
+      }
+    }
+
+    END { exit !found }
+  ' "$file"
 }
 
 check_accepted_doc_placeholders() {
@@ -614,13 +1549,16 @@ check_gate_log_record_format() {
 
   [ -f "$log" ] || return
 
-  records="$(gate_log_records_section "$log")"
+  if ! parsed_gate_events="$(gate_log_events "$log")"; then
+    fail "Malformed structured gate-log record section in $log."
+    return
+  fi
 
-  if printf '%s\n' "$records" | grep -Eq '^[[:space:]]*event_type:[[:space:]]*gate_transition[[:space:]]*$'; then
-    if ! printf '%s\n' "$records" | grep -Eq '^[[:space:]]*checked:[[:space:]]*.+'; then
+  if printf '%s\n' "$parsed_gate_events" | awk -F'\t' '$2=="gate_transition" {exit 0} END {exit 1}'; then
+    if ! printf '%s\n' "$parsed_gate_events" | awk -F'\t' '$2=="gate_transition" && $7=="1" {exit 0} END {exit 1}'; then
       warn "Structured gate transition exists but no checked statement was found in gate-log.md."
     fi
-    if ! printf '%s\n' "$records" | grep -Eq '^[[:space:]]*evidence:'; then
+    if ! printf '%s\n' "$parsed_gate_events" | awk -F'\t' '$2=="gate_transition" && $8=="1" {exit 0} END {exit 1}'; then
       warn "Structured gate transition exists but no evidence block was found in gate-log.md."
     fi
   fi
@@ -631,6 +1569,308 @@ check_gate_log_record_format() {
 
   if gate_log_missing_executable_evidence_for_g6_plus "$log"; then
     fail "G6+ structured gate transition is missing executable or verification evidence."
+  fi
+}
+
+gate_log_evidence_items() {
+  log="$1"
+
+  awk '
+    function trim(value) {
+      gsub(/^[[:space:]]+/, "", value)
+      gsub(/[[:space:]]+$/, "", value)
+      gsub(/^"|"$/, "", value)
+      return value
+    }
+    function reset_item() {
+      artifact_id = ""
+      artifact_path = ""
+      category = ""
+      reviewed_revision = ""
+      reviewed_blob_oid = ""
+      reviewed_digest = ""
+      resulting_blob_oid = ""
+      resulting_digest = ""
+      status = ""
+      originating_event_id = ""
+      item_seen = 0
+    }
+    function emit_item() {
+      if (!item_seen) {
+        return
+      }
+      print event_id "|" artifact_id "|" artifact_path "|" category "|" reviewed_revision "|" reviewed_blob_oid "|" reviewed_digest "|" resulting_blob_oid "|" resulting_digest "|" status "|" originating_event_id
+      reset_item()
+    }
+    /^## Gate Records/ { in_records = 1; next }
+    in_records && /^## / { exit }
+    in_records && /^```[[:space:]]*yaml/ {
+      in_yaml = 1
+      in_evidence = 0
+      event_id = ""
+      reset_item()
+      next
+    }
+    in_records && in_yaml && /^```[[:space:]]*$/ {
+      emit_item()
+      in_yaml = 0
+      in_evidence = 0
+      next
+    }
+    !in_records || !in_yaml { next }
+    /^[A-Za-z_][A-Za-z0-9_]*:/ {
+      if ($0 !~ /^evidence:/) {
+        emit_item()
+        in_evidence = 0
+      }
+    }
+    /^event_id:/ {
+      value = $0
+      sub(/^event_id:[[:space:]]*/, "", value)
+      event_id = trim(value)
+      next
+    }
+    /^evidence:/ {
+      in_evidence = 1
+      next
+    }
+    in_evidence && /^  - / {
+      emit_item()
+      item_seen = 1
+      line = $0
+      sub(/^  -[[:space:]]*/, "", line)
+      key = line
+      sub(/:.*/, "", key)
+      value = line
+      sub(/^[A-Za-z0-9_]+:[[:space:]]*/, "", value)
+      if (key == "artifact_id") artifact_id = trim(value)
+      else if (key == "artifact_path") artifact_path = trim(value)
+      else if (key == "category") category = trim(value)
+      else if (key == "reviewed_revision") reviewed_revision = trim(value)
+      else if (key == "reviewed_blob_oid") reviewed_blob_oid = trim(value)
+      else if (key == "reviewed_digest") reviewed_digest = trim(value)
+      else if (key == "resulting_blob_oid") resulting_blob_oid = trim(value)
+      else if (key == "resulting_digest") resulting_digest = trim(value)
+      else if (key == "status") status = trim(value)
+      else if (key == "originating_event_id") originating_event_id = trim(value)
+      next
+    }
+    in_evidence && item_seen && /^    [A-Za-z_][A-Za-z0-9_]*:/ {
+      line = $0
+      sub(/^    /, "", line)
+      key = line
+      sub(/:.*/, "", key)
+      value = line
+      sub(/^[A-Za-z0-9_]+:[[:space:]]*/, "", value)
+      if (key == "artifact_id") artifact_id = trim(value)
+      else if (key == "artifact_path") artifact_path = trim(value)
+      else if (key == "category") category = trim(value)
+      else if (key == "reviewed_revision") reviewed_revision = trim(value)
+      else if (key == "reviewed_blob_oid") reviewed_blob_oid = trim(value)
+      else if (key == "reviewed_digest") reviewed_digest = trim(value)
+      else if (key == "resulting_blob_oid") resulting_blob_oid = trim(value)
+      else if (key == "resulting_digest") resulting_digest = trim(value)
+      else if (key == "status") status = trim(value)
+      else if (key == "originating_event_id") originating_event_id = trim(value)
+      next
+    }
+    END { emit_item() }
+  ' "$log"
+}
+
+check_gate_log_evidence_item_bindings() {
+  log="docs/project/approvals/gate-log.md"
+  [ -f "$log" ] || return
+
+  gate_log_evidence_items "$log" |
+    while IFS='|' read -r event_id artifact_id artifact_path category reviewed_revision reviewed_blob_oid reviewed_digest resulting_blob_oid resulting_digest status originating_event_id; do
+      [ -n "$event_id$artifact_id$artifact_path$category" ] || continue
+      item_label="in $event_id for ${artifact_path:-unknown}"
+
+      for field in artifact_id artifact_path category reviewed_revision reviewed_blob_oid reviewed_digest resulting_blob_oid resulting_digest status; do
+        eval "field_value=\${$field}"
+        if is_unknown "$field_value"; then
+          fail "Gate-log evidence item $item_label is missing required field: $field"
+        fi
+      done
+
+      case "$category" in
+        new_acceptance_status_only | complete_report_unchanged | accepted_authority_unchanged)
+          ;;
+        *)
+          fail "Gate-log evidence item $item_label has invalid evidence category: $category"
+          ;;
+      esac
+
+      if ! valid_git_revision_token "$reviewed_revision"; then
+        fail "Gate-log evidence item $item_label has invalid reviewed revision: $reviewed_revision"
+      fi
+      for oid_field in reviewed_blob_oid resulting_blob_oid; do
+        eval "oid_value=\${$oid_field}"
+        if ! valid_git_oid "$oid_value"; then
+          fail "Gate-log evidence item $item_label has invalid blob OID in $oid_field: $oid_value"
+        fi
+      done
+      for digest_field in reviewed_digest resulting_digest; do
+        eval "digest_value=\${$digest_field}"
+        if ! valid_sha256_hex "$digest_value"; then
+          fail "Gate-log evidence item $item_label has invalid sha256 digest in $digest_field: $digest_value"
+        fi
+      done
+
+      case "$category" in
+        complete_report_unchanged)
+          if [ "$reviewed_blob_oid" != "$resulting_blob_oid" ] || [ "$reviewed_digest" != "$resulting_digest" ]; then
+            fail "Gate-log evidence item $item_label category complete_report_unchanged requires reviewed and resulting blobs/digests to match."
+          fi
+          ;;
+        accepted_authority_unchanged)
+          if [ "$reviewed_blob_oid" != "$resulting_blob_oid" ] || [ "$reviewed_digest" != "$resulting_digest" ]; then
+            fail "Gate-log evidence item $item_label category accepted_authority_unchanged requires reviewed and resulting blobs/digests to match."
+          fi
+          if is_unknown "$originating_event_id"; then
+            fail "Gate-log evidence item $item_label category accepted_authority_unchanged requires originating_event_id."
+          fi
+          ;;
+      esac
+    done
+}
+
+late_gate_requires_artifact_status() {
+  gate="$1"
+  path="$2"
+  allowed="$3"
+
+  if [ ! -f "$path" ]; then
+    fail "Late gate $gate requires artifact '$path' with status $allowed; actual: missing"
+    return
+  fi
+
+  status="$(artifact_status "$path")"
+  if ! status_in_list "$status" "$allowed"; then
+    fail "Late gate $gate requires artifact '$path' with status $allowed; actual: ${status:-missing}"
+  fi
+}
+
+gate_log_has_terminal_g9_closeout() {
+  log="$1"
+  [ -f "$log" ] || return 1
+
+  awk '
+    /^## Gate Records/ { in_records = 1; next }
+    in_records && /^## / { exit }
+    in_records && /^```[[:space:]]*yaml/ {
+      in_yaml = 1
+      event_type = ""
+      from_gate = ""
+      to_gate = ""
+      terminal = ""
+      next
+    }
+    in_records && in_yaml && /^```[[:space:]]*$/ {
+      if (event_type == "gate_transition" && from_gate == "G8" && to_gate == "G9" && terminal == "true") {
+        found = 1
+      }
+      in_yaml = 0
+      next
+    }
+    in_yaml && /^event_type:/ {
+      event_type = $0
+      sub(/^event_type:[[:space:]]*/, "", event_type)
+      next
+    }
+    in_yaml && /^from_gate:/ {
+      from_gate = $0
+      sub(/^from_gate:[[:space:]]*/, "", from_gate)
+      next
+    }
+    in_yaml && /^to_gate:/ {
+      to_gate = $0
+      sub(/^to_gate:[[:space:]]*/, "", to_gate)
+      next
+    }
+    in_yaml && /^terminal_closeout:/ {
+      terminal = $0
+      sub(/^terminal_closeout:[[:space:]]*/, "", terminal)
+      next
+    }
+    END { exit !found }
+  ' "$log"
+}
+
+value_review_has_valid_disposition() {
+  file="$1"
+  [ -f "$file" ] || return 1
+
+  disposition="$(
+    sed -n \
+      -e 's/^[[:space:]]*value_review\.disposition:[[:space:]]*//p' \
+      -e 's/^[[:space:]]*Disposition:[[:space:]]*//p' \
+      "$file" | head -n 1
+  )"
+
+  case "$disposition" in
+    complete | not_due | not_applicable)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+check_late_gate_lifecycle_state() {
+  manifest="docs/project/project.yaml"
+  log="docs/project/approvals/gate-log.md"
+  [ -f "$manifest" ] || return
+
+  project_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+  project_status="$(manifest_section_value "$manifest" "project" "status")"
+  active_role="$(manifest_section_value "$manifest" "collaboration" "active_role")"
+
+  case "$project_gate" in
+    G7 | G8 | G9)
+      late_gate_requires_artifact_status "$project_gate" "docs/project/build-plan/implementation-summary.md" "Complete"
+      ;;
+  esac
+
+  case "$project_gate" in
+    G8 | G9)
+      late_gate_requires_artifact_status "$project_gate" "docs/project/review/code-review.md" "Complete"
+      late_gate_requires_artifact_status "$project_gate" "docs/project/review/remediation.md" "Complete not_required"
+      late_gate_requires_artifact_status "$project_gate" "docs/project/testing/final-test-uat-report.md" "Complete"
+      late_gate_requires_artifact_status "$project_gate" "docs/project/traceability/traceability-matrix.md" "Complete"
+      late_gate_requires_artifact_status "$project_gate" "docs/project/deployment/deployment-readiness.md" "Ready for Approval Accepted"
+      late_gate_requires_artifact_status "$project_gate" "docs/project/deployment/production-runbook.md" "Complete"
+
+      deployment_readiness_status=""
+      if [ -f "docs/project/deployment/deployment-readiness.md" ]; then
+        deployment_readiness_status="$(artifact_status "docs/project/deployment/deployment-readiness.md")"
+      fi
+      if [ "$deployment_readiness_status" = "Accepted" ] &&
+        ! gate_log_has_structured_event "$log" "deployment_approval"; then
+        fail "G8 deployment readiness is Accepted but no structured deployment_approval event exists in gate-log.md."
+      fi
+      ;;
+  esac
+
+  if [ "$project_gate" = "G9" ]; then
+    late_gate_requires_artifact_status "$project_gate" "docs/project/deployment/deployment-record.md" "Complete"
+    late_gate_requires_artifact_status "$project_gate" "docs/project/as-built/value-review.md" "Complete"
+    late_gate_requires_artifact_status "$project_gate" "docs/project/as-built/as-built-closeout.md" "Complete"
+
+    if [ "$project_status" != "closed" ]; then
+      fail "G9 close-out requires project.status closed."
+    fi
+    if [ "$active_role" != "none" ]; then
+      fail "G9 close-out requires active_role none."
+    fi
+    if ! gate_log_has_terminal_g9_closeout "$log"; then
+      fail "G9 close-out requires a terminal G8 -> G9 gate_transition event."
+    fi
+    if ! value_review_has_valid_disposition "docs/project/as-built/value-review.md"; then
+      fail "G9 close-out requires value-review disposition complete, not_due, or not_applicable."
+    fi
   fi
 }
 
@@ -732,8 +1972,8 @@ check_stale_evidence() {
   if [ -f "$log" ]; then
     if gate_log_has_stale_gate_transition_evidence "$log"; then
       fail "Gate transition cites stale or superseded evidence in gate-log.md."
-    elif gate_log_records_section "$log" |
-      grep -Eq '^[[:space:]]*status:[[:space:]]*(Stale|Superseded)[[:space:]]*$'; then
+    elif parsed_gate_events="$(gate_log_events "$log")" \
+      && printf '%s\n' "$parsed_gate_events" | awk -F'\t' '$2 != "gate_transition" && $10 == 1 {found = 1} END {exit !found}'; then
       warn "Gate-log records cite stale or superseded evidence outside a gate transition; review reconciliation state."
     fi
   fi
@@ -826,79 +2066,43 @@ check_manifest_scaling_state() {
     warn "Manifest scaling.gate_combination_policy is missing."
   fi
 
-  combined_gate_report="$(
-    awk '
-      function trim(value) {
-        gsub(/^[[:space:]]+/, "", value)
-        gsub(/[[:space:]]+$/, "", value)
-        gsub(/^"|"$/, "", value)
-        return value
-      }
-      function is_unknown_value(value) {
-        value = trim(value)
-        return value == "" || value == "TBD" || value == "[]" || value == "[TBD]" || value == "N/A"
-      }
-      function finish_entry() {
-        if (!in_entry) {
-          return
-        }
-        if (is_unknown_value(justification)) {
-          missing++
-        }
-      }
-      /^scaling:/ {
-        in_scaling = 1
-        next
-      }
-      /^[^[:space:]][^:]*:/ && in_scaling {
-        finish_entry()
-        exit
-      }
-      in_scaling && /^[[:space:]]{2}combined_gates:/ {
-        in_combined = 1
-        next
-      }
-      in_combined && /^[[:space:]]{2}[A-Za-z0-9_]+:/ {
-        finish_entry()
-        in_entry = 0
-        in_combined = 0
-        next
-      }
-      in_combined && /^[[:space:]]{4}- / {
-        finish_entry()
-        entries++
-        in_entry = 1
-        justification = ""
-        if ($0 ~ /justification:/) {
-          value = $0
-          sub(/^.*justification:[[:space:]]*/, "", value)
-          justification = trim(value)
-        }
-        next
-      }
-      in_entry && /^[[:space:]]{6}justification:/ {
-        value = $0
-        sub(/^[[:space:]]*justification:[[:space:]]*/, "", value)
-        justification = trim(value)
-        next
-      }
-      END {
-        finish_entry()
-        printf "%d|%d\n", entries, missing
-      }
-    ' "$manifest"
-  )"
+  combined_gate_entries="$(manifest_scaling_combined_gates "$manifest")"
+  combined_gate_count="$(printf '%s\n' "$combined_gate_entries" | awk 'NF > 0 {count++} END { print count + 0 }')"
 
-  combined_gate_count="${combined_gate_report%%|*}"
-  combined_gate_missing_justification="${combined_gate_report#*|}"
+  if [ "$combined_gate_count" -gt 0 ]; then
+    while IFS='|' read -r declared_span declared_mode declared_justification declared_approver declared_approved_on; do
+      if [ -z "$declared_span" ]; then
+        fail "Manifest scaling.combined_gates entry is missing a required span value."
+        continue
+      fi
 
-  if [ "$combined_gate_count" -gt 0 ] &&
-    [ "$combined_gate_missing_justification" -gt 0 ]; then
-    warn "Manifest scaling.combined_gates has entries without justification."
+      if ! printf '%s\n' "$declared_span" | grep -Eq '^G[0-9]+-G[0-9]+$'; then
+        fail "Manifest scaling.combined_gates has an invalid span: $declared_span"
+        continue
+      fi
+
+      if is_unknown "$declared_justification"; then
+        fail "Manifest scaling.combined_gates entry $declared_span is missing justification."
+      fi
+
+      if is_unknown "$declared_approver"; then
+        fail "Manifest scaling.combined_gates entry $declared_span is missing approved_by/approver."
+      fi
+
+      if is_unknown "$declared_approved_on"; then
+        fail "Manifest scaling.combined_gates entry $declared_span is missing approved_on."
+      fi
+
+      if is_unknown "$declared_mode"; then
+        fail "Manifest scaling.combined_gates entry $declared_span is missing mode."
+      fi
+    done <<EOF
+$combined_gate_entries
+EOF
   fi
 
   if [ "$blast_radius_class" = "C3" ] && [ "$combined_gate_count" -gt 0 ]; then
-    warn "Manifest class is C3 but combined gates are recorded; C3 projects should not combine gates."
+    fail "Manifest class is C3 but combined gates are recorded; C3 projects should not combine gates."
   fi
 }
 
@@ -955,10 +2159,10 @@ check_manifest_enforcement_state() {
 
   if [ "$enforcement_class" = "attested" ]; then
     if is_unknown "$cadence"; then
-      warn "Manifest attested enforcement is missing attestation cadence."
+      fail "Manifest attested enforcement is missing attestation cadence."
     fi
-    if [ -z "$required_attester" ]; then
-      warn "Manifest attested enforcement is missing required_attester field."
+    if is_unknown "$required_attester"; then
+      fail "Manifest attested enforcement is missing required_attester field."
     fi
   fi
 
@@ -1007,7 +2211,9 @@ check_manifest_gate_values() {
     fail "Manifest approvals.current_gate.gate is not a valid gate: $approval_gate"
   fi
 
-  if ! is_unknown "$next_gate" && ! valid_gate_value "$next_gate"; then
+  if [ "$next_gate" = "none" ] && [ "$project_gate" = "G9" ] && [ "$approval_gate" = "G9" ]; then
+    :
+  elif ! is_unknown "$next_gate" && ! valid_gate_value "$next_gate"; then
     fail "Manifest approvals.current_gate.next_gate is not a valid gate: $next_gate"
   fi
 }
@@ -1020,7 +2226,7 @@ check_diff_gate_movement() {
   [ -n "${GENDEV_BASE_REF:-}" ] || return
   git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
 
-  tmp_manifest="$(mktemp)"
+  tmp_manifest="$(gendev_mktemp_file)"
   if ! git show "${GENDEV_BASE_REF}:$manifest" > "$tmp_manifest" 2>/dev/null; then
     rm -f "$tmp_manifest"
     return
@@ -1033,10 +2239,171 @@ check_diff_gate_movement() {
   if [ -n "$base_gate" ] && [ -n "$current_gate" ] && [ "$base_gate" != "$current_gate" ]; then
     if ! changed_paths | grep -Fxq "$log"; then
       fail "project.current_gate changed from $base_gate to $current_gate without a gate-log update in the same diff."
-    elif ! gate_log_has_structured_event "$log" "gate_transition"; then
-      fail "project.current_gate changed from $base_gate to $current_gate without a structured gate transition."
+      return
     fi
+
+    if ! gate_log_has_structured_event "$log" "gate_transition"; then
+      fail "project.current_gate changed from $base_gate to $current_gate without a structured gate transition."
+      return
+    fi
+
+    tmp_base_log="$(gendev_mktemp_file)"
+    base_transition_count=0
+    if git show "${GENDEV_BASE_REF}:$log" > "$tmp_base_log" 2>/dev/null; then
+      if ! base_transition_count="$(gate_log_transition_event_count "$tmp_base_log" "$base_gate" "$current_gate")"; then
+        fail "Malformed structured gate-log record in base ${GENDEV_BASE_REF}:$log."
+        rm -f "$tmp_base_log"
+        return
+      fi
+    fi
+    if ! current_transition_count="$(gate_log_transition_event_count "$log" "$base_gate" "$current_gate")"; then
+      fail "Malformed structured gate-log record in $log."
+      return
+    fi
+
+    base_gate_index="$(gate_number "$base_gate")"
+    current_gate_index="$(gate_number "$current_gate")"
+
+    if [ "$base_gate_index" -lt "$current_gate_index" ]; then
+      gate_span_distance=$((current_gate_index - base_gate_index))
+    else
+      gate_span_distance=$((base_gate_index - current_gate_index))
+    fi
+
+    if [ "$gate_span_distance" -eq 1 ]; then
+      if [ "$current_transition_count" -eq 0 ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a matching gate transition ($base_gate -> $current_gate) in gate-log.md."
+        return
+      fi
+
+      if [ "$current_transition_count" -le "$base_transition_count" ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a newly added $base_gate -> $current_gate transition in gate-log.md."
+        return
+      fi
+    else
+      combined_span="${base_gate}-${current_gate}"
+
+      if [ "$current_transition_count" -eq 0 ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a matching gate transition ($base_gate -> $current_gate) in gate-log.md."
+        return
+      fi
+
+      if [ -z "$(manifest_scaling_combined_gate_entry "$manifest" "$combined_span")" ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a matching manifest scaling.combined_gates declaration for span $combined_span."
+        return
+      fi
+
+      blast_radius_class="$(manifest_section_value "$manifest" "scaling" "blast_radius_class")"
+      if [ "$blast_radius_class" = "C3" ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate using a combined transition, but blast_radius_class C3 does not allow combined transitions."
+        return
+      fi
+
+      if ! base_combined_transition_count="$(gate_log_transition_event_count_with_combined_fields "$tmp_base_log" "$base_gate" "$current_gate" "$combined_span")"; then
+        fail "Malformed structured gate-log record in base ${GENDEV_BASE_REF}:$log."
+        return
+      fi
+
+      if ! current_combined_transition_count="$(gate_log_transition_event_count_with_combined_fields "$log" "$base_gate" "$current_gate" "$combined_span")"; then
+        fail "Malformed structured gate-log record in $log."
+        return
+      fi
+
+      if [ "$current_combined_transition_count" -eq 0 ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a matching gate transition ($base_gate -> $current_gate) with combined_gates: $combined_span in gate-log.md."
+        return
+      fi
+
+      if [ "$current_combined_transition_count" -le "$base_combined_transition_count" ]; then
+        fail "project.current_gate changed from $base_gate to $current_gate without a newly added combined gate transition ($base_gate -> $current_gate) with combined_gates: $combined_span in gate-log.md."
+        return
+      fi
+    fi
+    rm -f "$tmp_base_log"
   fi
+}
+
+check_gate_log_append_only_history() {
+  log="docs/project/approvals/gate-log.md"
+
+  [ -f "$log" ] || return
+  [ -n "${GENDEV_BASE_REF:-}" ] || return
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
+
+  base_log="$(gendev_mktemp_file)"
+  if ! git show "${GENDEV_BASE_REF}:$log" > "$base_log" 2>/dev/null; then
+    rm -f "$base_log"
+    return
+  fi
+
+  base_line_count="$(awk 'END { print NR }' "$base_log")"
+  base_line_count="${base_line_count:-0}"
+  current_line_count="$(awk 'END { print NR }' "$log")"
+  current_line_count="${current_line_count:-0}"
+
+  if [ "$current_line_count" -lt "$base_line_count" ]; then
+    fail "gate-log history in $log appears shortened versus ${GENDEV_BASE_REF}; existing historical entries were deleted."
+    rm -f "$base_log"
+    return
+  fi
+
+  if [ "$base_line_count" -gt 0 ] &&
+    ! awk -v base_count="$base_line_count" '
+      NR == FNR { base_lines[NR] = $0; next }
+      FNR <= base_count && $0 != base_lines[FNR] { bad = 1; exit 1 }
+      END {
+        if (bad) {
+          exit 1
+        }
+      }
+    ' "$base_log" "$log"; then
+    fail "gate-log history in $log does not preserve historical entries from ${GENDEV_BASE_REF}; prior log content was edited or inserted before append position."
+    rm -f "$base_log"
+    return
+  fi
+
+  base_events="$(gendev_mktemp_file)"
+  current_events="$(gendev_mktemp_file)"
+
+  if ! gate_log_events "$base_log" > "$base_events"; then
+    fail "Malformed structured gate-log record in base ${GENDEV_BASE_REF}:$log."
+    rm -f "$base_log" "$base_events" "$current_events"
+    return
+  fi
+
+  if ! gate_log_events "$log" > "$current_events"; then
+    fail "Malformed structured gate-log record in $log."
+    rm -f "$base_log" "$base_events" "$current_events"
+    return
+  fi
+
+  base_count="$(awk 'END { print NR }' "$base_events")"
+  current_count="$(awk 'END { print NR }' "$current_events")"
+  base_count="${base_count:-0}"
+  current_count="${current_count:-0}"
+
+  if [ "$current_count" -lt "$base_count" ]; then
+    fail "gate-log history in $log appears shortened versus ${GENDEV_BASE_REF}; existing historical entries were deleted."
+    rm -f "$base_log" "$base_events" "$current_events"
+    return
+  fi
+
+  if [ "$base_count" -gt 0 ] &&
+    ! awk -v base_count="$base_count" '
+      NR == FNR { base_events[NR] = $0; next }
+      FNR <= base_count && $0 != base_events[FNR] { bad = 1; exit 1 }
+      END {
+        if (bad) {
+          exit 1
+        }
+      }
+    ' "$base_events" "$current_events"; then
+    fail "gate-log history in $log does not preserve historical event records from ${GENDEV_BASE_REF}; prior entries were edited."
+    rm -f "$base_log" "$base_events" "$current_events"
+    return
+  fi
+
+  rm -f "$base_log" "$base_events" "$current_events"
 }
 
 check_changed_path_enforcement() {
@@ -1114,7 +2481,7 @@ check_manifest_approval_state() {
   fi
 
   if [ -n "$project_gate" ] && [ -n "$gate" ] && [ "$project_gate" != "$gate" ]; then
-    warn "Project current_gate ($project_gate) differs from approvals.current_gate.gate ($gate)."
+    fail "Project current_gate ($project_gate) differs from approvals.current_gate.gate ($gate)."
   fi
 
   if [ "$gate_status" = "ready_for_approval" ]; then
@@ -1139,17 +2506,30 @@ check_manifest_approval_state() {
   fi
 
   if [ "$gate_status" = "approved" ]; then
+    if ! valid_gate_value "$gate"; then
+      fail "Gate is approved but approvals.current_gate.gate is not valid: $gate"
+    fi
     if is_unknown "$approved_by"; then
       fail "Gate is approved but approved_by is not set."
     fi
     if is_unknown "$approved_on"; then
       fail "Gate is approved but approved_on is not set."
+    elif ! printf '%s\n' "$approved_on" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+      fail "Gate is approved but approved_on is not an ISO date: $approved_on"
     fi
     if [ -z "$evidence" ]; then
       fail "Gate is approved but evidence is missing."
+    elif ! list_has_known_value "$evidence"; then
+      fail "Gate is approved but evidence contains no concrete path."
     fi
     if [ -z "$risks" ] || printf '%s\n' "$risks" | grep -Eq '^TBD$|^$'; then
       fail "Gate is approved but risk disposition is still TBD."
+    fi
+    if printf '%s\n' "$blockers" | grep -Eq '^TBD$'; then
+      fail "Gate is approved but blocking_open_questions is still TBD."
+    fi
+    if is_unknown "$next_gate" || is_unknown "$next_role" || is_unknown "$next_artifact"; then
+      fail "Gate is approved but next gate, role, or artifact is missing."
     fi
     record_format="$(manifest_section_value "$manifest" "approvals" "record_format")"
     if [ "$record_format" = "structured_markdown_yaml" ]; then
@@ -1160,12 +2540,12 @@ check_manifest_approval_state() {
       if [ -f "$log" ] &&
         ! gate_log_has_structured_event "$log" "gate_transition" &&
         ! gate_log_has_legacy_approval "$log"; then
-        warn "Gate is approved in manifest but no approval record is visible in gate-log.md."
+        fail "Gate is approved in manifest but no approval record is visible in gate-log.md."
       fi
       if [ -f "$log" ] &&
         gate_log_has_legacy_approval "$log" &&
         ! gate_log_has_structured_event "$log" "gate_transition"; then
-        warn "Gate is approved using a legacy prose record; structured gate event is recommended."
+        fail "Gate is approved using a legacy prose record; structured gate event is required."
       fi
     fi
   fi
@@ -1174,6 +2554,8 @@ check_manifest_approval_state() {
 check_accepted_artifact_approval_records() {
   manifest="docs/project/project.yaml"
   accepted_count=0
+  strict_approval_mode=0
+  log="docs/project/approvals/gate-log.md"
 
   while IFS= read -r file; do
     if grep -Eq '^Status:[[:space:]]*Accepted[[:space:]]*$' "$file"; then
@@ -1182,19 +2564,32 @@ check_accepted_artifact_approval_records() {
   done < <(find docs/project -type f -name '*.md' -print)
 
   if [ "$accepted_count" -gt 0 ]; then
-    # The manifest is the authority for whether a real approval has occurred. Two
-    # control-plane signals count, and BOTH must be backed by a non-placeholder
-    # decider so an unapproved project cannot pass:
-    #   - approvals.current_gate.status == approved (the current gate is approved), or
-    #   - approvals.latest_decision.decision in {approved, accepted} with a real
-    #     decided_by (the durable "last real decision" summary).
-    # We deliberately do NOT scan the gate-log here: the shipped gate-log template
-    # carries an example "decision: approved" block, so grepping the log would treat
-    # the unfilled example as evidence of a real approval (a false negative). The
-    # gate-log remains the durable human-readable history; the manifest is what the
-    # checker keys on.
+    # Strict mode requires a complete structured transition event before any Accepted
+    # artifact can pass. `approvals.latest_decision` is a summary record and never
+    # substitutes for a real transition event.
     gate_status="$(manifest_nested_value "$manifest" "approvals" "current_gate" "status")"
+    record_format="$(manifest_section_value "$manifest" "approvals" "record_format")"
+    target_gate="$(manifest_nested_value "$manifest" "approvals" "current_gate" "gate")"
+    if [ -z "$target_gate" ]; then
+      target_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+    fi
 
+    case "$record_format" in
+      structured_markdown_yaml)
+        strict_approval_mode=1
+        ;;
+    esac
+
+    if [ "$strict_approval_mode" -eq 1 ]; then
+      if [ -f "$log" ] && gate_log_has_strict_approval_event "$log" "$target_gate"; then
+        return
+      fi
+      fail "Accepted artifact exists but no complete durable approval event is visible for gate $target_gate in $log. approvals.latest_decision cannot substitute."
+      return
+    fi
+
+    # In legacy mode, manifest signals are treated as a summary plus evidence,
+    # not as replacement for structured event evidence.
     latest_decision="$(manifest_nested_value "$manifest" "approvals" "latest_decision" "decision")"
     latest_decided_by="$(manifest_nested_value "$manifest" "approvals" "latest_decision" "decided_by")"
 
@@ -1336,15 +2731,80 @@ check_vision_success_criteria() {
   done
 }
 
+prd_body_without_ears_instruction() {
+  file="$1"
+
+  awk '
+    /^### Acceptance Criteria in EARS Form/ { in_instr = 1; next }
+    in_instr && /^(##|---)/ { in_instr = 0 }
+    in_instr { next }
+    { print }
+  ' "$file"
+}
+
+has_ears_acceptance_criteria() {
+  file="$1"
+
+  prd_body_without_ears_instruction "$file" |
+    grep -E '(When|While|If|Where)[^|<>]*shall|\bThe system shall\b' |
+    grep -vq '<[a-z]'
+}
+
+has_unwanted_acceptance_criteria() {
+  file="$1"
+
+  prd_body_without_ears_instruction "$file" |
+    grep -Ei '(^|[^A-Za-z])If[^|<>]*((then)|(the system shall))' |
+    grep -vq '<[a-z]'
+}
+
+has_observable_acceptance_criteria() {
+  file="$1"
+
+  prd_body_without_ears_instruction "$file" |
+    awk -F'|' '
+      function trim(value) {
+        gsub(/^[[:space:]]+/, "", value)
+        gsub(/[[:space:]]+$/, "", value)
+        return value
+      }
+      function complete(value) {
+        value = trim(value)
+        return value != "" &&
+          value != "TBD" &&
+          value !~ /^-+$/ &&
+          value !~ /^\[[^][]+\]$/ &&
+          value !~ /<[^>]+>/
+      }
+      /^\|/ {
+        if ($0 ~ /^[[:space:]]*\|[[:space:]-]+\|/) {
+          next
+        }
+        if ($0 ~ /Acceptance Criteria/) {
+          ac_idx = 0
+          for (i = 1; i <= NF; i++) {
+            if (trim($i) == "Acceptance Criteria") {
+              ac_idx = i
+            }
+          }
+          next
+        }
+        id = trim($2)
+        if (ac_idx > 0 && id ~ /^REQ-/ && complete($ac_idx)) {
+          found = 1
+        }
+      }
+      END { exit !found }
+    '
+}
+
 check_ears_acceptance_criteria() {
-  # Validate that a ready/accepted PRD for a C2/C3 project expresses acceptance
-  # criteria in EARS form. C1 may use plain observable criteria, so it is skipped.
+  # Validate that ready/accepted PRDs meet their class-specific G2 criteria:
+  # C2/C3 require concrete EARS form, C1 may use concrete observable criteria,
+  # and every class must carry unwanted-behavior criteria.
   manifest="docs/project/project.yaml"
   blast=""
   [ -f "$manifest" ] && blast="$(manifest_section_value "$manifest" "scaling" "blast_radius_class" 2>/dev/null || true)"
-  case "$blast" in
-    C1) return 0 ;;
-  esac
 
   for file in docs/project/prd/*.md; do
     [ -e "$file" ] || continue
@@ -1355,28 +2815,57 @@ check_ears_acceptance_criteria() {
       *) continue ;;
     esac
 
-    # Real EARS criteria live in the requirements, not in the template's
-    # instructional "Acceptance Criteria in EARS Form" subsection. Strip that
-    # instructional subsection (and any angle-bracket placeholder lines) before
-    # looking, so the template's own examples and explanatory prose do not count.
-    candidate="$(
-      awk '
-        /^### Acceptance Criteria in EARS Form/ { in_instr = 1; next }
-        in_instr && /^(##|---)/ { in_instr = 0 }
-        in_instr { next }
-        { print }
-      ' "$file"
-    )"
-    real_ears="$(printf '%s\n' "$candidate" | grep -E '(When|While|If|Where)\b.*\bshall\b|\bThe system shall\b' | grep -v '<[a-z]')"
-    if [ -z "$real_ears" ]; then
-      fail "$file ($status) is a C2/C3 PRD but contains no concrete EARS-form acceptance criteria (When/While/If/Where ... shall, or The system shall), excluding the template's instructional examples. See constitution Verification-First Principle."
-    fi
-    # Unwanted-behavior coverage: warn if there are no concrete If/then error-path criteria.
-    real_unwanted="$(printf '%s\n' "$candidate" | grep -E '\bIf\b.*\bthe system shall\b' | grep -v '<[a-z]')"
-    if [ -z "$real_unwanted" ]; then
-      warn "$file ($status) has no concrete unwanted-behavior (If/then) acceptance criteria; confirm the requirements genuinely have no error paths."
+    case "$blast" in
+      C1)
+        if ! has_ears_acceptance_criteria "$file" &&
+          ! has_observable_acceptance_criteria "$file"; then
+          fail "$file ($status) is a C1 PRD but contains no concrete observable acceptance criteria."
+        fi
+        ;;
+      *)
+        if ! has_ears_acceptance_criteria "$file"; then
+          fail "$file ($status) is a C2/C3 PRD but contains no concrete EARS-form acceptance criteria (When/While/If/Where ... shall, or The system shall), excluding the template's instructional examples. See constitution Verification-First Principle."
+        fi
+        ;;
+    esac
+
+    if ! has_unwanted_acceptance_criteria "$file"; then
+      fail "$file ($status) has no concrete unwanted-behavior acceptance criteria."
     fi
   done
+}
+
+verification_spec_has_trace() {
+  spec="$1"
+
+  printf '%s\n' "$spec" | grep -Eq '^Requirement:[[:space:]]*REQ-' &&
+    printf '%s\n' "$spec" | grep -Eq '^Behavioral:[[:space:]]*.+' &&
+    printf '%s\n' "$spec" | grep -Eq '^Design:[[:space:]]*.+' &&
+    printf '%s\n' "$spec" | grep -Eq '^Implementation:[[:space:]]*.+' &&
+    printf '%s\n' "$spec" | grep -Eq '^UAT:[[:space:]]*.+'
+}
+
+verification_spec_has_interrogation_answer() {
+  spec="$1"
+
+  printf '%s\n' "$spec" |
+    grep -Eiq '^(Interrogation|Design interrogation|Failure modes|Scale limits|Evolution risk|Security boundary):[[:space:]]*[A-Za-z0-9]'
+}
+
+verification_spec_is_human_approved() {
+  spec="$1"
+
+  approved_by="$(printf '%s\n' "$spec" | grep -E '^Approved by:' | head -1 | sed -E 's/^Approved by:[[:space:]]*//')"
+  approved_on="$(printf '%s\n' "$spec" | grep -E '^Approved on:' | head -1 | sed -E 's/^Approved on:[[:space:]]*//')"
+
+  if is_unknown "$approved_by"; then
+    return 1
+  fi
+  if is_unknown "$approved_on" || ! printf '%s\n' "$approved_on" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$'; then
+    return 1
+  fi
+
+  return 0
 }
 
 check_verification_specification() {
@@ -1404,12 +2893,14 @@ check_verification_specification() {
       ' "$file"
     )"
 
-    # Approval must be filled in (not left TBD) for an Accepted architecture.
-    if [ "$status" = "Accepted" ]; then
-      approved_by="$(printf '%s\n' "$spec_block" | grep -E '^Approved by:' | head -1 | sed -E 's/^Approved by:[[:space:]]*//')"
-      if [ -z "$approved_by" ] || [ "$approved_by" = "TBD" ]; then
-        fail "$file is Accepted but its Verification Specification is not human-approved (Approved by is empty or TBD)."
-      fi
+    if ! verification_spec_is_human_approved "$spec_block"; then
+      fail "$file Verification Specification is not human-approved (Approved by/on is empty, TBD, or malformed)."
+    fi
+    if ! verification_spec_has_trace "$spec_block"; then
+      fail "$file Verification Specification does not trace to G2 criteria."
+    fi
+    if ! verification_spec_has_interrogation_answer "$spec_block"; then
+      fail "$file is missing recorded design-verification interrogation answers."
     fi
   done
 }
@@ -1426,9 +2917,14 @@ check_phase_position() {
     ""|null|NULL|"~"|TBD) return ;;
   esac
 
+  phase_entries="$(manifest_phase_entries "$manifest")"
+
   # Position grammar: G5.<phase-id>.<checkpoint>, checkpoint in 0-4.
   # G5.0 is the loop-start address and carries no phase id.
   if [ "$position" = "G5.0" ]; then
+    if [ -z "$phase_entries" ]; then
+      fail "Manifest phase.phase_position is G5.0 but phase.phases declares no phase partition."
+    fi
     return
   fi
   if ! printf '%s' "$position" | grep -Eq '^G5\.[A-Za-z0-9-]+\.[1-4]$'; then
@@ -1438,18 +2934,7 @@ check_phase_position() {
 
   # The phase id embedded in the position must be declared in phases[].
   pos_phase_id="$(printf '%s' "$position" | sed -E 's/^G5\.([A-Za-z0-9-]+)\.[1-4]$/\1/')"
-  declared_ids="$(awk '
-    $0 ~ /^phase:/ { in_phase = 1; next }
-    in_phase && /^[a-z]/ { in_phase = 0 }
-    in_phase && /^[[:space:]]+phases:/ { in_list = 1; next }
-    in_list && /^[[:space:]]+-[[:space:]]+id:/ {
-      line = $0
-      sub(/^.*id:[[:space:]]*/, "", line)
-      gsub(/["'\''[:space:]]/, "", line)
-      print line
-    }
-    in_list && /^[[:space:]]+[a-z_]+:[[:space:]]*$/ && $0 !~ /phases:/ { in_list = 0 }
-  ' "$manifest")"
+  declared_ids="$(printf '%s\n' "$phase_entries" | awk -F'|' 'NF { print $1 }')"
 
   if [ -n "$declared_ids" ]; then
     if ! printf '%s\n' "$declared_ids" | grep -Fxq "$pos_phase_id"; then
@@ -1461,6 +2946,167 @@ check_phase_position() {
     # id has no authoritative declaration to order against.
     fail "Manifest phase.phase_position is set ($position) but phase.phases declares no phases."
   fi
+}
+
+check_phase_exit_evidence() {
+  phase_id="$1"
+  log="docs/project/approvals/gate-log.md"
+
+  if ! exit_event_count="$(gate_log_phase_exit_event_count "$log" "$phase_id")"; then
+    fail "Malformed structured phase transition record in $log."
+    return
+  fi
+
+  if [ "$exit_event_count" -eq 0 ]; then
+    fail "Phase $phase_id is marked exited but no complete G5.$phase_id.4 phase_transition event is visible in gate-log.md."
+  fi
+
+  for artifact_id in \
+    implementation_evidence \
+    phase_test_uat \
+    phase_code_review \
+    phase_remediation \
+    traceability \
+    phase_as_built \
+    phase_learnings; do
+    path="$(phase_artifact_path "$artifact_id" "$phase_id")"
+    expected="$(gendev_checkpoint_artifact_resulting_statuses 'G5.<id>.4' "$artifact_id" 2>/dev/null || true)"
+
+    if [ ! -f "$path" ]; then
+      fail "Phase $phase_id is exited but required phase-exit artifact is missing: $path"
+      continue
+    fi
+
+    status="$(artifact_status "$path")"
+    if ! status_in_list "$status" "$expected"; then
+      fail "Phase $phase_id exit artifact $path has status '$status'; expected one of: $expected"
+    fi
+  done
+}
+
+check_phase_lifecycle_state() {
+  manifest="docs/project/project.yaml"
+  [ -f "$manifest" ] || return
+
+  phase_entries="$(manifest_phase_entries "$manifest")"
+  [ -n "$phase_entries" ] || return
+
+  position="$(manifest_section_value "$manifest" "phase" "phase_position")"
+  project_gate="$(manifest_section_value "$manifest" "project" "current_gate")"
+  pos_phase_id=""
+  pos_checkpoint=""
+  if printf '%s\n' "$position" | grep -Eq '^G5\.[A-Za-z0-9-]+\.[1-4]$'; then
+    pos_phase_id="$(printf '%s' "$position" | sed -E 's/^G5\.([A-Za-z0-9-]+)\.[1-4]$/\1/')"
+    pos_checkpoint="$(printf '%s' "$position" | sed -E 's/^G5\.[A-Za-z0-9-]+\.([1-4])$/\1/')"
+  fi
+
+  prior_to_position=1
+  last_phase_id=""
+  exited_count=0
+  phase_count=0
+
+  while IFS='|' read -r phase_id phase_status; do
+    [ -n "$phase_id" ] || continue
+    phase_count=$((phase_count + 1))
+    last_phase_id="$phase_id"
+
+    case "$phase_status" in
+      pending | in_progress | exited)
+        ;;
+      "")
+        fail "Manifest phase.phases entry $phase_id is missing status."
+        ;;
+      *)
+        fail "Manifest phase.phases entry $phase_id has invalid status: $phase_status"
+        ;;
+    esac
+
+    if [ -n "$pos_phase_id" ]; then
+      if [ "$phase_id" = "$pos_phase_id" ]; then
+        prior_to_position=0
+        if [ "$pos_checkpoint" = "4" ] && [ "$phase_status" != "exited" ]; then
+          fail "Manifest phase.phase_position is G5.$phase_id.4 but phase $phase_id status is not exited."
+        fi
+        if [ "$pos_checkpoint" != "4" ] && [ "$phase_status" = "exited" ]; then
+          fail "Manifest phase $phase_id is exited but phase.phase_position has not reached G5.$phase_id.4."
+        fi
+      elif [ "$prior_to_position" -eq 1 ] && [ "$phase_status" != "exited" ]; then
+        fail "Manifest phase.phase_position is $position but prior phase $phase_id has not exited."
+      fi
+    fi
+
+    if [ "$phase_status" = "exited" ]; then
+      exited_count=$((exited_count + 1))
+      check_phase_exit_evidence "$phase_id"
+    fi
+  done <<EOF
+$phase_entries
+EOF
+
+  case "$project_gate" in
+    G6 | G7 | G8 | G9)
+      if [ "$phase_count" -eq 0 ]; then
+        fail "Project current_gate is $project_gate but phase.phases declares no phases."
+      elif [ "$exited_count" -ne "$phase_count" ]; then
+        fail "Project current_gate is $project_gate but not every declared phase has exited."
+      fi
+
+      if [ -n "$last_phase_id" ] && [ "$position" != "G5.$last_phase_id.4" ]; then
+        fail "Project current_gate is $project_gate but phase.phase_position is '$position'; expected final phase exit G5.$last_phase_id.4."
+      fi
+      ;;
+  esac
+}
+
+check_tactical_task_model() {
+  while IFS= read -r file; do
+    [ -n "$file" ] || continue
+
+    declared_tasks="$(tactical_declared_task_ids "$file")"
+    declared_workstreams="$(tactical_declared_workstream_ids "$file")"
+
+    if [ -z "$declared_tasks" ]; then
+      fail "$file is Accepted but declares no tactical task IDs under ## Workstreams."
+    fi
+
+    while IFS= read -r task_id; do
+      [ -n "$task_id" ] || continue
+      if ! valid_task_id "$task_id"; then
+        fail "$file declares malformed tactical task ID: $task_id"
+      fi
+    done <<EOF
+$declared_tasks
+EOF
+
+    while IFS= read -r task_id; do
+      [ -n "$task_id" ] || continue
+      if ! valid_task_id "$task_id"; then
+        fail "$file references malformed tactical task ID: $task_id"
+        continue
+      fi
+      if ! printf '%s\n' "$declared_tasks" | grep -Fxq "$task_id"; then
+        fail "$file references undeclared tactical task ID: $task_id"
+      fi
+    done <<EOF
+$(file_task_id_tokens "$file")
+EOF
+
+    while IFS= read -r workstream_id; do
+      [ -n "$workstream_id" ] || continue
+      if ! valid_workstream_id "$workstream_id"; then
+        fail "$file references malformed workstream ID: $workstream_id"
+        continue
+      fi
+      if [ -n "$declared_workstreams" ] &&
+        ! printf '%s\n' "$declared_workstreams" | grep -Fxq "$workstream_id"; then
+        fail "$file references undeclared workstream ID: $workstream_id"
+      fi
+    done <<EOF
+$(file_workstream_id_tokens "$file")
+EOF
+  done <<EOF
+$(accepted_tactical_plans)
+EOF
 }
 
 check_phase_plans() {
@@ -1484,6 +3130,8 @@ check_phase_plans() {
 }
 
 check_traceability_evidence() {
+  known_tasks="$(known_tactical_task_ids)"
+
   for file in docs/project/traceability/*.md; do
     [ -e "$file" ] || continue
     awk -F'|' '
@@ -1507,6 +3155,60 @@ check_traceability_evidence() {
     if [ "$?" -ne 0 ]; then
       errors=$((errors + 1))
     fi
+
+    [ -n "$known_tasks" ] || continue
+
+    while IFS='|' read -r line_no task_cell row_status; do
+      task_cell="$(printf '%s\n' "$task_cell" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+      row_status="$(printf '%s\n' "$row_status" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]//g')"
+
+      case "$task_cell" in
+        "" | "TBD" | "N/A" | "n/a" | "-")
+          case "$row_status" in
+            deferred | rejected | blocked)
+              continue
+              ;;
+            *)
+              fail "$file:$line_no has an active traceability row without a tactical task ID."
+              continue
+              ;;
+          esac
+          ;;
+      esac
+
+      task_tokens="$(printf '%s\n' "$task_cell" | grep -Eo 'PH-[A-Za-z0-9]+(-[A-Za-z0-9]+)*-T[0-9]+' || true)"
+      if [ -z "$task_tokens" ]; then
+        fail "$file:$line_no tactical task cell does not contain a valid task ID token: $task_cell"
+        continue
+      fi
+
+      while IFS= read -r task_id; do
+        [ -n "$task_id" ] || continue
+        if ! valid_task_id "$task_id"; then
+          fail "$file:$line_no references malformed tactical task ID: $task_id"
+          continue
+        fi
+        if [ -n "$known_tasks" ] &&
+          ! printf '%s\n' "$known_tasks" | grep -Fxq "$task_id"; then
+          fail "$file:$line_no references tactical task ID not declared in an Accepted tactical plan: $task_id"
+        fi
+      done <<EOF
+$task_tokens
+EOF
+    done <<EOF
+$(awk -F'|' '
+  NR > 2 && /^\|/ {
+    status = $11
+    task = $7
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", status)
+    gsub(/^[[:space:]]+|[[:space:]]+$/, "", task)
+    if (tolower($2) ~ /^[[:space:]]*-+[[:space:]]*$/ || tolower($2) ~ /^[[:space:]]*req id[[:space:]]*$/) {
+      next
+    }
+    print FNR "|" task "|" status
+  }
+' "$file")
+EOF
   done
 }
 
@@ -1535,6 +3237,63 @@ check_code_review_context_provenance() {
   done
 }
 
+# Shared helper aliases from scripts/lib/gendev-common.sh.
+is_unknown() {
+  gendev_is_unknown "$@"
+}
+
+manifest_section_value() {
+  gendev_manifest_section_value "$@"
+}
+
+manifest_nested_value() {
+  gendev_manifest_nested_value "$@"
+}
+
+manifest_section_list_values() {
+  gendev_manifest_section_list_values "$@"
+}
+
+manifest_current_gate_block() {
+  gendev_manifest_current_gate_block "$@"
+}
+
+manifest_current_gate_list_values() {
+  gendev_manifest_current_gate_list_values "$@"
+}
+
+manifest_section_block() {
+  gendev_manifest_section_block "$@"
+}
+
+gate_log_records_section() {
+  gendev_gate_log_records_section "$@"
+}
+
+gate_log_load_events() {
+  gendev_gate_log_load_events "$@"
+}
+
+gate_log_events() {
+  gendev_gate_log_events "$@"
+}
+
+gate_log_has_structured_event() {
+  gendev_gate_log_has_structured_event "$@"
+}
+
+gate_log_has_legacy_approval() {
+  gendev_gate_log_has_legacy_approval "$@"
+}
+
+gate_log_missing_executable_evidence_for_g6_plus() {
+  gendev_gate_log_missing_executable_evidence_for_g6_plus "$@"
+}
+
+gate_log_has_stale_gate_transition_evidence() {
+  gendev_gate_log_has_stale_gate_transition_evidence "$@"
+}
+
 check_baseline_files
 check_sample_reference_drift
 
@@ -1544,6 +3303,8 @@ else
   check_project_structure
   check_manifest_paths
   check_gate_log_record_format
+  check_gate_log_evidence_item_bindings
+  check_version_compatibility_state
   check_manifest_gate_values
   check_manifest_approval_state
   check_accepted_doc_placeholders
@@ -1556,6 +3317,7 @@ else
   check_manifest_scaling_state
   check_manifest_enforcement_state
   check_diff_gate_movement
+  check_gate_log_append_only_history
   check_changed_path_enforcement
   check_current_gate_artifact_status
   check_vision_success_criteria
@@ -1563,6 +3325,9 @@ else
   check_verification_specification
   check_phase_plans
   check_phase_position
+  check_phase_lifecycle_state
+  check_late_gate_lifecycle_state
+  check_tactical_task_model
   check_traceability_evidence
   check_code_review_context_provenance
 fi
