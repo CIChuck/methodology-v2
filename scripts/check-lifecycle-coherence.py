@@ -4351,10 +4351,10 @@ class Validator:
             },
             {
                 "source_file": "docs/resources/releases/README.md",
-                "field": "active release candidate",
+                "field": "latest published release",
                 "delivery_state": release_index_state,
                 "required_work_package": "WP-11",
-                "release_value_pattern": r"(?m)^Active release candidate:\s*1\.0\.1\s*$",
+                "release_value_pattern": r"(?m)^Latest published release:\s*1\.0\.1\s*$",
             },
         ]
         if synchronization_targets != expected_sync_targets:
@@ -4424,13 +4424,15 @@ class Validator:
                         needle=path,
                     )
                     continue
-                if (
-                    path == "docs/resources/releases/README.md"
-                    and "Active release candidate" not in pattern
+                if path == "docs/resources/releases/README.md" and (
+                    "Active release candidate" not in pattern
+                    and "Latest published release" not in pattern
                 ):
                     self.add(
                         RULE_VERSION,
-                        "release-index pattern must bind the Active release candidate field",
+                        "release-index pattern must bind the release identity field "
+                        "(Active release candidate before publication, "
+                        "Latest published release after)",
                         needle=path,
                     )
                 try:

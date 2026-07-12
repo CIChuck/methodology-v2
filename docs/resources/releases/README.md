@@ -1,7 +1,6 @@
 # GenDev Releases
 
-Latest published release: 0.5.0-operational-coherence
-Active release candidate: 1.0.1
+Latest published release: 1.0.1
 
 This index records methodology release identity, status, tag state, and adoption guidance. Tag
 creation and pushing remain publication actions requiring separate human approval.
@@ -14,7 +13,7 @@ creation and pushing remain publication actions requiring separate human approva
 | 0.4.0-verification-first | Accepted historical release; retrospective tag approved | 2026-06-20 | `v0.4.0-verification-first` retrospective historical tag | Ratification commit verified: `23acdd2` Ratify 0.4.0-verification-first | 0.3.0-documentation-structure | 0.5.0-operational-coherence | Use 1.0 adoption guide for current projects. |
 | 0.5.0-operational-coherence | Published | 2026-07-11 | `v0.5.0-operational-coherence` observed at `2841f02` | `docs/resources/evolution/0.5.0-operational-coherence-execution-log.md` | 0.4.0-verification-first | 1.0.1 | Use 1.0 adoption guide for current projects. |
 | 1.0.0 | Superseded candidate; never published | 2026-07-11 | No tag; publication never occurred | `docs/resources/evolution/1.0.0-production-release-execution-log.md` | 0.5.0-operational-coherence | 1.0.1 | Use 1.0 adoption guide for current projects. |
-| 1.0.1 | Production candidate; publication pending | 2026-07-11 | Planned `v1.0.1` | `docs/resources/evolution/1.0.1-production-release-execution-log.md` | 1.0.0 | N/A | `docs/resources/releases/1.0.1-adoption.md` |
+| 1.0.1 | Published | 2026-07-12 | `v1.0.1` observed | `docs/resources/evolution/1.0.1-production-release-execution-log.md` | 1.0.0 | N/A | `docs/resources/releases/1.0.1-adoption.md` |
 
 ## Historical tag policy
 

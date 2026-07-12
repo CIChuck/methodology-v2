@@ -16,7 +16,7 @@
     "candidate": "1.0.1",
     "candidate_status": "released",
     "release_stage": "production",
-    "publication_status": "pending_publication",
+    "publication_status": "published",
     "planned_publication_tag": "v1.0.1",
     "released_current": "1.0.1",
     "observation_revision": "02ae0fc192a898cd482007dfc65612ff907a3bda",
@@ -71,10 +71,10 @@
       },
       {
         "source_file": "docs/resources/releases/README.md",
-        "field": "active release candidate",
+        "field": "latest published release",
         "delivery_state": "current",
         "required_work_package": "WP-11",
-        "release_value_pattern": "(?m)^Active release candidate:\\s*1\\.0\\.1\\s*$"
+        "release_value_pattern": "(?m)^Latest published release:\\s*1\\.0\\.1\\s*$"
       }
     ],
     "release_rules": {

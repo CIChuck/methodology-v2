@@ -64,14 +64,18 @@ require_line '^Current methodology version: `1\.0\.1`$' README.md
 require_line '^Version: 1\.0\.1$' docs/methodology/constitution/gendev.md
 if git rev-parse --verify refs/tags/v1.0.1 >/dev/null 2>&1; then
   require_line '^Latest published release: 1\.0\.1$' docs/resources/releases/README.md
+  require_no_match '^Active release candidate:' docs/resources/releases/README.md
+  require_line '^Status: Published production release$' docs/resources/releases/1.0.1.md
+  require_line '^Publication tag: `v1\.0\.1`$' docs/resources/releases/1.0.1.md
+  require_line '^Status: Released production registry$' docs/methodology/schema/README.md
 else
   require_line '^Latest published release: 0\.5\.0-operational-coherence$' docs/resources/releases/README.md
   require_line '^Active release candidate: 1\.0\.1$' docs/resources/releases/README.md
   require_line '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.1.md
   require_line '^Publication tag: planned `v1\.0\.1`$' docs/resources/releases/1.0.1.md
+  require_line '^Status: Release-mode production registry; publication pending$' docs/methodology/schema/README.md
 fi
 require_line '^Status: Superseded production candidate; never published; superseded by 1\.0\.1$' docs/resources/releases/1.0.0.md
-require_line '^Status: Release-mode production registry; publication pending$' docs/methodology/schema/README.md
 require_line 'methodology_version: 1\.0\.1' docs/project-template/project.yaml
 require_line 'methodology_release_stage: production' docs/project-template/project.yaml
 
