@@ -8,6 +8,83 @@ GENDEV_GATE_LOG_EVENTS_FILE=""
 GENDEV_GATE_LOG_EVENTS_OUTPUT=""
 GENDEV_GATE_LOG_EVENTS_RC=0
 
+# Declared prerequisite contract.
+#
+# GenDev requires these tools on every platform. The contract is declared as
+# data here and enforced in three places with distinct behavior: the doctor
+# reports every prerequisite (diagnosis), init-project refuses to initialize
+# when one is missing (fail-early), and rg-dependent scripts guard at point of
+# use (defense in depth). A missing prerequisite must always fail loudly; a
+# check that silently passes because its engine is absent is worse than no
+# check at all.
+GENDEV_PREREQ_TOOLS="bash git python3 rg"
+
+gendev_prereq_install_hint() {
+  case "$1" in
+    rg)
+      printf '%s' 'install ripgrep: apt install ripgrep | brew install ripgrep | winget install BurntSushi.ripgrep.MSVC | cargo install ripgrep'
+      ;;
+    python3)
+      printf '%s' 'install python3 from your platform package manager or python.org'
+      ;;
+    git)
+      printf '%s' 'install git from your platform package manager or git-scm.com'
+      ;;
+    bash)
+      printf '%s' 'install bash 4+ from your platform package manager'
+      ;;
+    *)
+      printf '%s' 'install from your platform package manager'
+      ;;
+  esac
+}
+
+# Report every prerequisite; return the count of missing tools.
+gendev_report_prereqs() {
+  missing=0
+  for tool in $GENDEV_PREREQ_TOOLS; do
+    if command -v "$tool" >/dev/null 2>&1; then
+      printf 'Prerequisite %s: present\n' "$tool"
+    else
+      printf 'Prerequisite %s: MISSING (%s)\n' "$tool" "$(gendev_prereq_install_hint "$tool")"
+      missing=$((missing + 1))
+    fi
+  done
+  return "$missing"
+}
+
+# Fail loudly if any prerequisite is missing. Callers pass their own name so
+# the error identifies which command refused to run.
+gendev_require_prereqs() {
+  caller_name="${1:-gendev}"
+  missing=0
+  for tool in $GENDEV_PREREQ_TOOLS; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+      printf 'ERROR: %s requires %s but it is not installed. %s\n' \
+        "$caller_name" "$tool" "$(gendev_prereq_install_hint "$tool")" >&2
+      missing=$((missing + 1))
+    fi
+  done
+  if [ "$missing" -gt 0 ]; then
+    printf 'ERROR: %s: %s missing prerequisite(s); refusing to continue.\n' \
+      "$caller_name" "$missing" >&2
+    return 3
+  fi
+  return 0
+}
+
+# Guard for scripts that depend on a single tool at point of use.
+gendev_require_tool() {
+  caller_name="$1"
+  tool="$2"
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    printf 'ERROR: %s requires %s but it is not installed. %s\n' \
+      "$caller_name" "$tool" "$(gendev_prereq_install_hint "$tool")" >&2
+    return 3
+  fi
+  return 0
+}
+
 # Placeholder-agnostic unknown value checks used across checker/guard.
 gendev_is_unknown() {
   case "$1" in

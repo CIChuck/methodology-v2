@@ -4127,7 +4127,7 @@ class Validator:
         target = self.first(versions, "candidate", "candidate_target", "target", "target_version")
         if isinstance(target, dict):
             target = self.first(target, "version", "id")
-        expected = "1.0.0"
+        expected = "1.0.1"
         if target != expected:
             self.add(
                 RULE_VERSION,
@@ -4329,32 +4329,32 @@ class Validator:
                 "source_file": "README.md",
                 "field": "current methodology version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Current methodology version: `1\.0\.0`\s*$",
+                "release_value_pattern": r"(?m)^Current methodology version: `1\.0\.1`\s*$",
             },
             {
                 "source_file": "docs/methodology/constitution/gendev.md",
                 "field": "Version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Version: 1\.0\.0\s*$",
+                "release_value_pattern": r"(?m)^Version: 1\.0\.1\s*$",
             },
             {
                 "source_file": "docs/project-template/project.yaml",
                 "field": "project.methodology_version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^\s+methodology_version:\s*1\.0\.0\s*$",
+                "release_value_pattern": r"(?m)^\s+methodology_version:\s*1\.0\.1\s*$",
             },
             {
                 "source_file": "docs/methodology/schema/lifecycle.json",
                 "field": "versions.released_current",
                 "delivery_state": "current",
-                "release_value_pattern": r'(?m)^\s*"released_current":\s*"1\.0\.0"',
+                "release_value_pattern": r'(?m)^\s*"released_current":\s*"1\.0\.1"',
             },
             {
                 "source_file": "docs/resources/releases/README.md",
                 "field": "active release candidate",
                 "delivery_state": release_index_state,
                 "required_work_package": "WP-11",
-                "release_value_pattern": r"(?m)^Active release candidate:\s*1\.0\.0\s*$",
+                "release_value_pattern": r"(?m)^Active release candidate:\s*1\.0\.1\s*$",
             },
         ]
         if synchronization_targets != expected_sync_targets:

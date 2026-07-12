@@ -33,6 +33,9 @@ gate_log="$repo_root/docs/project/approvals/gate-log.md"
 
 printf 'GenDev doctor\n'
 printf 'Repository: %s\n' "$repo_root"
+
+prereq_missing=0
+gendev_report_prereqs || prereq_missing=$?
 printf 'Lifecycle target: %s\n' "$GENDEV_LIFECYCLE_TARGET_VERSION"
 printf 'Lifecycle status: %s\n' "$GENDEV_LIFECYCLE_REGISTRY_STATUS"
 
@@ -75,3 +78,8 @@ else
 fi
 
 printf 'Recommended validation: ./scripts/check-methodology.sh\n'
+
+if [ "$prereq_missing" -gt 0 ]; then
+  printf 'Doctor result: %s missing prerequisite(s); install before methodology work.\n' "$prereq_missing" >&2
+  exit 3
+fi

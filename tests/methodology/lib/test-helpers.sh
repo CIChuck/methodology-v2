@@ -6,74 +6,15 @@
 set -u
 set -o pipefail
 
+# Ripgrep is a declared GenDev prerequisite (see scripts/lib/gendev-common.sh).
+# The suites previously emulated rg with grep when it was missing; that shim is
+# gone because emulation drift between engines is worse than a hard
+# requirement. A missing rg fails loudly here instead of silently changing
+# which regex engine ran the checks.
 if ! command -v rg >/dev/null 2>&1; then
-  rg() {
-    local quiet=0
-    local count=0
-    local line_numbers=0
-    local pattern=""
-    local recursive=0
-    local grep_args=""
-    local path=""
-
-    while [ "$#" -gt 0 ]; do
-      case "$1" in
-        -q)
-          quiet=1
-          shift
-          ;;
-        -c)
-          count=1
-          shift
-          ;;
-        -n)
-          line_numbers=1
-          shift
-          ;;
-        --)
-          shift
-          break
-          ;;
-        -*)
-          printf 'fallback rg: unsupported option: %s\n' "$1" >&2
-          return 2
-          ;;
-        *)
-          break
-          ;;
-      esac
-    done
-
-    if [ "$#" -lt 1 ]; then
-      printf 'fallback rg: pattern is required\n' >&2
-      return 2
-    fi
-
-    pattern="$1"
-    shift
-
-    for path in "$@"; do
-      if [ -d "$path" ]; then
-        recursive=1
-        break
-      fi
-    done
-
-    grep_args="-E"
-    [ "$quiet" -eq 1 ] && grep_args="$grep_args -q"
-    [ "$count" -eq 1 ] && grep_args="$grep_args -c"
-    [ "$line_numbers" -eq 1 ] && grep_args="$grep_args -n"
-    [ "$recursive" -eq 1 ] && grep_args="$grep_args -R"
-
-    if [ "$#" -eq 0 ]; then
-      # shellcheck disable=SC2086
-      grep $grep_args -- "$pattern"
-    else
-      # shellcheck disable=SC2086
-      grep $grep_args -- "$pattern" "$@"
-    fi
-  }
-  export -f rg
+  printf 'ERROR: methodology test suites require ripgrep (rg). ' >&2
+  printf 'Install: apt install ripgrep | brew install ripgrep | winget install BurntSushi.ripgrep.MSVC | cargo install ripgrep\n' >&2
+  exit 3
 fi
 
 TH_COMMAND_SHELL="/bin/bash"

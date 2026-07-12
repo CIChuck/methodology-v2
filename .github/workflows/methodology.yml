@@ -24,6 +24,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
       - name: Print versions
         shell: bash
         run: |
@@ -57,6 +72,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
       - name: Run lifecycle runtime integration
         shell: bash
         run: ./scripts/test-methodology.sh --suite runtime-tools
@@ -79,6 +109,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
       - name: Run install and backfill integration
         shell: bash
         run: ./scripts/test-methodology.sh --suite distribution-tools
@@ -96,6 +141,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
 
       - name: Run guard/range suite
         shell: bash
@@ -140,6 +200,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
       - name: Run current examples
         shell: bash
         run: ./scripts/test-methodology.sh --suite examples
@@ -158,6 +233,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
       - name: Run migration fixtures
         shell: bash
         run: ./scripts/test-methodology.sh --suite migration
@@ -175,6 +265,21 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
 
       - name: Run release coherence checks
         shell: bash

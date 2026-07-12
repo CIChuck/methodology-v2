@@ -34,6 +34,13 @@ fi
 project_name="$1"
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "$script_dir/.." && pwd)"
+
+# Prerequisite preflight: initialization is the front door, so a missing tool
+# fails here rather than surfacing later as a confusing checker failure. There
+# is deliberately no skip flag; an environment without the prerequisites is not
+# an environment the methodology supports.
+. "$script_dir/lib/gendev-common.sh"
+gendev_require_prereqs "init-project.sh" || exit 3
 target="$repo_root/docs/project"
 template_root="$repo_root/docs/methodology/templates"
 project_template="$repo_root/docs/project-template"

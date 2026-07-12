@@ -34,7 +34,7 @@ methodology install without `--force`. It preserves an existing root `AGENTS.md`
 Use `--protected-branch BRANCH` when rendering the workflow for a branch other than the detected
 current branch, and use `--with-resources` only when the target should receive reference material.
 After it runs, initialize the project in the target the same way this chapter describes. The concise
-1.0 adoption path is recorded in `docs/resources/releases/1.0.0-adoption.md`.
+1.0 adoption path is recorded in `docs/resources/releases/1.0.1-adoption.md`.
 
 If you have a presales or discovery repository that already holds a vision, PRD, or architecture,
 written for a customer rather than to a template, run `scripts/backfill-methodology.sh` against it
@@ -229,6 +229,12 @@ Do not implement code.
 ```
 
 ## First-Run Preflight
+
+GenDev declares four prerequisites: bash 4+, git, python3, and ripgrep (rg).
+The doctor reports each one, and `./scripts/init-project.sh` refuses to run
+until all are present. Install ripgrep with `apt install ripgrep`,
+`brew install ripgrep`, `winget install BurntSushi.ripgrep.MSVC`, or
+`cargo install ripgrep`.
 
 Before drafting G1 content, run the 1.0 orientation commands from the repository root:
 

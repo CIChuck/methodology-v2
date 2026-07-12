@@ -77,6 +77,31 @@ Small projects may combine artifacts when they are classified as contained C1 wo
 still needs to exist. Default C2 product work should normally use the full chain. Critical C3 work
 should add review, evidence, and enforcement discipline rather than compressing gates.
 
+## Prerequisites
+
+GenDev requires these tools on every platform:
+
+```text
+bash 4 or later
+git
+python3
+ripgrep (rg)
+```
+
+Ripgrep is required, not optional: the coherence checkers and regression suites
+standardize on one regex engine so pattern checks behave identically everywhere.
+Install it with `apt install ripgrep`, `brew install ripgrep`,
+`winget install BurntSushi.ripgrep.MSVC`, or `cargo install ripgrep`.
+
+Verify prerequisites before initializing:
+
+```bash
+./scripts/gendev-doctor.sh
+```
+
+The doctor reports each prerequisite, and `init-project.sh` refuses to
+initialize until all of them are present.
+
 ## Initialize A Project
 
 From a fresh clone:
@@ -194,16 +219,16 @@ This repository is a methodology baseline, not an implemented product. Product-s
 tests, configuration, CI, deployment, and runtime commands should be added by the initialized project
 as its architecture and phase plans mature.
 
-Current methodology version: `1.0.0`
+Current methodology version: `1.0.1`
 
 This is the GenDev 1.0 production release line. Release notes are in
-`docs/resources/releases/1.0.0.md`, and the release execution log is in
-`docs/resources/evolution/1.0.0-production-release-execution-log.md`.
+`docs/resources/releases/1.0.1.md`, and the release execution log is in
+`docs/resources/evolution/1.0.1-production-release-execution-log.md`.
 
 The planned release tag is:
 
 ```text
-v1.0.0
+v1.0.1
 ```
 
 Before publication, the release branch must pass local validation, remote CI,

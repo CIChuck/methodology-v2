@@ -42,7 +42,7 @@ rtw_set_enforcement_ready() {
 }
 
 rtw_set_methodology_current() {
-  perl -0pi -e 's/^  methodology_version:.*/  methodology_version: 1.0.0/m' \
+  perl -0pi -e 's/^  methodology_version:.*/  methodology_version: 1.0.1/m' \
     docs/project/project.yaml
 }
 

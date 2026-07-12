@@ -59,6 +59,11 @@ editing methodology or project artifacts:
 ./scripts/gendev-doctor.sh
 ```
 
+The doctor's prerequisite report is contract, not decoration: GenDev requires
+bash 4+, git, python3, and ripgrep (rg). If the doctor reports a missing
+prerequisite (exit code 3), stop and have it installed before any methodology
+work; do not substitute another tool or emulate the missing one.
+
 If the project is initialized, also run:
 
 ```bash
