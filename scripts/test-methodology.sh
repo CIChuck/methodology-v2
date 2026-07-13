@@ -48,6 +48,9 @@ run_suite() {
     checker)
       suite_script="$test_dir/test-checker.sh"
       ;;
+    installed-context)
+      suite_script="$test_dir/test-installed-context.sh"
+      ;;
     shell-syntax)
       suite_script="$test_dir/test-shell-syntax.sh"
       ;;
@@ -106,7 +109,7 @@ run_suite() {
   "$suite_script"
 }
 
-available_suites="shell-syntax checker lifecycle runtime-tools distribution-tools enforcement-tools reference-graph documentation-coherence metrics examples migration release-coherence"
+available_suites="shell-syntax checker lifecycle runtime-tools distribution-tools enforcement-tools reference-graph documentation-coherence metrics examples migration release-coherence installed-context"
 
 SELECTED="all"
 LIST_ONLY=0
