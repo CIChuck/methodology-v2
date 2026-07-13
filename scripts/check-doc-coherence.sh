@@ -11,6 +11,11 @@ script_dir="$(cd "$(dirname "$0")" && pwd)"
 # the failure mode this checker exists to prevent.
 gendev_require_tool "check-doc-coherence.sh" rg || exit 3
 
+# Authority-context guard: release-identity assertions are meaningless in an
+# installed product repository, where the installed docs truthfully describe
+# a release published elsewhere.
+gendev_refuse_in_installed_context "check-doc-coherence.sh" "$script_dir/.." || exit "$?"
+
 errors=0
 
 fail() {

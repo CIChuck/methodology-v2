@@ -107,6 +107,7 @@ run_suite() {
 }
 
 available_suites="shell-syntax checker lifecycle runtime-tools distribution-tools enforcement-tools reference-graph documentation-coherence metrics examples migration release-coherence"
+
 SELECTED="all"
 LIST_ONLY=0
 PLATFORM_SUMMARY=0
@@ -159,6 +160,29 @@ if [ "$SELECTED" = "all" ]; then
   selected_list="$available_suites"
 else
   selected_list="$SELECTED"
+fi
+
+# Installed-context restriction: in a product repository, only the
+# shell-syntax suite is applicable. The remaining suites validate methodology
+# internals and assume the authority repository; running them here produces
+# false failures by construction. --suite all narrows to the applicable set;
+# an explicit request for an inapplicable suite refuses with exit 4.
+installed_safe_suites="shell-syntax"
+if [ -f "$repo_root/docs/methodology/schema/installation.json" ]; then
+  if [ "$SELECTED" = "all" ]; then
+    printf 'Installed product repository detected: restricting suites to: %s\n' "$installed_safe_suites"
+    selected_list="$installed_safe_suites"
+  else
+    for suite in $selected_list; do
+      case " $installed_safe_suites " in
+        *" $suite "*) ;;
+        *)
+          printf 'test-methodology.sh: suite %s is not applicable in an installed product repository; applicable suites: %s\n' "$suite" "$installed_safe_suites" >&2
+          exit 4
+          ;;
+      esac
+    done
+  fi
 fi
 
 failed=0

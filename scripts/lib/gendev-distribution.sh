@@ -339,6 +339,11 @@ gendev_dist_install() {
 
   gendev_dist_write_installation_record "$repo_root" "$target_repo" "$include_resources" "force=$force resources=$include_resources agents=$integrate_agents branch=$branch"
 
+  if [ ! -f "$target_repo/.gitignore" ] || ! grep -q '^\.tmp/$' "$target_repo/.gitignore"; then
+    printf '.tmp/\n' >> "$target_repo/.gitignore"
+    _gendev_dist_add_report installed ".gitignore (.tmp/ suite scratch rule appended)"
+  fi
+
   trap - INT TERM HUP
   rm -rf "$tmp_dir"
 }
