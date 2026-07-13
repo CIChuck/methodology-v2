@@ -24,6 +24,6 @@ file|scripts/close-gate.sh|scripts/close-gate.sh|executable|required
 file|scripts/record-phase-checkpoint.sh|scripts/record-phase-checkpoint.sh|executable|required
 file|scripts/close-phase.sh|scripts/close-phase.sh|executable|required
 file|scripts/record-deployment-approval.sh|scripts/record-deployment-approval.sh|executable|required
-file|.github/workflows/methodology.yml|.github/workflows/methodology.yml|preserve|workflow
+file|docs/methodology/templates/product-ci-workflow.yml|.github/workflows/methodology.yml|preserve|workflow
 file|AGENTS.md|AGENTS.md|preserve|agents
 tree|docs/resources|docs/resources|preserve|optional_resources

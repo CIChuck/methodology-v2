@@ -258,6 +258,8 @@ with open(manifest) as m:
         kind, source, target, mode, klass = line.split("|")
         if klass == "optional_resources" and not include_resources:
             continue
+        if klass == "agents":
+            continue  # target-owned surface; practitioners edit it legitimately
         dest = os.path.join(target_repo, target)
         if not os.path.exists(dest):
             continue
