@@ -65,32 +65,34 @@ require_no_match 'current 0\.5 lifecycle|In 0\.5' docs/resources/practitioner-gu
 require_no_match '^## Legacy Migration Hazard$' docs/resources/practitioner-guide
 require_no_match '^Latest release:\s*1\.0\.0\s*$' docs/resources/releases/README.md
 
-require_line '^Current methodology version: `1\.0\.1`$' README.md
-require_line '^Version: 1\.0\.1$' docs/methodology/constitution/gendev.md
-if git rev-parse --verify refs/tags/v1.0.1 >/dev/null 2>&1; then
-  require_line '^Latest published release: 1\.0\.1$' docs/resources/releases/README.md
+require_line '^Current methodology version: `1\.0\.2`$' README.md
+require_line '^Version: 1\.0\.2$' docs/methodology/constitution/gendev.md
+if git rev-parse --verify refs/tags/v1.0.2 >/dev/null 2>&1; then
+  require_line '^Latest published release: 1\.0\.2$' docs/resources/releases/README.md
   require_no_match '^Active release candidate:' docs/resources/releases/README.md
-  require_line '^Status: Published production release$' docs/resources/releases/1.0.1.md
-  require_line '^Publication tag: `v1\.0\.1`$' docs/resources/releases/1.0.1.md
+  require_line '^Status: Published production release$' docs/resources/releases/1.0.2.md
+  require_line '^Publication tag: `v1\.0\.2`$' docs/resources/releases/1.0.2.md
   require_line '^Status: Released production registry$' docs/methodology/schema/README.md
 else
-  require_line '^Latest published release: 0\.5\.0-operational-coherence$' docs/resources/releases/README.md
-  require_line '^Active release candidate: 1\.0\.1$' docs/resources/releases/README.md
-  require_line '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.1.md
-  require_line '^Publication tag: planned `v1\.0\.1`$' docs/resources/releases/1.0.1.md
+  require_line '^Latest published release: 1\.0\.1$' docs/resources/releases/README.md
+  require_line '^Active release candidate: 1\.0\.2$' docs/resources/releases/README.md
+  require_line '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.2.md
+  require_line '^Publication tag: planned `v1\.0\.2`$' docs/resources/releases/1.0.2.md
   require_line '^Status: Release-mode production registry; publication pending$' docs/methodology/schema/README.md
 fi
 require_line '^Status: Superseded production candidate; never published; superseded by 1\.0\.1$' docs/resources/releases/1.0.0.md
-require_line 'methodology_version: 1\.0\.1' docs/project-template/project.yaml
+require_line '^Status: Published production release$' docs/resources/releases/1.0.1.md
+require_line 'methodology_version: 1\.0\.2' docs/project-template/project.yaml
 require_line 'methodology_release_stage: production' docs/project-template/project.yaml
 
 require_file docs/resources/releases/1.0.0.md
 require_file docs/resources/releases/1.0.1.md
-require_file docs/resources/releases/1.0.1-adoption.md
-require_line '^Status: Active 1\.0 adoption guidance$' docs/resources/releases/1.0.1-adoption.md
-require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/README.md
-require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/04-starting-a-new-project.md
-require_line 'docs/resources/releases/1\.0\.1-adoption\.md' docs/resources/practitioner-guide/19-starting-mid-stream.md
+require_file docs/resources/releases/1.0.2.md
+require_file docs/resources/releases/1.0.2-adoption.md
+require_line '^Status: Active 1\.0 adoption guidance$' docs/resources/releases/1.0.2-adoption.md
+require_line 'docs/resources/releases/1\.0\.2-adoption\.md' docs/resources/practitioner-guide/README.md
+require_line 'docs/resources/releases/1\.0\.2-adoption\.md' docs/resources/practitioner-guide/04-starting-a-new-project.md
+require_line 'docs/resources/releases/1\.0\.2-adoption\.md' docs/resources/practitioner-guide/19-starting-mid-stream.md
 # Tool-specific notes must carry a dated review line. The assertion is
 # structural (a valid date must exist) rather than pinned to a single date, so
 # reviewing the notes does not require editing this checker in lockstep.
@@ -101,7 +103,7 @@ require_line 'ripgrep' README.md
 require_line 'ripgrep' AGENTS.md
 require_line 'ripgrep' docs/resources/practitioner-guide/04-starting-a-new-project.md
 require_line 'ripgrep' docs/resources/practitioner-guide/16-checklists.md
-require_line '^## Prerequisites$' docs/resources/releases/1.0.1-adoption.md
+require_line '^## Prerequisites$' docs/resources/releases/1.0.2-adoption.md
 require_executable scripts/gendev-doctor.sh
 require_executable scripts/pin-provenance.sh
 require_file docs/resources/runbook/g0-to-g7-runbook.md
