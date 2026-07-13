@@ -11,6 +11,10 @@ Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
+  <!-- Each revision must be the hash of the last commit that touched the
+       source path: git log -1 --format=%H -- <path>. When a source moves
+       (every gate closure moves it), run:
+       ./scripts/pin-provenance.sh <this file>   to repin automatically. -->
   - path: docs/project/vision/vision.md
     revision: TBD
 

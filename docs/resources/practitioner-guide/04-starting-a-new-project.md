@@ -290,3 +290,11 @@ The startup phase ends when:
 - collaboration mode is known;
 - the human has supplied enough context to draft the vision document;
 - the agent knows not to proceed beyond G1 without approval.
+
+## Provenance Pins
+
+Every artifact's Derived from revision must be the hash of the last commit
+that touched the source path. Do not compute it by hand: run
+`./scripts/pin-provenance.sh <artifact>` after any source moves (every gate
+closure moves one), and `--check` to preview. The full command sequence for
+each gate lives in the runbook at `docs/resources/runbook/g0-to-g7-runbook.md`.

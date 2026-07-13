@@ -13,6 +13,10 @@ Produced on: [YYYY-MM-DD]
 Produced with: human-agent collaboration
 Agent identity: TBD
 Derived from:
+  <!-- Each revision must be the hash of the last commit that touched the
+       source path: git log -1 --format=%H -- <path>. When a source moves
+       (every gate closure moves it), run:
+       ./scripts/pin-provenance.sh <this file>   to repin automatically. -->
   - path: docs/project/vision/vision.md
     revision: TBD
   - path: docs/project/prd/prd.md
@@ -353,6 +357,16 @@ proportional to blast radius — a C1 project may answer briefly, including an h
 "no failure modes beyond single-process operation"; a C3 project expands each into
 a real analysis. The point is that the questions are asked and their answers
 recorded, not deferred to an incident.
+
+Record the answers as labeled lines using exactly these four labels; the
+checker requires this form and rejects unlabeled prose:
+
+```text
+Failure modes: <answer>
+Scale limits: <answer>
+Evolution risk: <answer>
+Security boundary: <answer>
+```
 
 ```text
 What failure modes must this design survive (partition, network loss, crash and

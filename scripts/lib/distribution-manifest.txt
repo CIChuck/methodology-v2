@@ -14,6 +14,7 @@ file|scripts/init-project.sh|scripts/init-project.sh|executable|required
 file|scripts/init-phase.sh|scripts/init-phase.sh|executable|required
 file|scripts/gendev-doctor.sh|scripts/gendev-doctor.sh|executable|required
 file|scripts/project-state.sh|scripts/project-state.sh|executable|required
+file|scripts/pin-provenance.sh|scripts/pin-provenance.sh|executable|required
 file|scripts/new-artifact.sh|scripts/new-artifact.sh|executable|required
 file|scripts/install-methodology.sh|scripts/install-methodology.sh|executable|required
 file|scripts/backfill-methodology.sh|scripts/backfill-methodology.sh|executable|required

@@ -103,6 +103,12 @@ require_line 'ripgrep' docs/resources/practitioner-guide/04-starting-a-new-proje
 require_line 'ripgrep' docs/resources/practitioner-guide/16-checklists.md
 require_line '^## Prerequisites$' docs/resources/releases/1.0.1-adoption.md
 require_executable scripts/gendev-doctor.sh
+require_executable scripts/pin-provenance.sh
+require_file docs/resources/runbook/g0-to-g7-runbook.md
+require_line 'pin-provenance' docs/resources/runbook/g0-to-g7-runbook.md
+require_line 'pin-provenance' docs/methodology/templates/architecture-template.md
+require_line '^Failure modes: <answer>$' docs/methodology/templates/architecture-template.md
+require_line 'pin-provenance' docs/resources/practitioner-guide/04-starting-a-new-project.md
 require_executable scripts/project-state.sh
 require_executable scripts/new-artifact.sh
 
