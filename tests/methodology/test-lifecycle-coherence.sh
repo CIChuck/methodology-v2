@@ -260,9 +260,29 @@ constitution.write_text(
 )
 release_index = root / "docs/resources/releases/README.md"
 release_index.parent.mkdir(parents=True, exist_ok=True)
+
+
+def _synthesize_index_line(pattern):
+    # Derive a matching live line from the registry's own release-index
+    # synchronization pattern, so this fixture tracks candidate/published
+    # binding flips instead of hard-coding one era's shape. The 1.0.1
+    # publication flipped the checker binding and left this fixture behind,
+    # shipping a red case inside the published release; deriving from the
+    # registry makes that escape structurally unrepeatable.
+    line = pattern
+    for token in ("(?m)", "^", "$"):
+        line = line.replace(token, "")
+    line = line.replace("\\s*", " ").replace("\\.", ".")
+    return " ".join(line.split())
+
+
+index_pattern = next(
+    target["release_value_pattern"]
+    for target in data["versions"]["synchronization_targets"]
+    if target["source_file"] == "docs/resources/releases/README.md"
+)
 release_index.write_text(
-    "Latest published release: 0.5.0-operational-coherence\n"
-    f"Active release candidate: {candidate}\n",
+    _synthesize_index_line(index_pattern) + "\n",
     encoding="utf-8",
 )
 

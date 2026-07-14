@@ -8,14 +8,13 @@ tree|docs/project-template|docs/project-template|preserve|required
 tree|scripts/lib|scripts/lib|preserve|required
 tree|tests/methodology|tests/methodology|preserve|required
 file|scripts/check-methodology.sh|scripts/check-methodology.sh|executable|required
-file|scripts/check-doc-coherence.sh|scripts/check-doc-coherence.sh|executable|required
-file|scripts/check-lifecycle-coherence.py|scripts/check-lifecycle-coherence.py|executable|required
 file|scripts/methodology-guard.sh|scripts/methodology-guard.sh|executable|required
 file|scripts/install-hooks.sh|scripts/install-hooks.sh|executable|required
 file|scripts/init-project.sh|scripts/init-project.sh|executable|required
 file|scripts/init-phase.sh|scripts/init-phase.sh|executable|required
 file|scripts/gendev-doctor.sh|scripts/gendev-doctor.sh|executable|required
 file|scripts/project-state.sh|scripts/project-state.sh|executable|required
+file|scripts/pin-provenance.sh|scripts/pin-provenance.sh|executable|required
 file|scripts/new-artifact.sh|scripts/new-artifact.sh|executable|required
 file|scripts/install-methodology.sh|scripts/install-methodology.sh|executable|required
 file|scripts/backfill-methodology.sh|scripts/backfill-methodology.sh|executable|required
@@ -26,6 +25,6 @@ file|scripts/close-gate.sh|scripts/close-gate.sh|executable|required
 file|scripts/record-phase-checkpoint.sh|scripts/record-phase-checkpoint.sh|executable|required
 file|scripts/close-phase.sh|scripts/close-phase.sh|executable|required
 file|scripts/record-deployment-approval.sh|scripts/record-deployment-approval.sh|executable|required
-file|.github/workflows/methodology.yml|.github/workflows/methodology.yml|preserve|workflow
+file|docs/methodology/templates/product-ci-workflow.yml|.github/workflows/methodology.yml|preserve|workflow
 file|AGENTS.md|AGENTS.md|preserve|agents
 tree|docs/resources|docs/resources|preserve|optional_resources

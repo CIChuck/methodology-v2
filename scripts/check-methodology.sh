@@ -2005,7 +2005,7 @@ check_computed_staleness() {
         "$pinned_revision"*)
           ;;
         *)
-          warn "$file may be stale: $source_path is at $current_revision but Derived from pins $pinned_revision."
+          warn "$file may be stale: $source_path is at $current_revision but Derived from pins $pinned_revision. Run ./scripts/pin-provenance.sh $file to repin."
           ;;
       esac
     done < <(artifact_derived_revisions "$file")

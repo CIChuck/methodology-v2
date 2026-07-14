@@ -1,0 +1,58 @@
+name: methodology
+
+# GenDev product-repository workflow, rendered by install-methodology.sh.
+# It verifies what is true and useful in an installed product context:
+# prerequisites, installation integrity, project coherence, and shell syntax.
+# Methodology-internal suites belong to the authority repository and are
+# deliberately absent here.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: read
+
+jobs:
+  gendev-product-checks:
+    name: gendev-product-checks (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install prerequisites (ripgrep)
+        shell: bash
+        run: |
+          if command -v rg >/dev/null 2>&1; then
+            rg --version | head -n 1
+          elif command -v apt-get >/dev/null 2>&1; then
+            sudo apt-get update -q && sudo apt-get install -y -q ripgrep
+          elif command -v brew >/dev/null 2>&1; then
+            brew install ripgrep
+          else
+            printf 'ERROR: no supported package manager to install ripgrep\n' >&2
+            exit 1
+          fi
+          rg --version | head -n 1
+
+      - name: Doctor (context, prerequisites, installation integrity)
+        shell: bash
+        run: ./scripts/gendev-doctor.sh
+
+      - name: Methodology coherence
+        shell: bash
+        run: ./scripts/check-methodology.sh
+
+      - name: Shell syntax
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite shell-syntax

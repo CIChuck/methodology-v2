@@ -48,16 +48,16 @@ th_run_case "RC-006" 0 "current examples expose strict metadata and legacy bound
 
 th_run_case "RC-007" 0 "release index states a truthful publication state for 1.0.1" \
   "cd '$repo_root' && \
-   if git rev-parse --verify refs/tags/v1.0.1 >/dev/null 2>&1; then \
-     rg -n '^Latest published release: 1\\.0\\.1$' docs/resources/releases/README.md && \
-     rg -n '^Status: Published production release$' docs/resources/releases/1.0.1.md && \
+   if git rev-parse --verify refs/tags/v1.0.2 >/dev/null 2>&1; then \
+     rg -n '^Latest published release: 1\\.0\\.2$' docs/resources/releases/README.md && \
+     rg -n '^Status: Published production release$' docs/resources/releases/1.0.2.md && \
      ! rg -n '^Active release candidate:' docs/resources/releases/README.md; \
    else \
-     rg -n '^Latest published release: 0\\.5\\.0-operational-coherence$' docs/resources/releases/README.md && \
-     rg -n '^Active release candidate: 1\\.0\\.1$' docs/resources/releases/README.md && \
-     rg -n '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.1.md; \
+     rg -n '^Latest published release: 1\\.0\\.1$' docs/resources/releases/README.md && \
+     rg -n '^Active release candidate: 1\\.0\\.2$' docs/resources/releases/README.md && \
+     rg -n '^Status: Production candidate; publication pending required gates$' docs/resources/releases/1.0.2.md; \
    fi && \
-   ! rg -n '^Latest release: 1\\.0\\.[01]$' docs/resources/releases/README.md" \
+   ! rg -n '^Latest release: 1\\.0\\.[012]$' docs/resources/releases/README.md" \
   'Latest published release'
 
 th_run_case "RC-008" 0 "historical 0.5 independent review records a non-pending result" \

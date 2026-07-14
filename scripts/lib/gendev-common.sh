@@ -85,6 +85,31 @@ gendev_require_tool() {
   return 0
 }
 
+
+# Distribution context. The installation record written by
+# install-methodology.sh marks a repository as an installed product context,
+# distinct from the methodology authority repository. Authority-repo
+# maintenance tools must refuse to run where their questions are meaningless.
+GENDEV_INSTALLED_CONTEXT_EXIT=4
+
+gendev_installation_record_path() {
+  printf '%s/docs/methodology/schema/installation.json' "$1"
+}
+
+gendev_is_installed_context() {
+  [ -f "$(gendev_installation_record_path "$1")" ]
+}
+
+gendev_refuse_in_installed_context() {
+  caller_name="$1"
+  root="$2"
+  if gendev_is_installed_context "$root"; then
+    printf '%s: not applicable in an installed product repository; this check belongs to the methodology authority repository.\n' "$caller_name" >&2
+    return "$GENDEV_INSTALLED_CONTEXT_EXIT"
+  fi
+  return 0
+}
+
 # Placeholder-agnostic unknown value checks used across checker/guard.
 gendev_is_unknown() {
   case "$1" in

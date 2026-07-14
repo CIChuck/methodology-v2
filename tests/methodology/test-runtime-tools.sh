@@ -20,6 +20,7 @@ elif [ -n "${TH_WORKDIR:-}" ]; then
   work_parent="$TH_WORKDIR"
 else
   work_parent="$repo_root/.tmp"
+  trap 'rm -rf "$work_parent"' EXIT INT TERM
 fi
 work_root="$work_parent/methodology-runtime-tools-$(date +%s)-$$"
 if [ -z "$work_root" ] || [ "$work_root" = "" ]; then

@@ -36,6 +36,40 @@ printf 'Repository: %s\n' "$repo_root"
 
 prereq_missing=0
 gendev_report_prereqs || prereq_missing=$?
+
+integrity_failed=0
+if gendev_is_installed_context "$repo_root"; then
+  printf 'Context: installed\n'
+  record="$(gendev_installation_record_path "$repo_root")"
+  python3 - "$repo_root" "$record" <<'PYINT' || integrity_failed=1
+import hashlib, json, os, sys
+root, record_path = sys.argv[1], sys.argv[2]
+rec = json.load(open(record_path))
+print(f"Installed methodology version: {rec.get('methodology_version','unknown')}")
+print(f"Installed from: {rec.get('source_remote','unknown')} (tag {rec.get('source_tag','unknown')}, commit {str(rec.get('source_commit','unknown'))[:12]})")
+print(f"Installed on: {rec.get('installed_on','unknown')}")
+bad = []
+for rel, want in rec.get('files', {}).items():
+    full = os.path.join(root, rel)
+    if not os.path.exists(full):
+        bad.append((rel, 'missing'))
+        continue
+    h = hashlib.sha256()
+    with open(full, 'rb') as f:
+        for chunk in iter(lambda: f.read(65536), b''):
+            h.update(chunk)
+    if h.hexdigest() != want:
+        bad.append((rel, 'modified'))
+if bad:
+    print(f"Integrity: FAILED ({len(bad)} file(s))")
+    for rel, why in bad[:20]:
+        print(f"  {why}: {rel}")
+    raise SystemExit(1)
+print(f"Integrity: verified ({len(rec.get('files', {}))} files)")
+PYINT
+else
+  printf 'Context: authority\n'
+fi
 printf 'Lifecycle target: %s\n' "$GENDEV_LIFECYCLE_TARGET_VERSION"
 printf 'Lifecycle status: %s\n' "$GENDEV_LIFECYCLE_REGISTRY_STATUS"
 
@@ -79,7 +113,13 @@ fi
 
 printf 'Recommended validation: ./scripts/check-methodology.sh\n'
 
+if [ "$integrity_failed" -gt 0 ]; then
+  printf 'Doctor result: installed file integrity check failed; see list above.\n' >&2
+fi
 if [ "$prereq_missing" -gt 0 ]; then
   printf 'Doctor result: %s missing prerequisite(s); install before methodology work.\n' "$prereq_missing" >&2
   exit 3
+fi
+if [ "$integrity_failed" -gt 0 ]; then
+  exit 5
 fi

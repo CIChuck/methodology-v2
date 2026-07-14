@@ -128,6 +128,10 @@ jobs:
         shell: bash
         run: ./scripts/test-methodology.sh --suite distribution-tools
 
+      - name: Installed-context regression
+        shell: bash
+        run: ./scripts/test-methodology.sh --suite installed-context
+
   event-and-range-guard:
     name: event-and-range-guard (${{ matrix.os }})
     runs-on: ${{ matrix.os }}

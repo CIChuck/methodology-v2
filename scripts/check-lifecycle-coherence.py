@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import hashlib
 import json
 import re
@@ -4127,7 +4128,7 @@ class Validator:
         target = self.first(versions, "candidate", "candidate_target", "target", "target_version")
         if isinstance(target, dict):
             target = self.first(target, "version", "id")
-        expected = "1.0.1"
+        expected = "1.0.2"
         if target != expected:
             self.add(
                 RULE_VERSION,
@@ -4329,32 +4330,32 @@ class Validator:
                 "source_file": "README.md",
                 "field": "current methodology version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Current methodology version: `1\.0\.1`\s*$",
+                "release_value_pattern": r"(?m)^Current methodology version: `1\.0\.2`\s*$",
             },
             {
                 "source_file": "docs/methodology/constitution/gendev.md",
                 "field": "Version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^Version: 1\.0\.1\s*$",
+                "release_value_pattern": r"(?m)^Version: 1\.0\.2\s*$",
             },
             {
                 "source_file": "docs/project-template/project.yaml",
                 "field": "project.methodology_version",
                 "delivery_state": "current",
-                "release_value_pattern": r"(?m)^\s+methodology_version:\s*1\.0\.1\s*$",
+                "release_value_pattern": r"(?m)^\s+methodology_version:\s*1\.0\.2\s*$",
             },
             {
                 "source_file": "docs/methodology/schema/lifecycle.json",
                 "field": "versions.released_current",
                 "delivery_state": "current",
-                "release_value_pattern": r'(?m)^\s*"released_current":\s*"1\.0\.1"',
+                "release_value_pattern": r'(?m)^\s*"released_current":\s*"1\.0\.2"',
             },
             {
                 "source_file": "docs/resources/releases/README.md",
-                "field": "latest published release",
+                "field": "active release candidate",
                 "delivery_state": release_index_state,
                 "required_work_package": "WP-11",
-                "release_value_pattern": r"(?m)^Latest published release:\s*1\.0\.1\s*$",
+                "release_value_pattern": r"(?m)^Active release candidate:\s*1\.0\.2\s*$",
             },
         ]
         if synchronization_targets != expected_sync_targets:
@@ -5419,6 +5420,31 @@ def emit_config_error(message: str, output_format: str, mode: str) -> None:
         print(f"Lifecycle coherence configuration error: {message}", file=sys.stderr)
 
 
+INSTALLED_CONTEXT_EXIT = 4
+
+
+def refuse_in_installed_context(repo_root: str, mode: str) -> None:
+    """Release-mode coherence belongs to the methodology authority repository.
+
+    An installed product repository carries the registry as frozen provenance,
+    not live release state; asking release-coherence questions there produces
+    false findings by construction.
+    """
+    if mode != "release":
+        return
+    record = os.path.join(
+        repo_root, "docs", "methodology", "schema", "installation.json"
+    )
+    if os.path.exists(record):
+        print(
+            "check-lifecycle-coherence.py --mode release: not applicable in an "
+            "installed product repository; this check belongs to the "
+            "methodology authority repository.",
+            file=sys.stderr,
+        )
+        raise SystemExit(INSTALLED_CONTEXT_EXIT)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = parse_args(argv or sys.argv[1:])
     default_root = Path(__file__).resolve().parent.parent
@@ -5429,6 +5455,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     if not root.is_dir():
         emit_config_error(f"repository root is not a directory: {root}", args.format, args.mode)
         return 2
+    refuse_in_installed_context(str(root), args.mode)
     try:
         data = load_registry(registry_path)
         findings = Validator(root, registry_path, data, args.mode).run()

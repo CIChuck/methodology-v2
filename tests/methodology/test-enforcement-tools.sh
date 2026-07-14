@@ -517,6 +517,22 @@ th_run_case "EN-012" 1 "methodology-guard --range rejects combined movement when
   ./scripts/methodology-guard.sh --range HEAD~1 HEAD" \
   'without a matching gate transition \(G1 -> G3\) with combined_gates: G1-G3'
 
+th_run_case "ET-PIN-001" 0 "pin-provenance detects staleness and repins to checker-identical hash" \
+  "work=\"\$(mktemp -d)\" && cd \"\$work\" && git init -qb main && \
+   git config user.name t && git config user.email t@t && \
+   mkdir -p docs && printf 'vision v1\n' > docs/vision.md && git add -A && git commit -qm one && \
+   pin=\"\$(git log -1 --format=%H -- docs/vision.md)\" && \
+   printf 'Derived from:\n  - path: docs/vision.md\n    revision: %s\n' \"\$pin\" > docs/prd.md && \
+   git add -A && git commit -qm two && \
+   cp -R '$repo_root/scripts' scripts-tools && \
+   printf 'vision v2\n' > docs/vision.md && git add -A && git commit -qm three && \
+   if scripts-tools/pin-provenance.sh --check docs/prd.md; then exit 1; fi && \
+   scripts-tools/pin-provenance.sh docs/prd.md && \
+   scripts-tools/pin-provenance.sh --check docs/prd.md && \
+   want=\"\$(git log -1 --format=%H -- docs/vision.md)\" && \
+   grep -q \"revision: \$want\" docs/prd.md && rm -rf \"\$work\"" \
+  'repinned'
+
 th_summary
 
 exit $(( TH_CASE_FAIL > 0 ))

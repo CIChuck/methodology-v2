@@ -1,8 +1,8 @@
 # GenDev Lifecycle Registry
 
-Status: Released production registry
+Status: Release-mode production registry; publication pending
 Schema version: 2
-Target release: `1.0.1`
+Target release: `1.0.2`
 Registry: `docs/methodology/schema/lifecycle.json`
 
 ## Purpose
@@ -67,9 +67,9 @@ The live registry metadata is:
 
 ```text
 registry.status: released
-registry.target_release: 1.0.1
+registry.target_release: 1.0.2
 versions.candidate_status: released
-versions.released_current: 1.0.1
+versions.released_current: 1.0.2
 versions.release_stage: production
 versions.publication_status: pending_publication
 ```

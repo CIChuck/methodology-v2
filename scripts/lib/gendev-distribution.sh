@@ -214,6 +214,84 @@ gendev_dist_integrate_agents() {
   _gendev_dist_add_report upgraded "AGENTS.md (managed GenDev include block added)"
 }
 
+
+gendev_dist_write_installation_record() {
+  repo_root="$1"
+  target_repo="$2"
+  include_resources="$3"
+  installer_options="$4"
+
+  version="unknown"
+  if [ -f "$repo_root/scripts/lib/lifecycle-contract.sh" ]; then
+    version="$(GENDEV_LIFECYCLE_TARGET_VERSION='' bash -c ". '$repo_root/scripts/lib/lifecycle-contract.sh' >/dev/null 2>&1; printf %s \"\$GENDEV_LIFECYCLE_TARGET_VERSION\"")"
+  fi
+  source_commit="$(git -C "$repo_root" rev-parse HEAD 2>/dev/null || printf unknown)"
+  source_tag="$(git -C "$repo_root" describe --tags --exact-match 2>/dev/null || printf none)"
+  source_remote="$(git -C "$repo_root" remote get-url origin 2>/dev/null || printf "$repo_root")"
+
+  GENDEV_INSTALL_VERSION="$version" \
+  GENDEV_INSTALL_COMMIT="$source_commit" \
+  GENDEV_INSTALL_TAG="$source_tag" \
+  GENDEV_INSTALL_REMOTE="$source_remote" \
+  GENDEV_INSTALL_OPTS="$installer_options" \
+  GENDEV_INSTALL_RESOURCES="$include_resources" \
+  python3 - "$repo_root" "$target_repo" <<'PYREC'
+import hashlib, json, os, sys, datetime
+
+repo_root, target_repo = sys.argv[1], sys.argv[2]
+manifest = os.path.join(repo_root, "scripts", "lib", "distribution-manifest.txt")
+include_resources = os.environ["GENDEV_INSTALL_RESOURCES"] == "1"
+
+files = {}
+def digest(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+with open(manifest) as m:
+    for line in m:
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        kind, source, target, mode, klass = line.split("|")
+        if klass == "optional_resources" and not include_resources:
+            continue
+        if klass == "agents":
+            continue  # target-owned surface; practitioners edit it legitimately
+        dest = os.path.join(target_repo, target)
+        if not os.path.exists(dest):
+            continue
+        if kind == "tree":
+            for root, _dirs, names in os.walk(dest):
+                for name in names:
+                    full = os.path.join(root, name)
+                    rel = os.path.relpath(full, target_repo)
+                    files[rel] = digest(full)
+        else:
+            files[target] = digest(dest)
+
+record = {
+    "record": "gendev-installation",
+    "schema": 1,
+    "methodology_version": os.environ["GENDEV_INSTALL_VERSION"],
+    "source_remote": os.environ["GENDEV_INSTALL_REMOTE"],
+    "source_tag": os.environ["GENDEV_INSTALL_TAG"],
+    "source_commit": os.environ["GENDEV_INSTALL_COMMIT"],
+    "installed_on": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+    "installer_options": os.environ["GENDEV_INSTALL_OPTS"],
+    "files": dict(sorted(files.items())),
+}
+out = os.path.join(target_repo, "docs", "methodology", "schema", "installation.json")
+os.makedirs(os.path.dirname(out), exist_ok=True)
+with open(out, "w") as f:
+    json.dump(record, f, indent=2)
+    f.write("\n")
+PYREC
+  _gendev_dist_add_report installed "docs/methodology/schema/installation.json (installation record)"
+}
+
 gendev_dist_install() {
   repo_root="$1"
   target_repo="$2"
@@ -260,6 +338,13 @@ gendev_dist_install() {
       _gendev_dist_add_report installed "$target"
     fi
   done < "$manifest"
+
+  gendev_dist_write_installation_record "$repo_root" "$target_repo" "$include_resources" "force=$force resources=$include_resources agents=$integrate_agents branch=$branch"
+
+  if [ ! -f "$target_repo/.gitignore" ] || ! grep -q '^\.tmp/$' "$target_repo/.gitignore"; then
+    printf '.tmp/\n' >> "$target_repo/.gitignore"
+    _gendev_dist_add_report installed ".gitignore (.tmp/ suite scratch rule appended)"
+  fi
 
   trap - INT TERM HUP
   rm -rf "$tmp_dir"
