@@ -4352,10 +4352,10 @@ class Validator:
             },
             {
                 "source_file": "docs/resources/releases/README.md",
-                "field": "active release candidate",
+                "field": "latest published release",
                 "delivery_state": release_index_state,
                 "required_work_package": "WP-11",
-                "release_value_pattern": r"(?m)^Active release candidate:\s*1\.0\.2\s*$",
+                "release_value_pattern": r"(?m)^Latest published release:\s*1\.0\.2\s*$",
             },
         ]
         if synchronization_targets != expected_sync_targets:

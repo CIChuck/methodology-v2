@@ -1,6 +1,6 @@
 # GenDev Lifecycle Registry
 
-Status: Release-mode production registry; publication pending
+Status: Released production registry
 Schema version: 2
 Target release: `1.0.2`
 Registry: `docs/methodology/schema/lifecycle.json`
