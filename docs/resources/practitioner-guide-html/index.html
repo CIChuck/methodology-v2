@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="The GenDev field manual for documentation-first, AI-assisted product development."
+    >
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f4f1ea">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    >
+    <meta property="og:title" content="GenDev Practitioner Guide">
+    <meta
+      property="og:description"
+      content="A field manual for documentation-first, AI-assisted product development."
+    >
+    <meta property="og:type" content="website">
+    <title>GenDev Practitioner Guide</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="assets/styles.css">
+    <script defer src="vendor/marked.umd.js"></script>
+    <script defer src="vendor/mermaid.min.js"></script>
+    <script defer src="assets/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#guide-content">Skip to guide content</a>
+    <div class="reading-progress" aria-hidden="true">
+      <span id="reading-progress-bar"></span>
+    </div>
+
+    <header class="site-header">
+      <div class="header-leading">
+        <button
+          class="icon-button menu-button"
+          id="menu-toggle"
+          type="button"
+          aria-label="Open chapter navigation"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 7h16M4 12h16M4 17h16"></path>
+          </svg>
+        </button>
+        <a class="brand" href="./" data-chapter="README">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="brand-copy">
+            <strong>GenDev</strong>
+            <small>Practitioner Guide</small>
+          </span>
+        </a>
+      </div>
+
+      <div class="header-actions">
+        <div class="search" id="search-shell" role="search">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+          <label class="visually-hidden" for="guide-search">Search the guide</label>
+          <input
+            id="guide-search"
+            type="search"
+            placeholder="Search the guide"
+            autocomplete="off"
+            spellcheck="false"
+            aria-controls="search-results"
+            aria-expanded="false"
+          >
+          <kbd aria-hidden="true">/</kbd>
+          <div class="search-results" id="search-results" hidden></div>
+        </div>
+        <button
+          class="icon-button theme-button"
+          id="theme-toggle"
+          type="button"
+          aria-label="Switch to dark theme"
+        >
+          <svg class="sun-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="3.5"></circle>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+          </svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 15.7A8.5 8.5 0 0 1 8.3 4a8.5 8.5 0 1 0 11.7 11.7Z"></path>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="site-layout">
+      <aside class="sidebar" id="sidebar" aria-label="Guide chapters">
+        <div class="sidebar-intro">
+          <span class="eyebrow">Field manual</span>
+          <p>From first prompt to production close-out.</p>
+        </div>
+        <nav id="chapter-nav"></nav>
+        <div class="sidebar-footer">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Aligned with GenDev 1.0</span>
+        </div>
+      </aside>
+      <button
+        class="sidebar-backdrop"
+        id="sidebar-backdrop"
+        type="button"
+        aria-label="Close chapter navigation"
+        tabindex="-1"
+      ></button>
+
+      <main class="main-column" id="main-column">
+        <div class="chapter-toolbar">
+          <div class="chapter-location">
+            <span>Practitioner Guide</span>
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7.5 4 6 6-6 6"></path></svg>
+            <strong id="chapter-location">Guide Home</strong>
+          </div>
+          <span class="reading-time" id="reading-time">Loading…</span>
+        </div>
+
+        <article id="guide-content" class="guide-content" tabindex="-1" aria-live="polite">
+          <div class="loading-state" aria-label="Loading chapter">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </article>
+
+        <nav class="chapter-pager" id="chapter-pager" aria-label="Previous and next chapters"></nav>
+
+        <footer class="content-footer">
+          <p>
+            Rendered from the canonical Markdown in
+            <code>docs/resources/practitioner-guide</code>.
+          </p>
+          <p>GenDev documentation is licensed under CC BY 4.0.</p>
+        </footer>
+      </main>
+
+      <aside class="toc-column" aria-label="On this page">
+        <div class="toc-card">
+          <span class="eyebrow">On this page</span>
+          <nav id="page-toc"></nav>
+        </div>
+      </aside>
+    </div>
+
+    <noscript>
+      <div class="noscript-message">
+        This guide needs JavaScript to render its Markdown chapters. The source files remain
+        available in the <code>content/</code> directory.
+      </div>
+    </noscript>
+  </body>
+</html>
